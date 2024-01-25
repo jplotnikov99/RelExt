@@ -1,0 +1,46 @@
+
+(**************************************************************)
+(**************************************************************)
+(****** FeynRules model file for the TRSM  ********************)
+(****** Authors: R. Capucha                ********************)
+(**************************************************************)
+(**************************************************************)
+
+M$ModelName = "TRSM";
+
+
+M$Information = {Authors -> {"R. Capucha"}, 
+                 Version -> "1.0",
+                 Date -> "16. 05. 2022",
+                 Institutions -> {"CFTC, FCUL"},
+                 Emails -> {"rodrigocapucha@hotmail.com"}
+	        };
+
+(*** Choose Feynman or Unitary gauge ***)
+FeynmanGauge = True;
+
+(*** Index definitions ***)
+IndexRange[Index[SU2W      ]] = Unfold[Range[3]]; 
+IndexRange[Index[SU2D      ]] = Unfold[Range[2]];
+IndexRange[Index[Gluon     ]] = NoUnfold[Range[8]];
+IndexRange[Index[Colour    ]] = NoUnfold[Range[3]]; 
+IndexRange[Index[Generation]] = Range[3];
+
+IndexStyle[SU2W,       j];
+IndexStyle[SU2D,       k];
+IndexStyle[Gluon,      a];
+IndexStyle[Colour,     m];
+IndexStyle[Generation, f];
+
+
+(*** Load all necessary info ***)
+Get["GaugeGroup.fr"];
+Get["Parameters.fr"];
+Get["SMParts.fr"];
+Get["Scalars.fr"];
+Get["Lagrangian.fr"];
+
+M$Parameters = Join[M$IntPrm, M$ExtPrm];
+
+M$ClassesDescription = Join[M$ClassesDescription, M$ScalarFields];
+

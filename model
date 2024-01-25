@@ -1,0 +1,200 @@
+#!/bin/bash
+
+args=$#
+
+while getopts ":hnldc" opt; do
+  case $opt in
+    h)
+      echo "This script creates the necessary files for new models that you want to implement."
+      echo
+      echo "Options:"
+      echo "-n [modelname]		  generates a folder for the new model called md_modelname. "
+      echo "-l [path/to/feynrules-current] [modelname.fr] [Name of Lagrangian]"
+      echo "-d [modelname]		  deletes a self-generated model if modelname is specified. Otherwise delete all self-generated models"
+      echo "-c [modelname] 		  confirms that you want to keep a self-generated model if specified. Otherwise keep all self-generated models."
+      exit 0
+      ;;
+    n)
+	    new_file=true
+	    ;;
+    l)
+      load=true
+      ;;
+	  d)
+	    delete=true
+	    ;;  
+    c)
+      confirm=true
+      ;;
+    \?)
+      echo "Invalid option. Type \"./model.sh -h\" for help."
+      exit 1
+      ;;
+  esac
+done
+
+
+if [ -n "$new_file" ]; then
+  case $args in
+    2)
+      if [ -d md_$2 ]; then
+      	echo "This model already exists."
+      	exit 1;
+      else
+      	#copy the base_model with the given model name
+      	echo "A new folder has been created where you can implement your model called md_$2."
+      	cp -r base_model md_$2
+
+      	#change the names of libraries accordingly
+      	sed -i "s/placeholder/$2/g" md_$2/sources/CMakeLists.txt
+      	sed -i "s/placeholder/$2/g" md_$2/sources/amp2s/CMakeLists.txt
+
+      	#add appropriate extension to the CMake file
+      	#echo "" >> CMakeLists.txt
+        echo " " >> CMakeLists.txt
+      	echo "add_executable($2 md_$2/main.cpp)" >> CMakeLists.txt
+      	echo "add_subdirectory(md_$2/sources)" >> CMakeLists.txt
+      	echo "target_include_directories($2_amp2s PRIVATE \${include_dir})" >> CMakeLists.txt
+    	  echo "target_include_directories($2_sources PRIVATE \${include_dir})" >> CMakeLists.txt
+    	  echo "target_include_directories($2 PRIVATE \${include_dir})" >> CMakeLists.txt
+    	  echo "target_include_directories(sources PRIVATE \${CMAKE_CURRENT_SOURCE_DIR}/md_$2/include)" >> CMakeLists.txt
+    	  echo "target_link_libraries($2 PRIVATE sources $2_sources $2_amp2s)" >> CMakeLists.txt
+
+      	echo "$2" >> .newmod
+      	echo "" >> .newmod 
+      	exit 0
+      fi
+      ;;
+    *)
+      echo "Not the right amount of arguments given. Type \"./model.sh -h\" for help."
+      exit 1
+  esac
+fi
+
+if [ -n "$load" ]; then
+  case $args in
+    #3)   
+    #  p1="md_"
+    #  p2="$2"
+    #  p3="/FR_modfiles/CH_modfiles"
+    #  mdl_path=$(printf "%s%s%s" "$p1" "$p2" "$p3") 
+    #  cd "$mdl_path"
+#
+    #  if [[ -f vars1.mdl ]]; then
+    #    cd -
+    #    cur_dir=$(pwd)
+    #    md_dir=$(printf "%s%s%s" "$cur_dir" "/md_" "$p2")
+    #    
+    #    file_name=$3
+    #    math -script mathematica/gen_init.m $3 $md_dir
+    #    exit 0
+    #  else
+    #    echo "The model has not been implemented yet. Run the following code to load the model:"
+    #    echo "./gen_amps [path/to/feynrules-current] [modelname.fr] [Name of Lagrangian]"
+    #    exit 1
+    #  fi
+    #  ;;
+    4)
+      fr_path=$(find . -name $3)
+      fr_dir=$(dirname "$fr_path")
+      fr_full_dir=$(readlink -f "$fr_dir")
+      
+      math -script mathematica/FR_to_CH_FA.m $2 $3 $4 $fr_full_dir
+      math -script mathematica/amp2cpp.m $fr_full_dir
+      exit 0
+      ;;
+    *)	
+      echo "Not the right amount of arguments given."
+      echo "./model -l [path/to/feynrules-current] [modelname.fr] [Name of Lagrangian]"
+      exit 1
+      ;;
+  esac
+fi
+
+
+if [ -n "$delete" ]; then
+  case $args in
+	1)
+	  
+    line_number=0
+
+      while read line; do
+        if [ -n "$line" ]; then
+
+          model=$line
+          echo "The model $model has been deleted."
+          line_number=$((line_number + 1))
+
+          line_number1=0
+          while read line1; do
+            if [[ $line1 == *"$model"* ]]; then
+              sed -i "/$model/d" CMakeLists.txt
+              continue
+            fi
+            line_number1=$((line_number1 + 1))
+          done < CMakeLists.txt
+
+          rm -r md_$model
+
+        fi
+      done < .newmod
+
+    truncate -s 0 .newmod  
+    exit 0
+	  ;;
+	2)
+	  if [ -d md_$2 ]; then
+  		line_number=0
+  		while read line; do
+  		  if [[ $line == *"$2"* ]]; then
+  		  	sed -i "/$2/d" CMakeLists.txt
+  		  	continue
+  		  fi
+  		  line_number=$((line_number + 1))
+  		done < CMakeLists.txt
+
+      line_number=0
+      while read line; do
+        if [[ $line == *"$2"* ]]; then
+          sed -i "/$2/d" .newmod
+          continue
+        fi
+        line_number=$((line_number + 1))
+      done < .newmod
+
+  		rm -r md_$2
+
+  	else
+  		echo "This model does not exist."
+  		exit 1
+  	fi
+	  ;;
+	*)	
+		echo "Not the right amount of arguments given. Type \"./model.sh -h\" for help."
+  esac
+fi
+
+
+if [ -n "$confirm" ]; then
+
+  case $args in
+  1)
+    truncate -s 0 .newmod
+    echo "All self-generated models have been confirmed."
+    ;;
+  2)
+    line_number=0
+      while read line; do
+        if [[ $line == *"$2"* ]]; then
+          sed -i "/$2/d" .newmod
+          continue
+        fi
+        line_number=$((line_number + 1))
+      done < .newmod
+    echo "The model $2 has been confirmed."
+    ;;
+  *)  
+    echo "Not the right amount of arguments given. Type \"./model.sh -h\" for help."
+  esac
+  
+fi
