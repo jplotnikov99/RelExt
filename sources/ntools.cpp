@@ -1,7 +1,6 @@
 #include "ntools.hpp"
 #include "tactools.hpp"
 #include "beq.hpp"
-#include "../md_cpvdm/amp2s/allamp2s.hpp"
 
 // linear interpolation (x data must be sorted for this to work)
 double DT::linint(double x, double x1, double x2, double y1, double y2)
