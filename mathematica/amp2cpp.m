@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 (*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
-directory = "/home/johann/Documents/Projects/DM/new_code/darktree_new/md_TRSM/FR_modfiles" <> "/FA_modfiles";
+directory = "/home/johann/Documents/Projects/DM/new_code/darktree_new/md_cpvdm/FR_modfiles" <> "/FA_modfiles";
 Print[directory]
 
 (*start FA and FC*)
@@ -40,6 +40,9 @@ For[i=1, i<= Length[prtList],i++,
         AppendTo[widths,ToExpression[StringReplace[prtList[[i,3]],"!"->""]]]
     ]
 ];
+
+
+prtList
 
 
 (*create list with particle identifiers, masses and names according to FA mod files*)
@@ -1054,9 +1057,3 @@ Do[
 	Close[sfile];
 	
 ,{i,Length[possibleiniDecays]}]
-
-
-(*t=Import["/home/johann/Documents/Projects/DM/new_code/darktree_new/TRSM_FI_FO.dat","Table"];*)
-
-
-(*ListPlot[t[[;;Length[t]-1,{1,2}]],PlotRange->All,PlotTheme->"FrameGrid",AspectRatio->1,FrameLabel->{Style["Subscript[\[Lambda], FI]",14],Style["Subscript[\[Lambda], FO]",14]}]*)

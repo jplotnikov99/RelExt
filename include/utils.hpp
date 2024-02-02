@@ -6,31 +6,29 @@
 #include <fstream>
 #include <vector>
 
-namespace DT{
+namespace DT
+{
 
-		// Heavi-side function and flux factor for the amp2sflux
+	// Heavi-side function and flux factor for the amp2sflux
 
-		bool heaviDecays(double m1, double m2, double m3);
+	bool heaviDecays(const double &m1, const double &m2, const double &m3);
 
-		bool heavi(double s, double m1, double m2);
+	bool heavi(const double &s, const double &m1, const double &m2);
 
-		double flux(double s, double m1, double m2, double m3, double m4);
+	double flux(const double &s, const double &m1, const double &m2, const double &m3, const double &m4);
 
-		// Bessel functions
+	// Bessel functions
 
-		double besselK(int n, double x);
+	double besselK(const int n, const double &x);
 
-		double polK(int n, double x);
+	double polK(const int n, const double &x);
 
-		double besselK2(double x);
+	double besselK2(const double &x);
 
-		double polK1(double x);
+	double polK1(const double &x);
 
-		double polK2(double x);
+	double polK2(const double &x);
 
-		bool Beps(double xf, double eps);
-
-		void save_data(const char *filename, std::vector<std::string> header, std::vector<double> data);
-
+	void save_data(const char *filename, std::vector<std::string> header, std::vector<double> data);
 
 }
