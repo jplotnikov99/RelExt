@@ -75,7 +75,7 @@ namespace DT
     {
         for (int i = 0; i < iniswitches.size(); i++)
         {
-            mod->get_inimasses(m1, m2, i);
+            mod->set_channel(m1, m2, i);
             iniswitches.at(i) = beps(x, mod->MDM);
         }
     }
@@ -132,7 +132,6 @@ namespace DT
         double *b;
 
         N_relevant_peaks = 0;
-        mod->set_channel(m1, m2, 0);
 
         for (int j = 0; j < mod->N_widths; j++)
         {
@@ -283,9 +282,9 @@ namespace DT
             {
                 estimate += gauss_kronrod_31(boundaries.at(3 * i), boundaries.at(3 * i - 1), x);
             }
-            
+
             estimate += (gauss_kronrod_31(0, boundaries.at(3 * N_relevant_peaks - 1), x) + gauss_kronrod_31(boundaries.at(0), 1, x));
-            
+
             res += (adap_gauss_kronrod(0, boundaries.at(3 * N_relevant_peaks - 1), x, estimate) + adap_gauss_kronrod(boundaries.at(0), 1, x, estimate));
 
             for (size_t i = 1; i < N_relevant_peaks; i++)
@@ -305,9 +304,9 @@ namespace DT
     {
         double res = 0.;
 
-        if (ch_str.size() == 0)
+        if (tac_x.find(x) == tac_x.end())
         {
-            if (tac_x.find(x) == tac_x.end())
+            if (ch_str.size() == 0)
             {
                 for (size_t i = 0; i < mod->N_initial_states; i++)
                 {
@@ -319,16 +318,22 @@ namespace DT
                         iniswitches.at(i) = beps(x, mod->MDM);
                     }
                 }
-                tac_x[x] = res;
-                return res;
             }
             else
             {
-                return tac_x.at(x);
+                for (auto it : ch_str)
+                {
+                    mod->set_channel(m1, m2, 0, it);
+                    set_boundaries(x);
+                    res += integrate_s(x);
+                }
             }
+            tac_x[x] = res;
+            return res;
         }
         else
         {
+            return tac_x.at(x);
         }
     }
 

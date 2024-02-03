@@ -10,10 +10,11 @@ int main(int argc, char **argv)
 
     clock_t begin_time = clock();
 
-    for (size_t i = 1; i < main.N_par_points; i++)
+    for (size_t i = 1; i < 3; i++)
     {
+        std::vector<std::string> ch = {"A1A1"};
         main.load_parameters(i);
-        main.calc_Omega_FO();
+        main.calc_Omega_FO(ch);
     }
 
     std::cout << "Computation time:\n"

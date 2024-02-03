@@ -49,8 +49,7 @@ namespace DT
 
         void assigndm();
         void change_parameter(const std::string par, const double newval);
-        void get_inimasses(double &m1, double &m2, const size_t i);
-        void set_channel(double &m1, double &m2, const size_t i, const std::string amp2_name = "");
+        void set_channel(double &m1, double &m2, const size_t i, std::string ch_str = "");
 
         double eval(const double cos_t, const double s);
 

@@ -36,21 +36,27 @@ namespace DT
         }
     }
 
-    void Model::get_inimasses(double &m1, double &m2, const size_t i)
+    void Model::set_channel(double &m1, double &m2, const size_t i, std::string ch_str)
     {
-        m1 = *inimasses.at(2 * i);
-        m2 = *inimasses.at(2 * i + 1);
-    }
-
-    void Model::set_channel(double &m1, double &m2, const size_t i, const std::string amp2_name)
-    {
-        if (amp2_name == "")
+        //std::cout << ch_str << std::endl;
+        if (ch_str == "")
         {
-            get_inimasses(m1, m2, i);
+            m1 = *inimasses.at(2 * i);
+            m2 = *inimasses.at(2 * i + 1);
             cur_channel = inifuncs.at(i);
         }
         else
         {
+            for (size_t i = 0; i < channelnames.size(); i++)
+            {
+                if (ch_str == channelnames.at(i))
+                {
+                    m1 = *mass1s.at(i);
+                    m2 = *mass2s.at(i);
+                    cur_channel = amp2fls.at(i);
+                    break;
+                }
+            }
         }
     }
 

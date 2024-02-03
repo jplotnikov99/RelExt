@@ -152,6 +152,10 @@ namespace DT
         denstructures.push_back(&MS1);
         denstructures.push_back(&WS1);
         N_widths = 2;
+        channelnames.push_back("A1A1");
+        amp2fls.push_back(A1A1);
+        mass1s.push_back(&MA1);
+        mass2s.push_back(&MA1);
         inifuncs.push_back(A1A1);
         N_initial_states = 1;
     }

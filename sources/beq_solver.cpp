@@ -15,7 +15,7 @@ namespace DT
         int iterations = 0;
         double x2;
         double y1;
-        double y0 = beq->fstart(x0);
+        double y0 = beq->fstart(x0, ch_str);
         // Loop until the tolerance is reached
         while (fabs(x1 - x0) > secant_eps)
         {
@@ -23,7 +23,7 @@ namespace DT
             if (iterations > secant_maxiter)
                 return x2;
             // Calculate the new value of x
-            y1 = beq->fstart(x1);
+            y1 = beq->fstart(x1, ch_str);
 
             x2 = x1 - (x1 - x0) * y1 / (y1 - y0);
 
