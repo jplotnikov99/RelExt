@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
-(*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
-directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";
+directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
+(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cpvdm/FR_modfiles" <> "/FA_modfiles";*)
 Print[directory]
 
 (*start FA and FC*)

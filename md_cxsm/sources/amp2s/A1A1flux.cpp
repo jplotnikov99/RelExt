@@ -105,11 +105,11 @@ double DT::A1A1Bbfl(double cos_t, double s){
 double DT::A1A1(double cos_t, double s){
 	 return ( A1A1HHfl(cos_t, s) + A1A1HS1fl(cos_t, s) + A1A1S1S1fl(cos_t, s) +\
  
-      A1A1ZZfl(cos_t, s) + A1A1wWfl(cos_t, s) + A1A1Eefl(cos_t, s) +\
+   A1A1ZZfl(cos_t, s) + A1A1wWfl(cos_t, s) + A1A1Eefl(cos_t, s) +\
  
-      A1A1MUmufl(cos_t, s) + A1A1TAtafl(cos_t, s) + A1A1Uufl(cos_t, s) +\
+   A1A1MUmufl(cos_t, s) + A1A1TAtafl(cos_t, s) + A1A1Uufl(cos_t, s) +\
  
-      A1A1Ccfl(cos_t, s) + A1A1Ttfl(cos_t, s) + A1A1Ddfl(cos_t, s) +\
+   A1A1Ccfl(cos_t, s) + A1A1Ttfl(cos_t, s) + A1A1Ddfl(cos_t, s) +\
  
-      A1A1Ssfl(cos_t, s) + A1A1Bbfl(cos_t, s) );
+   A1A1Ssfl(cos_t, s) + A1A1Bbfl(cos_t, s) );
 }
