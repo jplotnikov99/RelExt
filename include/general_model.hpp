@@ -19,7 +19,6 @@ namespace DT
         std::vector<double *> dsmasses; // needs to be defined in mathematica file
         std::vector<double *> neutraldsmasses;
         std::vector<double *> inimasses;
-        
         vamp2 inifuncs;
         vamp2 amp2s;
         vamp2 amp2fls;
@@ -28,8 +27,9 @@ namespace DT
         std::vector<double *> mass2s;
         std::vector<double *> mass3s;
         std::vector<double *> mass4s;
-        amp2 cur_channel;
         std::shared_ptr<Dof> dof;
+        vamp2 cur_channel;
+        size_t N_cur;
         
 
     public:
@@ -49,7 +49,7 @@ namespace DT
 
         void assigndm();
         void change_parameter(const std::string par, const double newval);
-        void set_channel(double &m1, double &m2, const size_t i, std::string ch_str = "");
+        void set_channel(double &m1, double &m2, const size_t i, const std::vector<std::string> ch_str = {});
 
         double eval(const double cos_t, const double s);
 

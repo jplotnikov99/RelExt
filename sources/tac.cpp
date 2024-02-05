@@ -321,12 +321,9 @@ namespace DT
             }
             else
             {
-                for (auto it : ch_str)
-                {
-                    mod->set_channel(m1, m2, 0, it);
-                    set_boundaries(x);
-                    res += integrate_s(x);
-                }
+                mod->set_channel(m1, m2, 0, ch_str);
+                set_boundaries(x);
+                res += integrate_s(x);
             }
             tac_x[x] = res;
             return res;

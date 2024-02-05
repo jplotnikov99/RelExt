@@ -36,33 +36,42 @@ namespace DT
         }
     }
 
-    void Model::set_channel(double &m1, double &m2, const size_t i, std::string ch_str)
+    void Model::set_channel(double &m1, double &m2, const size_t i, std::vector<std::string> ch_str)
     {
-        //std::cout << ch_str << std::endl;
-        if (ch_str == "")
+        cur_channel.clear();
+        if (ch_str.size() == 0)
         {
             m1 = *inimasses.at(2 * i);
             m2 = *inimasses.at(2 * i + 1);
-            cur_channel = inifuncs.at(i);
+            cur_channel.push_back(inifuncs.at(i));
         }
         else
         {
-            for (size_t i = 0; i < channelnames.size(); i++)
+            for (size_t i = 0; i < ch_str.size(); i++)
             {
-                if (ch_str == channelnames.at(i))
+                for (size_t j = 0; j < channelnames.size(); j++)
                 {
-                    m1 = *mass1s.at(i);
-                    m2 = *mass2s.at(i);
-                    cur_channel = amp2fls.at(i);
-                    break;
+                    if (ch_str.at(i) == channelnames.at(j))
+                    {
+                        m1 = *mass1s.at(j);
+                        m2 = *mass2s.at(j);
+                        cur_channel.push_back(amp2fls.at(j));
+                        break;
+                    }
                 }
             }
         }
+        N_cur = cur_channel.size();
     }
 
     double Model::eval(const double cos_t, const double s)
     {
-        return cur_channel(cos_t, s);
+        double res = 0;
+        for (size_t i = 0; i < N_cur; i++)
+        {
+            res += cur_channel.at(i)(cos_t, s);
+        }
+        return res;
     }
 
     double Model::yeq(const double &x)

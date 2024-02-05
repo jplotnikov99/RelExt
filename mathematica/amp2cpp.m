@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 (*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
-directory = "/home/johann/Documents/Projects/DM/new_code/darktree_new/md_cpvdm/FR_modfiles" <> "/FA_modfiles";
+directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";
 Print[directory]
 
 (*start FA and FC*)
@@ -40,9 +40,6 @@ For[i=1, i<= Length[prtList],i++,
         AppendTo[widths,ToExpression[StringReplace[prtList[[i,3]],"!"->""]]]
     ]
 ];
-
-
-prtList
 
 
 (*create list with particle identifiers, masses and names according to FA mod files*)
@@ -636,15 +633,38 @@ Do[
 ,{i,Length[possiblemasses]}]
 
 
+(*list with all 1to2 decays process names*)
+templist2Decays = Table[{foutfinallistDecays[[i,1]], ToExpression[StringReplace[ToString[foutfinallistDecays[[i,2]]], {", {Col2}"->"", ", {Glu2}"->""}]],
+ToExpression[StringReplace[ToString[foutfinallistDecays[[i,3]]], {", {Col3}"->"", ", {Glu3}"->""}]]}, {i, Length[foutfinallistDecays]}];
+
+processnameDecays = Table[
+Select[particlelist, #[[1]]== templist2Decays[[i, 1]]&][[1,3]]<>
+Select[particlelist, #[[1]]== templist2Decays[[i, 2]]&][[1,3]]<>
+Select[particlelist, #[[1]]== templist2Decays[[i, 3]]&][[1,3]], 
+{i, Length[templist2Decays]}];
+processnameDecays=Table[ToExpression[StringReplace[ToString[processnameDecays[[i]]], {"~"->""}]], {i,Length[processnameDecays]}];
+
+possibleiniDecays = DeleteDuplicates[Table[Select[particlelist, #[[1]]== templist2Decays[[i, 1]]&][[1,3]], {i, Length[templist2Decays]}]];
+
+
+(*auxiliary decays functions*)
+possiblemassesDecays= Table[TheMass[relevantWsfields[[i]]], {i, Length[relevantWsfields]}]/.subrule;
+
+Do[inifuncDecays[i]={},{i,Length[possibleiniDecays]}]
+Do[
+	pos=Position[possiblemassesDecays,TheMass[foutfinallistDecays[[i,1]]]/.subrule][[1,1]];
+	AppendTo[inifuncDecays[pos],{processnameDecays[[i]],TheMass[foutfinallistDecays[[i,1]]],TheMass[foutfinallistDecays[[i,2]]],TheMass[foutfinallistDecays[[i,3]]],templist2Decays[[i,1]],templist2Decays[[i,2]],templist2Decays[[i,3]],finalDecaysWidth[[i]]}/.subrule]
+,{i,Length[processnameDecays]}]
+
+
 (*declarations file*)
 gc = M$FACouplings;
 gc1=gc/.subrule; gc1 = Replace[gc1, defer, All];
-sfile=OpenWrite[directory<>"include/declarations.hpp",FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
+sfile=OpenWrite[directory<>"model.hpp",FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
 (*external and internal declarations*)
 Write[sfile, mathlabel];
 Write[sfile, "#pragma once\n"];
-Write[sfile, "#include <functional>"]
-Write[sfile, "#include <string>\n"]
+Write[sfile, "#include <cmath>\n"]
 
 Write[sfile, "namespace DT{"];
 Do[
@@ -661,213 +681,7 @@ Write[sfile, "\textern double EL;"];
 Write[sfile, "\textern double ee;"];
 Write[sfile, "\textern double gs;"];
 Write[sfile, "\textern double G;"];
-Write[sfile, "\textern double FAGS;"];
-Write[sfile, "}"];
-Close[sfile];
-
-
-(*declarations file*)
-gc = M$FACouplings;
-gc1=gc/.subrule; gc1 = Replace[gc1, defer, All];
-sfile=OpenWrite[directory<>"sources/declarations.cpp",FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
-(*external and internal declarations*)
-Write[sfile, mathlabel];
-Write[sfile, "#include \"../include/declarations.hpp\""]
-Write[sfile, "#include \"../amp2s/allamp2s.hpp\"\n"]
-Write[sfile, "namespace DT{"]
-Do[
-	Write[sfile, "\tdouble", " ", external[[i,1]] ," = ", external[[i,2]],";"]
-,{i,Length[external]}]
-Do[
-	Write[sfile, "\tdouble", " ", internal[[i,1]] ," = ", internal[[i,2]],";"]
-,{i,Length[internal]}]
-
-Write[sfile, "\tdouble EL = 0.312233;"];
-Write[sfile, "\tdouble ee = 0.312233;"];
-Write[sfile, "\tdouble gs = 1.21358;"];
-Write[sfile, "\tdouble G = 1.21358;"];
-Write[sfile, "\tdouble FAGS = 1.21358;"];
-
-(*gcs, inimass and iniswitch*)
-Do[
-	Write[sfile, "\tdouble", " ", ToString[gc1[[i,1]]] , ";"]
-,{i,Length[gc1]}];
-Write[sfile, "}"];
-Close[sfile];
-
-
-(*init.hpp file*)
-initfile=OpenWrite[directory<>"include/init.hpp", FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
-Write[initfile, mathlabel];
-Write[initfile, "#pragma once \n"];
-Write[initfile, "#include <fstream>"];
-Write[initfile, "#include <vector>"];
-Write[initfile, "#include <iostream>"];
-Write[initfile, "#include <sstream>"];
-Write[initfile, "#include <cmath>"];
-Write[initfile, "#include <map>"]
-Write[initfile, "#include \"declarations.hpp\""];
-Write[initfile, "#include \"vars.hpp\"\n"];
-Write[initfile, "namespace DT{"];
-Write[initfile, "\tvoid loadpoint(std::vector<std::string> data, std::vector<double *> scanpars);"]
-Write[initfile, "\tvoid init(procinfos *proc);"]
-Write[initfile, "\tvoid loadmap(std::map<std::string, double*> &map);"]
-Write[initfile, "}"];
-Close[initfile];
-
-
-initfile=OpenWrite[directory<>"sources/init.cpp", FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
-Write[initfile, mathlabel];
-Write[initfile, "#include \"../include/init.hpp\""]
-Write[initfile, "#include \"readdata.hpp\""]
-Write[initfile, "#include \"../amp2s/allamp2s.hpp\""]
-Write[initfile, "#include \"../amp2s/alldecays.hpp\""]
-Write[initfile, "#include \"../include/declarations.hpp\"\n"]
-Write[initfile, "void DT::loadpoint(std::vector<std::string> data, std::vector<double *> scanpars) {"]
-
-Do[
-	Write[initfile, "\t", external[[i,1]] ," = ", external[[i,2]],";"]
-,{i,Length[external]}]
-Write[initfile, "\tfor(size_t i = 0; i < lists::ssdata.size(); i++)"];
-Write[initfile, "\t{
-\t\t*scanpars.at(i) = std::stod(lists::ssdata.at(i));
-\t}"];
-Do[
-	Write[initfile, "\t", internal[[i,1]] ," = ", internal[[i,2]],";"]
-,{i,Length[internal]}]
-Write[initfile, "\tEL = EE;"];
-Do[
-	gsub=StringReplace[ToString[CForm[gc1[[i,2]]]],{"Power"->"pow","Cos"->"cos","Sin"->"sin","Conjugate"->"", "Sqrt"-> "sqrt", "Defer"-> " ", "FeynCalc_MT"->"MT", "FeynCalc`"->""}];
-	Write[initfile, "\t", ToString[gc1[[i,1]]] ," = ", gsub,";"]
-,{i,Length[gc1]}]
-
-Write[initfile, "}"];
-Close[initfile];
-
-
-sfile=OpenWrite[directory<>"sources/parmap.cpp",FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
-(*external and internal declarations*)
-Write[sfile, mathlabel];
-Write[sfile, "#include \"../include/declarations.hpp\""];
-Write[sfile, "#include <map>"];
-Write[sfile, "namespace DT{"];
-Write[sfile, "\tvoid loadmap(std::map<std::string, double*> &map){"];
-Do[
-	Write[sfile, "\t\tmap[\"", external[[i,1]] ,"\"] = &", external[[i,1]],";"]
-,{i,Length[external]}]
-Write[sfile, "\t}"];
-Write[sfile, "}"];
-Close[sfile];
-
-
-
-sfile=OpenWrite[directory<>"sources/procinfo.cpp",FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
-Write[sfile, mathlabel];
-Write[sfile, "#include \"../include/declarations.hpp\""]
-Write[sfile, "#include \"../amp2s/allamp2s.hpp\""]
-Write[sfile, "#include \"../include/init.hpp\""]
-Write[sfile, "namespace DT{"]
-
-Write[sfile, "void init(procinfos *proc){"]
-Do[
-	Write[sfile, "\tproc->channelnames.push_back(\"",ToString[processname[[i]]],"\");"];
-	Write[sfile, "\tproc->amp2s.push_back(",ToString[processname[[i]]],");"];
-	Write[sfile, "\tproc->amp2fls.push_back(",ToString[processname[[i]]],"fl);"];
-	If[PossibleZeroQ[mi[[i]]],
-		Write[sfile, "\tproc->mass1s.push_back(",ToString[ReplaceAll[mi[[i]],subrule]],");"],
-		Write[sfile, "\tproc->mass1s.push_back(&",ToString[ReplaceAll[mi[[i]],subrule]],");"];
-	]
-	If[PossibleZeroQ[mj[[i]]],
-		Write[sfile, "\tproc->mass2s.push_back(",ToString[ReplaceAll[mj[[i]],subrule]],");"],
-		Write[sfile, "\tproc->mass2s.push_back(&",ToString[ReplaceAll[mj[[i]],subrule]],");"];
-	]
-	If[PossibleZeroQ[mk[[i]]],
-		Write[sfile, "\tproc->mass3s.push_back(",ToString[ReplaceAll[mk[[i]],subrule]],");"],
-		Write[sfile, "\tproc->mass3s.push_back(&",ToString[ReplaceAll[mk[[i]],subrule]],");"];
-	]
-	If[PossibleZeroQ[ml[[i]]],
-		Write[sfile, "\tproc->mass4s.push_back(",ToString[ReplaceAll[ml[[i]],subrule]],");"],
-		Write[sfile, "\tproc->mass4s.push_back(&",ToString[ReplaceAll[ml[[i]],subrule]],");"];
-	]
-,{i,Length[processname]}]
-Do[
-	Write[sfile, "\tproc->inimasses.push_back(&", inimass[[i]] , ");"];
-,{i,Length[inimass]}]
-Do[
-	Write[sfile, "\tproc->neutraldsmasses.push_back(&", neutraldsmasses[[i]],");"];
-,{i,Length[neutraldsmasses]}]
-Do[
-	Write[sfile, "\tproc->denstructures.push_back(&", StringReplace[ToString[relevantWs[[i]]],{"FeynCalc`"->""}] ,");"];
-,{i,Length[relevantWs]}]
-Do[
-	Write[sfile, "\tproc->inifuncs.push_back(", possibleini[[i]] ,");"];
-,{i,Length[possibleini]}]
-Write[sfile, "\tproc->boundaries = ",ConstantArray["0",dl],";"]
-Write[sfile, "\tproc->iniswitches = ",ConstantArray["true",Length[possibleini]],";"]
-Write[sfile, "}"];
-Write[sfile, "}"];
-Close[sfile];
-
-
-gc = M$FACouplings;
-gc1=gc/.subrule; gc1 = Replace[gc1, defer, All];
-
-(*TAC and relic functions*)
-
-(*Yeq file*)
-sfile=OpenWrite[directory<>"sources/yeq.cpp",FormatType->StandardForm];
-Write[sfile, mathlabel];
-Write[sfile, "#include \"tactools.hpp\""];
-Write[sfile, "#include \"EffDofmic.hpp\""];
-Write[sfile, "#include \"utils.hpp\""];
-Write[sfile, "#include \"vars.hpp\""];
-Write[sfile, "#include \"../include/declarations.hpp\"\n"];
-
-Write[sfile, "double DT::yeq(double xf) {"];
-Write[sfile, "\tdouble yeq = 45 * xf * xf / (4 * heff(vars::MDM / xf) * M_PI * M_PI * M_PI * M_PI) * ( "];
-If[Length[dsmass]==1, 
-Write[sfile, "besselK2(xf));"],
-Do[
-	If[(i!=Length[dsmass]),
-		Write[sfile, ToString[dsmass[[i]]] , " * " , ToString[dsmass[[i]]], "/ (vars::MDM * vars::MDM)", "* besselK2(", ToString[dsmass[[i]]], "/ vars::MDM * xf)", " + "],
-		Write[sfile, ToString[dsmass[[i]]] , " * " , ToString[dsmass[[i]]], "/ (vars::MDM * vars::MDM)", "* besselK2(", ToString[dsmass[[i]]], "/ vars::MDM * xf));" ]
-	 ]
-,{i,Length[dsmass]}]
-];
-Write[sfile, "\t return yeq;"];
-Write[sfile, "}\n"];
-
-Write[sfile, "double DT::sigv(double u, double xf, std::function<double(double, double)> f) {"];
-Write[sfile, "\tdouble num, den, s;"];
-Write[sfile, "\ts = (vars::m1 + vars::m2) * (vars::m1 + vars::m2) + (1 - u) / u;"];
-Write[sfile, "\tnum = xf / vars::MDM * wij(s, f) * polK1(sqrt(s) * xf / vars::MDM);"];
-Write[sfile, "\tden = pow("];
-Do[
-	If[i!=Length[dsmass],
-		Write[sfile, "\t\t" , ToString[dsmass[[i]]] , " * " , ToString[dsmass[[i]]] , " * exp(-xf / vars::MDM", " * (" , ToString[dsmass[[i]]] , 
-		" - sqrt(s) / 2)) * polK2(xf * " , ToString[dsmass[[i]]] , " / vars::MDM", ") + " ],
-		Write[sfile, "\t\t" , ToString[dsmass[[i]]] , " * " , ToString[dsmass[[i]]] , " * exp(-xf / vars::MDM", " * (" , ToString[dsmass[[i]]] , 
-		" - sqrt(s) / 2)) * polK2(xf * " , ToString[dsmass[[i]]] , " / vars::MDM", "), 2);" ]
-	 ]
-,{i,Length[dsmass]}]
-Write[sfile, "\t return num / den * 1 / (u * u);"];
-Write[sfile, "}"];
-Close[sfile];
-
-(*(*sigv file*)
-sfile=OpenWrite[directory<>"sources/sigv.h",FormatType->StandardForm];
-
-Close[sfile];*)
-
-
-(*amps file*)
-ofile=directory<>"amp2s/allamp2s.hpp";
-sfile=OpenWrite[ofile,FormatType->StandardForm];
-Write[sfile, mathlabel];
-Write[sfile, "#pragma once\n"]
-Write[sfile, "#include <cmath>"]
-Write[sfile,"namespace DT{"];
-
+Write[sfile, "\textern double FAGS;\n"];
 Do[
 	Write[sfile, "\tdouble " , ToString[inifunc[i][[j,1]]] , "(double cos_t, double s);"];
 ,{i,Length[possibleini]},{j,Length[inifunc[i]]}];
@@ -880,6 +694,147 @@ Do[
 	Write[sfile, "\tdouble " , ToString[possibleini[[i]]] , "(double cos_t, double s);"];
 ,{i,Length[possibleini]}];
 
+Do[
+	Write[sfile, "\tdouble w" , ToString[processnameDecays[[i]]] , "();"];
+,{i,Length[processnameDecays]}];
+
+Do[
+	Write[sfile, "\tdouble ww" , ToString[possibleiniDecays[[i]]] , "();"];
+,{i,Length[possibleiniDecays]}];
+
+Write[sfile, "}"];
+Close[sfile];
+
+
+(*declarations file*)
+gc = M$FACouplings;
+gc1=gc/.subrule; gc1 = Replace[gc1, defer, All];
+sfile=OpenWrite[directory<>"sources/model.cpp",FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
+(*external and internal declarations*)
+Write[sfile, mathlabel];
+Write[sfile, "#include <cmath>\n"]
+
+Write[sfile, "namespace DT{"];
+Do[
+	Write[sfile, "\tdouble", " ", external[[i,1]] ,";"]
+,{i,Length[external]}]
+Do[
+	Write[sfile, "\tdouble", " ", internal[[i,1]] ,";"]
+,{i,Length[internal]}]
+(*gcs, inimass and iniswitch*)
+Do[
+	Write[sfile, "\tdouble", " ", ToString[gc1[[i,1]]] , ";"]
+,{i,Length[gc1]}];
+Write[sfile, "\tdouble EL;"];
+Write[sfile, "\tdouble ee;"];
+Write[sfile, "\tdouble gs;"];
+Write[sfile, "\tdouble G;"];
+Write[sfile, "\tdouble FAGS;\n"];
+Write[sfile, "}"];
+Close[sfile];
+
+
+sfile=OpenWrite[directory<>"sources/init.cpp", FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
+Write[sfile, mathlabel];
+Write[sfile, "#include \"general_model.hpp\""]
+Write[sfile, "#include \"../model.hpp\"\n"]
+Write[sfile, "namespace DT{"];
+Write[sfile,"\tvoid Model::init()"];
+Write[sfile,"\t{"];
+Do[
+	Write[sfile, "\t\t", external[[i,1]] ," = ", external[[i,2]],";"]
+,{i,Length[external]}]
+Write[sfile, "\t\tdouble EL = 0.312233;"];
+Write[sfile, "\t\tdouble ee = 0.312233;"];
+Write[sfile, "\t\tdouble gs = 1.21358;"];
+Write[sfile, "\t\tdouble G = 1.21358;"];
+Write[sfile, "\t\tdouble FAGS = 1.21358;\n"];
+
+Do[
+	Write[sfile, "\t\tchannelnames.push_back(\"",ToString[processname[[i]]],"\");"];
+	Write[sfile, "\t\tamp2s.push_back(",ToString[processname[[i]]],");"];
+	Write[sfile, "\t\tamp2fls.push_back(",ToString[processname[[i]]],"fl);"];
+	If[PossibleZeroQ[mi[[i]]],
+		Write[sfile, "\t\tmass1s.push_back(",ToString[ReplaceAll[mi[[i]],subrule]],");"],
+		Write[sfile, "\t\tmass1s.push_back(&",ToString[ReplaceAll[mi[[i]],subrule]],");"];
+	];
+	If[PossibleZeroQ[mj[[i]]],
+		Write[sfile, "\t\tmass2s.push_back(",ToString[ReplaceAll[mj[[i]],subrule]],");"],
+		Write[sfile, "\t\tmass2s.push_back(&",ToString[ReplaceAll[mj[[i]],subrule]],");"];
+	];
+	If[PossibleZeroQ[mk[[i]]],
+		Write[sfile, "\t\tmass3s.push_back(",ToString[ReplaceAll[mk[[i]],subrule]],");"],
+		Write[sfile, "\t\tmass3s.push_back(&",ToString[ReplaceAll[mk[[i]],subrule]],");"];
+	];
+	If[PossibleZeroQ[ml[[i]]],
+		Write[sfile, "\t\tmass4s.push_back(",ToString[ReplaceAll[ml[[i]],subrule]],");"],
+		Write[sfile, "\t\tmass4s.push_back(&",ToString[ReplaceAll[ml[[i]],subrule]],");"];
+	]
+,{i,Length[processname]}]
+Do[
+	Write[sfile, "\t\tchannelnames.push_back(\"",ToString[possibleini[[i]]],"\");"];
+	Write[sfile, "\t\tamp2fls.push_back(",ToString[possibleini[[i]]],");"];
+	If[PossibleZeroQ[inimass[[2*i-1]]],
+		Write[sfile, "\t\tmass1s.push_back(",ToString[ReplaceAll[inimass[[2*i-1]],subrule]],");"],
+		Write[sfile, "\t\tmass1s.push_back(&",ToString[ReplaceAll[inimass[[2*i-1]],subrule]],");"];
+	];
+	If[PossibleZeroQ[inimass[[2*i]]],
+		Write[sfile, "\t\tmass2s.push_back(",ToString[ReplaceAll[inimass[[2*i]],subrule]],");"],
+		Write[sfile, "\t\tmass2s.push_back(&",ToString[ReplaceAll[inimass[[2*i]],subrule]],");"];
+	];
+,{i,Length[possibleini]}]
+Do[
+	Write[sfile, "\t\tinifuncs.push_back(", possibleini[[i]] ,");"];
+,{i,Length[possibleini]}]
+Write[sfile,"\t\tN_initial_states = ",ToString[Length[possibleini]],";"];
+Do[
+	Write[sfile, "\t\tinimasses.push_back(&", inimass[[i]] , ");"];
+,{i,Length[inimass]}]
+Do[
+	Write[sfile, "\t\tdsmasses.push_back(&", dsmass[[i]],");"];
+,{i,Length[dsmass]}]
+Do[
+	Write[sfile, "\t\tneutraldsmasses.push_back(&", neutraldsmasses[[i]],");"];
+,{i,Length[neutraldsmasses]}]
+Do[
+	Write[sfile, "\t\tdenstructures.push_back(&", StringReplace[ToString[relevantWs[[i]]],{"FeynCalc`"->""}] ,");"];
+,{i,Length[relevantWs]}]
+Write[sfile,"\t\tN_widths = ",ToString[Length[relevantWs]/2],";"];
+Write[sfile,"\t}"];
+Write[sfile, "}"];
+Close[sfile];
+
+
+sfile=OpenWrite[directory<>"sources/parametermap.cpp",FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
+(*external and internal declarations*)
+Write[sfile, mathlabel];
+Write[sfile, "#include \"general_model.hpp\""]
+Write[sfile, "#include \"../model.hpp\"\n"]
+Write[sfile, "namespace DT{"];
+Write[sfile, "\tvoid Model::load_parameter_map(){"];
+Do[
+	Write[sfile, "\t\tparmap[\"", external[[i,1]] ,"\"] = &", external[[i,1]],";"]
+,{i,Length[external]}]
+Write[sfile, "\t}"];
+Write[sfile, "}"];
+Close[sfile];
+
+
+sfile=OpenWrite[directory<>"sources/loadparameters.cpp",FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
+Write[sfile, mathlabel];
+Write[sfile, "#include \"general_model.hpp\""]
+Write[sfile, "#include \"../model.hpp\"\n"]
+Write[sfile, "namespace DT{"]
+
+Write[sfile, "\tvoid Model::load_parameters(){"]
+Do[
+	Write[sfile, "\t\t", internal[[i,1]] ," = ", internal[[i,2]],";"]
+,{i,Length[internal]}]
+Write[sfile, "\t\tEL = EE;"];
+Do[
+	gsub=StringReplace[ToString[CForm[gc1[[i,2]]]],{"Power"->"pow","Cos"->"cos","Sin"->"sin","Conjugate"->"", "Sqrt"-> "sqrt", "Defer"-> " ", "FeynCalc_MT"->"MT", "FeynCalc`"->""}];
+	Write[sfile, "\t\t", ToString[gc1[[i,1]]] ," = ", gsub,";"],{i,Length[gc1]}]
+Write[sfile, "\t}"];
 Write[sfile, "}"];
 Close[sfile];
 
@@ -895,8 +850,7 @@ Do[
 	ofile=directory<>"sources/amp2s/all"<> ToString[possibleini[[i]]] <> ".cpp";
 	sfile=OpenWrite[ofile,FormatType->StandardForm];
 	Write[sfile, mathlabel];
-	Write[sfile, "#include \"../../amp2s/allamp2s.hpp\""];
-	Write[sfile, "#include \"../../include/declarations.hpp\"\n"];
+	Write[sfile, "#include \"../../model.hpp\"\n"];
 	Do[
 		subsamp2=Replace[inifunc[i][[j,10]]/.subrule,defer,All];
 		bool=!FreeQ[subsamp2,t];
@@ -926,8 +880,7 @@ Do[
 	ofile=directory<>"sources/amp2s/"<> ToString[possibleini[[i]]] <> "flux.cpp";
 	sfile=OpenWrite[ofile,FormatType->StandardForm];
 	Write[sfile, mathlabel];
-	Write[sfile, "#include \"../../amp2s/allamp2s.hpp\""];
-	Write[sfile, "#include \"../../include/declarations.hpp\""];
+	Write[sfile, "#include \"../../model.hpp\""];
 	Write[sfile, "#include \"utils.hpp\"\n"];
 	Do[
 		symfac="";
@@ -965,65 +918,12 @@ Do[
 ,{i,Length[possibleini]}]
 
 
-(*****************)
-(* Widths to c++ *)
-(*****************)
-
-
-(*list with all 1to2 decays process names*)
-templist2Decays = Table[{foutfinallistDecays[[i,1]], ToExpression[StringReplace[ToString[foutfinallistDecays[[i,2]]], {", {Col2}"->"", ", {Glu2}"->""}]],
-ToExpression[StringReplace[ToString[foutfinallistDecays[[i,3]]], {", {Col3}"->"", ", {Glu3}"->""}]]}, {i, Length[foutfinallistDecays]}];
-
-processnameDecays = Table[
-Select[particlelist, #[[1]]== templist2Decays[[i, 1]]&][[1,3]]<>
-Select[particlelist, #[[1]]== templist2Decays[[i, 2]]&][[1,3]]<>
-Select[particlelist, #[[1]]== templist2Decays[[i, 3]]&][[1,3]], 
-{i, Length[templist2Decays]}];
-processnameDecays=Table[ToExpression[StringReplace[ToString[processnameDecays[[i]]], {"~"->""}]], {i,Length[processnameDecays]}];
-
-possibleiniDecays = DeleteDuplicates[Table[Select[particlelist, #[[1]]== templist2Decays[[i, 1]]&][[1,3]], {i, Length[templist2Decays]}]];
-
-
-(*auxiliary decays functions*)
-possiblemassesDecays= Table[TheMass[relevantWsfields[[i]]], {i, Length[relevantWsfields]}]/.subrule;
-
-Do[inifuncDecays[i]={},{i,Length[possibleiniDecays]}]
-Do[
-	pos=Position[possiblemassesDecays,TheMass[foutfinallistDecays[[i,1]]]/.subrule][[1,1]];
-	AppendTo[inifuncDecays[pos],{processnameDecays[[i]],TheMass[foutfinallistDecays[[i,1]]],TheMass[foutfinallistDecays[[i,2]]],TheMass[foutfinallistDecays[[i,3]]],templist2Decays[[i,1]],templist2Decays[[i,2]],templist2Decays[[i,3]],finalDecaysWidth[[i]]}/.subrule]
-,{i,Length[processnameDecays]}]
-
-
-(*decays file*)
-ofile=directory<>"amp2s/alldecays.hpp";
-sfile=OpenWrite[ofile,FormatType->StandardForm];
-Write[sfile, mathlabel];
-Write[sfile, "#pragma once\n"]
-Write[sfile, "#include <cmath>"]
-Write[sfile,"namespace DT{"];
-
-Do[
-	Write[sfile, "\tdouble w" , ToString[processnameDecays[[i]]] , "();"];
-,{i,Length[processnameDecays]}];
-
-Do[
-	Write[sfile, "\tdouble ww" , ToString[possibleiniDecays[[i]]] , "();"];
-,{i,Length[possibleiniDecays]}];
-
-Write[sfile, "}"];
-Close[sfile];
-
-
-processnameDecays
-
-
 (*decays functions files*)
 Do[
 	ofile=directory<>"sources/amp2s/totalW"<> ToString[possibleiniDecays[[i]]] <> ".cpp";
 	sfile=OpenWrite[ofile,FormatType->StandardForm];
 	Write[sfile, mathlabel];
-	Write[sfile, "#include \"../../amp2s/alldecays.hpp\""];
-	Write[sfile, "#include \"../../include/declarations.hpp\"\n"];
+	Write[sfile, "#include \"../../model.hpp\""];
 	Write[sfile, "#include \"utils.hpp\"\n"];
 	
 	Do[

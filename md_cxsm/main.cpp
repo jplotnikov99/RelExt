@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 
     for (size_t i = 1; i < 3; i++)
     {
-        std::vector<std::string> ch = {"A1A1"};
+        std::vector<std::string> ch = {};
         main.load_parameters(i);
         main.calc_Omega_FO(ch);
     }
