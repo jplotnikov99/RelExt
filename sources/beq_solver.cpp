@@ -9,6 +9,11 @@ namespace DT
         beq = std::make_unique<Beqs>(dof, mod);
     }
 
+    void BeqSolver::sort_inimasses(const std::vector<std::string> &ch_str)
+    {
+        beq->sort_inimasses(ch_str);
+    }
+
     double BeqSolver::secant_method(double x0, double x1, const std::vector<std::string> &ch_str)
     {
         // Initialize the number of iterations

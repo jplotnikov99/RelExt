@@ -13,6 +13,12 @@ namespace DT
     {
         tac->tac_x.clear();
         tac->sig_s.clear();
+        tac->inimap.clear();
+    }
+
+    void Beqs::sort_inimasses(const std::vector<std::string> &ch_str)
+    {
+        tac->sort_inimasses(ch_str);
     }
 
     double Beqs::pre(const double &x)

@@ -19,6 +19,9 @@ namespace DT
         // clear TAC maps which are necessary for faster computation
         void clear_tac_maps();
 
+        // sorts different channels by their total initial state masses
+        void sort_inimasses(const std::vector<std::string> &ch_str = {});
+
         // prefactor of the boltzmann equation
         double pre(const double &x);
 

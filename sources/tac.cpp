@@ -17,6 +17,17 @@ namespace DT
         }
     }
 
+    void Tac::sort_inimasses(const std::vector<std::string> &ch_str)
+    {
+        double ma;
+        double mb;
+        for (auto it : ch_str)
+        {
+            mod->assign_masses(ma, mb, it);
+            inimap[ma + mb].push_back(it);
+        }
+    }
+
     double Tac::simpson38(const double l, const double r, const double &s)
     {
         return (r - l) / 8 * (mod->eval(l, s) + 3 * mod->eval((2 * l + r) / 3, s) + 3 * mod->eval((l + 2 * r) / 3, s) + mod->eval(r, s));
@@ -25,19 +36,19 @@ namespace DT
     double Tac::adaptive_simpson38(const double l, const double r, const double &s, const double ans, int depth)
     {
         // represents how much precision you need
-        simpson_eps = 1e-5;
+        double eps = simpson_eps;
         if (depth > 8)
-            simpson_eps = 1e-4;
+            eps = 1e-4;
         if (depth > 10)
-            simpson_eps = 1e-3;
+            eps = 1e-3;
         if (depth > 12)
-            simpson_eps = 1e-2;
+            eps = 1e-2;
         if (depth > 13)
-            simpson_eps = 1e-1;
+            eps = 1e-1;
         if (depth > 14)
             return ans;
         double m = (l + r) / 2, x = simpson38(l, m, s), y = simpson38(m, r, s);
-        if (fabs(((x + y) / ans - 1)) < simpson_eps)
+        if (fabs(((x + y) / ans - 1)) < eps)
             return x + y;
         if (ans == 0)
             return 0;
@@ -321,9 +332,15 @@ namespace DT
             }
             else
             {
-                mod->set_channel(m1, m2, 0, ch_str);
-                set_boundaries(x);
-                res += integrate_s(x);
+                for (ini_it = inimap.begin(); ini_it != inimap.end(); ini_it++)
+                {
+                    mod->set_channel(m1, m2, 0, ini_it->second);
+                    if (beps(x, mod->MDM))
+                    {
+                        set_boundaries(x);
+                        res += integrate_s(x);
+                    }
+                }
             }
             tac_x[x] = res;
             return res;

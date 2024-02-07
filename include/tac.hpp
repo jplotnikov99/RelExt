@@ -4,26 +4,28 @@
 #include <unordered_map>
 #include <memory>
 #include "general_model.hpp"
+#include "hyper_parameters.hpp"
 
 namespace DT
 {
     class Tac
     {
     private:
-        double simpson_eps = 1e-5;
-        double beps_eps = 1e-6;
-        double trapezoidal_eps = 1e-4;
-        double gauss_kronrod_eps = 1e-7;
         double m1;
         double m2;
         size_t N_relevant_peaks;
         std::vector<bool> iniswitches;
         std::vector<double> boundaries;
         std::shared_ptr<Model> mod;
+        std::map<double, std::vector<std::string>>::iterator ini_it;
 
     public:
         std::unordered_map<double, double> sig_s;
         std::unordered_map<double, double> tac_x;
+        std::map<double, std::vector<std::string>> inimap;
+
+        // sorts different channels by their total initial state masses
+        void sort_inimasses(const std::vector<std::string> &ch_str = {});
 
         // 3/8 simpson rule
         double simpson38(const double l, const double r, const double &s);

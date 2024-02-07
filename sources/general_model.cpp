@@ -36,6 +36,19 @@ namespace DT
         }
     }
 
+    void Model::assign_masses(double &m1, double &m2, std::string ch_str)
+    {
+        for (size_t j = 0; j < channelnames.size(); j++)
+        {
+            if (ch_str == channelnames.at(j))
+            {
+                m1 = *mass1s.at(j);
+                m2 = *mass2s.at(j);
+                break;
+            }
+        }
+    }
+
     void Model::set_channel(double &m1, double &m2, const size_t i, std::vector<std::string> ch_str)
     {
         cur_channel.clear();
@@ -47,14 +60,14 @@ namespace DT
         }
         else
         {
+            assign_masses(m1, m2, ch_str.at(0));
+            
             for (size_t i = 0; i < ch_str.size(); i++)
             {
                 for (size_t j = 0; j < channelnames.size(); j++)
                 {
                     if (ch_str.at(i) == channelnames.at(j))
                     {
-                        m1 = *mass1s.at(j);
-                        m2 = *mass2s.at(j);
                         cur_channel.push_back(amp2fls.at(j));
                         break;
                     }

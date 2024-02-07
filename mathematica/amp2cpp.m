@@ -683,15 +683,15 @@ Write[sfile, "\textern double gs;"];
 Write[sfile, "\textern double G;"];
 Write[sfile, "\textern double FAGS;\n"];
 Do[
-	Write[sfile, "\tdouble " , ToString[inifunc[i][[j,1]]] , "(double cos_t, double s);"];
+	Write[sfile, "\tdouble " , ToString[inifunc[i][[j,1]]] , "(const double &cos_t, const double &s);"];
 ,{i,Length[possibleini]},{j,Length[inifunc[i]]}];
 
 Do[
-	Write[sfile, "\tdouble " , ToString[inifunc[i][[j,1]]] , "fl(double cos_t, double s);"];
+	Write[sfile, "\tdouble " , ToString[inifunc[i][[j,1]]] , "fl(const double &cos_t, const double &s);"];
 ,{i,Length[possibleini]},{j,Length[inifunc[i]]}];
 
 Do[
-	Write[sfile, "\tdouble " , ToString[possibleini[[i]]] , "(double cos_t, double s);"];
+	Write[sfile, "\tdouble " , ToString[possibleini[[i]]] , "(const double &cos_t, const double &s);"];
 ,{i,Length[possibleini]}];
 
 Do[
@@ -858,7 +858,7 @@ Do[
 		subsamp2=StringReplace[subsamp2,{"Sqrt"-> "sqrt","Defer"->" ","Cos("->"cos( ","Sin"->"sin", "Tan"->"tan"}];
 		tsub="";
 		
-		Write[sfile, "double DT::" , ToString[inifunc[i][[j,1]]] , "(double cos_t, double s){"];
+		Write[sfile, "double DT::" , ToString[inifunc[i][[j,1]]] , "(const double &cos_t, const double &s){"];
 		
 		If[bool,
 			tsub=Replace[ttoct[inifunc[i][[j,2]],inifunc[i][[j,3]],inifunc[i][[j,4]],inifunc[i][[j,5]]]/.subrule,defer,All];
@@ -894,7 +894,7 @@ Do[
 				symfac=StringJoin[symfac,"2*"]
 			]
 		];
-		Write[sfile, "double DT::" , ToString[inifunc[i][[j,1]]] , "fl(double cos_t, double s){"];
+		Write[sfile, "double DT::" , ToString[inifunc[i][[j,1]]] , "fl(const double &cos_t, const double &s){"];
 		Write[sfile, "\t if(heavi(s," , ToString[inifunc[i][[j,4]]] , "," , ToString[inifunc[i][[j,5]]] , ")){"];
 		Write[sfile, "\t\t return " , symfac , "flux(s, " , ToString[inifunc[i][[j,2]]] , "," , ToString[inifunc[i][[j,3]]] , "," , ToString[inifunc[i][[j,4]]] , "," , ToString[inifunc[i][[j,5]]] , ")*",
 					 inifunc[i][[j,1]] , "(cos_t, s);"];
@@ -902,7 +902,7 @@ Do[
 		Write[sfile, "\t else{ return 0; }\n"];
 		Write[sfile, "}"]
 	,{j,Length[inifunc[i]]}];
-	Write[sfile, "double DT::" , ToString[possibleini[[i]]] , "(double cos_t, double s){"];
+	Write[sfile, "double DT::" , ToString[possibleini[[i]]] , "(const double &cos_t, const double &s){"];
 	allcontr="( ";
 	
 	Do[

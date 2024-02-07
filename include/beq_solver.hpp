@@ -5,20 +5,20 @@
 #include "EffDof.hpp"
 #include "general_model.hpp"
 #include "boltzmann_equations.hpp"
+#include "hyper_parameters.hpp"
 
 namespace DT
 {
     class BeqSolver
     {
     private:
-        double secant_eps = 0.01;
-        double rk4_eps = 1e-6;
-        size_t secant_maxiter = 100;
         std::shared_ptr<Dof> dof;
         std::shared_ptr<Model> mod;
         std::unique_ptr<Beqs> beq;
 
     public:
+        // sorts different channels by their total initial state masses
+        void sort_inimasses(const std::vector<std::string> &ch_str = {});
 
         // secant method implementation to find a root between x1 and x2
         double secant_method(double x0, double x1, const std::vector<std::string> &ch_str = {});

@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 
     clock_t begin_time = clock();
 
-    for (size_t i = 1; i < 3; i++)
+    for (size_t i = 1; i < main.N_par_points; i++)
     {
         std::vector<std::string> ch = {};
         main.load_parameters(i);

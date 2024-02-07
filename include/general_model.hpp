@@ -10,7 +10,7 @@
 
 namespace DT
 {
-    typedef std::function<double(double, double)> amp2;
+    typedef std::function<double(const double &, const double &)> amp2;
     typedef std::vector<amp2> vamp2;
     class Model
     {
@@ -49,6 +49,7 @@ namespace DT
 
         void assigndm();
         void change_parameter(const std::string par, const double newval);
+        void assign_masses(double &m1, double &m2, const std::string ch_str);
         void set_channel(double &m1, double &m2, const size_t i, const std::vector<std::string> ch_str = {});
 
         double eval(const double cos_t, const double s);

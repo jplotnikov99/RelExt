@@ -30,7 +30,8 @@ namespace DT
         double x, y;
         double omegaF;
 
-        // flickswitches(15., proc);
+        if (ch_str.size() != 0)
+            bsol->sort_inimasses(ch_str);
         x = bsol->secant_method(15., 15.1, ch_str);
         y = 1.5 * mod->yeq(x);
 

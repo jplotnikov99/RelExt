@@ -3,7 +3,7 @@
 
 #include "../../model.hpp"
 
-double DT::A1A1HH(double cos_t, double s){
+double DT::A1A1HH(const double &cos_t, const double &s){
 double t =  (MA1*MA1) + (-s + cos_t*sqrt(s - 4* (MA1*MA1))*sqrt(s - 4*\
  
    (MH*MH)))/2. +  (MH*MH);
@@ -264,7 +264,7 @@ return (9* (MH*MH*MH*MH)* (( (MH*MH) +  (WH*WH))*( (MH*MH) +  (WH*WH)))*\
  
     (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
-double DT::A1A1HS1(double cos_t, double s){
+double DT::A1A1HS1(const double &cos_t, const double &s){
 double t = (-s + 2* (MA1*MA1) +  (MH*MH) +  (MS1*MS1) + cos_t*sqrt(s - 4*\
  
    (MA1*MA1))*sqrt(( (MH*MH*MH*MH) - 2* (MH*MH)*(s +  (MS1*MS1)) +  ((\
@@ -515,7 +515,7 @@ return ( (MH*MH)* (MS1*MS1)*( (MH*MH) +  (WH*WH))*( (MS1*MS1) +  (WS1*WS1))*\
  
    (vev*vev));
 }
-double DT::A1A1S1S1(double cos_t, double s){
+double DT::A1A1S1S1(const double &cos_t, const double &s){
 double t =  (MA1*MA1) + (-s + cos_t*sqrt(s - 4* (MA1*MA1))*sqrt(s - 4*\
  
    (MS1*MS1)))/2. +  (MS1*MS1);
@@ -752,7 +752,7 @@ return (2* (MS1*MS1*MS1*MS1)* (cos( alpha)*cos( alpha)*cos( alpha)*cos(\
  
    (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
-double DT::A1A1ZZ(double cos_t, double s){
+double DT::A1A1ZZ(const double &cos_t, const double &s){
 return ( (EL*EL*EL*EL)* (MH*MH)*(-4*s* (MZ*MZ) + 12* (MZ*MZ*MZ*MZ) +  (s*s))*\
  
    (vev*vev)*( (MH*MH) +  (WH*WH))* (( (cw*cw) +  (sw*sw))*( (cw*cw) + \
@@ -789,7 +789,7 @@ return ( (EL*EL*EL*EL)* (MH*MH)*(-4*s* (MZ*MZ) + 12* (MZ*MZ*MZ*MZ) +  (s*s))*\
  
    (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
-double DT::A1A1wW(double cos_t, double s){
+double DT::A1A1wW(const double &cos_t, const double &s){
 return ( (EL*EL*EL*EL)* (MH*MH)*(-4*s* (MW*MW) + 12* (MW*MW*MW*MW) +  (s*s))*\
  
    (vev*vev)*( (MH*MH) +  (WH*WH))* (sin(2*alpha)*sin(2*alpha)))/(64.*\
@@ -816,7 +816,7 @@ return ( (EL*EL*EL*EL)* (MH*MH)*(-4*s* (MW*MW) + 12* (MW*MW*MW*MW) +  (s*s))*\
  
    (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
-double DT::A1A1Ee(double cos_t, double s){
+double DT::A1A1Ee(const double &cos_t, const double &s){
 return (-2* (gc98*gc98)*(-s + 4* (Me*Me))* (MS1*MS1)*( (MS1*MS1) + \
  
    (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +\
@@ -837,7 +837,7 @@ return (-2* (gc98*gc98)*(-s + 4* (Me*Me))* (MS1*MS1)*( (MS1*MS1) + \
  
    +  (WS1*WS1))));
 }
-double DT::A1A1MUmu(double cos_t, double s){
+double DT::A1A1MUmu(const double &cos_t, const double &s){
 return (-2* (gc99*gc99)*(-s + 4* (MMU*MMU))* (MS1*MS1)*( (MS1*MS1) + \
  
    (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +\
@@ -858,7 +858,7 @@ return (-2* (gc99*gc99)*(-s + 4* (MMU*MMU))* (MS1*MS1)*( (MS1*MS1) + \
  
    (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
-double DT::A1A1TAta(double cos_t, double s){
+double DT::A1A1TAta(const double &cos_t, const double &s){
 return (-2* (gc100*gc100)* (MS1*MS1)*(-s + 4* (MTA*MTA))*( (MS1*MS1) + \
  
    (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +\
@@ -879,7 +879,7 @@ return (-2* (gc100*gc100)* (MS1*MS1)*(-s + 4* (MTA*MTA))*( (MS1*MS1) + \
  
    (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
-double DT::A1A1Uu(double cos_t, double s){
+double DT::A1A1Uu(const double &cos_t, const double &s){
 return (6* (gc103*gc103)* (MS1*MS1)*(s - 4* (MU*MU))*( (MS1*MS1) + \
  
    (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +\
@@ -900,7 +900,7 @@ return (6* (gc103*gc103)* (MS1*MS1)*(s - 4* (MU*MU))*( (MS1*MS1) + \
  
    +  (WS1*WS1))));
 }
-double DT::A1A1Cc(double cos_t, double s){
+double DT::A1A1Cc(const double &cos_t, const double &s){
 return (6* (gc101*gc101)*(s - 4* (MC*MC))* (MS1*MS1)*( (MS1*MS1) + \
  
    (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +\
@@ -921,7 +921,7 @@ return (6* (gc101*gc101)*(s - 4* (MC*MC))* (MS1*MS1)*( (MS1*MS1) + \
  
    +  (WS1*WS1))));
 }
-double DT::A1A1Tt(double cos_t, double s){
+double DT::A1A1Tt(const double &cos_t, const double &s){
 return (6* (gc102*gc102)* (MS1*MS1)*(s - 4* (MT*MT))*( (MS1*MS1) + \
  
    (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +\
@@ -942,7 +942,7 @@ return (6* (gc102*gc102)* (MS1*MS1)*(s - 4* (MT*MT))*( (MS1*MS1) + \
  
    +  (WS1*WS1))));
 }
-double DT::A1A1Dd(double cos_t, double s){
+double DT::A1A1Dd(const double &cos_t, const double &s){
 return (6* (gc96*gc96)*(s - 4* (MD*MD))* (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))*\
  
    (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
@@ -963,7 +963,7 @@ return (6* (gc96*gc96)*(s - 4* (MD*MD))* (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))*\
  
    +  (WS1*WS1))));
 }
-double DT::A1A1Ss(double cos_t, double s){
+double DT::A1A1Ss(const double &cos_t, const double &s){
 return (6* (gc97*gc97)*(s - 4* (MS*MS))* (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))*\
  
    (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
@@ -984,7 +984,7 @@ return (6* (gc97*gc97)*(s - 4* (MS*MS))* (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))*\
  
    +  (WS1*WS1))));
 }
-double DT::A1A1Bb(double cos_t, double s){
+double DT::A1A1Bb(const double &cos_t, const double &s){
 return (6* (gc95*gc95)*(s - 4* (MB*MB))* (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))*\
  
    (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
