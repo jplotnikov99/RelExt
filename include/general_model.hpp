@@ -5,36 +5,36 @@
 #include <vector>
 #include <functional>
 #include <memory>
+#include <cassert>
 #include "utils.hpp"
 #include "EffDof.hpp"
 
 namespace DT
 {
-    typedef std::function<double(const double &, const double &)> amp2;
-    typedef std::vector<amp2> vamp2;
+    typedef std::function<double(const double &, const double &)> f;
+    typedef std::vector<f> vamp2;
+    typedef std::unordered_map<std::string, f> fmap;
     class Model
     {
 
     private:
-        std::vector<double *> dsmasses; // needs to be defined in mathematica file
+        std::vector<double *> dsmasses;
         std::vector<double *> neutraldsmasses;
         std::vector<double *> inimasses;
         vamp2 inifuncs;
-        vamp2 amp2s;
-        vamp2 amp2fls;
+        fmap amp2s;
+        fmap amp2fls;
         std::vector<std::string> channelnames;
-        std::vector<double *> mass1s;
-        std::vector<double *> mass2s;
-        std::vector<double *> mass3s;
-        std::vector<double *> mass4s;
+        std::unordered_map<std::string, double *> mass1s;
+        std::unordered_map<std::string, double *> mass2s;
         std::shared_ptr<Dof> dof;
         vamp2 cur_channel;
         size_t N_cur;
-        
+        size_t N_all_channels;
 
     public:
-        size_t N_initial_states;    // needs to be defined in mathematica file
-        size_t N_widths;            // needs to be defined in mathematica file
+        size_t N_initial_states;
+        size_t N_widths;
         std::map<std::string, double *> parmap;
         std::vector<double *> denstructures;
 
@@ -47,13 +47,15 @@ namespace DT
         void load_parameters();
         void load_parameter_map();
 
+        size_t get_N_all_channels();
+        std::string get_channel_name(const size_t i);
+
         void assigndm();
         void change_parameter(const std::string par, const double newval);
         void assign_masses(double &m1, double &m2, const std::string ch_str);
         void set_channel(double &m1, double &m2, const size_t i, const std::vector<std::string> ch_str = {});
 
         double eval(const double cos_t, const double s);
-
 
         double yeq(const double &x);
         double lipsv(const double &s, const double &x);

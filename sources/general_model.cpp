@@ -8,6 +8,17 @@ namespace DT
         dof = degrees_of_freedom;
     }
 
+    size_t Model::get_N_all_channels()
+    {
+        return channelnames.size() - N_initial_states;
+    }
+
+    std::string Model::get_channel_name(const size_t i)
+    {
+        assert(i < channelnames.size());
+        return channelnames.at(i);
+    }
+
     void Model::assigndm()
     {
         MDM = *neutraldsmasses.at(0);
@@ -38,15 +49,8 @@ namespace DT
 
     void Model::assign_masses(double &m1, double &m2, std::string ch_str)
     {
-        for (size_t j = 0; j < channelnames.size(); j++)
-        {
-            if (ch_str == channelnames.at(j))
-            {
-                m1 = *mass1s.at(j);
-                m2 = *mass2s.at(j);
-                break;
-            }
-        }
+        m1 = *mass1s[ch_str];
+        m2 = *mass2s[ch_str];
     }
 
     void Model::set_channel(double &m1, double &m2, const size_t i, std::vector<std::string> ch_str)
@@ -61,17 +65,9 @@ namespace DT
         else
         {
             assign_masses(m1, m2, ch_str.at(0));
-            
-            for (size_t i = 0; i < ch_str.size(); i++)
+            for (auto it : ch_str)
             {
-                for (size_t j = 0; j < channelnames.size(); j++)
-                {
-                    if (ch_str.at(i) == channelnames.at(j))
-                    {
-                        cur_channel.push_back(amp2fls.at(j));
-                        break;
-                    }
-                }
+                cur_channel.push_back(amp2fls[it]);
             }
         }
         N_cur = cur_channel.size();

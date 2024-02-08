@@ -24,8 +24,13 @@ namespace DT
         std::unordered_map<double, double> tac_x;
         std::map<double, std::vector<std::string>> inimap;
 
+        // change values of intial masses m1, m2
+        void set_initial_masses(const double &ma, const double &mb);
+
         // sorts different channels by their total initial state masses
         void sort_inimasses(const std::vector<std::string> &ch_str = {});
+
+        void clear_maps();
 
         // 3/8 simpson rule
         double simpson38(const double l, const double r, const double &s);

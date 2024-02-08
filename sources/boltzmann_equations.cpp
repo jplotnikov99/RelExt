@@ -11,9 +11,7 @@ namespace DT
 
     void Beqs::clear_tac_maps()
     {
-        tac->tac_x.clear();
-        tac->sig_s.clear();
-        tac->inimap.clear();
+        tac->clear_maps();
     }
 
     void Beqs::sort_inimasses(const std::vector<std::string> &ch_str)

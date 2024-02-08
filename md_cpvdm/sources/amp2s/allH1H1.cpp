@@ -3,7 +3,7 @@
 
 #include "../../model.hpp"
 
-double DT::H1H1hh(double cos_t, double s){
+double DT::H1H1hh(const double &cos_t, const double &s){
 double t =  (mH1*mH1) + (-s + cos_t*sqrt(s - 4* (mH1*mH1))*sqrt(s - 4*\
  
    (mHsm*mHsm)))/2. +  (mHsm*mHsm);
@@ -888,7 +888,7 @@ return  (L5*L5)* (RR1x1*RR1x1*RR1x1*RR1x1) - 2* (L5*L5)* (RR1x1*RR1x1)*\
  
    (RR1x2*RR1x2))*( (RR1x1*RR1x1) +  (RR1x2*RR1x2)));
 }
-double DT::H1H1hZ(double cos_t, double s){
+double DT::H1H1hZ(const double &cos_t, const double &s){
 double t = (-s + 2* (mH1*mH1) +  (mHsm*mHsm) +  (MZ*MZ) + cos_t*sqrt(s - 4*\
  
    (mH1*mH1))*sqrt(( (mHsm*mHsm*mHsm*mHsm) - 2* (mHsm*mHsm)*(s +  (MZ*MZ)) + \
@@ -1099,7 +1099,7 @@ return -((gc212*gc213*(-(RR1x2*RR2x3*Timag) + RR1x1*RR2x3*Treal + (L3 + L4 +\
  
    (WZ*WZ))));
 }
-double DT::H1H1ZZ(double cos_t, double s){
+double DT::H1H1ZZ(const double &cos_t, const double &s){
 double t =  (mH1*mH1) + (-s + cos_t*sqrt(s - 4* (mH1*mH1))*sqrt(s - 4*\
  
    (MZ*MZ)))/2. +  (MZ*MZ);
@@ -1344,7 +1344,7 @@ return -0.5*( (gc212*gc212)* (gc213*gc213)*(-16* (mH1*mH1)* (MZ*MZ) +  ((s +\
  
    (SW*SW*SW*SW));
 }
-double DT::H1H1wW(double cos_t, double s){
+double DT::H1H1wW(const double &cos_t, const double &s){
 double t =  (mH1*mH1) + (-s + cos_t*sqrt(s - 4* (mH1*mH1))*sqrt(s - 4*\
  
    (MW*MW)))/2. +  (MW*MW);
@@ -1465,7 +1465,7 @@ return (gc177*gc188*v* (EL*EL)*(-s +  (mHsm*mHsm))*( (RR1x1*RR1x1) + \
  
    ((RR1x1 + RR1x2)*(RR1x1 + RR1x2))* (( (mHc*mHc) - t)*( (mHc*mHc) - t)));
 }
-double DT::H1H1Ee(double cos_t, double s){
+double DT::H1H1Ee(const double &cos_t, const double &s){
 return (-2* (gc63*gc63)*(-s + 4* (Me*Me))* ((-2*RR1x2*RR1x3*Timag +\
  
    2*RR1x1*RR1x3*Treal + (L3 + L4 + L5)* (RR1x1*RR1x1)*v + (L3 + L4 - L5)*\
@@ -1498,7 +1498,7 @@ return (-2* (gc63*gc63)*(-s + 4* (Me*Me))* ((-2*RR1x2*RR1x3*Timag +\
  
    (WHsm*WHsm)))*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
 }
-double DT::H1H1Mm(double cos_t, double s){
+double DT::H1H1Mm(const double &cos_t, const double &s){
 return (2* (gc65*gc65)*(s - 4* (MM*MM))* ((-2*RR1x2*RR1x3*Timag +\
  
    2*RR1x1*RR1x3*Treal + (L3 + L4 + L5)* (RR1x1*RR1x1)*v + (L3 + L4 - L5)*\
@@ -1531,7 +1531,7 @@ return (2* (gc65*gc65)*(s - 4* (MM*MM))* ((-2*RR1x2*RR1x3*Timag +\
  
    (WHsm*WHsm)))*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
 }
-double DT::H1H1TAta(double cos_t, double s){
+double DT::H1H1TAta(const double &cos_t, const double &s){
 return (-2* (gc67*gc67)*(-s + 4* (MTA*MTA))* ((-2*RR1x2*RR1x3*Timag +\
  
    2*RR1x1*RR1x3*Treal + (L3 + L4 + L5)* (RR1x1*RR1x1)*v + (L3 + L4 - L5)*\
@@ -1564,7 +1564,7 @@ return (-2* (gc67*gc67)*(-s + 4* (MTA*MTA))* ((-2*RR1x2*RR1x3*Timag +\
  
    (WHsm*WHsm)))*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
 }
-double DT::H1H1Uu(double cos_t, double s){
+double DT::H1H1Uu(const double &cos_t, const double &s){
 return (6* (gc85*gc85)*(s - 4* (MU*MU))* ((-2*RR1x2*RR1x3*Timag +\
  
    2*RR1x1*RR1x3*Treal + (L3 + L4 + L5)* (RR1x1*RR1x1)*v + (L3 + L4 - L5)*\
@@ -1597,7 +1597,7 @@ return (6* (gc85*gc85)*(s - 4* (MU*MU))* ((-2*RR1x2*RR1x3*Timag +\
  
    (WHsm*WHsm)))*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
 }
-double DT::H1H1Cc(double cos_t, double s){
+double DT::H1H1Cc(const double &cos_t, const double &s){
 return (6* (gc81*gc81)*(s - 4* (MC*MC))* ((-2*RR1x2*RR1x3*Timag +\
  
    2*RR1x1*RR1x3*Treal + (L3 + L4 + L5)* (RR1x1*RR1x1)*v + (L3 + L4 - L5)*\
@@ -1630,7 +1630,7 @@ return (6* (gc81*gc81)*(s - 4* (MC*MC))* ((-2*RR1x2*RR1x3*Timag +\
  
    (WHsm*WHsm)))*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
 }
-double DT::H1H1Tt(double cos_t, double s){
+double DT::H1H1Tt(const double &cos_t, const double &s){
 return (6* (gc83*gc83)*(s - 4* (MT*MT))* ((-2*RR1x2*RR1x3*Timag +\
  
    2*RR1x1*RR1x3*Treal + (L3 + L4 + L5)* (RR1x1*RR1x1)*v + (L3 + L4 - L5)*\
@@ -1663,7 +1663,7 @@ return (6* (gc83*gc83)*(s - 4* (MT*MT))* ((-2*RR1x2*RR1x3*Timag +\
  
    (WHsm*WHsm)))*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
 }
-double DT::H1H1Dd(double cos_t, double s){
+double DT::H1H1Dd(const double &cos_t, const double &s){
 return (6* (gc50*gc50)*(s - 4* (MD*MD))* ((-2*RR1x2*RR1x3*Timag +\
  
    2*RR1x1*RR1x3*Treal + (L3 + L4 + L5)* (RR1x1*RR1x1)*v + (L3 + L4 - L5)*\
@@ -1696,7 +1696,7 @@ return (6* (gc50*gc50)*(s - 4* (MD*MD))* ((-2*RR1x2*RR1x3*Timag +\
  
    (WHsm*WHsm)))*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
 }
-double DT::H1H1Ss(double cos_t, double s){
+double DT::H1H1Ss(const double &cos_t, const double &s){
 return (6* (gc52*gc52)*(s - 4* (MS*MS))* ((-2*RR1x2*RR1x3*Timag +\
  
    2*RR1x1*RR1x3*Treal + (L3 + L4 + L5)* (RR1x1*RR1x1)*v + (L3 + L4 - L5)*\
@@ -1729,7 +1729,7 @@ return (6* (gc52*gc52)*(s - 4* (MS*MS))* ((-2*RR1x2*RR1x3*Timag +\
  
    (WHsm*WHsm)))*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
 }
-double DT::H1H1Bb(double cos_t, double s){
+double DT::H1H1Bb(const double &cos_t, const double &s){
 return (6* (gc48*gc48)*(s - 4* (MB*MB))* ((-2*RR1x2*RR1x3*Timag +\
  
    2*RR1x1*RR1x3*Treal + (L3 + L4 + L5)* (RR1x1*RR1x1)*v + (L3 + L4 - L5)*\

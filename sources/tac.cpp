@@ -17,6 +17,12 @@ namespace DT
         }
     }
 
+    void Tac::set_initial_masses(const double &ma, const double &mb)
+    {
+        m1 = ma;
+        m2 = mb;
+    }
+
     void Tac::sort_inimasses(const std::vector<std::string> &ch_str)
     {
         double ma;
@@ -26,6 +32,13 @@ namespace DT
             mod->assign_masses(ma, mb, it);
             inimap[ma + mb].push_back(it);
         }
+    }
+
+    void Tac::clear_maps()
+    {
+        tac_x.clear();
+        sig_s.clear();
+        inimap.clear();
     }
 
     double Tac::simpson38(const double l, const double r, const double &s)

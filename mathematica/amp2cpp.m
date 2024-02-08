@@ -752,35 +752,35 @@ Write[sfile, "\t\tdouble FAGS = 1.21358;\n"];
 
 Do[
 	Write[sfile, "\t\tchannelnames.push_back(\"",ToString[processname[[i]]],"\");"];
-	Write[sfile, "\t\tamp2s.push_back(",ToString[processname[[i]]],");"];
-	Write[sfile, "\t\tamp2fls.push_back(",ToString[processname[[i]]],"fl);"];
+	Write[sfile, "\t\tamp2s[\"",ToString[processname[[i]]],"\"]=",ToString[processname[[i]]],";"];
+	Write[sfile, "\t\tamp2fls[\"",ToString[processname[[i]]],"\"]=",ToString[processname[[i]]],"fl;"];
 	If[PossibleZeroQ[mi[[i]]],
-		Write[sfile, "\t\tmass1s.push_back(",ToString[ReplaceAll[mi[[i]],subrule]],");"],
-		Write[sfile, "\t\tmass1s.push_back(&",ToString[ReplaceAll[mi[[i]],subrule]],");"];
+		Write[sfile, "\t\tmass1s[\"",ToString[processname[[i]]],"\"]=",ToString[ReplaceAll[mi[[i]],subrule]],";"],
+		Write[sfile, "\t\tmass1s[\"",ToString[processname[[i]]],"\"]=&",ToString[ReplaceAll[mi[[i]],subrule]],";"];
 	];
 	If[PossibleZeroQ[mj[[i]]],
-		Write[sfile, "\t\tmass2s.push_back(",ToString[ReplaceAll[mj[[i]],subrule]],");"],
-		Write[sfile, "\t\tmass2s.push_back(&",ToString[ReplaceAll[mj[[i]],subrule]],");"];
+		Write[sfile, "\t\tmass2s[\"",ToString[processname[[i]]],"\"]=",ToString[ReplaceAll[mj[[i]],subrule]],";"],
+		Write[sfile, "\t\tmass2s[\"",ToString[processname[[i]]],"\"]=&",ToString[ReplaceAll[mj[[i]],subrule]],";"];
 	];
-	If[PossibleZeroQ[mk[[i]]],
+	(*If[PossibleZeroQ[mk[[i]]],
 		Write[sfile, "\t\tmass3s.push_back(",ToString[ReplaceAll[mk[[i]],subrule]],");"],
 		Write[sfile, "\t\tmass3s.push_back(&",ToString[ReplaceAll[mk[[i]],subrule]],");"];
 	];
 	If[PossibleZeroQ[ml[[i]]],
 		Write[sfile, "\t\tmass4s.push_back(",ToString[ReplaceAll[ml[[i]],subrule]],");"],
 		Write[sfile, "\t\tmass4s.push_back(&",ToString[ReplaceAll[ml[[i]],subrule]],");"];
-	]
+	]*)
 ,{i,Length[processname]}]
 Do[
 	Write[sfile, "\t\tchannelnames.push_back(\"",ToString[possibleini[[i]]],"\");"];
-	Write[sfile, "\t\tamp2fls.push_back(",ToString[possibleini[[i]]],");"];
+	Write[sfile, "\t\tamp2fls[\"",ToString[possibleini[[i]]],"\"]=",ToString[possibleini[[i]]],";"];
 	If[PossibleZeroQ[inimass[[2*i-1]]],
-		Write[sfile, "\t\tmass1s.push_back(",ToString[ReplaceAll[inimass[[2*i-1]],subrule]],");"],
-		Write[sfile, "\t\tmass1s.push_back(&",ToString[ReplaceAll[inimass[[2*i-1]],subrule]],");"];
+		Write[sfile, "\t\tmass1s[\"",ToString[possibleini[[i]]],"\"]=",ToString[ReplaceAll[inimass[[2*i-1]],subrule]],";"],
+		Write[sfile, "\t\tmass1s[\"",ToString[possibleini[[i]]],"\"]=&",ToString[ReplaceAll[inimass[[2*i-1]],subrule]],";"];
 	];
 	If[PossibleZeroQ[inimass[[2*i]]],
-		Write[sfile, "\t\tmass2s.push_back(",ToString[ReplaceAll[inimass[[2*i]],subrule]],");"],
-		Write[sfile, "\t\tmass2s.push_back(&",ToString[ReplaceAll[inimass[[2*i]],subrule]],");"];
+		Write[sfile, "\t\tmass2s[\"",ToString[possibleini[[i]]],"\"]=",ToString[ReplaceAll[inimass[[2*i]],subrule]],";"],
+		Write[sfile, "\t\tmass2s[\"",ToString[possibleini[[i]]],"\"]=&",ToString[ReplaceAll[inimass[[2*i]],subrule]],";"];
 	];
 ,{i,Length[possibleini]}]
 Do[
