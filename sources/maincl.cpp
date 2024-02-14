@@ -10,6 +10,7 @@ namespace DT
 
         mod->init();
         mod->load_parameter_map();
+        mod->assign_bath_masses();
 
         N_par_points = rdr->datalines();
         rdr->scanpars = rdr->assignHeaders(mod->parmap);
@@ -25,7 +26,19 @@ namespace DT
         mod->assigndm();
     }
 
-    void Main::calc_tac_frac(const std::vector<std::string> &ch_str)
+    void Main::def_thermal_bath(const std::vector<std::string> &prtcls)
+    {
+        mod->assign_bath_masses(prtcls);
+        if (prtcls.size() != 0)
+            bath_procs = mod->find_thermal_procs(prtcls);
+    }
+
+    void Main::check_procs(const std::vector<std::string> &ch_str)
+    {
+        // TO DO
+    }
+
+    void Main::calc_initial_strength(const std::vector<std::string> &ch_str)
     {
         Tac temptac(mod);
         double ma, mb;
@@ -36,7 +49,7 @@ namespace DT
             size_t N = mod->get_N_all_channels();
             for (size_t i = 0; i < N; i++)
             {
-                temptac.clear_maps();
+                temptac.clear_state();
                 cur_channel_name.at(0) = mod->get_channel_name(i);
                 temptac.sort_inimasses(cur_channel_name);
 
@@ -47,7 +60,7 @@ namespace DT
 
     void Main::calc_relic_frac(const double ch_contrib, const std::vector<std::string> &ch_str)
     {
-        calc_tac_frac(ch_str);
+        calc_initial_strength(ch_str);
         std::unordered_map<std::string, double>::iterator it;
         std::vector<std::string> stronk_channels = {""};
         std::vector<std::string> channels;
@@ -96,19 +109,24 @@ namespace DT
         }
     }
 
-    double Main::calc_Omega_FO(const std::vector<std::string> &ch_str, const double ch_contrib)
+    double Main::calc_Omega_FO(const double ch_contrib, const std::vector<std::string> &ch_str)
     {
         double x, y;
 
         if (ch_str.size() != 0)
-            bsol->sort_inimasses(ch_str);
-        x = bsol->secant_method(15., 15.1, ch_str);
+        {
+            bath_procs = ch_str;
+        }
+
+        if (bath_procs.size() != 0)
+            bsol->sort_inimasses(bath_procs);
+        x = bsol->secant_method(15., 15.1, bath_procs);
         y = 1.5 * mod->yeq(x);
         xinitial = x;
 
         printf("Initial x: %.5e\n", x);
 
-        bsol->adap_rk4(xtoday_FO, x, y, ch_str);
+        bsol->adap_rk4(xtoday_FO, x, y, bath_procs);
 
         omega = 2.742e8 * mod->MDM * y;
         std::cout << "Omega full:\n"
@@ -116,8 +134,59 @@ namespace DT
 
         if (ch_contrib != 1)
         {
-            calc_relic_frac(ch_contrib, ch_str);
+            calc_relic_frac(ch_contrib, bath_procs);
         }
         return omega;
+    }
+
+    double Main::calc_Omega_FI(const double ch_contrib, const std::vector<std::string> &ch_str)
+    {
+        double x = xR;
+        double y = 0;
+        if (ch_str.size() != 0)
+        {
+            bath_procs = ch_str;
+        }
+
+        if (bath_procs.size() != 0)
+            bsol->sort_inimasses(bath_procs);
+
+        bsol->adap_rk4(xtoday_FI, x, y, bath_procs);
+
+        omega = 2.742e8 * mod->MDM * y;
+        std::cout << "Omega full:\n"
+                  << omega << "\n\n";
+
+        return omega;
+    }
+
+    void Main::save_data(char **argv, const std::vector<std::string> save_pars, bool channels)
+    {
+        std::string filesave = "../dataOutput/" + std::string(argv[2]);
+
+        std::ofstream outfile(filesave, std::ios::out | std::ios::app);
+
+        outfile.seekp(0, std::ios::end);
+
+        if (outfile.tellp() == 0)
+        {
+            outfile << "Omega";
+
+            for (int k = 0; k < save_pars.size(); k++)
+            {
+                outfile << "\t" << save_pars.at(k);
+            }
+            outfile << "\n";
+        }
+
+        outfile << omega;
+
+        for (auto it : save_pars)
+        {
+            outfile << "\t" << mod->get_parmater_val(it);
+        }
+        outfile << "\n";
+
+        outfile.close();
     }
 } // namespace DT

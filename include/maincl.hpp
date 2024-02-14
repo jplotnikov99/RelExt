@@ -14,8 +14,11 @@ namespace DT
     {
     private:
         double xtoday_FO = 1e8;
+        double xtoday_FI = 100;
+        double xR = 0.001;
         double xinitial;
         double omega;
+        std::vector<std::string> bath_procs = {};
         std::unordered_map<std::string, double> channel_strength;
         std::unique_ptr<DataReader> rdr;
         std::shared_ptr<Dof> dof;
@@ -28,14 +31,26 @@ namespace DT
         // loads parameter point and assigns DM mass
         void load_parameters(const size_t i);
 
+        // defines which particles are in the DS bath via the particle names
+        void def_thermal_bath(const std::vector<std::string> &prtcls = {});
+
+        // checks if the thermal bath particles and the input channels match
+        void check_procs(const std::vector<std::string> &ch_str);
+
         // calculates the fraction between single channel TACs and full TAC
-        void calc_tac_frac(const std::vector<std::string> &ch_str = {});
+        void calc_initial_strength(const std::vector<std::string> &ch_str = {});
 
         // calculate the fraction between single channel relic density and full relic density
         void calc_relic_frac(const double ch_contrib, const std::vector<std::string> &ch_str = {});
 
         // calculates the DM relic density via freeze-out
-        double calc_Omega_FO(const std::vector<std::string> &ch_str = {}, const double ch_contrib = 1.);
+        double calc_Omega_FO(const double ch_contrib = 1., const std::vector<std::string> &ch_str = {});
+
+        // calculates the DM relic density via freeze-in
+        double calc_Omega_FI(const double ch_contrib = 1., const std::vector<std::string> &ch_str = {});
+
+        // saves the scanned data
+        void save_data(char** argv, const std::vector<std::string> save_pars, bool channels = false);
 
         Main(int argc, char **argv);
         ~Main(){};

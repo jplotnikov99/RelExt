@@ -27,10 +27,12 @@ namespace DT
         std::vector<std::string> channelnames;
         std::unordered_map<std::string, double *> mass1s;
         std::unordered_map<std::string, double *> mass2s;
+        std::unordered_map<std::string, double *> particles;
         std::shared_ptr<Dof> dof;
         vamp2 cur_channel;
         size_t N_cur;
         size_t N_all_channels;
+        std::vector<double *> bath_masses;
 
     public:
         size_t N_initial_states;
@@ -50,7 +52,10 @@ namespace DT
         size_t get_N_all_channels();
         std::string get_channel_name(const size_t i);
 
+        void assign_bath_masses(const std::vector<std::string> &prtcls = {});
+        std::vector<std::string> find_thermal_procs(const std::vector<std::string> &prtcls = {});
         void assigndm();
+        double get_parmater_val(const std::string par);
         void change_parameter(const std::string par, const double newval);
         void assign_masses(double &m1, double &m2, const std::string ch_str);
         void set_channel(double &m1, double &m2, const size_t i, const std::vector<std::string> ch_str = {});

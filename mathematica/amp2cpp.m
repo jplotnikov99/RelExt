@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
-directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cpvdm/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
+directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cpvdm/FR_modfiles" <> "/FA_modfiles";
 Print[directory]
 
 (*start FA and FC*)
@@ -749,7 +749,15 @@ Write[sfile, "\t\tdouble ee = 0.312233;"];
 Write[sfile, "\t\tdouble gs = 1.21358;"];
 Write[sfile, "\t\tdouble G = 1.21358;"];
 Write[sfile, "\t\tdouble FAGS = 1.21358;\n"];
-
+Do[
+	Write[sfile, "\t\tdsmasses.push_back(&", dsmass[[i]],");"];
+,{i,Length[dsmass]}]
+Do[
+	Write[sfile, "\t\tneutraldsmasses.push_back(&", neutraldsmasses[[i]],");"];
+,{i,Length[neutraldsmasses]}]
+Do[
+	Write[sfile, "\t\tparticles[\"",ToString[dsnames[[i]]],"\"]=&",ToString[dsmass[[i]]],";"]
+,{i,Length[dsmass]}]
 Do[
 	Write[sfile, "\t\tchannelnames.push_back(\"",ToString[processname[[i]]],"\");"];
 	Write[sfile, "\t\tamp2s[\"",ToString[processname[[i]]],"\"]=",ToString[processname[[i]]],";"];
@@ -790,12 +798,6 @@ Write[sfile,"\t\tN_initial_states = ",ToString[Length[possibleini]],";"];
 Do[
 	Write[sfile, "\t\tinimasses.push_back(&", inimass[[i]] , ");"];
 ,{i,Length[inimass]}]
-Do[
-	Write[sfile, "\t\tdsmasses.push_back(&", dsmass[[i]],");"];
-,{i,Length[dsmass]}]
-Do[
-	Write[sfile, "\t\tneutraldsmasses.push_back(&", neutraldsmasses[[i]],");"];
-,{i,Length[neutraldsmasses]}]
 Do[
 	Write[sfile, "\t\tdenstructures.push_back(&", StringReplace[ToString[relevantWs[[i]]],{"FeynCalc`"->""}] ,");"];
 ,{i,Length[relevantWs]}]

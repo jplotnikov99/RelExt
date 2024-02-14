@@ -46,29 +46,7 @@ double DT::polK2(const double &x)
           (1 + 1.875 * y * (1 + 0.4375 * y * (1 - 0.375 * y * (1 - 1.03125 * y * (1 - 1.625 * y * (1 - 2.1875 * y))))));
 }
 
-void DT::save_data(const char *filename, std::vector<std::string> header, std::vector<double> data)
+bool DT::is_substring(const std::string &str1, const std::string &str2)
 {
-   std::ofstream outfile(filename, std::ios::out | std::ios::app);
-
-   outfile.seekp(0, std::ios::end);
-
-   if (outfile.tellp() == 0)
-   {
-
-      for (int k = 0; k < header.size(); k++)
-      {
-         outfile << header.at(k) << "\t";
-      }
-   }
-   else
-   {
-
-      for (int i = 0; i < data.size(); i++)
-      {
-         outfile << data.at(i) << "\t";
-      }
-   }
-   outfile << "\n";
-
-   outfile.close();
+   return str2.find(str1) != std::string::npos;
 }

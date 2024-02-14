@@ -29,6 +29,6 @@ namespace DT
 
 	double polK2(const double &x);
 
-	void save_data(const char *filename, std::vector<std::string> header, std::vector<double> data);
+	bool is_substring(const std::string& str1, const std::string& str2);
 
 }

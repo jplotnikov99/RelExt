@@ -52,6 +52,19 @@ namespace DT{
 		double G = 1.21358;
 		double FAGS = 1.21358;
 
+		dsmasses.push_back(&mH1);
+		dsmasses.push_back(&mH2);
+		dsmasses.push_back(&mH3);
+		dsmasses.push_back(&mHc);
+		dsmasses.push_back(&mHc);
+		neutraldsmasses.push_back(&mH1);
+		neutraldsmasses.push_back(&mH2);
+		neutraldsmasses.push_back(&mH3);
+		particles["H1"]=&mH1;
+		particles["H2"]=&mH2;
+		particles["H3"]=&mH3;
+		particles["Hc"]=&mHc;
+		particles["HC"]=&mHc;
 		channelnames.push_back("H1H1hh");
 		amp2s["H1H1hh"]=H1H1hh;
 		amp2fls["H1H1hh"]=H1H1hhfl;
@@ -883,14 +896,6 @@ namespace DT{
 		inimasses.push_back(&mHc);
 		inimasses.push_back(&mHc);
 		inimasses.push_back(&mHc);
-		dsmasses.push_back(&mH1);
-		dsmasses.push_back(&mH2);
-		dsmasses.push_back(&mH3);
-		dsmasses.push_back(&mHc);
-		dsmasses.push_back(&mHc);
-		neutraldsmasses.push_back(&mH1);
-		neutraldsmasses.push_back(&mH2);
-		neutraldsmasses.push_back(&mH3);
 		denstructures.push_back(&MZ);
 		denstructures.push_back(&WZ);
 		denstructures.push_back(&MW);

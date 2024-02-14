@@ -2,20 +2,28 @@
 
 namespace DT
 {
-	DataReader::DataReader(char **argv)
+	DataReader::DataReader(char **argv, bool read)
 	{
-		filename = "../dataInput/" + std::string(argv[1]);
-		datafile.open(filename);
-		if (!datafile)
+		if (read)
 		{
-			std::cerr << "Unable to open file " << filename << ". Check if the name of the file is correct and if it is stored in the dataInput directory.\n";
-			exit(1);
+			filename = "../dataInput/" + std::string(argv[1]);
+			datafile.open(filename);
+			if (!datafile)
+			{
+				std::cerr << "Unable to open file " << filename << ". Check if the name of the file is correct and if it is stored in the dataInput directory.\n";
+				exit(1);
+			}
+		}
+		else{
+			filename = "../dataOutput/" + std::string(argv[2]);
+			outfile.open(filename);
 		}
 	}
 
 	DataReader::~DataReader()
 	{
 		datafile.close();
+		outfile.close();
 	}
 
 	double DataReader::datalines()
@@ -81,7 +89,7 @@ namespace DT
 			exit(1);
 		}
 
-		if(row > maxrows - 1)
+		if (row > maxrows - 1)
 		{
 			std::cerr << "Error in read_parameter. Last parameter point was reached.\n";
 			exit(1);
@@ -106,5 +114,31 @@ namespace DT
 				break;
 			}
 		}
+	}
+
+	void DataReader::save_data(char **argv, std::vector<std::string> yourheader, std::vector<double> yourlist)
+	{
+		
+
+		outfile.seekp(0, std::ios::end);
+
+		if (outfile.tellp() == 0)
+		{
+
+			for (int k = 0; k < yourheader.size(); k++)
+			{
+				outfile << yourheader.at(k) << "\t";
+			}
+			outfile << "\n";
+		}
+
+		for (int i = 0; i < yourlist.size(); i++)
+		{
+			outfile << yourlist.at(i) << "\t";
+		}
+
+		outfile << "\n";
+
+		outfile.close();
 	}
 } // namespace DT

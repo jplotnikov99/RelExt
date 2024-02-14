@@ -111,7 +111,7 @@ namespace DT
         {
             h = xtoday - x;
             rk4(x, y, h, ch_str);
-            beq->clear_tac_maps();
+            beq->reset_tac_state();
         }
         else
         {

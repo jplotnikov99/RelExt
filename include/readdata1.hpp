@@ -17,6 +17,7 @@ namespace DT
             size_t currow = 0;
             std::vector<size_t> dataindices;
             std::ifstream datafile;
+            std::ofstream outfile;
             std::string filename;
             
 
@@ -24,10 +25,11 @@ namespace DT
 
             std::vector<double *> scanpars;
 
-            DataReader(char **argv);
+            DataReader(char **argv, bool read = true);
             ~DataReader();
             double datalines();
             std::vector<double *> assignHeaders(std::map<std::string, double *> pars);
             void read_parameter(const size_t row);
+            void save_data(char **argv, std::vector<std::string> yourheader, std::vector<double> yourlist);
     };
 } // namespace DT

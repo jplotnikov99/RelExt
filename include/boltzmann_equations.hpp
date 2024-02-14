@@ -17,7 +17,7 @@ namespace DT
 
     public:
         // clear TAC maps which are necessary for faster computation
-        void clear_tac_maps();
+        void reset_tac_state();
 
         // sorts different channels by their total initial state masses
         void sort_inimasses(const std::vector<std::string> &ch_str = {});

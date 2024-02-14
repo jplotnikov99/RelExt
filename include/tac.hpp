@@ -14,7 +14,6 @@ namespace DT
         double m1;
         double m2;
         size_t N_relevant_peaks;
-        std::vector<bool> iniswitches;
         std::vector<double> boundaries;
         std::shared_ptr<Model> mod;
         std::map<double, std::vector<std::string>>::iterator ini_it;
@@ -30,7 +29,7 @@ namespace DT
         // sorts different channels by their total initial state masses
         void sort_inimasses(const std::vector<std::string> &ch_str = {});
 
-        void clear_maps();
+        void clear_state();
 
         // 3/8 simpson rule
         double simpson38(const double l, const double r, const double &s);
@@ -44,7 +43,7 @@ namespace DT
 
         bool beps(const double &x, const double &MDM);
 
-        void flickswitches(const double &x);
+        void reset_switches();
 
         // checks if the peak is suppressed enough by the boltzmann factor to not matter for seperate integration
         double peak_relevance(const double &peakpos);

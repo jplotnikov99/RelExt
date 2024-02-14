@@ -9,9 +9,9 @@ namespace DT
         tac = std::make_unique<Tac>(mod);
     }
 
-    void Beqs::clear_tac_maps()
+    void Beqs::reset_tac_state()
     {
-        tac->clear_maps();
+        tac->clear_state();
     }
 
     void Beqs::sort_inimasses(const std::vector<std::string> &ch_str)

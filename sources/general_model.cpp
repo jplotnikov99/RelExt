@@ -19,32 +19,66 @@ namespace DT
         return channelnames.at(i);
     }
 
+    void Model::assign_bath_masses(const std::vector<std::string> &prtcls)
+    {
+        bath_masses.clear();
+        if (prtcls.size() == 0)
+        {
+            bath_masses = dsmasses;
+        }
+        else
+        {
+            for (auto it : prtcls)
+            {
+                bath_masses.push_back(particles[it]);
+            }
+        }
+    }
+
+    std::vector<std::string> Model::find_thermal_procs(const std::vector<std::string> &prtcls)
+    {
+        size_t N = channelnames.size();
+        std::vector<std::string> res = {};
+        size_t found;
+        for (auto it : prtcls)
+        {
+            for (size_t i = N - N_initial_states; i < N; i++)
+            {
+                found = channelnames.at(i).find(it);
+                if (found != std::string::npos)
+                    for (auto jt : prtcls)
+                    {
+                        if (channelnames.at(i).find(jt, found + 1) != std::string::npos)
+                        {
+                            res.push_back(channelnames.at(i));
+                        }
+                    }
+            }
+        }
+        return res;
+    }
+
     void Model::assigndm()
     {
-        MDM = *neutraldsmasses.at(0);
+        MDM = 1e16;
 
-        for (int i = 1; i < neutraldsmasses.size(); i++)
+        for (auto it : bath_masses)
         {
-            if (MDM > *neutraldsmasses.at(i))
+            if (MDM > *it)
             {
-                MDM = *neutraldsmasses.at(i);
+                MDM = *it;
             }
         }
     }
 
     void Model::change_parameter(const std::string par, const double newval)
     {
-        std::map<std::string, double *>::iterator it;
-        it = parmap.begin();
-        while (it != parmap.end())
-        {
-            if (it->first == par)
-            {
-                *it->second = newval;
-                break;
-            }
-            ++it;
-        }
+        *parmap[par] = newval;
+    }
+
+    double Model::get_parmater_val(const std::string par)
+    {
+        return (*parmap[par]);
     }
 
     void Model::assign_masses(double &m1, double &m2, std::string ch_str)
@@ -76,9 +110,9 @@ namespace DT
     double Model::eval(const double cos_t, const double s)
     {
         double res = 0;
-        for (size_t i = 0; i < N_cur; i++)
+        for (auto it : cur_channel)
         {
-            res += cur_channel.at(i)(cos_t, s);
+            res += it(cos_t, s);
         }
         return res;
     }
@@ -90,9 +124,9 @@ namespace DT
         double a = 1 / (MDM * MDM);
         double Tinv = x / MDM;
 
-        for (size_t i = 0; i < dsmasses.size(); i++)
+        for (auto it : bath_masses)
         {
-            mtemp = *dsmasses.at(i);
+            mtemp = *it;
             yeq += pow(mtemp, 2) * a * besselK2(Tinv * mtemp);
         }
         yeq *= 45 * x * x / (4 * dof->heff(1 / Tinv) * M_PI * M_PI * M_PI * M_PI);
@@ -109,9 +143,9 @@ namespace DT
         if (x > 10)
         {
             num += Tinv * polK1(sqrt(s) * Tinv);
-            for (size_t i = 0; i < dsmasses.size(); i++)
+            for (auto it : bath_masses)
             {
-                mtemp = *dsmasses.at(i);
+                mtemp = *it;
                 den += mtemp * mtemp * exp(-Tinv * (mtemp - sqrt(s) / 2)) * polK2(Tinv * mtemp);
             }
             den *= den;
@@ -119,9 +153,9 @@ namespace DT
         else
         {
             num += Tinv * std::cyl_bessel_k(1, sqrt(s) * Tinv);
-            for (size_t i = 0; i < dsmasses.size(); i++)
+            for (auto it : bath_masses)
             {
-                mtemp = *dsmasses.at(i);
+                mtemp = *it;
                 den += mtemp * mtemp * std::cyl_bessel_k(2, Tinv * mtemp);
             }
             den *= den;

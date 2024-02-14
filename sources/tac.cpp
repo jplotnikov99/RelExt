@@ -5,10 +5,6 @@ namespace DT
     Tac::Tac(std::shared_ptr<Model> model)
     {
         mod = model;
-        for (size_t i = 0; i < mod->N_initial_states; i++)
-        {
-            iniswitches.push_back(true);
-        }
         for (size_t i = 0; i < mod->N_widths; i++)
         {
             boundaries.push_back(0);
@@ -34,7 +30,7 @@ namespace DT
         }
     }
 
-    void Tac::clear_maps()
+    void Tac::clear_state()
     {
         tac_x.clear();
         sig_s.clear();
@@ -93,15 +89,6 @@ namespace DT
     bool Tac::beps(const double &x, const double &MDM)
     {
         return (exp(-x * (m1 + m2 - 2 * MDM) / MDM) >= beps_eps);
-    }
-
-    void Tac::flickswitches(const double &x)
-    {
-        for (int i = 0; i < iniswitches.size(); i++)
-        {
-            mod->set_channel(m1, m2, i);
-            iniswitches.at(i) = beps(x, mod->MDM);
-        }
     }
 
     double Tac::peak_relevance(const double &peakpos)
@@ -334,12 +321,11 @@ namespace DT
             {
                 for (size_t i = 0; i < mod->N_initial_states; i++)
                 {
-                    if (iniswitches.at(i))
+                    mod->set_channel(m1, m2, i);
+                    if (beps(x, mod->MDM))
                     {
-                        mod->set_channel(m1, m2, i);
                         set_boundaries(x);
                         res += integrate_s(x);
-                        iniswitches.at(i) = beps(x, mod->MDM);
                     }
                 }
             }
