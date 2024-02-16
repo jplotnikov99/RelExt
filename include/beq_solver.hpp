@@ -18,6 +18,10 @@ namespace DT
         std::unique_ptr<Beqs> beq;
 
     public:
+
+        // sets the mechanism of DM generation
+        void set_mechanism(const size_t &mech);
+
         // sorts different channels by their total initial state masses
         void sort_inimasses(const vstring &ch_str = {});
 

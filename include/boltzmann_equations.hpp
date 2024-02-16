@@ -18,6 +18,9 @@ namespace DT
         std::unique_ptr<Tac> tac;
 
     public:
+        // set the DM generatio mechanism
+        void set_mechanism(const size_t &m);
+
         // clear TAC maps which are necessary for faster computation
         void reset_tac_state();
 

@@ -9,6 +9,11 @@ namespace DT
         beq = std::make_unique<Beqs>(dof, mod);
     }
 
+    void BeqSolver::set_mechanism(const size_t &mech)
+    {
+        beq->set_mechanism(mech);
+    }
+
     void BeqSolver::sort_inimasses(const vstring &ch_str)
     {
         beq->sort_inimasses(ch_str);

@@ -9,6 +9,11 @@ namespace DT
         tac = std::make_unique<Tac>(mod);
     }
 
+    void Beqs::set_mechanism(const size_t &m)
+    {
+        mech = m;
+    }
+
     void Beqs::reset_tac_state()
     {
         tac->clear_state();
@@ -55,7 +60,24 @@ namespace DT
 
     double Beqs::beq(const double &x, const double &y, const vstring &ch_str)
     {
-        return -pre(x) * tac->tac(x, ch_str) * (y * y - pow(mod->yeq(x), 2));
+        double res = 0.;
+        switch (mech)
+        {
+        case 0:
+            res += -pre(x) * tac->tac(x, ch_str) * (y * y - pow(mod->yeq(x), 2));
+            break;
+        
+        case 1:
+            mod->assign_bath_masses({"Chi"});
+            res += 0;
+            break;
+
+        default:
+            std::cout << "Wrong case in " << __func__ << ". Such a Boltzmann equation does not exist.\n";
+            exit(1);
+            break;
+        }
+        return res;
     }
 
 } // namespace DT

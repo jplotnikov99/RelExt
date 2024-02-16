@@ -113,6 +113,8 @@ namespace DT
     {
         double x, y;
 
+        bsol->set_mechanism(0);
+
         if (ch_str.size() != 0)
         {
             bath_procs = ch_str;
@@ -141,6 +143,8 @@ namespace DT
 
     double Main::calc_Omega_FI(const double ch_contrib, const vstring &ch_str)
     {
+        bsol->set_mechanism(0);
+
         double x = xR;
         double y = 0;
         if (ch_str.size() != 0)
@@ -161,6 +165,8 @@ namespace DT
 
     double Main::calc_Omega_EXP()
     {
+        bsol->set_mechanism(1);
+        
         double x = xR;
         double y = 0;
 
