@@ -40,7 +40,7 @@ namespace DT
         return 2 * M_PI * M_PI * mod->MDM * mod->MDM * mod->MDM / (x * x * x) * dof->heff(mod->MDM / x) / 45;
     }
 
-    double Beqs::fstart(double x, const vstring &ch_str)
+    double Beqs::fstart(double x)
     {
         double dif = 0.5;       // (Y-Yeq)/Yeq at starting point
         double ent = ent_T(x);  // entropy as function of T
@@ -55,16 +55,16 @@ namespace DT
         x = mod->MDM / T_ent(ent);
 
         // eq 6 from microlecture
-        return (dlnYeqdent * (sqrt(6 * M_PI * M_PI * M_PI / 30 * mod->MDM * mod->MDM * mod->MDM * mod->MDM / (x * x * x * x) * dof->geff(mod->MDM / x) * G) / tac->tac(x, ch_str)) - dif * mod->yeq(x));
+        return (dlnYeqdent * (sqrt(6 * M_PI * M_PI * M_PI / 30 * mod->MDM * mod->MDM * mod->MDM * mod->MDM / (x * x * x * x) * dof->geff(mod->MDM / x) * G) / tac->tac(x)) - dif * mod->yeq(x));
     }
 
-    double Beqs::beq(const double &x, const double &y, const vstring &ch_str)
+    double Beqs::beq(const double &x, const double &y)
     {
         double res = 0.;
         switch (mech)
         {
         case 0:
-            res += -pre(x) * tac->tac(x, ch_str) * (y * y - pow(mod->yeq(x), 2));
+            res += -pre(x) * tac->tac(x) * (y * y - pow(mod->yeq(x), 2));
             break;
         
         case 1:

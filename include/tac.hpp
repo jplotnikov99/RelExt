@@ -77,7 +77,7 @@ namespace DT
         double integrate_s(const double &x);
 
         // the one. the only. the THERMALLY AVERAGED CROSS SECTION!! at a certain x value
-        double tac(const double &x, const vstring &ch_str = {});
+        double tac(const double &x);
 
         Tac(std::shared_ptr<Model> model);
         ~Tac(){};

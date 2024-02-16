@@ -311,12 +311,12 @@ namespace DT
         return res;
     }
 
-    double Tac::tac(const double &x, const vstring &ch_str)
+    double Tac::tac(const double &x)
     {
         double res = 0.;
         if (tac_x.find(x) == tac_x.end())
         {
-            if (ch_str.size() == 0)
+            if (inimap.size() == 0)
             {
                 for (size_t i = 0; i < mod->N_initial_states; i++)
                 {

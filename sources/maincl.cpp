@@ -42,7 +42,7 @@ namespace DT
     {
         Tac temptac(mod);
         double ma, mb;
-        double tacFull = temptac.tac(xinitial, ch_str);
+        double tacFull = temptac.tac(xinitial);
         vstring cur_channel_name = {""};
         if (ch_str.size() == 0)
         {
@@ -53,7 +53,7 @@ namespace DT
                 cur_channel_name.at(0) = mod->get_channel_name(i);
                 temptac.sort_inimasses(cur_channel_name);
 
-                channel_strength[cur_channel_name.at(0)] = temptac.tac(xinitial, cur_channel_name) / tacFull;
+                channel_strength[cur_channel_name.at(0)] = temptac.tac(xinitial) / tacFull;
             }
         }
     }
@@ -75,9 +75,9 @@ namespace DT
                 channels.push_back(it->first);
 
                 bsol->sort_inimasses(stronk_channels);
-                x = bsol->secant_method(15., 15.1, stronk_channels);
+                x = bsol->secant_method(15., 15.1);
                 y = 1.5 * mod->yeq(x);
-                bsol->adap_rk4(xtoday_FO, x, y, stronk_channels);
+                bsol->adap_rk4(xtoday_FO, x, y);
 
                 x = omega / (2.742e8 * mod->MDM * y);
                 it->second = x;
@@ -122,13 +122,13 @@ namespace DT
 
         if (bath_procs.size() != 0)
             bsol->sort_inimasses(bath_procs);
-        x = bsol->secant_method(15., 15.1, bath_procs);
+        x = bsol->secant_method(15., 15.1);
         y = 1.5 * mod->yeq(x);
         xinitial = x;
 
         printf("Initial x: %.5e\n", x);
 
-        bsol->adap_rk4(xtoday_FO, x, y, bath_procs);
+        bsol->adap_rk4(xtoday_FO, x, y);
 
         omega = 2.742e8 * mod->MDM * y;
         std::cout << "Omega full:\n"
@@ -154,7 +154,7 @@ namespace DT
 
         if (bath_procs.size() != 0)
             bsol->sort_inimasses(bath_procs);
-        bsol->adap_rk4(xtoday_FI, x, y, bath_procs);
+        bsol->adap_rk4(xtoday_FI, x, y);
 
         omega = 2.742e8 * mod->MDM * y;
         std::cout << "Omega full:\n"

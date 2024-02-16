@@ -19,13 +19,13 @@ namespace DT
         beq->sort_inimasses(ch_str);
     }
 
-    double BeqSolver::secant_method(double x0, double x1, const vstring &ch_str)
+    double BeqSolver::secant_method(double x0, double x1)
     {
         // Initialize the number of iterations
         int iterations = 0;
         double x2;
         double y1;
-        double y0 = beq->fstart(x0, ch_str);
+        double y0 = beq->fstart(x0);
         // Loop until the tolerance is reached
         while (fabs(x1 - x0) > secant_eps)
         {
@@ -33,7 +33,7 @@ namespace DT
             if (iterations > secant_maxiter)
                 return x2;
             // Calculate the new value of x
-            y1 = beq->fstart(x1, ch_str);
+            y1 = beq->fstart(x1);
 
             x2 = x1 - (x1 - x0) * y1 / (y1 - y0);
 
@@ -50,15 +50,15 @@ namespace DT
         return x2;
     }
 
-    void BeqSolver::rk4(double &x, double &y, const double &h, const vstring &ch_str)
+    void BeqSolver::rk4(double &x, double &y, const double &h)
     {
         double k1, k2, k3, k4;
-        k1 = h * beq->beq(x, y, ch_str);
+        k1 = h * beq->beq(x, y);
         x = x + h / 2;
-        k2 = h * beq->beq(x, (y + k1 / 2), ch_str);
-        k3 = h * beq->beq(x, (y + k2 / 2), ch_str);
+        k2 = h * beq->beq(x, (y + k1 / 2));
+        k3 = h * beq->beq(x, (y + k2 / 2));
         x = x + h / 2;
-        k4 = h * beq->beq(x, (y + k3), ch_str);
+        k4 = h * beq->beq(x, (y + k3));
         y += (k1 + 2 * k2 + 2 * k3 + k4) / 6;
     }
 
@@ -87,17 +87,17 @@ namespace DT
         return hnext;
     }
 
-    void BeqSolver::adap_rk4(const double &xtoday, double &x, double &y, const vstring &ch_str, double h)
+    void BeqSolver::adap_rk4(const double &xtoday, double &x, double &y, double h)
     {
         double xsave, ysave, ytemp;
         xsave = x;
         ysave = y;
-        rk4(x, y, h, ch_str);
+        rk4(x, y, h);
         ytemp = y;
         x = xsave;
         y = ysave;
-        rk4(x, y, h / 2, ch_str);
-        rk4(x, y, h / 2, ch_str);
+        rk4(x, y, h / 2);
+        rk4(x, y, h / 2);
         double err = fabs((y - ytemp) / ytemp) / rk4_eps;
         h = setStep(h, err);
         if (x + h == x)
@@ -109,17 +109,17 @@ namespace DT
         {
             x = xsave;
             y = ysave;
-            adap_rk4(xtoday, x, y, ch_str, h);
+            adap_rk4(xtoday, x, y, h);
         }
         else if (x + h > xtoday)
         {
             h = xtoday - x;
-            rk4(x, y, h, ch_str);
+            rk4(x, y, h);
             beq->reset_tac_state();
         }
         else
         {
-            adap_rk4(xtoday, x, y, ch_str, h);
+            adap_rk4(xtoday, x, y, h);
         }
     }
 } // namespace DT

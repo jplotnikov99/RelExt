@@ -37,10 +37,10 @@ namespace DT
         double ent_T(const double &x);
 
         // function to help find the starting point to be used in the runge Kutta routine
-        double fstart(double x, const vstring &ch_str = {});
+        double fstart(double x);
 
         // Boltzmann equation that needs to be solved for freeze-out and simple freeze-in
-        double beq(const double &x, const double &y, const vstring &ch_str = {});
+        double beq(const double &x, const double &y);
 
         Beqs(std::shared_ptr<Dof> degrees_of_freedom, std::shared_ptr<Model> model);
         ~Beqs(){};
