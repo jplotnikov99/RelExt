@@ -1,4 +1,3 @@
-#include "general_model.hpp"
 #include <iostream>
 #include "maincl.hpp"
 
@@ -15,6 +14,9 @@ int main(int argc, char **argv)
         std::vector<std::string> ch = {};
         main.load_parameters(i);
         main.calc_Omega_FO();
+
+        std::vector<std::string> par = {};
+        main.save_data(argv, par);
     }
 
     std::cout << "Computation time:\n"

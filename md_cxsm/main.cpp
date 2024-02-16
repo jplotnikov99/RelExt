@@ -1,4 +1,3 @@
-#include "general_model.hpp"
 #include <iostream>
 #include "maincl.hpp"
 
@@ -10,7 +9,7 @@ int main(int argc, char **argv)
 
     clock_t begin_time = clock();
 
-    for (size_t i = 1; i < 10; i++)
+    for (size_t i = 1; i < 1000; i++)
     {
         std::vector<std::string> channels = {};
         main.load_parameters(i);
