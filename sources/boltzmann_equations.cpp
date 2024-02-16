@@ -14,14 +14,14 @@ namespace DT
         tac->clear_state();
     }
 
-    void Beqs::sort_inimasses(const std::vector<std::string> &ch_str)
+    void Beqs::sort_inimasses(const vstring &ch_str)
     {
         tac->sort_inimasses(ch_str);
     }
 
     double Beqs::pre(const double &x)
     {
-        return sqrt(M_PI / (45 * G)) * mod->MDM / (x * x);
+        return sqrt(M_PI / (45 * G)) * mod->MDM / (x * x) * dof->g12(mod->MDM / x);
     }
 
     double Beqs::T_ent(const double &ent)
@@ -35,7 +35,7 @@ namespace DT
         return 2 * M_PI * M_PI * mod->MDM * mod->MDM * mod->MDM / (x * x * x) * dof->heff(mod->MDM / x) / 45;
     }
 
-    double Beqs::fstart(double x, const std::vector<std::string> &ch_str)
+    double Beqs::fstart(double x, const vstring &ch_str)
     {
         double dif = 0.5;       // (Y-Yeq)/Yeq at starting point
         double ent = ent_T(x);  // entropy as function of T
@@ -53,9 +53,9 @@ namespace DT
         return (dlnYeqdent * (sqrt(6 * M_PI * M_PI * M_PI / 30 * mod->MDM * mod->MDM * mod->MDM * mod->MDM / (x * x * x * x) * dof->geff(mod->MDM / x) * G) / tac->tac(x, ch_str)) - dif * mod->yeq(x));
     }
 
-    double Beqs::beq_FO(const double &x, const double &y, const std::vector<std::string> &ch_str)
+    double Beqs::beq(const double &x, const double &y, const vstring &ch_str)
     {
-        return -pre(x) * dof->g12(mod->MDM / x) * tac->tac(x, ch_str) * (y * y - mod->yeq(x) * mod->yeq(x));
+        return -pre(x) * tac->tac(x, ch_str) * (y * y - pow(mod->yeq(x), 2));
     }
 
 } // namespace DT

@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include <iostream>
+#include "utils.hpp"
 #include "EffDof.hpp"
 #include "general_model.hpp"
 #include "boltzmann_equations.hpp"
@@ -18,19 +19,19 @@ namespace DT
 
     public:
         // sorts different channels by their total initial state masses
-        void sort_inimasses(const std::vector<std::string> &ch_str = {});
+        void sort_inimasses(const vstring &ch_str = {});
 
         // secant method implementation to find a root between x1 and x2
-        double secant_method(double x0, double x1, const std::vector<std::string> &ch_str = {});
+        double secant_method(double x0, double x1, const vstring &ch_str = {});
 
         // four point runge kutta method needed to solve Boltzmann Eq.
-        void rk4(double &x, double &y, const double &h, const std::vector<std::string> &ch_str = {});
+        void rk4(double &x, double &y, const double &h, const vstring &ch_str = {});
 
         // set new stepsize for the next runga kutta evaluation
         double setStep(const double &hnow, const double &err);
 
         // Solves the Boltzmann equation with the full TAC using the adaptive 4-point runge-kutta method
-        void adap_rk4(const double &xtoday, double &x, double &y, const std::vector<std::string> &ch_str = {}, double h = 0.1);
+        void adap_rk4(const double &xtoday, double &x, double &y, const vstring &ch_str = {}, double h = 0.1);
 
         BeqSolver(std::shared_ptr<Dof> degrees_of_freedom, std::shared_ptr<Model> model);
         ~BeqSolver(){};

@@ -26,24 +26,24 @@ namespace DT
         mod->assigndm();
     }
 
-    void Main::def_thermal_bath(const std::vector<std::string> &prtcls)
+    void Main::def_thermal_bath(const vstring &prtcls)
     {
         mod->assign_bath_masses(prtcls);
         if (prtcls.size() != 0)
             bath_procs = mod->find_thermal_procs(prtcls);
     }
 
-    void Main::check_procs(const std::vector<std::string> &ch_str)
+    void Main::check_procs(const vstring &ch_str)
     {
         // TO DO
     }
 
-    void Main::calc_initial_strength(const std::vector<std::string> &ch_str)
+    void Main::calc_initial_strength(const vstring &ch_str)
     {
         Tac temptac(mod);
         double ma, mb;
         double tacFull = temptac.tac(xinitial, ch_str);
-        std::vector<std::string> cur_channel_name = {""};
+        vstring cur_channel_name = {""};
         if (ch_str.size() == 0)
         {
             size_t N = mod->get_N_all_channels();
@@ -58,12 +58,12 @@ namespace DT
         }
     }
 
-    void Main::calc_relic_frac(const double ch_contrib, const std::vector<std::string> &ch_str)
+    void Main::calc_relic_frac(const double ch_contrib, const vstring &ch_str)
     {
         calc_initial_strength(ch_str);
         std::unordered_map<std::string, double>::iterator it;
-        std::vector<std::string> stronk_channels = {""};
-        std::vector<std::string> channels;
+        vstring stronk_channels = {""};
+        vstring channels;
         std::vector<double> frac;
         double total = 0.;
         double x, y;
@@ -109,7 +109,7 @@ namespace DT
         }
     }
 
-    double Main::calc_Omega_FO(const double ch_contrib, const std::vector<std::string> &ch_str)
+    double Main::calc_Omega_FO(const double ch_contrib, const vstring &ch_str)
     {
         double x, y;
 
@@ -139,7 +139,7 @@ namespace DT
         return omega;
     }
 
-    double Main::calc_Omega_FI(const double ch_contrib, const std::vector<std::string> &ch_str)
+    double Main::calc_Omega_FI(const double ch_contrib, const vstring &ch_str)
     {
         double x = xR;
         double y = 0;
@@ -150,7 +150,6 @@ namespace DT
 
         if (bath_procs.size() != 0)
             bsol->sort_inimasses(bath_procs);
-
         bsol->adap_rk4(xtoday_FI, x, y, bath_procs);
 
         omega = 2.742e8 * mod->MDM * y;
@@ -160,7 +159,15 @@ namespace DT
         return omega;
     }
 
-    void Main::save_data(char **argv, const std::vector<std::string> save_pars, bool channels)
+    double Main::calc_Omega_EXP()
+    {
+        double x = xR;
+        double y = 0;
+
+    }
+
+
+    void Main::save_data(char **argv, const vstring save_pars, bool channels)
     {
         std::string filesave = "../dataOutput/" + std::string(argv[2]);
 

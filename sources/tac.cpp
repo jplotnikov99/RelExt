@@ -19,7 +19,7 @@ namespace DT
         m2 = mb;
     }
 
-    void Tac::sort_inimasses(const std::vector<std::string> &ch_str)
+    void Tac::sort_inimasses(const vstring &ch_str)
     {
         double ma;
         double mb;
@@ -224,6 +224,7 @@ namespace DT
         }
         I1 = h * (0.005377479872923 * (y[0] + y[30]) + 0.01500794732932 * (y[1] + y[29]) + 0.02546084732672 * (y[2] + y[28]) + 0.03534636079138 * (y[3] + y[27]) + 0.04458975132476 * (y[4] + y[26]) + 0.05348152469093 * (y[5] + y[25]) + 0.06200956780067 * (y[6] + y[24]) + 0.06985412131873 * (y[7] + y[23]) + 0.07684968075772 * (y[8] + y[22]) + 0.08308050282313 * (y[9] + y[21]) + 0.08856444305621 * (y[10] + y[20]) + 0.093126598170825 * (y[11] + y[19]) + 0.09664272698362 * (y[12] + y[18]) + 0.0991735987218 * (y[13] + y[17]) + 0.10076984552388 * (y[14] + y[16]) + 0.10133000701479 * y[15]);
         I2 = h * (0.0307532419961 * (y[1] + y[29]) + 0.07036604748811 * (y[3] + y[27]) + 0.10715922046717 * (y[5] + y[25]) + 0.1395706779262 * (y[7] + y[23]) + 0.16626920581699 * (y[9] + y[21]) + 0.18616100001556 * (y[11] + y[19]) + 0.19843148532711 * (y[13] + y[17]) + 0.2025782419256 * y[15]);
+        
         return (I1 + I2) / 2.;
     }
 
@@ -283,7 +284,6 @@ namespace DT
     {
         double res = 0.;
         double estimate = 0.;
-
         if (N_relevant_peaks > 0)
         {
             res = integrate_peaks(x);
@@ -311,10 +311,9 @@ namespace DT
         return res;
     }
 
-    double Tac::tac(const double &x, const std::vector<std::string> &ch_str)
+    double Tac::tac(const double &x, const vstring &ch_str)
     {
         double res = 0.;
-
         if (tac_x.find(x) == tac_x.end())
         {
             if (ch_str.size() == 0)

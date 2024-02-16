@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 (*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
-directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cpvdm/FR_modfiles" <> "/FA_modfiles";
+directory = "/home/johann/Documents/Projects/DM/darktree_new/md_trsm/FR_modfiles" <> "/FA_modfiles";
 Print[directory]
 
 (*start FA and FC*)
@@ -306,7 +306,7 @@ Do[
 	Print[ToString[processname[[i]]]];
 	FCClearScalarProducts[];
 	SetMandelstam[s, t, u, p1, p2, -p3, -p4, TheMass[foutfinallist[[i,1]]], TheMass[foutfinallist[[i,2]]], TheMass[foutfinallist[[i,3]]], TheMass[foutfinallist[[i,4]]] ];
-	tamp2 = fastamp2[ampslist[[i]]/.widthsub]; 
+	tamp2 = fastamp2[ampslist[[i]]/.alpha->0/.widthsub]; 
 	subdiagrams = {};
 	prefac=determinefac[foutfinallist[[i]], 2];
 	
@@ -959,3 +959,9 @@ Do[
 	Close[sfile];
 	
 ,{i,Length[possibleiniDecays]}]
+
+
+final[[Length[final]]]
+
+
+ampslist[[Length[final]]]/.alpha->0

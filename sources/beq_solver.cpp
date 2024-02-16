@@ -9,12 +9,12 @@ namespace DT
         beq = std::make_unique<Beqs>(dof, mod);
     }
 
-    void BeqSolver::sort_inimasses(const std::vector<std::string> &ch_str)
+    void BeqSolver::sort_inimasses(const vstring &ch_str)
     {
         beq->sort_inimasses(ch_str);
     }
 
-    double BeqSolver::secant_method(double x0, double x1, const std::vector<std::string> &ch_str)
+    double BeqSolver::secant_method(double x0, double x1, const vstring &ch_str)
     {
         // Initialize the number of iterations
         int iterations = 0;
@@ -45,15 +45,15 @@ namespace DT
         return x2;
     }
 
-    void BeqSolver::rk4(double &x, double &y, const double &h, const std::vector<std::string> &ch_str)
+    void BeqSolver::rk4(double &x, double &y, const double &h, const vstring &ch_str)
     {
         double k1, k2, k3, k4;
-        k1 = h * beq->beq_FO(x, y, ch_str);
+        k1 = h * beq->beq(x, y, ch_str);
         x = x + h / 2;
-        k2 = h * beq->beq_FO(x, (y + k1 / 2), ch_str);
-        k3 = h * beq->beq_FO(x, (y + k2 / 2), ch_str);
+        k2 = h * beq->beq(x, (y + k1 / 2), ch_str);
+        k3 = h * beq->beq(x, (y + k2 / 2), ch_str);
         x = x + h / 2;
-        k4 = h * beq->beq_FO(x, (y + k3), ch_str);
+        k4 = h * beq->beq(x, (y + k3), ch_str);
         y += (k1 + 2 * k2 + 2 * k3 + k4) / 6;
     }
 
@@ -82,12 +82,11 @@ namespace DT
         return hnext;
     }
 
-    void BeqSolver::adap_rk4(const double &xtoday, double &x, double &y, const std::vector<std::string> &ch_str, double h)
+    void BeqSolver::adap_rk4(const double &xtoday, double &x, double &y, const vstring &ch_str, double h)
     {
         double xsave, ysave, ytemp;
         xsave = x;
         ysave = y;
-
         rk4(x, y, h, ch_str);
         ytemp = y;
         x = xsave;

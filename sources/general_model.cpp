@@ -19,7 +19,7 @@ namespace DT
         return channelnames.at(i);
     }
 
-    void Model::assign_bath_masses(const std::vector<std::string> &prtcls)
+    void Model::assign_bath_masses(const vstring &prtcls)
     {
         bath_masses.clear();
         if (prtcls.size() == 0)
@@ -35,10 +35,10 @@ namespace DT
         }
     }
 
-    std::vector<std::string> Model::find_thermal_procs(const std::vector<std::string> &prtcls)
+    vstring Model::find_thermal_procs(const vstring &prtcls)
     {
         size_t N = channelnames.size();
-        std::vector<std::string> res = {};
+        vstring res = {};
         size_t found;
         for (auto it : prtcls)
         {
@@ -87,7 +87,7 @@ namespace DT
         m2 = *mass2s[ch_str];
     }
 
-    void Model::set_channel(double &m1, double &m2, const size_t i, std::vector<std::string> ch_str)
+    void Model::set_channel(double &m1, double &m2, const size_t i, vstring ch_str)
     {
         cur_channel.clear();
         if (ch_str.size() == 0)
@@ -114,6 +114,8 @@ namespace DT
         {
             res += it(cos_t, s);
         }
+        // std::cout << res << std::endl;
+        // exit(1);
         return res;
     }
 
@@ -124,10 +126,21 @@ namespace DT
         double a = 1 / (MDM * MDM);
         double Tinv = x / MDM;
 
-        for (auto it : bath_masses)
+        if (x > 10)
         {
-            mtemp = *it;
-            yeq += pow(mtemp, 2) * a * besselK2(Tinv * mtemp);
+            for (auto it : bath_masses)
+            {
+                mtemp = *it;
+                yeq += pow(mtemp, 2) * a * besselK2(Tinv * mtemp);
+            }
+        }
+        else
+        {
+            for (auto it : bath_masses)
+            {
+                mtemp = *it;
+                yeq += pow(mtemp, 2) * a * std::cyl_bessel_k(2, Tinv * mtemp);
+            }
         }
         yeq *= 45 * x * x / (4 * dof->heff(1 / Tinv) * M_PI * M_PI * M_PI * M_PI);
         return yeq;

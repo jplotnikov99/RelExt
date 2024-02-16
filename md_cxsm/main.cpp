@@ -10,11 +10,11 @@ int main(int argc, char **argv)
 
     clock_t begin_time = clock();
 
-    for (size_t i = 1; i < 3; i++)
+    for (size_t i = 1; i < 10; i++)
     {
-        std::vector<std::string> ch = {};
+        std::vector<std::string> channels = {};
         main.load_parameters(i);
-        main.calc_Omega_FI();
+        main.calc_Omega_FO();
         std::vector<std::string> par = {"MA1"};
 
         main.save_data(argv, par);

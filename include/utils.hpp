@@ -9,6 +9,8 @@
 namespace DT
 {
 
+	typedef std::vector<std::string> vstring;
+
 	// Heavi-side function and flux factor for the amp2sflux
 
 	bool heaviDecays(const double &m1, const double &m2, const double &m3);

@@ -3,6 +3,7 @@
 #include <cmath>
 #include <unordered_map>
 #include <memory>
+#include "utils.hpp"
 #include "general_model.hpp"
 #include "hyper_parameters.hpp"
 
@@ -16,18 +17,18 @@ namespace DT
         size_t N_relevant_peaks;
         std::vector<double> boundaries;
         std::shared_ptr<Model> mod;
-        std::map<double, std::vector<std::string>>::iterator ini_it;
+        std::map<double, vstring>::iterator ini_it;
 
     public:
         std::unordered_map<double, double> sig_s;
         std::unordered_map<double, double> tac_x;
-        std::map<double, std::vector<std::string>> inimap;
+        std::map<double, vstring> inimap;
 
         // change values of intial masses m1, m2
         void set_initial_masses(const double &ma, const double &mb);
 
         // sorts different channels by their total initial state masses
-        void sort_inimasses(const std::vector<std::string> &ch_str = {});
+        void sort_inimasses(const vstring &ch_str = {});
 
         void clear_state();
 
@@ -76,7 +77,7 @@ namespace DT
         double integrate_s(const double &x);
 
         // the one. the only. the THERMALLY AVERAGED CROSS SECTION!! at a certain x value
-        double tac(const double &x, const std::vector<std::string> &ch_str = {});
+        double tac(const double &x, const vstring &ch_str = {});
 
         Tac(std::shared_ptr<Model> model);
         ~Tac(){};
