@@ -3,9 +3,8 @@
 namespace DT
 {
 
-    Model::Model(std::shared_ptr<Dof> degrees_of_freedom)
+    Model::Model()
     {
-        dof = degrees_of_freedom;
     }
 
     size_t Model::get_N_all_channels()
@@ -115,64 +114,6 @@ namespace DT
             res += it(cos_t, s);
         }
         return res;
-    }
-
-    double Model::yeq(const double &x)
-    {
-        double yeq = 0;
-        double mtemp;
-        double a = 1 / (MDM * MDM);
-        double Tinv = x / MDM;
-
-        if (x > 10)
-        {
-            for (auto it : bath_masses)
-            {
-                mtemp = *it;
-                yeq += pow(mtemp, 2) * a * besselK2(Tinv * mtemp);
-            }
-        }
-        else
-        {
-            for (auto it : bath_masses)
-            {
-                mtemp = *it;
-                yeq += pow(mtemp, 2) * a * std::cyl_bessel_k(2, Tinv * mtemp);
-            }
-        }
-        yeq *= 45 * x * x / (4 * dof->heff(1 / Tinv) * M_PI * M_PI * M_PI * M_PI);
-        return yeq;
-    }
-
-    double Model::lipsv(const double &s, const double &x)
-    {
-        double num = 0.;
-        double den = 0.;
-        double mtemp;
-        double Tinv = x / MDM;
-
-        if (x > 10)
-        {
-            num += Tinv * polK1(sqrt(s) * Tinv);
-            for (auto it : bath_masses)
-            {
-                mtemp = *it;
-                den += mtemp * mtemp * exp(-Tinv * (mtemp - sqrt(s) / 2)) * polK2(Tinv * mtemp);
-            }
-            den *= den;
-        }
-        else
-        {
-            num += Tinv * std::cyl_bessel_k(1, sqrt(s) * Tinv);
-            for (auto it : bath_masses)
-            {
-                mtemp = *it;
-                den += mtemp * mtemp * std::cyl_bessel_k(2, Tinv * mtemp);
-            }
-            den *= den;
-        }
-
-        return num / den;
     }
 
 } // namespace DT

@@ -80,10 +80,41 @@ namespace DT
         }
     }
 
+    double Tac::lipsv(const double &s, const double &x)
+    {
+        double num = 0.;
+        double den = 0.;
+        double mtemp;
+        double Tinv = x / mod->MDM;
+
+        if (x > 10)
+        {
+            num += Tinv * polK1(sqrt(s) * Tinv);
+            for (auto it : mod->bath_masses)
+            {
+                mtemp = *it;
+                den += mtemp * mtemp * exp(-Tinv * (mtemp - sqrt(s) / 2)) * polK2(Tinv * mtemp);
+            }
+            den *= den;
+        }
+        else
+        {
+            num += Tinv * std::cyl_bessel_k(1, sqrt(s) * Tinv);
+            for (auto it : mod->bath_masses)
+            {
+                mtemp = *it;
+                den += mtemp * mtemp * std::cyl_bessel_k(2, Tinv * mtemp);
+            }
+            den *= den;
+        }
+
+        return num / den;
+    }
+
     double Tac::sigv(const double &u, const double &x)
     {
         double s = (m1 + m2) * (m1 + m2) + (1 - u) / u;
-        return wij(s) * mod->lipsv(s, x) * 1 / (u * u);
+        return wij(s) * lipsv(s, x) * 1 / (u * u);
     }
 
     bool Tac::beps(const double &x, const double &MDM)
@@ -224,7 +255,7 @@ namespace DT
         }
         I1 = h * (0.005377479872923 * (y[0] + y[30]) + 0.01500794732932 * (y[1] + y[29]) + 0.02546084732672 * (y[2] + y[28]) + 0.03534636079138 * (y[3] + y[27]) + 0.04458975132476 * (y[4] + y[26]) + 0.05348152469093 * (y[5] + y[25]) + 0.06200956780067 * (y[6] + y[24]) + 0.06985412131873 * (y[7] + y[23]) + 0.07684968075772 * (y[8] + y[22]) + 0.08308050282313 * (y[9] + y[21]) + 0.08856444305621 * (y[10] + y[20]) + 0.093126598170825 * (y[11] + y[19]) + 0.09664272698362 * (y[12] + y[18]) + 0.0991735987218 * (y[13] + y[17]) + 0.10076984552388 * (y[14] + y[16]) + 0.10133000701479 * y[15]);
         I2 = h * (0.0307532419961 * (y[1] + y[29]) + 0.07036604748811 * (y[3] + y[27]) + 0.10715922046717 * (y[5] + y[25]) + 0.1395706779262 * (y[7] + y[23]) + 0.16626920581699 * (y[9] + y[21]) + 0.18616100001556 * (y[11] + y[19]) + 0.19843148532711 * (y[13] + y[17]) + 0.2025782419256 * y[15]);
-        
+
         return (I1 + I2) / 2.;
     }
 

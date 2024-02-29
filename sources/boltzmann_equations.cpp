@@ -2,9 +2,9 @@
 
 namespace DT
 {
-    Beqs::Beqs(std::shared_ptr<Dof> degrees_of_freedom, std::shared_ptr<Model> model)
+    Beqs::Beqs(std::shared_ptr<Model> model)
     {
-        dof = degrees_of_freedom;
+        dof = std::make_unique<Dof>();
         mod = model;
         tac = std::make_unique<Tac>(mod);
     }
@@ -40,6 +40,33 @@ namespace DT
         return 2 * M_PI * M_PI * mod->MDM * mod->MDM * mod->MDM / (x * x * x) * dof->heff(mod->MDM / x) / 45;
     }
 
+    double Beqs::yeq(const double &x)
+    {
+        double yeq = 0;
+        double mtemp;
+        double a = 1 / (mod->MDM * mod->MDM);
+        double Tinv = x / mod->MDM;
+
+        if (x > 10)
+        {
+            for (auto it : mod->bath_masses)
+            {
+                mtemp = *it;
+                yeq += pow(mtemp, 2) * a * besselK2(Tinv * mtemp);
+            }
+        }
+        else
+        {
+            for (auto it : mod->bath_masses)
+            {
+                mtemp = *it;
+                yeq += pow(mtemp, 2) * a * std::cyl_bessel_k(2, Tinv * mtemp);
+            }
+        }
+        yeq *= 45 * x * x / (4 * dof->heff(1 / Tinv) * M_PI * M_PI * M_PI * M_PI);
+        return yeq;
+    }
+
     double Beqs::fstart(double x)
     {
         double dif = 0.5;       // (Y-Yeq)/Yeq at starting point
@@ -48,14 +75,14 @@ namespace DT
         double upper, lower, dlnYeqdent;
 
         x = mod->MDM / T_ent(ent + d);
-        upper = log(mod->yeq(x)); // logYeq for entropy = entropy + d
+        upper = log(yeq(x)); // logYeq for entropy = entropy + d
         x = mod->MDM / T_ent(ent - d);
-        lower = log(mod->yeq(x));               // logYeq for entropy = entropy - d
+        lower = log(yeq(x));               // logYeq for entropy = entropy - d
         dlnYeqdent = (upper - lower) / (2 * d); // this is derivative of logYeq wrt entropy
         x = mod->MDM / T_ent(ent);
 
         // eq 6 from microlecture
-        return (dlnYeqdent * (sqrt(6 * M_PI * M_PI * M_PI / 30 * mod->MDM * mod->MDM * mod->MDM * mod->MDM / (x * x * x * x) * dof->geff(mod->MDM / x) * G) / tac->tac(x)) - dif * mod->yeq(x));
+        return (dlnYeqdent * (sqrt(6 * M_PI * M_PI * M_PI / 30 * mod->MDM * mod->MDM * mod->MDM * mod->MDM / (x * x * x * x) * dof->geff(mod->MDM / x) * G) / tac->tac(x)) - dif * yeq(x));
     }
 
     double Beqs::beq(const double &x, const double &y)
@@ -64,9 +91,9 @@ namespace DT
         switch (mech)
         {
         case 0:
-            res += -pre(x) * tac->tac(x) * (y * y - pow(mod->yeq(x), 2));
+            res += -pre(x) * tac->tac(x) * (y * y - pow(yeq(x), 2));
             break;
-        
+
         case 1:
             mod->assign_bath_masses({"Chi"});
             res += 0;

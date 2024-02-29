@@ -20,6 +20,8 @@ namespace DT
         std::map<double, vstring>::iterator ini_it;
 
     public:
+        Tac(std::shared_ptr<Model> model);
+
         std::unordered_map<double, double> sig_s;
         std::unordered_map<double, double> tac_x;
         std::map<double, vstring> inimap;
@@ -30,8 +32,6 @@ namespace DT
         // sorts different channels by their total initial state masses
         void sort_inimasses(const vstring &ch_str = {});
 
-        void clear_state();
-
         // 3/8 simpson rule
         double simpson38(const double l, const double r, const double &s);
 
@@ -39,6 +39,8 @@ namespace DT
         double adaptive_simpson38(const double l, const double r, const double &s, const double ans, int depth = 0);
 
         double wij(const double &s);
+
+        double lipsv(const double &s, const double &x);
 
         double sigv(const double &u, const double &x);
 
@@ -79,7 +81,8 @@ namespace DT
         // the one. the only. the THERMALLY AVERAGED CROSS SECTION!! at a certain x value
         double tac(const double &x);
 
-        Tac(std::shared_ptr<Model> model);
+        void clear_state();
+
         ~Tac(){};
     };
 

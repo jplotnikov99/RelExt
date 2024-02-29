@@ -18,6 +18,7 @@ namespace DT
         std::unique_ptr<Tac> tac;
 
     public:
+        Beqs(std::shared_ptr<Model> model);
         // set the DM generatio mechanism
         void set_mechanism(const size_t &m);
 
@@ -36,13 +37,14 @@ namespace DT
         // Entropy for a given temperature
         double ent_T(const double &x);
 
+        double yeq(const double &x);
+
         // function to help find the starting point to be used in the runge Kutta routine
         double fstart(double x);
 
         // Boltzmann equation that needs to be solved for freeze-out and simple freeze-in
         double beq(const double &x, const double &y);
 
-        Beqs(std::shared_ptr<Dof> degrees_of_freedom, std::shared_ptr<Model> model);
         ~Beqs(){};
     };
 

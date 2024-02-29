@@ -2,11 +2,10 @@
 
 namespace DT
 {
-    BeqSolver::BeqSolver(std::shared_ptr<Dof> degrees_of_freedom, std::shared_ptr<Model> model)
+    BeqSolver::BeqSolver(std::shared_ptr<Model> model)
     {
         mod = model;
-        dof = degrees_of_freedom;
-        beq = std::make_unique<Beqs>(dof, mod);
+        beq = std::make_unique<Beqs>(mod);
     }
 
     void BeqSolver::set_mechanism(const size_t &mech)
@@ -17,6 +16,11 @@ namespace DT
     void BeqSolver::sort_inimasses(const vstring &ch_str)
     {
         beq->sort_inimasses(ch_str);
+    }
+
+    double BeqSolver::yeq(const double &x)
+    {
+        return beq->yeq(x);
     }
 
     double BeqSolver::secant_method(double x0, double x1)

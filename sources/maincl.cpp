@@ -6,7 +6,7 @@ namespace DT
     {
         rdr = std::make_unique<DataReader>(argv);
         dof = std::make_shared<Dof>();
-        mod = std::make_shared<Model>(dof);
+        mod = std::make_shared<Model>();
 
         mod->init();
         mod->load_parameter_map();
@@ -15,7 +15,7 @@ namespace DT
         N_par_points = rdr->datalines();
         rdr->scanpars = rdr->assignHeaders(mod->parmap);
 
-        bsol = std::make_unique<BeqSolver>(dof, mod);
+        bsol = std::make_unique<BeqSolver>(mod);
     }
 
     void Main::load_parameters(const size_t i)
@@ -76,7 +76,7 @@ namespace DT
 
                 bsol->sort_inimasses(stronk_channels);
                 x = bsol->secant_method(15., 15.1);
-                y = 1.5 * mod->yeq(x);
+                y = 1.5 * bsol->yeq(x);
                 bsol->adap_rk4(xtoday_FO, x, y);
 
                 x = omega / (2.742e8 * mod->MDM * y);
@@ -123,7 +123,7 @@ namespace DT
         if (bath_procs.size() != 0)
             bsol->sort_inimasses(bath_procs);
         x = bsol->secant_method(15., 15.1);
-        y = 1.5 * mod->yeq(x);
+        y = 1.5 * bsol->yeq(x);
         xinitial = x;
 
         printf("Initial x: %.5e\n", x);
