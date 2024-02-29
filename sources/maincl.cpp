@@ -163,15 +163,6 @@ namespace DT
         return omega;
     }
 
-    double Main::calc_Omega_EXP()
-    {
-        bsol->set_mechanism(1);
-        
-        double x = xR;
-        double y = 0;
-
-    }
-
 
     void Main::save_data(char **argv, const vstring save_pars, bool channels)
     {
