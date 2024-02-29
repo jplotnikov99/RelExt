@@ -11,28 +11,46 @@
 
 namespace DT
 {
+#define ADDCHANNEL(name, namefl, m1, m2, m3, m4) \
+    channelnames.push_back(#name);               \
+    amp2s[#name] = name;                         \
+    amp2fls[#name] = namefl;                     \
+    mass1s[#name] = &m1;                         \
+    mass2s[#name] = &m2;                         \
+    mass3s[#name] = &m3;                         \
+    mass4s[#name] = &m4;
+
+#define ADDINITIALSTATE(name, m1, m2) \
+    inifuncs.push_back(name);         \
+    inimasses.push_back(&m1);         \
+    inimasses.push_back(&m2);
+
     typedef std::function<double(const double &, const double &)> f;
     typedef std::vector<f> vamp2;
     typedef std::unordered_map<std::string, f> fmap;
+
     class Model
     {
 
     private:
+        std::unordered_map<std::string, double *> particles;
         std::vector<double *> dsmasses;
         std::vector<double *> neutraldsmasses;
-        std::vector<double *> inimasses;
         vamp2 inifuncs;
         fmap amp2s;
         fmap amp2fls;
         vstring channelnames;
         std::unordered_map<std::string, double *> mass1s;
         std::unordered_map<std::string, double *> mass2s;
-        std::unordered_map<std::string, double *> particles;
+        std::unordered_map<std::string, double *> mass3s;
+        std::unordered_map<std::string, double *> mass4s;
         std::shared_ptr<Dof> dof;
+        std::vector<double *> inimasses;
         vamp2 cur_channel;
         size_t N_cur;
         size_t N_all_channels;
         std::vector<double *> bath_masses;
+        double ZERO = 0;
 
     public:
         size_t N_initial_states;

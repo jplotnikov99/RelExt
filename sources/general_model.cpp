@@ -114,8 +114,6 @@ namespace DT
         {
             res += it(cos_t, s);
         }
-        // std::cout << res << std::endl;
-        // exit(1);
         return res;
     }
 

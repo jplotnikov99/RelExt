@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
-(*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
-directory = "/home/johann/Documents/Projects/DM/darktree_new/md_trsm/FR_modfiles" <> "/FA_modfiles";
+directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
+(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
 Print[directory]
 
 (*start FA and FC*)
@@ -306,7 +306,7 @@ Do[
 	Print[ToString[processname[[i]]]];
 	FCClearScalarProducts[];
 	SetMandelstam[s, t, u, p1, p2, -p3, -p4, TheMass[foutfinallist[[i,1]]], TheMass[foutfinallist[[i,2]]], TheMass[foutfinallist[[i,3]]], TheMass[foutfinallist[[i,4]]] ];
-	tamp2 = fastamp2[ampslist[[i]]/.alpha->0/.widthsub]; 
+	tamp2 = fastamp2[ampslist[[i]]/.widthsub]; 
 	subdiagrams = {};
 	prefac=determinefac[foutfinallist[[i]], 2];
 	
@@ -750,54 +750,39 @@ Write[sfile, "\t\tdouble gs = 1.21358;"];
 Write[sfile, "\t\tdouble G = 1.21358;"];
 Write[sfile, "\t\tdouble FAGS = 1.21358;\n"];
 Do[
+	Write[sfile, "\t\tparticles[\"",ToString[dsnames[[i]]],"\"]=&",ToString[dsmass[[i]]],";"]
+,{i,Length[dsmass]}]
+Do[
 	Write[sfile, "\t\tdsmasses.push_back(&", dsmass[[i]],");"];
 ,{i,Length[dsmass]}]
 Do[
 	Write[sfile, "\t\tneutraldsmasses.push_back(&", neutraldsmasses[[i]],");"];
 ,{i,Length[neutraldsmasses]}]
+
 Do[
-	Write[sfile, "\t\tparticles[\"",ToString[dsnames[[i]]],"\"]=&",ToString[dsmass[[i]]],";"]
-,{i,Length[dsmass]}]
-Do[
-	Write[sfile, "\t\tchannelnames.push_back(\"",ToString[processname[[i]]],"\");"];
-	Write[sfile, "\t\tamp2s[\"",ToString[processname[[i]]],"\"]=",ToString[processname[[i]]],";"];
-	Write[sfile, "\t\tamp2fls[\"",ToString[processname[[i]]],"\"]=",ToString[processname[[i]]],"fl;"];
-	If[PossibleZeroQ[mi[[i]]],
-		Write[sfile, "\t\tmass1s[\"",ToString[processname[[i]]],"\"]=",ToString[ReplaceAll[mi[[i]],subrule]],";"],
-		Write[sfile, "\t\tmass1s[\"",ToString[processname[[i]]],"\"]=&",ToString[ReplaceAll[mi[[i]],subrule]],";"];
-	];
-	If[PossibleZeroQ[mj[[i]]],
-		Write[sfile, "\t\tmass2s[\"",ToString[processname[[i]]],"\"]=",ToString[ReplaceAll[mj[[i]],subrule]],";"],
-		Write[sfile, "\t\tmass2s[\"",ToString[processname[[i]]],"\"]=&",ToString[ReplaceAll[mj[[i]],subrule]],";"];
-	];
-	(*If[PossibleZeroQ[mk[[i]]],
-		Write[sfile, "\t\tmass3s.push_back(",ToString[ReplaceAll[mk[[i]],subrule]],");"],
-		Write[sfile, "\t\tmass3s.push_back(&",ToString[ReplaceAll[mk[[i]],subrule]],");"];
-	];
-	If[PossibleZeroQ[ml[[i]]],
-		Write[sfile, "\t\tmass4s.push_back(",ToString[ReplaceAll[ml[[i]],subrule]],");"],
-		Write[sfile, "\t\tmass4s.push_back(&",ToString[ReplaceAll[ml[[i]],subrule]],");"];
-	]*)
+Write[sfile, "\t\tADDCHANNEL(",ToString[processname[[i]]],", ",ToString[processname[[i]]],"fl, "
+,StringReplace[ToString[ReplaceAll[mi[[i]],subrule]],"0"->"ZERO"],", ",StringReplace[ToString[ReplaceAll[mj[[i]],subrule]],"0"->"ZERO"],", "
+,StringReplace[ToString[ReplaceAll[mk[[i]],subrule]],"0"->"ZERO"],", ",StringReplace[ToString[ReplaceAll[ml[[i]],subrule]],"0"->"ZERO"],")"];
 ,{i,Length[processname]}]
+
 Do[
-	Write[sfile, "\t\tchannelnames.push_back(\"",ToString[possibleini[[i]]],"\");"];
-	Write[sfile, "\t\tamp2fls[\"",ToString[possibleini[[i]]],"\"]=",ToString[possibleini[[i]]],";"];
-	If[PossibleZeroQ[inimass[[2*i-1]]],
-		Write[sfile, "\t\tmass1s[\"",ToString[possibleini[[i]]],"\"]=",ToString[ReplaceAll[inimass[[2*i-1]],subrule]],";"],
-		Write[sfile, "\t\tmass1s[\"",ToString[possibleini[[i]]],"\"]=&",ToString[ReplaceAll[inimass[[2*i-1]],subrule]],";"];
-	];
-	If[PossibleZeroQ[inimass[[2*i]]],
-		Write[sfile, "\t\tmass2s[\"",ToString[possibleini[[i]]],"\"]=",ToString[ReplaceAll[inimass[[2*i]],subrule]],";"],
-		Write[sfile, "\t\tmass2s[\"",ToString[possibleini[[i]]],"\"]=&",ToString[ReplaceAll[inimass[[2*i]],subrule]],";"];
-	];
+Write[sfile, "\t\tADDCHANNEL(",ToString[possibleini[[i]]],", ",ToString[possibleini[[i]]],", "
+,StringReplace[ToString[ReplaceAll[inimass[[2*i-1]],subrule]],"0"->"ZERO"],", ",StringReplace[ToString[ReplaceAll[inimass[[2*i]],subrule]],"0"->"ZERO"],", "
+,StringReplace[ToString[ReplaceAll[inimass[[2*i-1]],subrule]],"0"->"ZERO"],", ",StringReplace[ToString[ReplaceAll[inimass[[2*i]],subrule]],"0"->"ZERO"],")"];
 ,{i,Length[possibleini]}]
+
 Do[
+	Write[sfile, "\t\tADDINITIALSTATE(", ToString[possibleini[[i]]] ,", ",
+	StringReplace[ToString[ReplaceAll[inimass[[2*i-1]],subrule]],"0"->"ZERO"],", ",StringReplace[ToString[ReplaceAll[inimass[[2*i]],subrule]],"0"->"ZERO"],")"];
+,{i,Length[possibleini]}]
+
+(*Do[
 	Write[sfile, "\t\tinifuncs.push_back(", possibleini[[i]] ,");"];
 ,{i,Length[possibleini]}]
-Write[sfile,"\t\tN_initial_states = ",ToString[Length[possibleini]],";"];
 Do[
 	Write[sfile, "\t\tinimasses.push_back(&", inimass[[i]] , ");"];
-,{i,Length[inimass]}]
+,{i,Length[inimass]}]*)
+Write[sfile,"\t\tN_initial_states = ",ToString[Length[possibleini]],";"];
 Do[
 	Write[sfile, "\t\tdenstructures.push_back(&", StringReplace[ToString[relevantWs[[i]]],{"FeynCalc`"->""}] ,");"];
 ,{i,Length[relevantWs]}]
@@ -961,7 +946,4 @@ Do[
 ,{i,Length[possibleiniDecays]}]
 
 
-final[[Length[final]]]
-
-
-ampslist[[Length[final]]]/.alpha->0
+StringReplace[ToString[mk[[2]]],"0"->"ZERO"]

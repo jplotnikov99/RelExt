@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     //std::vector<std::string> bath = {};
     //main.def_thermal_bath(bath);
 
-    for (size_t i = 1; i < 2; i++)
+    for (size_t i = 1; i < 10; i++)
     {
 
         std::vector<std::string> ch = {};

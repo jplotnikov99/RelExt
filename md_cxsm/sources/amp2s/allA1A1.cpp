@@ -6,1002 +6,1054 @@
 double DT::A1A1HH(const double &cos_t, const double &s){
 double t =  (MA1*MA1) + (-s + cos_t*sqrt(s - 4* (MA1*MA1))*sqrt(s - 4*\
  
-   (MH*MH)))/2. +  (MH*MH);
+      (MH*MH)))/2. +  (MH*MH);
 double u = -s - t + MA1*MA1 + MA1*MA1 + MH*MH + MH*MH;
 return (9* (MH*MH*MH*MH)* (( (MH*MH) +  (WH*WH))*( (MH*MH) +  (WH*WH)))*\
  
-   ((3*svev*cos( alpha) + svev*cos( 3*alpha) + 4*vev*\
+      ((3*svev*cos( alpha) + svev*cos( 3*alpha) + 4*vev*\
  
-   (sin(alpha)*sin(alpha)*sin(alpha)))*(3*svev*cos( alpha) + svev*cos(\
+      (sin(alpha)*sin(alpha)*sin(alpha)))*(3*svev*cos( alpha) + svev*cos(\
  
-   3*alpha) + 4*vev* (sin(alpha)*sin(alpha)*sin(alpha))))*\
+      3*alpha) + 4*vev* (sin(alpha)*sin(alpha)*sin(alpha))))*\
  
-   (sin(alpha)*sin(alpha)))/(16.* (svev*svev*svev*svev)* (vev*vev)*(\
+      (sin(alpha)*sin(alpha)))/(16.* (svev*svev*svev*svev)* (vev*vev)*(\
  
-   (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) + (3*(-s + \
+      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) + (3*(-s + \
  
-   (MH*MH))* (MH*MH*MH*MH)* (( (MH*MH) +  (WH*WH))*( (MH*MH) +  (WH*WH)))*\
+      (MH*MH))* (MH*MH*MH*MH)* (( (MH*MH) +  (WH*WH))*( (MH*MH) +  (WH*WH)))*\
  
-   (sin(alpha)*sin(alpha)*sin(alpha))*(3*svev*cos( alpha) + svev*cos(\
+      (sin(alpha)*sin(alpha)*sin(alpha))*(3*svev*cos( alpha) + svev*cos(\
  
-   3*alpha) + 4*vev* (sin(alpha)*sin(alpha)*sin(alpha))))/(2.*vev*(-t + \
+      3*alpha) + 4*vev* (sin(alpha)*sin(alpha)*sin(alpha))))/(2.*vev*(-t + \
  
-   (MA1*MA1))* (svev*svev*svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
+      (MA1*MA1))* (svev*svev*svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   (MH*MH)*(-2*s +  (WH*WH)))) + (3*(-s +  (MH*MH))* (MH*MH*MH*MH)* ((\
+      (MH*MH)*(-2*s +  (WH*WH)))) + (3*(-s +  (MH*MH))* (MH*MH*MH*MH)* ((\
  
-   (MH*MH) +  (WH*WH))*( (MH*MH) +  (WH*WH)))*\
+      (MH*MH) +  (WH*WH))*( (MH*MH) +  (WH*WH)))*\
  
-   (sin(alpha)*sin(alpha)*sin(alpha))*(3*svev*cos( alpha) + svev*cos(\
+      (sin(alpha)*sin(alpha)*sin(alpha))*(3*svev*cos( alpha) + svev*cos(\
  
-   3*alpha) + 4*vev* (sin(alpha)*sin(alpha)*sin(alpha))))/(2.*vev*(-u + \
+      3*alpha) + 4*vev* (sin(alpha)*sin(alpha)*sin(alpha))))/(2.*vev*(-u + \
  
-   (MA1*MA1))* (svev*svev*svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
+      (MA1*MA1))* (svev*svev*svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   (MH*MH)*(-2*s +  (WH*WH)))) + (2* (MH*MH*MH*MH)* (( (MH*MH) +  (WH*WH))*(\
+      (MH*MH)*(-2*s +  (WH*WH)))) + (2* (MH*MH*MH*MH)* (( (MH*MH) + \
  
-   (MH*MH) +  (WH*WH)))* (sin(alpha)*sin(alpha)*sin(alpha)*sin(alpha)))/((-t\
+      (WH*WH))*( (MH*MH) +  (WH*WH)))*\
  
-   +  (MA1*MA1))*(-u +  (MA1*MA1))* (svev*svev*svev*svev)) + ( (MH*MH*MH*MH)*\
+      (sin(alpha)*sin(alpha)*sin(alpha)*sin(alpha)))/((-t +  (MA1*MA1))*(-u +\
  
-   (( (MH*MH) +  (WH*WH))*( (MH*MH) +  (WH*WH)))*\
+       (MA1*MA1))* (svev*svev*svev*svev)) + ( (MH*MH*MH*MH)* (( (MH*MH) + \
  
-   (sin(alpha)*sin(alpha)*sin(alpha)*sin(alpha)))/( (svev*svev*svev*svev)* ((\
+      (WH*WH))*( (MH*MH) +  (WH*WH)))*\
  
-   (MA1*MA1) - t)*( (MA1*MA1) - t))) + ( (MH*MH*MH*MH)* (( (MH*MH) + \
+      (sin(alpha)*sin(alpha)*sin(alpha)*sin(alpha)))/( (svev*svev*svev*svev)*\
  
-   (WH*WH))*( (MH*MH) +  (WH*WH)))*\
+      (( (MA1*MA1) - t)*( (MA1*MA1) - t))) + ( (MH*MH*MH*MH)* (( (MH*MH) + \
  
-   (sin(alpha)*sin(alpha)*sin(alpha)*sin(alpha)))/( (svev*svev*svev*svev)* ((\
+      (WH*WH))*( (MH*MH) +  (WH*WH)))*\
  
-   (MA1*MA1) - u)*( (MA1*MA1) - u))) + ( (MS1*MS1)*( (MS1*MS1) + \
+      (sin(alpha)*sin(alpha)*sin(alpha)*sin(alpha)))/( (svev*svev*svev*svev)*\
  
-   (WS1*WS1))*(4*MH*MS1*WH*WS1 + 4* (MH*MH*MH*MH) + 4* (MH*MH)*( (MS1*MS1) + \
+      (( (MA1*MA1) - u)*( (MA1*MA1) - u))) + ( (MS1*MS1)*( (MS1*MS1) + \
  
-   (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))* (cos( alpha)*cos(\
+      (WS1*WS1))*(4*MH*MS1*WH*WS1 + 4* (MH*MH*MH*MH) + 4* (MH*MH)*( (MS1*MS1)\
  
-   alpha)*cos( alpha)*cos( alpha))* (sin(alpha)*sin(alpha))* ((svev*cos(\
+      +  (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))* (cos( alpha)*cos(\
  
-   alpha) - vev*sin(alpha))*(svev*cos( alpha) - vev*sin(alpha))))/(\
+      alpha)*cos( alpha)*cos( alpha))* (sin(alpha)*sin(alpha))* ((svev*cos(\
  
-   (svev*svev*svev*svev)* (vev*vev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+      alpha) - vev*sin(alpha))*(svev*cos( alpha) - vev*sin(alpha))))/(\
  
-   (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (2*MS1* (MH*MH)*(-2*s*WH*WS1* (MH*MH*MH)\
+      (svev*svev*svev*svev)* (vev*vev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
  
-   + 2*MS1* (MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) + 2*MH*WH*WS1*(\
+      (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (2*MS1* (MH*MH)*(-2*s*WH*WS1*\
  
-   (MS1*MS1*MS1*MS1) - s* (WH*WH) +  (MS1*MS1)*(-2*s +  (WS1*WS1))) - MS1*\
+      (MH*MH*MH) + 2*MS1* (MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) +\
  
-   (WH*WH)*( (MS1*MS1*MS1*MS1) + s* (WS1*WS1) +  (MS1*MS1)*(-s +  (WS1*WS1)))\
+      2*MH*WH*WS1*( (MS1*MS1*MS1*MS1) - s* (WH*WH) +  (MS1*MS1)*(-2*s + \
  
-   + MS1* (MH*MH)*( (MS1*MS1*MS1*MS1) - 2*s* (WH*WH) + s* (WS1*WS1) + 2*\
+      (WS1*WS1))) - MS1* (WH*WH)*( (MS1*MS1*MS1*MS1) + s* (WS1*WS1) + \
  
-   (WH*WH)* (WS1*WS1) +  (MS1*MS1)*(-s + 2* (WH*WH) +  (WS1*WS1))))* (cos(\
+      (MS1*MS1)*(-s +  (WS1*WS1))) + MS1* (MH*MH)*( (MS1*MS1*MS1*MS1) - 2*s*\
  
-   alpha)*cos( alpha))* (sin(alpha)*sin(alpha)*sin(alpha))*(svev*cos( alpha)\
+      (WH*WH) + s* (WS1*WS1) + 2* (WH*WH)* (WS1*WS1) +  (MS1*MS1)*(-s + 2*\
  
-   - vev*sin(alpha)))/(vev*(-t +  (MA1*MA1))* (svev*svev*svev*svev)*(\
+      (WH*WH) +  (WS1*WS1))))* (cos( alpha)*cos( alpha))*\
  
-   (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (2*MS1*\
+      (sin(alpha)*sin(alpha)*sin(alpha))*(svev*cos( alpha) -\
  
-   (MH*MH)*(-2*s*WH*WS1* (MH*MH*MH) + 2*MS1* (MH*MH*MH*MH)*(-s +  (MS1*MS1) +\
+      vev*sin(alpha)))/(vev*(-t +  (MA1*MA1))* (svev*svev*svev*svev)*(\
  
-    (WS1*WS1)) + 2*MH*WH*WS1*( (MS1*MS1*MS1*MS1) - s* (WH*WH) + \
+      (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (2*MS1*\
  
-   (MS1*MS1)*(-2*s +  (WS1*WS1))) - MS1* (WH*WH)*( (MS1*MS1*MS1*MS1) + s*\
+      (MH*MH)*(-2*s*WH*WS1* (MH*MH*MH) + 2*MS1* (MH*MH*MH*MH)*(-s + \
  
-   (WS1*WS1) +  (MS1*MS1)*(-s +  (WS1*WS1))) + MS1* (MH*MH)*(\
+      (MS1*MS1) +  (WS1*WS1)) + 2*MH*WH*WS1*( (MS1*MS1*MS1*MS1) - s* (WH*WH)\
  
-   (MS1*MS1*MS1*MS1) - 2*s* (WH*WH) + s* (WS1*WS1) + 2* (WH*WH)* (WS1*WS1) + \
+      +  (MS1*MS1)*(-2*s +  (WS1*WS1))) - MS1* (WH*WH)*( (MS1*MS1*MS1*MS1) +\
  
-   (MS1*MS1)*(-s + 2* (WH*WH) +  (WS1*WS1))))* (cos( alpha)*cos( alpha))*\
+      s* (WS1*WS1) +  (MS1*MS1)*(-s +  (WS1*WS1))) + MS1* (MH*MH)*(\
  
-   (sin(alpha)*sin(alpha)*sin(alpha))*(svev*cos( alpha) -\
+      (MS1*MS1*MS1*MS1) - 2*s* (WH*WH) + s* (WS1*WS1) + 2* (WH*WH)* (WS1*WS1)\
  
-   vev*sin(alpha)))/(vev*(-u +  (MA1*MA1))* (svev*svev*svev*svev)*(\
+      +  (MS1*MS1)*(-s + 2* (WH*WH) +  (WS1*WS1))))* (cos( alpha)*cos(\
  
-   (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (3*\
+      alpha))* (sin(alpha)*sin(alpha)*sin(alpha))*(svev*cos( alpha) -\
  
-   (MH*MH)* (sin(alpha)*sin(alpha))*(3*svev*cos( alpha) + svev*cos( 3*alpha)\
+      vev*sin(alpha)))/(vev*(-u +  (MA1*MA1))* (svev*svev*svev*svev)*(\
  
-   + 4*vev* (sin(alpha)*sin(alpha)*sin(alpha)))*(3*svev*cos(\
+      (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (3*\
  
-   alpha)*(-(MS1*WH*WS1* (MH*MH*MH)) +  (MH*MH*MH*MH*MH*MH) - \
+      (MH*MH)* (sin(alpha)*sin(alpha))*(3*svev*cos( alpha) + svev*cos(\
  
-   (MH*MH*MH*MH)*(s +  (MS1*MS1) - 2* (WH*WH)) +  (MH*MH)*(s -  (WH*WH))*(\
+      3*alpha) + 4*vev* (sin(alpha)*sin(alpha)*sin(alpha)))*(3*svev*cos(\
  
-   (MS1*MS1) -  (WH*WH)) - s* (MS1*MS1)* (WH*WH) - MH*MS1*WH*WS1*(-2*s + \
+      alpha)*(-(MS1*WH*WS1* (MH*MH*MH)) +  (MH*MH*MH*MH*MH*MH) - \
  
-   (WH*WH))) + svev*cos( 3*alpha)*(-(MS1*WH*WS1* (MH*MH*MH)) + \
+      (MH*MH*MH*MH)*(s +  (MS1*MS1) - 2* (WH*WH)) +  (MH*MH)*(s -  (WH*WH))*(\
  
-   (MH*MH*MH*MH*MH*MH) -  (MH*MH*MH*MH)*(s +  (MS1*MS1) - 2* (WH*WH)) + \
+      (MS1*MS1) -  (WH*WH)) - s* (MS1*MS1)* (WH*WH) - MH*MS1*WH*WS1*(-2*s + \
  
-   (MH*MH)*(s -  (WH*WH))*( (MS1*MS1) -  (WH*WH)) - s* (MS1*MS1)* (WH*WH) -\
+      (WH*WH))) + svev*cos( 3*alpha)*(-(MS1*WH*WS1* (MH*MH*MH)) + \
  
-   MH*MS1*WH*WS1*(-2*s +  (WH*WH))) - 2*vev*(-(MS1*WH*WS1* (MH*MH*MH)) - \
+      (MH*MH*MH*MH*MH*MH) -  (MH*MH*MH*MH)*(s +  (MS1*MS1) - 2* (WH*WH)) + \
  
-   (MH*MH*MH*MH*MH*MH) +  (MH*MH*MH*MH)*(s -  (MS1*MS1) - 2* (WH*WH)) - s*\
+      (MH*MH)*(s -  (WH*WH))*( (MS1*MS1) -  (WH*WH)) - s* (MS1*MS1)* (WH*WH)\
  
-   (MS1*MS1)* (WH*WH) - MH*MS1*WH*WS1*(-2*s +  (WH*WH)) +  (MH*MH)*(s - \
+      - MH*MS1*WH*WS1*(-2*s +  (WH*WH))) - 2*vev*(-(MS1*WH*WS1* (MH*MH*MH)) -\
  
-   (WH*WH))*( (MS1*MS1) +  (WH*WH)) + cos( 2*alpha)*(-(MS1*WH*WS1*\
+       (MH*MH*MH*MH*MH*MH) +  (MH*MH*MH*MH)*(s -  (MS1*MS1) - 2* (WH*WH)) -\
  
-   (MH*MH*MH)) +  (MH*MH*MH*MH*MH*MH) -  (MH*MH*MH*MH)*(s +  (MS1*MS1) - 2*\
+      s* (MS1*MS1)* (WH*WH) - MH*MS1*WH*WS1*(-2*s +  (WH*WH)) +  (MH*MH)*(s -\
  
-   (WH*WH)) +  (MH*MH)*(s -  (WH*WH))*( (MS1*MS1) -  (WH*WH)) - s* (MS1*MS1)*\
+       (WH*WH))*( (MS1*MS1) +  (WH*WH)) + cos( 2*alpha)*(-(MS1*WH*WS1*\
  
-   (WH*WH) - MH*MS1*WH*WS1*(-2*s +  (WH*WH))))*sin(alpha)))/(8.*\
+      (MH*MH*MH)) +  (MH*MH*MH*MH*MH*MH) -  (MH*MH*MH*MH)*(s +  (MS1*MS1) -\
  
-   (svev*svev*svev*svev)* (vev*vev)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s\
+      2* (WH*WH)) +  (MH*MH)*(s -  (WH*WH))*( (MS1*MS1) -  (WH*WH)) - s*\
  
-   +  (WH*WH)))) - ( (MH*MH)*\
+      (MS1*MS1)* (WH*WH) - MH*MS1*WH*WS1*(-2*s + \
  
-   (sin(alpha)*sin(alpha)*sin(alpha))*(2*svev*(-2*MH*MS1*WH*WS1 + \
+      (WH*WH))))*sin(alpha)))/(8.* (svev*svev*svev*svev)* (vev*vev)*(\
  
-   (MH*MH*MH*MH) +  (MS1*MS1)* (WH*WH) +  (MH*MH)*(- (MS1*MS1) +  (WH*WH)))*\
+      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) - ( (MH*MH)*\
  
-   (cos( alpha)*cos( alpha)*cos( alpha)) + vev*(2*MH*MS1*WH*WS1 + \
+      (sin(alpha)*sin(alpha)*sin(alpha))*(2*svev*(-2*MH*MS1*WH*WS1 + \
  
-   (MH*MH*MH*MH) -  (MS1*MS1)* (WH*WH) +  (MH*MH)*( (MS1*MS1) +  (WH*WH)) -\
+      (MH*MH*MH*MH) +  (MS1*MS1)* (WH*WH) +  (MH*MH)*(- (MS1*MS1) + \
  
-   cos( 2*alpha)*(-2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) +  (MS1*MS1)* (WH*WH) + \
+      (WH*WH)))* (cos( alpha)*cos( alpha)*cos( alpha)) + vev*(2*MH*MS1*WH*WS1\
  
-   (MH*MH)*(- (MS1*MS1) +  (WH*WH))))*sin(alpha)))/(vev*(-t +  (MA1*MA1))*\
+      +  (MH*MH*MH*MH) -  (MS1*MS1)* (WH*WH) +  (MH*MH)*( (MS1*MS1) + \
  
-   (svev*svev*svev*svev)) - ( (MH*MH)*\
+      (WH*WH)) - cos( 2*alpha)*(-2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) + \
  
-   (sin(alpha)*sin(alpha)*sin(alpha))*(2*svev*(-2*MH*MS1*WH*WS1 + \
+      (MS1*MS1)* (WH*WH) +  (MH*MH)*(- (MS1*MS1) + \
  
-   (MH*MH*MH*MH) +  (MS1*MS1)* (WH*WH) +  (MH*MH)*(- (MS1*MS1) +  (WH*WH)))*\
+      (WH*WH))))*sin(alpha)))/(vev*(-t +  (MA1*MA1))* (svev*svev*svev*svev))\
  
-   (cos( alpha)*cos( alpha)*cos( alpha)) + vev*(2*MH*MS1*WH*WS1 + \
+      - ( (MH*MH)*\
  
-   (MH*MH*MH*MH) -  (MS1*MS1)* (WH*WH) +  (MH*MH)*( (MS1*MS1) +  (WH*WH)) -\
+      (sin(alpha)*sin(alpha)*sin(alpha))*(2*svev*(-2*MH*MS1*WH*WS1 + \
  
-   cos( 2*alpha)*(-2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) +  (MS1*MS1)* (WH*WH) + \
+      (MH*MH*MH*MH) +  (MS1*MS1)* (WH*WH) +  (MH*MH)*(- (MS1*MS1) + \
  
-   (MH*MH)*(- (MS1*MS1) +  (WH*WH))))*sin(alpha)))/(vev*(-u +  (MA1*MA1))*\
+      (WH*WH)))* (cos( alpha)*cos( alpha)*cos( alpha)) + vev*(2*MH*MS1*WH*WS1\
  
-   (svev*svev*svev*svev)) - ( (MS1*MS1)* (cos( alpha)*cos( alpha))*\
+      +  (MH*MH*MH*MH) -  (MS1*MS1)* (WH*WH) +  (MH*MH)*( (MS1*MS1) + \
  
-   (sin(alpha)*sin(alpha))*(svev*cos( alpha) - vev*sin(alpha))*(-3*svev*cos(\
+      (WH*WH)) - cos( 2*alpha)*(-2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) + \
  
-   alpha)*(2* (MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) -  (MS1*MS1)*(\
+      (MS1*MS1)* (WH*WH) +  (MH*MH)*(- (MS1*MS1) + \
  
-   (MS1*MS1) +  (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) -\
+      (WH*WH))))*sin(alpha)))/(vev*(-u +  (MA1*MA1))* (svev*svev*svev*svev))\
  
-   MH*MS1*WH*WS1*(2*s +  (MS1*MS1) +  (WS1*WS1)) +  (MH*MH)*(-\
+      - ( (MS1*MS1)* (cos( alpha)*cos( alpha))*\
  
-   (MS1*MS1*MS1*MS1) - 2*s* (WH*WH) +  (MS1*MS1)*(s + 2* (WH*WH) - \
+      (sin(alpha)*sin(alpha))*(svev*cos( alpha) -\
  
-   (WS1*WS1)) + 3*s* (WS1*WS1) + 2* (WH*WH)* (WS1*WS1))) - svev*cos(\
+      vev*sin(alpha))*(-3*svev*cos( alpha)*(2* (MH*MH*MH*MH)*(-s +  (MS1*MS1)\
  
-   3*alpha)*(2* (MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) -  (MS1*MS1)*(\
+      +  (WS1*WS1)) -  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))*(-s +  (MS1*MS1) +\
  
-   (MS1*MS1) +  (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) -\
+       (WS1*WS1)) - MH*MS1*WH*WS1*(2*s +  (MS1*MS1) +  (WS1*WS1)) + \
  
-   MH*MS1*WH*WS1*(2*s +  (MS1*MS1) +  (WS1*WS1)) +  (MH*MH)*(-\
+      (MH*MH)*(- (MS1*MS1*MS1*MS1) - 2*s* (WH*WH) +  (MS1*MS1)*(s + 2*\
  
-   (MS1*MS1*MS1*MS1) - 2*s* (WH*WH) +  (MS1*MS1)*(s + 2* (WH*WH) - \
+      (WH*WH) -  (WS1*WS1)) + 3*s* (WS1*WS1) + 2* (WH*WH)* (WS1*WS1))) -\
  
-   (WS1*WS1)) + 3*s* (WS1*WS1) + 2* (WH*WH)* (WS1*WS1))) +\
+      svev*cos( 3*alpha)*(2* (MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) - \
  
-   2*vev*(MH*MS1*WH*WS1*(2*s - 3* (MS1*MS1) - 3* (WS1*WS1)) - 2*\
+      (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) -\
  
-   (MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) -  (MS1*MS1)*( (MS1*MS1) + \
+      MH*MS1*WH*WS1*(2*s +  (MS1*MS1) +  (WS1*WS1)) +  (MH*MH)*(-\
  
-   (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) +  (MH*MH)*(-3*\
+      (MS1*MS1*MS1*MS1) - 2*s* (WH*WH) +  (MS1*MS1)*(s + 2* (WH*WH) - \
  
-   (MS1*MS1*MS1*MS1) + 2*s* (WH*WH) +  (MS1*MS1)*(3*s - 2* (WH*WH) - 3*\
+      (WS1*WS1)) + 3*s* (WS1*WS1) + 2* (WH*WH)* (WS1*WS1))) +\
  
-   (WS1*WS1)) + s* (WS1*WS1) - 2* (WH*WH)* (WS1*WS1)) + cos( 2*alpha)*(2*\
+      2*vev*(MH*MS1*WH*WS1*(2*s - 3* (MS1*MS1) - 3* (WS1*WS1)) - 2*\
  
-   (MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) -  (MS1*MS1)*( (MS1*MS1) + \
+      (MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) -  (MS1*MS1)*( (MS1*MS1) +\
  
-   (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*WH*WS1*(2*s + \
+       (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) +  (MH*MH)*(-3*\
  
-   (MS1*MS1) +  (WS1*WS1)) +  (MH*MH)*(- (MS1*MS1*MS1*MS1) - 2*s* (WH*WH) + \
+      (MS1*MS1*MS1*MS1) + 2*s* (WH*WH) +  (MS1*MS1)*(3*s - 2* (WH*WH) - 3*\
  
-   (MS1*MS1)*(s + 2* (WH*WH) -  (WS1*WS1)) + 3*s* (WS1*WS1) + 2* (WH*WH)*\
+      (WS1*WS1)) + s* (WS1*WS1) - 2* (WH*WH)* (WS1*WS1)) + cos( 2*alpha)*(2*\
  
-   (WS1*WS1))))*sin(alpha)))/(2.* (svev*svev*svev*svev)* (vev*vev)*(\
+      (MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) -  (MS1*MS1)*( (MS1*MS1) +\
  
-   (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (\
+       (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*WH*WS1*(2*s + \
  
-   (sin(alpha)*sin(alpha))*(4* (svev*svev)*(-2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH)\
+      (MS1*MS1) +  (WS1*WS1)) +  (MH*MH)*(- (MS1*MS1*MS1*MS1) - 2*s* (WH*WH)\
  
-   +  (MH*MH)*(-2* (MS1*MS1) +  (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) + \
+      +  (MS1*MS1)*(s + 2* (WH*WH) -  (WS1*WS1)) + 3*s* (WS1*WS1) + 2*\
  
-   (WS1*WS1)))* (cos( alpha)*cos( alpha)*cos( alpha)*cos( alpha)*cos(\
+      (WH*WH)* (WS1*WS1))))*sin(alpha)))/(2.* (svev*svev*svev*svev)*\
  
-   alpha)*cos( alpha)) + ( (vev*vev)*(2*MH*MS1*WH*WS1 + 3* (MH*MH*MH*MH) + 2*\
+      (vev*vev)*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s + \
  
-   (MH*MH)* (MS1*MS1) + 3* (MS1*MS1*MS1*MS1) + 3* (MH*MH)* (WH*WH) + 3*\
+      (WS1*WS1)))) + ( (sin(alpha)*sin(alpha))*(4*\
  
-   (MS1*MS1)* (WS1*WS1) - 4*cos( 2*alpha)*( (MH*MH*MH*MH) +  (MH*MH)* (WH*WH)\
+      (svev*svev)*(-2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) +  (MH*MH)*(-2*\
  
-   -  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))) + cos( 4*alpha)*(-2*MH*MS1*WH*WS1\
+      (MS1*MS1) +  (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))* (cos(\
  
-   +  (MH*MH*MH*MH) +  (MH*MH)*(-2* (MS1*MS1) +  (WH*WH)) +  (MS1*MS1)*(\
+      alpha)*cos( alpha)*cos( alpha)*cos( alpha)*cos( alpha)*cos( alpha)) + (\
  
-   (MS1*MS1) +  (WS1*WS1))))* (sin(alpha)*sin(alpha)))/2. - 4*svev*vev*(-\
+      (vev*vev)*(2*MH*MS1*WH*WS1 + 3* (MH*MH*MH*MH) + 2* (MH*MH)* (MS1*MS1) +\
  
-   (MH*MH*MH*MH) +  (MS1*MS1*MS1*MS1) -  (MH*MH)* (WH*WH) +  (MS1*MS1)*\
+      3* (MS1*MS1*MS1*MS1) + 3* (MH*MH)* (WH*WH) + 3* (MS1*MS1)* (WS1*WS1) -\
  
-   (WS1*WS1) + cos( 2*alpha)*(-2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) + \
+      4*cos( 2*alpha)*( (MH*MH*MH*MH) +  (MH*MH)* (WH*WH) -  (MS1*MS1)*(\
  
-   (MH*MH)*(-2* (MS1*MS1) +  (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) + \
+      (MS1*MS1) +  (WS1*WS1))) + cos( 4*alpha)*(-2*MH*MS1*WH*WS1 + \
  
-   (WS1*WS1))))* (cos( alpha)*cos( alpha)*cos( alpha))*sin(alpha)))/(4.*\
+      (MH*MH*MH*MH) +  (MH*MH)*(-2* (MS1*MS1) +  (WH*WH)) +  (MS1*MS1)*(\
  
-   (svev*svev*svev*svev)* (vev*vev)) - (3*MS1* (MH*MH)*(MH*WH*WS1*(2* (s*s)*\
+      (MS1*MS1) +  (WS1*WS1))))* (sin(alpha)*sin(alpha)))/2. - 4*svev*vev*(-\
  
-   (WH*WH) +  (MS1*MS1*MS1*MS1)*(-2*s +  (WH*WH)) +  (MS1*MS1)*(2*s - \
+      (MH*MH*MH*MH) +  (MS1*MS1*MS1*MS1) -  (MH*MH)* (WH*WH) +  (MS1*MS1)*\
  
-   (WH*WH))*(2*s -  (WS1*WS1))) + 2*MS1* (MH*MH*MH*MH*MH*MH)*(-s +  (MS1*MS1)\
+      (WS1*WS1) + cos( 2*alpha)*(-2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) + \
  
-   +  (WS1*WS1)) + WH*WS1* (MH*MH*MH)*( (MS1*MS1*MS1*MS1) + 2* (s*s) + \
+      (MH*MH)*(-2* (MS1*MS1) +  (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) + \
  
-   (MS1*MS1)*(-2*s +  (WS1*WS1))) + MS1*s* (WH*WH)*( (MS1*MS1*MS1*MS1) + s*\
+      (WS1*WS1))))* (cos( alpha)*cos( alpha)*cos( alpha))*sin(alpha)))/(4.*\
  
-   (WS1*WS1) +  (MS1*MS1)*(-s +  (WS1*WS1))) - MS1* (MH*MH)*(s -  (WH*WH))*(\
+      (svev*svev*svev*svev)* (vev*vev)) - (3*MS1* (MH*MH)*(MH*WH*WS1*(2*\
  
-   (MS1*MS1*MS1*MS1) + 2* (WH*WH)* (WS1*WS1) + s*(-2* (WH*WH) +  (WS1*WS1)) +\
+      (s*s)* (WH*WH) +  (MS1*MS1*MS1*MS1)*(-2*s +  (WH*WH)) +  (MS1*MS1)*(2*s\
  
-    (MS1*MS1)*(-s + 2* (WH*WH) +  (WS1*WS1))) + MS1* (MH*MH*MH*MH)*(\
+      -  (WH*WH))*(2*s -  (WS1*WS1))) + 2*MS1* (MH*MH*MH*MH*MH*MH)*(-s + \
  
-   (MS1*MS1*MS1*MS1) + 2* (s*s) + 4* (WH*WH)* (WS1*WS1) - s*(4* (WH*WH) + \
+      (MS1*MS1) +  (WS1*WS1)) + WH*WS1* (MH*MH*MH)*( (MS1*MS1*MS1*MS1) + 2*\
  
-   (WS1*WS1)) +  (MS1*MS1)*(-3*s + 4* (WH*WH) +  (WS1*WS1))))*\
+      (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1))) + MS1*s* (WH*WH)*(\
  
-   (sin(2*alpha)*sin(2*alpha))*(3* (svev*svev) + cos( 4*alpha)*( (svev*svev)\
+      (MS1*MS1*MS1*MS1) + s* (WS1*WS1) +  (MS1*MS1)*(-s +  (WS1*WS1))) - MS1*\
  
-   -  (vev*vev)) - 3* (vev*vev) + 4*cos( 2*alpha)*( (svev*svev) +  (vev*vev))\
+      (MH*MH)*(s -  (WH*WH))*( (MS1*MS1*MS1*MS1) + 2* (WH*WH)* (WS1*WS1) +\
  
-   - 2*svev*vev*sin(4*alpha)))/(16.* (svev*svev*svev*svev)* (vev*vev)*(\
+      s*(-2* (WH*WH) +  (WS1*WS1)) +  (MS1*MS1)*(-s + 2* (WH*WH) + \
  
-   (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +\
+      (WS1*WS1))) + MS1* (MH*MH*MH*MH)*( (MS1*MS1*MS1*MS1) + 2* (s*s) + 4*\
  
-    (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1))));
+      (WH*WH)* (WS1*WS1) - s*(4* (WH*WH) +  (WS1*WS1)) +  (MS1*MS1)*(-3*s +\
+ 
+      4* (WH*WH) +  (WS1*WS1))))* (sin(2*alpha)*sin(2*alpha))*(3* (svev*svev)\
+ 
+      + cos( 4*alpha)*( (svev*svev) -  (vev*vev)) - 3* (vev*vev) + 4*cos(\
+ 
+      2*alpha)*( (svev*svev) +  (vev*vev)) - 2*svev*vev*sin(4*alpha)))/(16.*\
+ 
+      (svev*svev*svev*svev)* (vev*vev)*( (MH*MH*MH*MH) +  (s*s) + \
+ 
+      (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+ 
+      (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
 double DT::A1A1HS1(const double &cos_t, const double &s){
 double t = (-s + 2* (MA1*MA1) +  (MH*MH) +  (MS1*MS1) + cos_t*sqrt(s - 4*\
  
-   (MA1*MA1))*sqrt(( (MH*MH*MH*MH) - 2* (MH*MH)*(s +  (MS1*MS1)) +  ((\
+      (MA1*MA1))*sqrt(( (MH*MH*MH*MH) - 2* (MH*MH)*(s +  (MS1*MS1)) +  ((\
  
-   (MS1*MS1) - s)*( (MS1*MS1) - s)))/s))/2.;
+      (MS1*MS1) - s)*( (MS1*MS1) - s)))/s))/2.;
 double u = -s - t + MA1*MA1 + MA1*MA1 + MH*MH + MS1*MS1;
 return ( (MH*MH)* (MS1*MS1)*( (MH*MH) +  (WH*WH))*( (MS1*MS1) +  (WS1*WS1))*\
  
-   (cos( alpha)*cos( alpha))* (sin(alpha)*sin(alpha)))/(\
+      (cos( alpha)*cos( alpha))* (sin(alpha)*sin(alpha)))/(\
  
-   (svev*svev*svev*svev)* (( (MA1*MA1) - t)*( (MA1*MA1) - t))) + ( (MH*MH)*\
+      (svev*svev*svev*svev)* (( (MA1*MA1) - t)*( (MA1*MA1) - t))) + (\
  
-   (MS1*MS1)*( (MH*MH) +  (WH*WH))*( (MS1*MS1) +  (WS1*WS1))* (cos(\
+      (MH*MH)* (MS1*MS1)*( (MH*MH) +  (WH*WH))*( (MS1*MS1) +  (WS1*WS1))*\
  
-   alpha)*cos( alpha))* (sin(alpha)*sin(alpha)))/( (svev*svev*svev*svev)* ((\
+      (cos( alpha)*cos( alpha))* (sin(alpha)*sin(alpha)))/(\
  
-   (MA1*MA1) - u)*( (MA1*MA1) - u))) + ( (MS1*MS1)*( (MS1*MS1) + \
+      (svev*svev*svev*svev)* (( (MA1*MA1) - u)*( (MA1*MA1) - u))) + (\
  
-   (WS1*WS1))*(4*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) +  (MH*MH)*(4* (MS1*MS1) + \
+      (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))*(4*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) +\
  
-   (WH*WH)) + 4* (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))* (cos( alpha)*cos(\
+       (MH*MH)*(4* (MS1*MS1) +  (WH*WH)) + 4* (MS1*MS1)*( (MS1*MS1) + \
  
-   alpha)*cos( alpha)*cos( alpha))* (sin(alpha)*sin(alpha))* ((vev*cos(\
+      (WS1*WS1)))* (cos( alpha)*cos( alpha)*cos( alpha)*cos( alpha))*\
  
-   alpha) + svev*sin(alpha))*(vev*cos( alpha) + svev*sin(alpha))))/(\
+      (sin(alpha)*sin(alpha))* ((vev*cos( alpha) + svev*sin(alpha))*(vev*cos(\
  
-   (svev*svev*svev*svev)* (vev*vev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+      alpha) + svev*sin(alpha))))/( (svev*svev*svev*svev)* (vev*vev)*(\
  
-   (MS1*MS1)*(-2*s +  (WS1*WS1)))) + ( (MH*MH)*( (MH*MH) + \
+      (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (\
  
-   (WH*WH))*(4*MH*MS1*WH*WS1 + 4* (MH*MH*MH*MH) + 4* (MH*MH)*( (MS1*MS1) + \
+      (MH*MH)*( (MH*MH) +  (WH*WH))*(4*MH*MS1*WH*WS1 + 4* (MH*MH*MH*MH) + 4*\
  
-   (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))* (cos( alpha)*cos(\
+      (MH*MH)*( (MS1*MS1) +  (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) + \
  
-   alpha))* (sin(alpha)*sin(alpha)*sin(alpha)*sin(alpha))* ((svev*cos( alpha)\
+      (WS1*WS1)))* (cos( alpha)*cos( alpha))*\
  
-   - vev*sin(alpha))*(svev*cos( alpha) - vev*sin(alpha))))/(\
+      (sin(alpha)*sin(alpha)*sin(alpha)*sin(alpha))* ((svev*cos( alpha) -\
  
-   (svev*svev*svev*svev)* (vev*vev)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s\
+      vev*sin(alpha))*(svev*cos( alpha) - vev*sin(alpha))))/(\
  
-   +  (WH*WH)))) + ( (MH*MH)* (MS1*MS1)*( (MH*MH) +  (WH*WH))*( (MS1*MS1) + \
+      (svev*svev*svev*svev)* (vev*vev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   (WS1*WS1))* (sin(2*alpha)*sin(2*alpha)))/(2.*(-t +  (MA1*MA1))*(-u + \
+      (MH*MH)*(-2*s +  (WH*WH)))) + ( (MH*MH)* (MS1*MS1)*( (MH*MH) + \
  
-   (MA1*MA1))* (svev*svev*svev*svev)) + (2*MH* (MS1*MS1)*( (MS1*MS1) + \
+      (WH*WH))*( (MS1*MS1) +  (WS1*WS1))*\
  
-   (WS1*WS1))*(-2*MS1*s*WH*WS1 +  (MH*MH*MH)*(-s +  (MS1*MS1)) + MH*(2*\
+      (sin(2*alpha)*sin(2*alpha)))/(2.*(-t +  (MA1*MA1))*(-u +  (MA1*MA1))*\
  
-   (MS1*MS1*MS1*MS1) - s* (WH*WH) +  (MS1*MS1)*(-2*s +  (WH*WH) + 2*\
+      (svev*svev*svev*svev)) + (2*MH* (MS1*MS1)*( (MS1*MS1) + \
  
-   (WS1*WS1))))* (cos( alpha)*cos( alpha)*cos( alpha))*\
+      (WS1*WS1))*(-2*MS1*s*WH*WS1 +  (MH*MH*MH)*(-s +  (MS1*MS1)) + MH*(2*\
  
-   (sin(alpha)*sin(alpha))*(vev*cos( alpha) + svev*sin(alpha)))/(vev*(-t + \
+      (MS1*MS1*MS1*MS1) - s* (WH*WH) +  (MS1*MS1)*(-2*s +  (WH*WH) + 2*\
  
-   (MA1*MA1))* (svev*svev*svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+      (WS1*WS1))))* (cos( alpha)*cos( alpha)*cos( alpha))*\
  
-   (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (2*MH* (MS1*MS1)*( (MS1*MS1) + \
+      (sin(alpha)*sin(alpha))*(vev*cos( alpha) + svev*sin(alpha)))/(vev*(-t +\
  
-   (WS1*WS1))*(-2*MS1*s*WH*WS1 +  (MH*MH*MH)*(-s +  (MS1*MS1)) + MH*(2*\
+       (MA1*MA1))* (svev*svev*svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
  
-   (MS1*MS1*MS1*MS1) - s* (WH*WH) +  (MS1*MS1)*(-2*s +  (WH*WH) + 2*\
+      (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (2*MH* (MS1*MS1)*( (MS1*MS1) + \
  
-   (WS1*WS1))))* (cos( alpha)*cos( alpha)*cos( alpha))*\
+      (WS1*WS1))*(-2*MS1*s*WH*WS1 +  (MH*MH*MH)*(-s +  (MS1*MS1)) + MH*(2*\
  
-   (sin(alpha)*sin(alpha))*(vev*cos( alpha) + svev*sin(alpha)))/(vev*(-u + \
+      (MS1*MS1*MS1*MS1) - s* (WH*WH) +  (MS1*MS1)*(-2*s +  (WH*WH) + 2*\
  
-   (MA1*MA1))* (svev*svev*svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+      (WS1*WS1))))* (cos( alpha)*cos( alpha)*cos( alpha))*\
  
-   (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (2*MS1* (MH*MH)*( (MH*MH) + \
+      (sin(alpha)*sin(alpha))*(vev*cos( alpha) + svev*sin(alpha)))/(vev*(-u +\
  
-   (WH*WH))*(-2*MH*s*WH*WS1 + 2*MS1* (MH*MH*MH*MH) - MS1*s*( (MS1*MS1) + \
+       (MA1*MA1))* (svev*svev*svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
  
-   (WS1*WS1)) + MS1* (MH*MH)*(-2*s +  (MS1*MS1) + 2* (WH*WH) +  (WS1*WS1)))*\
+      (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (2*MS1* (MH*MH)*( (MH*MH) + \
  
-   (cos( alpha)*cos( alpha))* (sin(alpha)*sin(alpha)*sin(alpha))*(svev*cos(\
+      (WH*WH))*(-2*MH*s*WH*WS1 + 2*MS1* (MH*MH*MH*MH) - MS1*s*( (MS1*MS1) + \
  
-   alpha) - vev*sin(alpha)))/(vev*(-t +  (MA1*MA1))* (svev*svev*svev*svev)*(\
+      (WS1*WS1)) + MS1* (MH*MH)*(-2*s +  (MS1*MS1) + 2* (WH*WH) + \
  
-   (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) - (2*MS1* (MH*MH)*(\
+      (WS1*WS1)))* (cos( alpha)*cos( alpha))*\
  
-   (MH*MH) +  (WH*WH))*(-2*MH*s*WH*WS1 + 2*MS1* (MH*MH*MH*MH) - MS1*s*(\
+      (sin(alpha)*sin(alpha)*sin(alpha))*(svev*cos( alpha) -\
  
-   (MS1*MS1) +  (WS1*WS1)) + MS1* (MH*MH)*(-2*s +  (MS1*MS1) + 2* (WH*WH) + \
+      vev*sin(alpha)))/(vev*(-t +  (MA1*MA1))* (svev*svev*svev*svev)*(\
  
-   (WS1*WS1)))* (cos( alpha)*cos( alpha))*\
+      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) - (2*MS1*\
  
-   (sin(alpha)*sin(alpha)*sin(alpha))*(svev*cos( alpha) -\
+      (MH*MH)*( (MH*MH) +  (WH*WH))*(-2*MH*s*WH*WS1 + 2*MS1* (MH*MH*MH*MH) -\
  
-   vev*sin(alpha)))/(vev*(-u +  (MA1*MA1))* (svev*svev*svev*svev)*(\
+      MS1*s*( (MS1*MS1) +  (WS1*WS1)) + MS1* (MH*MH)*(-2*s +  (MS1*MS1) + 2*\
  
-   (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) - (MH*MS1*(2*WH*WS1*\
+      (WH*WH) +  (WS1*WS1)))* (cos( alpha)*cos( alpha))*\
  
-   (MS1*MS1)* (s*s)*( (MS1*MS1) +  (WS1*WS1)) + 2*MS1*\
+      (sin(alpha)*sin(alpha)*sin(alpha))*(svev*cos( alpha) -\
  
-   (MH*MH*MH*MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) + WH*WS1*\
+      vev*sin(alpha)))/(vev*(-u +  (MA1*MA1))* (svev*svev*svev*svev)*(\
  
-   (MH*MH*MH*MH)*(5* (MS1*MS1*MS1*MS1) + 2* (s*s) +  (MS1*MS1)*(-8*s + 5*\
+      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) -\
  
-   (WS1*WS1))) + MS1* (MH*MH*MH*MH*MH)*(5* (MS1*MS1*MS1*MS1) + 2* (s*s) -\
+      (MH*MS1*(2*WH*WS1* (MS1*MS1)* (s*s)*( (MS1*MS1) +  (WS1*WS1)) + 2*MS1*\
  
-   4*s* (WH*WH) + s* (WS1*WS1) + 4* (WH*WH)* (WS1*WS1) +  (MS1*MS1)*(-7*s +\
+      (MH*MH*MH*MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) + WH*WS1*\
  
-   4* (WH*WH) + 5* (WS1*WS1))) + MH*(-2* (MS1*MS1*MS1*MS1*MS1*MS1*MS1)*(s - \
+      (MH*MH*MH*MH)*(5* (MS1*MS1*MS1*MS1) + 2* (s*s) +  (MS1*MS1)*(-8*s + 5*\
  
-   (WH*WH)) + 5*MS1* (s*s)* (WH*WH)* (WS1*WS1) +  (MS1*MS1*MS1)*(s - \
+      (WS1*WS1))) + MS1* (MH*MH*MH*MH*MH)*(5* (MS1*MS1*MS1*MS1) + 2* (s*s) -\
  
-   (WS1*WS1))*(-3*s* (WH*WH) + 2*s* (WS1*WS1) - 2* (WH*WH)* (WS1*WS1)) + \
+      4*s* (WH*WH) + s* (WS1*WS1) + 4* (WH*WH)* (WS1*WS1) +  (MS1*MS1)*(-7*s\
  
-   (MS1*MS1*MS1*MS1*MS1)*(2* (s*s) + s* (WH*WH) - 4*s* (WS1*WS1) + 4*\
+      + 4* (WH*WH) + 5* (WS1*WS1))) + MH*(-2*\
  
-   (WH*WH)* (WS1*WS1))) + WH*WS1* (MH*MH)*(2* (s*s)* (WH*WH) + \
+      (MS1*MS1*MS1*MS1*MS1*MS1*MS1)*(s -  (WH*WH)) + 5*MS1* (s*s)* (WH*WH)*\
  
-   (MS1*MS1*MS1*MS1)*(-8*s + 5* (WH*WH)) +  (MS1*MS1)*(16* (s*s) + 5*\
+      (WS1*WS1) +  (MS1*MS1*MS1)*(s -  (WS1*WS1))*(-3*s* (WH*WH) + 2*s*\
  
-   (WH*WH)* (WS1*WS1) - 8*s*( (WH*WH) +  (WS1*WS1)))) +  (MH*MH*MH)*(2*\
+      (WS1*WS1) - 2* (WH*WH)* (WS1*WS1)) +  (MS1*MS1*MS1*MS1*MS1)*(2* (s*s) +\
  
-   (MS1*MS1*MS1*MS1*MS1*MS1*MS1) +  (MS1*MS1*MS1*MS1*MS1)*(-7*s + 5* (WH*WH)\
+      s* (WH*WH) - 4*s* (WS1*WS1) + 4* (WH*WH)* (WS1*WS1))) + WH*WS1*\
  
-   + 4* (WS1*WS1)) + MS1*(s -  (WH*WH))*(2*s* (WH*WH) - 3*s* (WS1*WS1) - 2*\
+      (MH*MH)*(2* (s*s)* (WH*WH) +  (MS1*MS1*MS1*MS1)*(-8*s + 5* (WH*WH)) + \
  
-   (WH*WH)* (WS1*WS1)) +  (MS1*MS1*MS1)*(5* (s*s) + 2* (WH*WH*WH*WH) + 5*\
+      (MS1*MS1)*(16* (s*s) + 5* (WH*WH)* (WS1*WS1) - 8*s*( (WH*WH) + \
  
-   (WH*WH)* (WS1*WS1) - 7*s*( (WH*WH) +  (WS1*WS1)) + 2*\
+      (WS1*WS1)))) +  (MH*MH*MH)*(2* (MS1*MS1*MS1*MS1*MS1*MS1*MS1) + \
  
-   (WS1*WS1*WS1*WS1))))*\
+      (MS1*MS1*MS1*MS1*MS1)*(-7*s + 5* (WH*WH) + 4* (WS1*WS1)) + MS1*(s - \
  
-   (sin(2*alpha)*sin(2*alpha)*sin(2*alpha))*(2*svev*vev*cos( 2*alpha) + (\
+      (WH*WH))*(2*s* (WH*WH) - 3*s* (WS1*WS1) - 2* (WH*WH)* (WS1*WS1)) + \
  
-   (svev*svev) -  (vev*vev))*sin(2*alpha)))/(8.* (svev*svev*svev*svev)*\
+      (MS1*MS1*MS1)*(5* (s*s) + 2* (WH*WH*WH*WH) + 5* (WH*WH)* (WS1*WS1) -\
  
-   (vev*vev)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))*(\
+      7*s*( (WH*WH) +  (WS1*WS1)) + 2* (WS1*WS1*WS1*WS1))))*\
  
-   (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) + ( (MH*MH)*\
+      (sin(2*alpha)*sin(2*alpha)*sin(2*alpha))*(2*svev*vev*cos( 2*alpha) + (\
  
-   (MS1*MS1)* (cos( alpha)*cos( alpha))* (sin(alpha)*sin(alpha))*(vev*cos(\
+      (svev*svev) -  (vev*vev))*sin(2*alpha)))/(8.* (svev*svev*svev*svev)*\
  
-   2*alpha)*( (MH*MH) -  (MS1*MS1) +  (WH*WH) -  (WS1*WS1)) - vev*( (MH*MH) +\
+      (vev*vev)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))*(\
  
-    (MS1*MS1) +  (WH*WH) +  (WS1*WS1)) + svev*( (MH*MH) -  (MS1*MS1) + \
+      (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (\
  
-   (WH*WH) -  (WS1*WS1))*sin(2*alpha)))/(vev*(-t +  (MA1*MA1))*\
+      (MH*MH)* (MS1*MS1)* (cos( alpha)*cos( alpha))*\
  
-   (svev*svev*svev*svev)) + ( (MH*MH)* (MS1*MS1)* (cos( alpha)*cos( alpha))*\
+      (sin(alpha)*sin(alpha))*(vev*cos( 2*alpha)*( (MH*MH) -  (MS1*MS1) + \
  
-   (sin(alpha)*sin(alpha))*(vev*cos( 2*alpha)*( (MH*MH) -  (MS1*MS1) + \
+      (WH*WH) -  (WS1*WS1)) - vev*( (MH*MH) +  (MS1*MS1) +  (WH*WH) + \
  
-   (WH*WH) -  (WS1*WS1)) - vev*( (MH*MH) +  (MS1*MS1) +  (WH*WH) + \
+      (WS1*WS1)) + svev*( (MH*MH) -  (MS1*MS1) +  (WH*WH) - \
  
-   (WS1*WS1)) + svev*( (MH*MH) -  (MS1*MS1) +  (WH*WH) - \
+      (WS1*WS1))*sin(2*alpha)))/(vev*(-t +  (MA1*MA1))*\
  
-   (WS1*WS1))*sin(2*alpha)))/(vev*(-u +  (MA1*MA1))* (svev*svev*svev*svev)) -\
+      (svev*svev*svev*svev)) + ( (MH*MH)* (MS1*MS1)* (cos( alpha)*cos(\
  
-   ( (MH*MH)* (cos( alpha)*cos( alpha))*\
+      alpha))* (sin(alpha)*sin(alpha))*(vev*cos( 2*alpha)*( (MH*MH) - \
  
-   (sin(alpha)*sin(alpha)*sin(alpha))*(svev*cos( alpha) -\
+      (MS1*MS1) +  (WH*WH) -  (WS1*WS1)) - vev*( (MH*MH) +  (MS1*MS1) + \
  
-   vev*sin(alpha))*(vev*cos( 2*alpha)*(-(MS1*WH*WS1* (MH*MH*MH)) + 2*\
+      (WH*WH) +  (WS1*WS1)) + svev*( (MH*MH) -  (MS1*MS1) +  (WH*WH) - \
  
-   (MH*MH*MH*MH*MH*MH) -  (MH*MH*MH*MH)*(2*s +  (MS1*MS1) - 4* (WH*WH)) -\
+      (WS1*WS1))*sin(2*alpha)))/(vev*(-u +  (MA1*MA1))*\
  
-   MH*MS1*WH*WS1*(-4*s +  (WH*WH)) +  (MS1*MS1)*( (MS1*MS1)*(s -  (WH*WH)) -\
+      (svev*svev*svev*svev)) - ( (MH*MH)* (cos( alpha)*cos( alpha))*\
  
-   3*s* (WH*WH) + s* (WS1*WS1) -  (WH*WH)* (WS1*WS1)) -  (MH*MH)*(\
+      (sin(alpha)*sin(alpha)*sin(alpha))*(svev*cos( alpha) -\
  
-   (MS1*MS1*MS1*MS1) + 2*(s -  (WH*WH))* (WH*WH) +  (MS1*MS1)*(-s +  (WH*WH)\
+      vev*sin(alpha))*(vev*cos( 2*alpha)*(-(MS1*WH*WS1* (MH*MH*MH)) + 2*\
  
-   +  (WS1*WS1)))) - vev*(3*MS1*WH*WS1* (MH*MH*MH) + 2* (MH*MH*MH*MH*MH*MH) +\
+      (MH*MH*MH*MH*MH*MH) -  (MH*MH*MH*MH)*(2*s +  (MS1*MS1) - 4* (WH*WH)) -\
  
-   MH*MS1*WH*WS1*(-4*s + 3* (WH*WH)) +  (MH*MH*MH*MH)*(-2*s + 3* (MS1*MS1) +\
+      MH*MS1*WH*WS1*(-4*s +  (WH*WH)) +  (MS1*MS1)*( (MS1*MS1)*(s -  (WH*WH))\
  
-   4* (WH*WH)) +  (MS1*MS1)*(s* (WH*WH) +  (MS1*MS1)*(-s +  (WH*WH)) - s*\
+      - 3*s* (WH*WH) + s* (WS1*WS1) -  (WH*WH)* (WS1*WS1)) -  (MH*MH)*(\
  
-   (WS1*WS1) +  (WH*WH)* (WS1*WS1)) +  (MH*MH)*( (MS1*MS1*MS1*MS1) - 2*s*\
+      (MS1*MS1*MS1*MS1) + 2*(s -  (WH*WH))* (WH*WH) +  (MS1*MS1)*(-s + \
  
-   (WH*WH) + 2* (WH*WH*WH*WH) +  (MS1*MS1)*(-3*s + 3* (WH*WH) +  (WS1*WS1))))\
+      (WH*WH) +  (WS1*WS1)))) - vev*(3*MS1*WH*WS1* (MH*MH*MH) + 2*\
  
-   + svev*(-(MS1*WH*WS1* (MH*MH*MH)) + 2* (MH*MH*MH*MH*MH*MH) - \
+      (MH*MH*MH*MH*MH*MH) + MH*MS1*WH*WS1*(-4*s + 3* (WH*WH)) + \
  
-   (MH*MH*MH*MH)*(2*s +  (MS1*MS1) - 4* (WH*WH)) - MH*MS1*WH*WS1*(-4*s + \
+      (MH*MH*MH*MH)*(-2*s + 3* (MS1*MS1) + 4* (WH*WH)) +  (MS1*MS1)*(s*\
  
-   (WH*WH)) +  (MS1*MS1)*( (MS1*MS1)*(s -  (WH*WH)) - 3*s* (WH*WH) + s*\
+      (WH*WH) +  (MS1*MS1)*(-s +  (WH*WH)) - s* (WS1*WS1) +  (WH*WH)*\
  
-   (WS1*WS1) -  (WH*WH)* (WS1*WS1)) -  (MH*MH)*( (MS1*MS1*MS1*MS1) + 2*(s - \
+      (WS1*WS1)) +  (MH*MH)*( (MS1*MS1*MS1*MS1) - 2*s* (WH*WH) + 2*\
  
-   (WH*WH))* (WH*WH) +  (MS1*MS1)*(-s +  (WH*WH) + \
+      (WH*WH*WH*WH) +  (MS1*MS1)*(-3*s + 3* (WH*WH) +  (WS1*WS1)))) +\
  
-   (WS1*WS1))))*sin(2*alpha)))/( (svev*svev*svev*svev)* (vev*vev)*(\
+      svev*(-(MS1*WH*WS1* (MH*MH*MH)) + 2* (MH*MH*MH*MH*MH*MH) - \
  
-   (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) - ( (MS1*MS1)* (cos(\
+      (MH*MH*MH*MH)*(2*s +  (MS1*MS1) - 4* (WH*WH)) - MH*MS1*WH*WS1*(-4*s + \
  
-   alpha)*cos( alpha)*cos( alpha))* (sin(alpha)*sin(alpha))*(vev*cos( alpha)\
+      (WH*WH)) +  (MS1*MS1)*( (MS1*MS1)*(s -  (WH*WH)) - 3*s* (WH*WH) + s*\
  
-   + svev*sin(alpha))*(-(vev*cos( 2*alpha)*(MH*MS1*WH*WS1*(-4*s +  (MS1*MS1)\
+      (WS1*WS1) -  (WH*WH)* (WS1*WS1)) -  (MH*MH)*( (MS1*MS1*MS1*MS1) + 2*(s\
  
-   +  (WS1*WS1)) +  (MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) - 2*\
+      -  (WH*WH))* (WH*WH) +  (MS1*MS1)*(-s +  (WH*WH) + \
  
-   (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) + \
+      (WS1*WS1))))*sin(2*alpha)))/( (svev*svev*svev*svev)* (vev*vev)*(\
  
-   (MH*MH)*( (MS1*MS1*MS1*MS1) - s* (WH*WH) + 3*s* (WS1*WS1) +  (WH*WH)*\
+      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) - ( (MS1*MS1)*\
  
-   (WS1*WS1) +  (MS1*MS1)*(-s +  (WH*WH) +  (WS1*WS1))))) + vev*(\
+      (cos( alpha)*cos( alpha)*cos( alpha))*\
  
-   (MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) + 2* (MS1*MS1)*( (MS1*MS1) + \
+      (sin(alpha)*sin(alpha))*(vev*cos( alpha) + svev*sin(alpha))*(-(vev*cos(\
  
-   (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) + MH*MS1*WH*WS1*(-4*s + 3*\
+      2*alpha)*(MH*MS1*WH*WS1*(-4*s +  (MS1*MS1) +  (WS1*WS1)) + \
  
-   (MS1*MS1) + 3* (WS1*WS1)) +  (MH*MH)*(3* (MS1*MS1*MS1*MS1) - s* (WH*WH) +\
+      (MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) - 2* (MS1*MS1)*( (MS1*MS1)\
  
-   s* (WS1*WS1) +  (WH*WH)* (WS1*WS1) +  (MS1*MS1)*(-3*s +  (WH*WH) + 3*\
+      +  (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) +  (MH*MH)*(\
  
-   (WS1*WS1)))) - svev*(MH*MS1*WH*WS1*(-4*s +  (MS1*MS1) +  (WS1*WS1)) + \
+      (MS1*MS1*MS1*MS1) - s* (WH*WH) + 3*s* (WS1*WS1) +  (WH*WH)* (WS1*WS1) +\
  
-   (MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) - 2* (MS1*MS1)*( (MS1*MS1) + \
+       (MS1*MS1)*(-s +  (WH*WH) +  (WS1*WS1))))) + vev*( (MH*MH*MH*MH)*(-s + \
  
-   (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) +  (MH*MH)*( (MS1*MS1*MS1*MS1) -\
+      (MS1*MS1) +  (WS1*WS1)) + 2* (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))*(-s + \
  
-   s* (WH*WH) + 3*s* (WS1*WS1) +  (WH*WH)* (WS1*WS1) +  (MS1*MS1)*(-s + \
+      (MS1*MS1) +  (WS1*WS1)) + MH*MS1*WH*WS1*(-4*s + 3* (MS1*MS1) + 3*\
  
-   (WH*WH) +  (WS1*WS1))))*sin(2*alpha)))/( (svev*svev*svev*svev)*\
+      (WS1*WS1)) +  (MH*MH)*(3* (MS1*MS1*MS1*MS1) - s* (WH*WH) + s* (WS1*WS1)\
  
-   (vev*vev)*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1))))\
+      +  (WH*WH)* (WS1*WS1) +  (MS1*MS1)*(-3*s +  (WH*WH) + 3* (WS1*WS1)))) -\
  
-   + ( (cos( alpha)*cos( alpha))* (sin(alpha)*sin(alpha))*(-2*cos( 2*alpha)*\
+      svev*(MH*MS1*WH*WS1*(-4*s +  (MS1*MS1) +  (WS1*WS1)) + \
  
-   (vev*vev)*( (MH*MH*MH*MH) +  (MH*MH)* (WH*WH) -  (MS1*MS1)*( (MS1*MS1) + \
+      (MH*MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) - 2* (MS1*MS1)*( (MS1*MS1)\
  
-   (WS1*WS1))) +  (vev*vev)*(-2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) + \
+      +  (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) +  (MH*MH)*(\
  
-   (MH*MH)*(-2* (MS1*MS1) +  (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) + \
+      (MS1*MS1*MS1*MS1) - s* (WH*WH) + 3*s* (WS1*WS1) +  (WH*WH)* (WS1*WS1) +\
  
-   (WS1*WS1)))* (cos( 2*alpha)*cos( 2*alpha)) + \
+       (MS1*MS1)*(-s +  (WH*WH) +  (WS1*WS1))))*sin(2*alpha)))/(\
  
-   (svev*svev)*(-2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) +  (MH*MH)*(-2* (MS1*MS1) +\
+      (svev*svev*svev*svev)* (vev*vev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
  
-    (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))*\
+      (MS1*MS1)*(-2*s +  (WS1*WS1)))) + ( (cos( alpha)*cos( alpha))*\
  
-   (sin(2*alpha)*sin(2*alpha)) - 2*svev*vev*( (MH*MH*MH*MH) +  (MH*MH)*\
+      (sin(alpha)*sin(alpha))*(-2*cos( 2*alpha)* (vev*vev)*( (MH*MH*MH*MH) + \
  
-   (WH*WH) -  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))*sin(2*alpha) +\
+      (MH*MH)* (WH*WH) -  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))) + \
  
-   vev*(vev*(2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) +  (MH*MH)*(2* (MS1*MS1) + \
+      (vev*vev)*(-2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) +  (MH*MH)*(-2* (MS1*MS1)\
  
-   (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))) + svev*(-2*MH*MS1*WH*WS1\
+      +  (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))* (cos(\
  
-   +  (MH*MH*MH*MH) +  (MH*MH)*(-2* (MS1*MS1) +  (WH*WH)) +  (MS1*MS1)*(\
+      2*alpha)*cos( 2*alpha)) +  (svev*svev)*(-2*MH*MS1*WH*WS1 + \
  
-   (MS1*MS1) +  (WS1*WS1)))*sin(4*alpha))))/(4.* (svev*svev*svev*svev)*\
+      (MH*MH*MH*MH) +  (MH*MH)*(-2* (MS1*MS1) +  (WH*WH)) +  (MS1*MS1)*(\
  
-   (vev*vev));
+      (MS1*MS1) +  (WS1*WS1)))* (sin(2*alpha)*sin(2*alpha)) - 2*svev*vev*(\
+ 
+      (MH*MH*MH*MH) +  (MH*MH)* (WH*WH) -  (MS1*MS1)*( (MS1*MS1) + \
+ 
+      (WS1*WS1)))*sin(2*alpha) + vev*(vev*(2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) +\
+ 
+       (MH*MH)*(2* (MS1*MS1) +  (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) + \
+ 
+      (WS1*WS1))) + svev*(-2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) +  (MH*MH)*(-2*\
+ 
+      (MS1*MS1) +  (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) + \
+ 
+      (WS1*WS1)))*sin(4*alpha))))/(4.* (svev*svev*svev*svev)* (vev*vev));
 }
 double DT::A1A1S1S1(const double &cos_t, const double &s){
 double t =  (MA1*MA1) + (-s + cos_t*sqrt(s - 4* (MA1*MA1))*sqrt(s - 4*\
  
-   (MS1*MS1)))/2. +  (MS1*MS1);
+      (MS1*MS1)))/2. +  (MS1*MS1);
 double u = -s - t + MA1*MA1 + MA1*MA1 + MS1*MS1 + MS1*MS1;
 return (2* (MS1*MS1*MS1*MS1)* (cos( alpha)*cos( alpha)*cos( alpha)*cos(\
  
-   alpha))* (( (MS1*MS1) +  (WS1*WS1))*( (MS1*MS1) +  (WS1*WS1))))/((-t + \
+      alpha))* (( (MS1*MS1) +  (WS1*WS1))*( (MS1*MS1) +  (WS1*WS1))))/((-t + \
  
-   (MA1*MA1))*(-u +  (MA1*MA1))* (svev*svev*svev*svev)) + (\
+      (MA1*MA1))*(-u +  (MA1*MA1))* (svev*svev*svev*svev)) + (\
  
-   (MS1*MS1*MS1*MS1)* (cos( alpha)*cos( alpha)*cos( alpha)*cos( alpha))* ((\
+      (MS1*MS1*MS1*MS1)* (cos( alpha)*cos( alpha)*cos( alpha)*cos( alpha))*\
  
-   (MS1*MS1) +  (WS1*WS1))*( (MS1*MS1) +  (WS1*WS1))))/(\
+      (( (MS1*MS1) +  (WS1*WS1))*( (MS1*MS1) +  (WS1*WS1))))/(\
  
-   (svev*svev*svev*svev)* (( (MA1*MA1) - t)*( (MA1*MA1) - t))) + (\
+      (svev*svev*svev*svev)* (( (MA1*MA1) - t)*( (MA1*MA1) - t))) + (\
  
-   (MS1*MS1*MS1*MS1)* (cos( alpha)*cos( alpha)*cos( alpha)*cos( alpha))* ((\
+      (MS1*MS1*MS1*MS1)* (cos( alpha)*cos( alpha)*cos( alpha)*cos( alpha))*\
  
-   (MS1*MS1) +  (WS1*WS1))*( (MS1*MS1) +  (WS1*WS1))))/(\
+      (( (MS1*MS1) +  (WS1*WS1))*( (MS1*MS1) +  (WS1*WS1))))/(\
  
-   (svev*svev*svev*svev)* (( (MA1*MA1) - u)*( (MA1*MA1) - u))) + (9*\
+      (svev*svev*svev*svev)* (( (MA1*MA1) - u)*( (MA1*MA1) - u))) + (9*\
  
-   (MS1*MS1*MS1*MS1)* (cos( alpha)*cos( alpha))* (( (MS1*MS1) +  (WS1*WS1))*(\
+      (MS1*MS1*MS1*MS1)* (cos( alpha)*cos( alpha))* (( (MS1*MS1) + \
  
-   (MS1*MS1) +  (WS1*WS1)))* ((3*vev*cos( alpha) + vev*cos( 3*alpha) -\
+      (WS1*WS1))*( (MS1*MS1) +  (WS1*WS1)))* ((3*vev*cos( alpha) + vev*cos(\
  
-   4*svev* (sin(alpha)*sin(alpha)*sin(alpha)))*(3*vev*cos( alpha) + vev*cos(\
+      3*alpha) - 4*svev* (sin(alpha)*sin(alpha)*sin(alpha)))*(3*vev*cos(\
  
-   3*alpha) - 4*svev* (sin(alpha)*sin(alpha)*sin(alpha)))))/(16.*\
+      alpha) + vev*cos( 3*alpha) - 4*svev*\
  
-   (svev*svev*svev*svev)* (vev*vev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+      (sin(alpha)*sin(alpha)*sin(alpha)))))/(16.* (svev*svev*svev*svev)*\
  
-   (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (3*(-s +  (MS1*MS1))* (MS1*MS1*MS1*MS1)*\
+      (vev*vev)*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s + \
  
-   (cos( alpha)*cos( alpha)*cos( alpha))* (( (MS1*MS1) +  (WS1*WS1))*(\
+      (WS1*WS1)))) + (3*(-s +  (MS1*MS1))* (MS1*MS1*MS1*MS1)* (cos(\
  
-   (MS1*MS1) +  (WS1*WS1)))*(3*vev*cos( alpha) + vev*cos( 3*alpha) - 4*svev*\
+      alpha)*cos( alpha)*cos( alpha))* (( (MS1*MS1) +  (WS1*WS1))*( (MS1*MS1)\
  
-   (sin(alpha)*sin(alpha)*sin(alpha))))/(2.*vev*(-t +  (MA1*MA1))*\
+      +  (WS1*WS1)))*(3*vev*cos( alpha) + vev*cos( 3*alpha) - 4*svev*\
  
-   (svev*svev*svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s + \
+      (sin(alpha)*sin(alpha)*sin(alpha))))/(2.*vev*(-t +  (MA1*MA1))*\
  
-   (WS1*WS1)))) + (3*(-s +  (MS1*MS1))* (MS1*MS1*MS1*MS1)* (cos( alpha)*cos(\
+      (svev*svev*svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +\
  
-   alpha)*cos( alpha))* (( (MS1*MS1) +  (WS1*WS1))*( (MS1*MS1) + \
+       (WS1*WS1)))) + (3*(-s +  (MS1*MS1))* (MS1*MS1*MS1*MS1)* (cos(\
  
-   (WS1*WS1)))*(3*vev*cos( alpha) + vev*cos( 3*alpha) - 4*svev*\
+      alpha)*cos( alpha)*cos( alpha))* (( (MS1*MS1) +  (WS1*WS1))*( (MS1*MS1)\
  
-   (sin(alpha)*sin(alpha)*sin(alpha))))/(2.*vev*(-u +  (MA1*MA1))*\
+      +  (WS1*WS1)))*(3*vev*cos( alpha) + vev*cos( 3*alpha) - 4*svev*\
  
-   (svev*svev*svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s + \
+      (sin(alpha)*sin(alpha)*sin(alpha))))/(2.*vev*(-u +  (MA1*MA1))*\
  
-   (WS1*WS1)))) - ( (MS1*MS1)* (cos( alpha)*cos( alpha)*cos(\
+      (svev*svev*svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +\
  
-   alpha))*(vev*cos( alpha)*(2*MH*MS1*WH*WS1 +  (MH*MH)*( (MS1*MS1) - \
+       (WS1*WS1)))) - ( (MS1*MS1)* (cos( alpha)*cos( alpha)*cos(\
  
-   (WS1*WS1)) +  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)) + cos(\
+      alpha))*(vev*cos( alpha)*(2*MH*MS1*WH*WS1 +  (MH*MH)*( (MS1*MS1) - \
  
-   2*alpha)*(-2*MH*MS1*WH*WS1 +  (MH*MH)*(- (MS1*MS1) +  (WS1*WS1)) + \
+      (WS1*WS1)) +  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)) + cos(\
  
-   (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))) + 2*svev*(2*MH*MS1*WH*WS1 + \
+      2*alpha)*(-2*MH*MS1*WH*WS1 +  (MH*MH)*(- (MS1*MS1) +  (WS1*WS1)) + \
  
-   (MH*MH)*( (MS1*MS1) -  (WS1*WS1)) -  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))*\
+      (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))) + 2*svev*(2*MH*MS1*WH*WS1 + \
  
-   (sin(alpha)*sin(alpha)*sin(alpha))))/(vev*(-t +  (MA1*MA1))*\
+      (MH*MH)*( (MS1*MS1) -  (WS1*WS1)) -  (MS1*MS1)*( (MS1*MS1) + \
  
-   (svev*svev*svev*svev)) - ( (MS1*MS1)* (cos( alpha)*cos( alpha)*cos(\
+      (WS1*WS1)))* (sin(alpha)*sin(alpha)*sin(alpha))))/(vev*(-t + \
  
-   alpha))*(vev*cos( alpha)*(2*MH*MS1*WH*WS1 +  (MH*MH)*( (MS1*MS1) - \
+      (MA1*MA1))* (svev*svev*svev*svev)) - ( (MS1*MS1)* (cos( alpha)*cos(\
  
-   (WS1*WS1)) +  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)) + cos(\
+      alpha)*cos( alpha))*(vev*cos( alpha)*(2*MH*MS1*WH*WS1 +  (MH*MH)*(\
  
-   2*alpha)*(-2*MH*MS1*WH*WS1 +  (MH*MH)*(- (MS1*MS1) +  (WS1*WS1)) + \
+      (MS1*MS1) -  (WS1*WS1)) +  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)) + cos(\
  
-   (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))) + 2*svev*(2*MH*MS1*WH*WS1 + \
+      2*alpha)*(-2*MH*MS1*WH*WS1 +  (MH*MH)*(- (MS1*MS1) +  (WS1*WS1)) + \
  
-   (MH*MH)*( (MS1*MS1) -  (WS1*WS1)) -  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))*\
+      (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))) + 2*svev*(2*MH*MS1*WH*WS1 + \
  
-   (sin(alpha)*sin(alpha)*sin(alpha))))/(vev*(-u +  (MA1*MA1))*\
+      (MH*MH)*( (MS1*MS1) -  (WS1*WS1)) -  (MS1*MS1)*( (MS1*MS1) + \
  
-   (svev*svev*svev*svev)) + (3* (MS1*MS1)* (cos( alpha)*cos(\
+      (WS1*WS1)))* (sin(alpha)*sin(alpha)*sin(alpha))))/(vev*(-u + \
  
-   alpha))*(3*vev*cos( alpha) + vev*cos( 3*alpha) - 4*svev*\
+      (MA1*MA1))* (svev*svev*svev*svev)) + (3* (MS1*MS1)* (cos( alpha)*cos(\
  
-   (sin(alpha)*sin(alpha)*sin(alpha)))*(-(vev*cos(\
+      alpha))*(3*vev*cos( alpha) + vev*cos( 3*alpha) - 4*svev*\
  
-   alpha)*(MH*MS1*WH*WS1*(-2*s +  (MS1*MS1) +  (WS1*WS1)) + 3* (MS1*MS1)*(\
+      (sin(alpha)*sin(alpha)*sin(alpha)))*(-(vev*cos(\
  
-   (MS1*MS1) +  (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) +  (MH*MH)*(\
+      alpha)*(MH*MS1*WH*WS1*(-2*s +  (MS1*MS1) +  (WS1*WS1)) + 3* (MS1*MS1)*(\
  
-   (MS1*MS1*MS1*MS1) + s* (WS1*WS1) +  (MS1*MS1)*(-s +  (WS1*WS1))))) +\
+      (MS1*MS1) +  (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) +  (MH*MH)*(\
  
-   (MH*MS1*WH*WS1*(-2*s +  (MS1*MS1) +  (WS1*WS1)) -  (MS1*MS1)*( (MS1*MS1) +\
+      (MS1*MS1*MS1*MS1) + s* (WS1*WS1) +  (MS1*MS1)*(-s +  (WS1*WS1))))) +\
  
-    (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) +  (MH*MH)*( (MS1*MS1*MS1*MS1)\
+      (MH*MS1*WH*WS1*(-2*s +  (MS1*MS1) +  (WS1*WS1)) -  (MS1*MS1)*(\
  
-   + s* (WS1*WS1) +  (MS1*MS1)*(-s +  (WS1*WS1))))*(vev*cos( 3*alpha) -\
+      (MS1*MS1) +  (WS1*WS1))*(-s +  (MS1*MS1) +  (WS1*WS1)) +  (MH*MH)*(\
  
-   4*svev* (sin(alpha)*sin(alpha)*sin(alpha)))))/(8.* (svev*svev*svev*svev)*\
+      (MS1*MS1*MS1*MS1) + s* (WS1*WS1) +  (MS1*MS1)*(-s + \
  
-   (vev*vev)*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1))))\
+      (WS1*WS1))))*(vev*cos( 3*alpha) - 4*svev*\
  
-   + ( (cos( alpha)*cos( alpha))*(( (vev*vev)*(2*MH*MS1*WH*WS1 + 3*\
+      (sin(alpha)*sin(alpha)*sin(alpha)))))/(8.* (svev*svev*svev*svev)*\
  
-   (MH*MH*MH*MH) + 2* (MH*MH)* (MS1*MS1) + 3* (MS1*MS1*MS1*MS1) + 3* (MH*MH)*\
+      (vev*vev)*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s + \
  
-   (WH*WH) + 3* (MS1*MS1)* (WS1*WS1) - 4*cos( 2*alpha)*( (MH*MH*MH*MH) + \
+      (WS1*WS1)))) + ( (cos( alpha)*cos( alpha))*((\
  
-   (MH*MH)* (WH*WH) -  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))) + cos(\
+      (vev*vev)*(2*MH*MS1*WH*WS1 + 3* (MH*MH*MH*MH) + 2* (MH*MH)* (MS1*MS1) +\
  
-   4*alpha)*(-2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) +  (MH*MH)*(-2* (MS1*MS1) + \
+      3* (MS1*MS1*MS1*MS1) + 3* (MH*MH)* (WH*WH) + 3* (MS1*MS1)* (WS1*WS1) -\
  
-   (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))))* (cos( alpha)*cos(\
+      4*cos( 2*alpha)*( (MH*MH*MH*MH) +  (MH*MH)* (WH*WH) -  (MS1*MS1)*(\
  
-   alpha)))/2. + 4*svev*vev*cos( alpha)*( (MH*MH*MH*MH) +  (MH*MH)* (WH*WH) -\
+      (MS1*MS1) +  (WS1*WS1))) + cos( 4*alpha)*(-2*MH*MS1*WH*WS1 + \
  
-    (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))* (sin(alpha)*sin(alpha)*sin(alpha))\
+      (MH*MH*MH*MH) +  (MH*MH)*(-2* (MS1*MS1) +  (WH*WH)) +  (MS1*MS1)*(\
  
-   - 2*svev*(-2*MH*MS1*WH*WS1 +  (MH*MH*MH*MH) +  (MH*MH)*(-2* (MS1*MS1) + \
+      (MS1*MS1) +  (WS1*WS1))))* (cos( alpha)*cos( alpha)))/2. +\
  
-   (WH*WH)) +  (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))*\
+      4*svev*vev*cos( alpha)*( (MH*MH*MH*MH) +  (MH*MH)* (WH*WH) - \
  
-   (sin(alpha)*sin(alpha)*sin(alpha))*(vev*cos( alpha) + vev*cos( 3*alpha) -\
+      (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1)))*\
  
-   2*svev* (sin(alpha)*sin(alpha)*sin(alpha)))))/(4.* (svev*svev*svev*svev)*\
+      (sin(alpha)*sin(alpha)*sin(alpha)) - 2*svev*(-2*MH*MS1*WH*WS1 + \
  
-   (vev*vev)) + ( (MH*MH)*( (MH*MH) +  (WH*WH))*(4*MH*MS1*WH*WS1 + \
+      (MH*MH*MH*MH) +  (MH*MH)*(-2* (MS1*MS1) +  (WH*WH)) +  (MS1*MS1)*(\
  
-   (MH*MH*MH*MH) +  (MH*MH)*(4* (MS1*MS1) +  (WH*WH)) + 4* (MS1*MS1)*(\
+      (MS1*MS1) +  (WS1*WS1)))* (sin(alpha)*sin(alpha)*sin(alpha))*(vev*cos(\
  
-   (MS1*MS1) +  (WS1*WS1)))* (cos( alpha)*cos( alpha))*\
+      alpha) + vev*cos( 3*alpha) - 2*svev*\
  
-   (sin(alpha)*sin(alpha)*sin(alpha)*sin(alpha))* ((vev*cos( alpha) +\
+      (sin(alpha)*sin(alpha)*sin(alpha)))))/(4.* (svev*svev*svev*svev)*\
  
-   svev*sin(alpha))*(vev*cos( alpha) + svev*sin(alpha))))/(\
+      (vev*vev)) + ( (MH*MH)*( (MH*MH) +  (WH*WH))*(4*MH*MS1*WH*WS1 + \
  
-   (svev*svev*svev*svev)* (vev*vev)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s\
+      (MH*MH*MH*MH) +  (MH*MH)*(4* (MS1*MS1) +  (WH*WH)) + 4* (MS1*MS1)*(\
  
-   +  (WH*WH)))) + (2*MH* (MS1*MS1)*(2*MS1*WH*WS1* (MH*MH*MH*MH) +\
+      (MS1*MS1) +  (WS1*WS1)))* (cos( alpha)*cos( alpha))*\
  
-   2*MS1*WH*WS1* (MH*MH)*(-2*s +  (WH*WH)) +  (MH*MH*MH*MH*MH)*( (MS1*MS1) - \
+      (sin(alpha)*sin(alpha)*sin(alpha)*sin(alpha))* ((vev*cos( alpha) +\
  
-   (WS1*WS1)) - 2*MS1*s*WH*WS1*( (MS1*MS1) +  (WS1*WS1)) +  (MH*MH*MH)*(2*\
+      svev*sin(alpha))*(vev*cos( alpha) + svev*sin(alpha))))/(\
  
-   (MS1*MS1*MS1*MS1) + (s -  (WH*WH))* (WS1*WS1) +  (MS1*MS1)*(-s +  (WH*WH)\
+      (svev*svev*svev*svev)* (vev*vev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   + 2* (WS1*WS1))) + MH*(-2* (MS1*MS1*MS1*MS1)*(s -  (WH*WH)) - s* (WH*WH)*\
+      (MH*MH)*(-2*s +  (WH*WH)))) + (2*MH* (MS1*MS1)*(2*MS1*WH*WS1*\
  
-   (WS1*WS1) +  (MS1*MS1)*(s* (WH*WH) - 2*s* (WS1*WS1) + 2* (WH*WH)*\
+      (MH*MH*MH*MH) + 2*MS1*WH*WS1* (MH*MH)*(-2*s +  (WH*WH)) + \
  
-   (WS1*WS1))))* (cos( alpha)*cos( alpha)*cos( alpha))*\
+      (MH*MH*MH*MH*MH)*( (MS1*MS1) -  (WS1*WS1)) - 2*MS1*s*WH*WS1*( (MS1*MS1)\
  
-   (sin(alpha)*sin(alpha))*(vev*cos( alpha) + svev*sin(alpha)))/(vev*(-t + \
+      +  (WS1*WS1)) +  (MH*MH*MH)*(2* (MS1*MS1*MS1*MS1) + (s -  (WH*WH))*\
  
-   (MA1*MA1))* (svev*svev*svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
+      (WS1*WS1) +  (MS1*MS1)*(-s +  (WH*WH) + 2* (WS1*WS1))) + MH*(-2*\
  
-   (MH*MH)*(-2*s +  (WH*WH)))) + (2*MH* (MS1*MS1)*(2*MS1*WH*WS1*\
+      (MS1*MS1*MS1*MS1)*(s -  (WH*WH)) - s* (WH*WH)* (WS1*WS1) + \
  
-   (MH*MH*MH*MH) + 2*MS1*WH*WS1* (MH*MH)*(-2*s +  (WH*WH)) + \
+      (MS1*MS1)*(s* (WH*WH) - 2*s* (WS1*WS1) + 2* (WH*WH)* (WS1*WS1))))*\
  
-   (MH*MH*MH*MH*MH)*( (MS1*MS1) -  (WS1*WS1)) - 2*MS1*s*WH*WS1*( (MS1*MS1) + \
+      (cos( alpha)*cos( alpha)*cos( alpha))*\
  
-   (WS1*WS1)) +  (MH*MH*MH)*(2* (MS1*MS1*MS1*MS1) + (s -  (WH*WH))* (WS1*WS1)\
+      (sin(alpha)*sin(alpha))*(vev*cos( alpha) + svev*sin(alpha)))/(vev*(-t +\
  
-   +  (MS1*MS1)*(-s +  (WH*WH) + 2* (WS1*WS1))) + MH*(-2*\
+       (MA1*MA1))* (svev*svev*svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   (MS1*MS1*MS1*MS1)*(s -  (WH*WH)) - s* (WH*WH)* (WS1*WS1) +  (MS1*MS1)*(s*\
+      (MH*MH)*(-2*s +  (WH*WH)))) + (2*MH* (MS1*MS1)*(2*MS1*WH*WS1*\
  
-   (WH*WH) - 2*s* (WS1*WS1) + 2* (WH*WH)* (WS1*WS1))))* (cos( alpha)*cos(\
+      (MH*MH*MH*MH) + 2*MS1*WH*WS1* (MH*MH)*(-2*s +  (WH*WH)) + \
  
-   alpha)*cos( alpha))* (sin(alpha)*sin(alpha))*(vev*cos( alpha) +\
+      (MH*MH*MH*MH*MH)*( (MS1*MS1) -  (WS1*WS1)) - 2*MS1*s*WH*WS1*( (MS1*MS1)\
  
-   svev*sin(alpha)))/(vev*(-u +  (MA1*MA1))* (svev*svev*svev*svev)*(\
+      +  (WS1*WS1)) +  (MH*MH*MH)*(2* (MS1*MS1*MS1*MS1) + (s -  (WH*WH))*\
  
-   (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) + ( (MH*MH)* (cos(\
+      (WS1*WS1) +  (MS1*MS1)*(-s +  (WH*WH) + 2* (WS1*WS1))) + MH*(-2*\
  
-   alpha)*cos( alpha))* (sin(alpha)*sin(alpha))*(-(vev*cos(\
+      (MS1*MS1*MS1*MS1)*(s -  (WH*WH)) - s* (WH*WH)* (WS1*WS1) + \
  
-   alpha)*(5*MS1*WH*WS1* (MH*MH*MH) +  (MH*MH*MH*MH*MH*MH) + \
+      (MS1*MS1)*(s* (WH*WH) - 2*s* (WS1*WS1) + 2* (WH*WH)* (WS1*WS1))))*\
  
-   (MH*MH*MH*MH)*(-s + 5* (MS1*MS1) + 2* (WH*WH)) + MH*MS1*WH*WS1*(-6*s + 5*\
+      (cos( alpha)*cos( alpha)*cos( alpha))*\
  
-   (WH*WH)) +  (MS1*MS1)*(-6* (MS1*MS1)*(s -  (WH*WH)) + s* (WH*WH) - 6*s*\
+      (sin(alpha)*sin(alpha))*(vev*cos( alpha) + svev*sin(alpha)))/(vev*(-u +\
  
-   (WS1*WS1) + 6* (WH*WH)* (WS1*WS1)) +  (MH*MH)*(6* (MS1*MS1*MS1*MS1) - s*\
+       (MA1*MA1))* (svev*svev*svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   (WH*WH) +  (WH*WH*WH*WH) +  (MS1*MS1)*(-5*s + 5* (WH*WH) + 6*\
+      (MH*MH)*(-2*s +  (WH*WH)))) + ( (MH*MH)* (cos( alpha)*cos( alpha))*\
  
-   (WS1*WS1))))) + (MS1*WH*WS1* (MH*MH*MH) +  (MH*MH*MH*MH*MH*MH) +\
+      (sin(alpha)*sin(alpha))*(-(vev*cos( alpha)*(5*MS1*WH*WS1* (MH*MH*MH) + \
  
-   MH*MS1*WH*WS1*(2*s +  (WH*WH)) +  (MH*MH*MH*MH)*(-s +  (MS1*MS1) + 2*\
+      (MH*MH*MH*MH*MH*MH) +  (MH*MH*MH*MH)*(-s + 5* (MS1*MS1) + 2* (WH*WH)) +\
  
-   (WH*WH)) +  (MH*MH)*(-2* (MS1*MS1*MS1*MS1) - s* (WH*WH) +  (WH*WH*WH*WH) +\
+      MH*MS1*WH*WS1*(-6*s + 5* (WH*WH)) +  (MS1*MS1)*(-6* (MS1*MS1)*(s - \
  
-    (MS1*MS1)*(-s +  (WH*WH) - 2* (WS1*WS1))) +  (MS1*MS1)*(2* (MS1*MS1)*(s -\
+      (WH*WH)) + s* (WH*WH) - 6*s* (WS1*WS1) + 6* (WH*WH)* (WS1*WS1)) + \
  
-    (WH*WH)) - 3*s* (WH*WH) + 2*s* (WS1*WS1) - 2* (WH*WH)*\
+      (MH*MH)*(6* (MS1*MS1*MS1*MS1) - s* (WH*WH) +  (WH*WH*WH*WH) + \
  
-   (WS1*WS1)))*(vev*cos( 3*alpha) - 4*svev*\
+      (MS1*MS1)*(-5*s + 5* (WH*WH) + 6* (WS1*WS1))))) + (MS1*WH*WS1*\
  
-   (sin(alpha)*sin(alpha)*sin(alpha))))*(vev*cos( alpha) +\
+      (MH*MH*MH) +  (MH*MH*MH*MH*MH*MH) + MH*MS1*WH*WS1*(2*s +  (WH*WH)) + \
  
-   svev*sin(alpha)))/(2.* (svev*svev*svev*svev)* (vev*vev)*( (MH*MH*MH*MH) + \
+      (MH*MH*MH*MH)*(-s +  (MS1*MS1) + 2* (WH*WH)) +  (MH*MH)*(-2*\
  
-   (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) + (3*MH* (MS1*MS1)*(2*MS1*WH*WS1*\
+      (MS1*MS1*MS1*MS1) - s* (WH*WH) +  (WH*WH*WH*WH) +  (MS1*MS1)*(-s + \
  
-   (s*s)*( (MS1*MS1) +  (WS1*WS1)) + MS1*WH*WS1* (MH*MH*MH*MH)*(-2*s + \
+      (WH*WH) - 2* (WS1*WS1))) +  (MS1*MS1)*(2* (MS1*MS1)*(s -  (WH*WH)) -\
  
-   (MS1*MS1) +  (WS1*WS1)) + MS1*WH*WS1* (MH*MH)*(-2*s +  (WH*WH))*(-2*s + \
+      3*s* (WH*WH) + 2*s* (WS1*WS1) - 2* (WH*WH)* (WS1*WS1)))*(vev*cos(\
  
-   (MS1*MS1) +  (WS1*WS1)) +  (MH*MH*MH*MH*MH)*( (MS1*MS1*MS1*MS1) + s*\
+      3*alpha) - 4*svev* (sin(alpha)*sin(alpha)*sin(alpha))))*(vev*cos(\
  
-   (WS1*WS1) +  (MS1*MS1)*(-s +  (WS1*WS1))) +  (MH*MH*MH)*(2*\
+      alpha) + svev*sin(alpha)))/(2.* (svev*svev*svev*svev)* (vev*vev)*(\
  
-   (MS1*MS1*MS1*MS1*MS1*MS1) +  (MS1*MS1)*(s -  (WH*WH) - 2* (WS1*WS1))*(s - \
+      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) + (3*MH*\
  
-   (WS1*WS1)) + s*(-s +  (WH*WH))* (WS1*WS1) +  (MS1*MS1*MS1*MS1)*(-3*s + \
+      (MS1*MS1)*(2*MS1*WH*WS1* (s*s)*( (MS1*MS1) +  (WS1*WS1)) + MS1*WH*WS1*\
  
-   (WH*WH) + 4* (WS1*WS1))) - MH*(2* (MS1*MS1*MS1*MS1*MS1*MS1)*(s -  (WH*WH))\
+      (MH*MH*MH*MH)*(-2*s +  (MS1*MS1) +  (WS1*WS1)) + MS1*WH*WS1*\
  
-   -  (s*s)* (WH*WH)* (WS1*WS1) +  (MS1*MS1*MS1*MS1)*(-2* (s*s) + s* (WH*WH)\
+      (MH*MH)*(-2*s +  (WH*WH))*(-2*s +  (MS1*MS1) +  (WS1*WS1)) + \
  
-   + 4*s* (WS1*WS1) - 4* (WH*WH)* (WS1*WS1)) +  (MS1*MS1)*(s - \
+      (MH*MH*MH*MH*MH)*( (MS1*MS1*MS1*MS1) + s* (WS1*WS1) +  (MS1*MS1)*(-s + \
  
-   (WS1*WS1))*(s* (WH*WH) - 2*s* (WS1*WS1) + 2* (WH*WH)* (WS1*WS1))))*\
+      (WS1*WS1))) +  (MH*MH*MH)*(2* (MS1*MS1*MS1*MS1*MS1*MS1) +  (MS1*MS1)*(s\
  
-   (sin(2*alpha)*sin(2*alpha))*(-3* (svev*svev) + 3* (vev*vev) + cos(\
+      -  (WH*WH) - 2* (WS1*WS1))*(s -  (WS1*WS1)) + s*(-s +  (WH*WH))*\
  
-   4*alpha)*(- (svev*svev) +  (vev*vev)) + 4*cos( 2*alpha)*( (svev*svev) + \
+      (WS1*WS1) +  (MS1*MS1*MS1*MS1)*(-3*s +  (WH*WH) + 4* (WS1*WS1))) -\
  
-   (vev*vev)) + 2*svev*vev*sin(4*alpha)))/(16.* (svev*svev*svev*svev)*\
+      MH*(2* (MS1*MS1*MS1*MS1*MS1*MS1)*(s -  (WH*WH)) -  (s*s)* (WH*WH)*\
  
-   (vev*vev)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))*(\
+      (WS1*WS1) +  (MS1*MS1*MS1*MS1)*(-2* (s*s) + s* (WH*WH) + 4*s* (WS1*WS1)\
  
-   (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1))));
+      - 4* (WH*WH)* (WS1*WS1)) +  (MS1*MS1)*(s -  (WS1*WS1))*(s* (WH*WH) -\
+ 
+      2*s* (WS1*WS1) + 2* (WH*WH)* (WS1*WS1))))*\
+ 
+      (sin(2*alpha)*sin(2*alpha))*(-3* (svev*svev) + 3* (vev*vev) + cos(\
+ 
+      4*alpha)*(- (svev*svev) +  (vev*vev)) + 4*cos( 2*alpha)*( (svev*svev) +\
+ 
+       (vev*vev)) + 2*svev*vev*sin(4*alpha)))/(16.* (svev*svev*svev*svev)*\
+ 
+      (vev*vev)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))*(\
+ 
+      (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
 double DT::A1A1ZZ(const double &cos_t, const double &s){
 return ( (EL*EL*EL*EL)* (MH*MH)*(-4*s* (MZ*MZ) + 12* (MZ*MZ*MZ*MZ) +  (s*s))*\
  
-   (vev*vev)*( (MH*MH) +  (WH*WH))* (( (cw*cw) +  (sw*sw))*( (cw*cw) + \
+      (vev*vev)*( (MH*MH) +  (WH*WH))* (( (cw*cw) +  (sw*sw))*( (cw*cw) + \
  
-   (sw*sw))*( (cw*cw) +  (sw*sw))*( (cw*cw) +  (sw*sw)))*\
+      (sw*sw))*( (cw*cw) +  (sw*sw))*( (cw*cw) +  (sw*sw)))*\
  
-   (sin(2*alpha)*sin(2*alpha)))/(64.* (cw*cw*cw*cw)* (MZ*MZ*MZ*MZ)*\
+      (sin(2*alpha)*sin(2*alpha)))/(64.* (cw*cw*cw*cw)* (MZ*MZ*MZ*MZ)*\
  
-   (svev*svev)* (sw*sw*sw*sw)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s + \
+      (svev*svev)* (sw*sw*sw*sw)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s + \
  
-   (WH*WH)))) + ( (EL*EL*EL*EL)* (MS1*MS1)*(-4*s* (MZ*MZ) + 12* (MZ*MZ*MZ*MZ)\
+      (WH*WH)))) + ( (EL*EL*EL*EL)* (MS1*MS1)*(-4*s* (MZ*MZ) + 12*\
  
-   +  (s*s))* (vev*vev)*( (MS1*MS1) +  (WS1*WS1))* (( (cw*cw) +  (sw*sw))*(\
+      (MZ*MZ*MZ*MZ) +  (s*s))* (vev*vev)*( (MS1*MS1) +  (WS1*WS1))* ((\
  
-   (cw*cw) +  (sw*sw))*( (cw*cw) +  (sw*sw))*( (cw*cw) +  (sw*sw)))*\
+      (cw*cw) +  (sw*sw))*( (cw*cw) +  (sw*sw))*( (cw*cw) +  (sw*sw))*(\
  
-   (sin(2*alpha)*sin(2*alpha)))/(64.* (cw*cw*cw*cw)* (MZ*MZ*MZ*MZ)*\
+      (cw*cw) +  (sw*sw)))* (sin(2*alpha)*sin(2*alpha)))/(64.* (cw*cw*cw*cw)*\
  
-   (svev*svev)* (sw*sw*sw*sw)*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s\
+      (MZ*MZ*MZ*MZ)* (svev*svev)* (sw*sw*sw*sw)*( (MS1*MS1*MS1*MS1) +  (s*s)\
  
-   +  (WS1*WS1)))) - (MH*MS1* (EL*EL*EL*EL)*(-4*s* (MZ*MZ) + 12*\
+      +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (MH*MS1* (EL*EL*EL*EL)*(-4*s*\
  
-   (MZ*MZ*MZ*MZ) +  (s*s))* (vev*vev)*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s + \
+      (MZ*MZ) + 12* (MZ*MZ*MZ*MZ) +  (s*s))* (vev*vev)*(WH*WS1* (s*s) + MS1*\
  
-   (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
+      (MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +\
  
-   (WS1*WS1)))* (( (cw*cw) +  (sw*sw))*( (cw*cw) +  (sw*sw))*( (cw*cw) + \
+       (MS1*MS1) +  (WS1*WS1)))* (( (cw*cw) +  (sw*sw))*( (cw*cw) + \
  
-   (sw*sw))*( (cw*cw) +  (sw*sw)))* (sin(2*alpha)*sin(2*alpha)))/(32.*\
+      (sw*sw))*( (cw*cw) +  (sw*sw))*( (cw*cw) +  (sw*sw)))*\
  
-   (cw*cw*cw*cw)* (MZ*MZ*MZ*MZ)* (svev*svev)* (sw*sw*sw*sw)*( (MH*MH*MH*MH) +\
+      (sin(2*alpha)*sin(2*alpha)))/(32.* (cw*cw*cw*cw)* (MZ*MZ*MZ*MZ)*\
  
-    (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+      (svev*svev)* (sw*sw*sw*sw)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s + \
  
-   (MS1*MS1)*(-2*s +  (WS1*WS1))));
+      (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s + \
+ 
+      (WS1*WS1))));
 }
 double DT::A1A1wW(const double &cos_t, const double &s){
 return ( (EL*EL*EL*EL)* (MH*MH)*(-4*s* (MW*MW) + 12* (MW*MW*MW*MW) +  (s*s))*\
  
-   (vev*vev)*( (MH*MH) +  (WH*WH))* (sin(2*alpha)*sin(2*alpha)))/(64.*\
+      (vev*vev)*( (MH*MH) +  (WH*WH))* (sin(2*alpha)*sin(2*alpha)))/(64.*\
  
-   (MW*MW*MW*MW)* (svev*svev)* (sw*sw*sw*sw)*( (MH*MH*MH*MH) +  (s*s) + \
+      (MW*MW*MW*MW)* (svev*svev)* (sw*sw*sw*sw)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   (MH*MH)*(-2*s +  (WH*WH)))) + ( (EL*EL*EL*EL)* (MS1*MS1)*(-4*s* (MW*MW) +\
+      (MH*MH)*(-2*s +  (WH*WH)))) + ( (EL*EL*EL*EL)* (MS1*MS1)*(-4*s* (MW*MW)\
  
-   12* (MW*MW*MW*MW) +  (s*s))* (vev*vev)*( (MS1*MS1) +  (WS1*WS1))*\
+      + 12* (MW*MW*MW*MW) +  (s*s))* (vev*vev)*( (MS1*MS1) +  (WS1*WS1))*\
  
-   (sin(2*alpha)*sin(2*alpha)))/(64.* (MW*MW*MW*MW)* (svev*svev)*\
+      (sin(2*alpha)*sin(2*alpha)))/(64.* (MW*MW*MW*MW)* (svev*svev)*\
  
-   (sw*sw*sw*sw)*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s + \
+      (sw*sw*sw*sw)*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s + \
  
-   (WS1*WS1)))) - (MH*MS1* (EL*EL*EL*EL)*(-4*s* (MW*MW) + 12* (MW*MW*MW*MW) +\
+      (WS1*WS1)))) - (MH*MS1* (EL*EL*EL*EL)*(-4*s* (MW*MW) + 12*\
  
-    (s*s))* (vev*vev)*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s +  (MS1*MS1) + \
+      (MW*MW*MW*MW) +  (s*s))* (vev*vev)*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s\
  
-   (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) +  (WS1*WS1)))*\
+      +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
  
-   (sin(2*alpha)*sin(2*alpha)))/(32.* (MW*MW*MW*MW)* (svev*svev)*\
+      (WS1*WS1)))* (sin(2*alpha)*sin(2*alpha)))/(32.* (MW*MW*MW*MW)*\
  
-   (sw*sw*sw*sw)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))*(\
+      (svev*svev)* (sw*sw*sw*sw)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s + \
  
-   (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1))));
+      (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s + \
+ 
+      (WS1*WS1))));
 }
 double DT::A1A1Ee(const double &cos_t, const double &s){
 return (-2* (gc98*gc98)*(-s + 4* (Me*Me))* (MS1*MS1)*( (MS1*MS1) + \
  
-   (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +\
+      (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*(\
  
-    (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (2* (gc64*gc64)*(-s + 4*\
+      (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (2*\
  
-   (Me*Me))* (MH*MH)*( (MH*MH) +  (WH*WH))* (sin(alpha)*sin(alpha)))/(\
+      (gc64*gc64)*(-s + 4* (Me*Me))* (MH*MH)*( (MH*MH) +  (WH*WH))*\
  
-   (svev*svev)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) -\
+      (sin(alpha)*sin(alpha)))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   (2*gc64*gc98*MH*MS1*(-s + 4* (Me*Me))*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s\
+      (MH*MH)*(-2*s +  (WH*WH)))) - (2*gc64*gc98*MH*MS1*(-s + 4*\
  
-   +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
+      (Me*Me))*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s +  (MS1*MS1) + \
  
-   (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
+      (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
  
-   (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s\
+      (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   +  (WS1*WS1))));
+      (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+ 
+      (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
 double DT::A1A1MUmu(const double &cos_t, const double &s){
 return (-2* (gc99*gc99)*(-s + 4* (MMU*MMU))* (MS1*MS1)*( (MS1*MS1) + \
  
-   (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +\
+      (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*(\
  
-    (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (2* (gc65*gc65)* (MH*MH)*(-s +\
+      (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (2*\
  
-   4* (MMU*MMU))*( (MH*MH) +  (WH*WH))* (sin(alpha)*sin(alpha)))/(\
+      (gc65*gc65)* (MH*MH)*(-s + 4* (MMU*MMU))*( (MH*MH) +  (WH*WH))*\
  
-   (svev*svev)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) -\
+      (sin(alpha)*sin(alpha)))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   (2*gc65*gc99*MH*MS1*(-s + 4* (MMU*MMU))*(WH*WS1* (s*s) + MS1*\
+      (MH*MH)*(-2*s +  (WH*WH)))) - (2*gc65*gc99*MH*MS1*(-s + 4*\
  
-   (MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s + \
+      (MMU*MMU))*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s +  (MS1*MS1) + \
  
-   (MS1*MS1) +  (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) + \
+      (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
  
-   (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+      (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   (MS1*MS1)*(-2*s +  (WS1*WS1))));
+      (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+ 
+      (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
 double DT::A1A1TAta(const double &cos_t, const double &s){
 return (-2* (gc100*gc100)* (MS1*MS1)*(-s + 4* (MTA*MTA))*( (MS1*MS1) + \
  
-   (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +\
+      (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*(\
  
-    (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (2* (gc66*gc66)* (MH*MH)*(-s +\
+      (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) - (2*\
  
-   4* (MTA*MTA))*( (MH*MH) +  (WH*WH))* (sin(alpha)*sin(alpha)))/(\
+      (gc66*gc66)* (MH*MH)*(-s + 4* (MTA*MTA))*( (MH*MH) +  (WH*WH))*\
  
-   (svev*svev)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) -\
+      (sin(alpha)*sin(alpha)))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   (2*gc100*gc66*MH*MS1*(-s + 4* (MTA*MTA))*(WH*WS1* (s*s) + MS1*\
+      (MH*MH)*(-2*s +  (WH*WH)))) - (2*gc100*gc66*MH*MS1*(-s + 4*\
  
-   (MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s + \
+      (MTA*MTA))*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s +  (MS1*MS1) + \
  
-   (MS1*MS1) +  (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) + \
+      (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
  
-   (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+      (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   (MS1*MS1)*(-2*s +  (WS1*WS1))));
+      (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+ 
+      (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
 double DT::A1A1Uu(const double &cos_t, const double &s){
 return (6* (gc103*gc103)* (MS1*MS1)*(s - 4* (MU*MU))*( (MS1*MS1) + \
  
-   (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +\
+      (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*(\
  
-    (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (6* (gc81*gc81)* (MH*MH)*(s -\
+      (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (6*\
  
-   4* (MU*MU))*( (MH*MH) +  (WH*WH))* (sin(alpha)*sin(alpha)))/(\
+      (gc81*gc81)* (MH*MH)*(s - 4* (MU*MU))*( (MH*MH) +  (WH*WH))*\
  
-   (svev*svev)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) +\
+      (sin(alpha)*sin(alpha)))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   (6*gc103*gc81*MH*MS1*(s - 4* (MU*MU))*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s\
+      (MH*MH)*(-2*s +  (WH*WH)))) + (6*gc103*gc81*MH*MS1*(s - 4*\
  
-   +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
+      (MU*MU))*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s +  (MS1*MS1) + \
  
-   (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
+      (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
  
-   (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s\
+      (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   +  (WS1*WS1))));
+      (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+ 
+      (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
 double DT::A1A1Cc(const double &cos_t, const double &s){
 return (6* (gc101*gc101)*(s - 4* (MC*MC))* (MS1*MS1)*( (MS1*MS1) + \
  
-   (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +\
+      (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*(\
  
-    (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (6* (gc79*gc79)*(s - 4*\
+      (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (6*\
  
-   (MC*MC))* (MH*MH)*( (MH*MH) +  (WH*WH))* (sin(alpha)*sin(alpha)))/(\
+      (gc79*gc79)*(s - 4* (MC*MC))* (MH*MH)*( (MH*MH) +  (WH*WH))*\
  
-   (svev*svev)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) +\
+      (sin(alpha)*sin(alpha)))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   (6*gc101*gc79*MH*MS1*(s - 4* (MC*MC))*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s\
+      (MH*MH)*(-2*s +  (WH*WH)))) + (6*gc101*gc79*MH*MS1*(s - 4*\
  
-   +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
+      (MC*MC))*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s +  (MS1*MS1) + \
  
-   (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
+      (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
  
-   (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s\
+      (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   +  (WS1*WS1))));
+      (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+ 
+      (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
 double DT::A1A1Tt(const double &cos_t, const double &s){
 return (6* (gc102*gc102)* (MS1*MS1)*(s - 4* (MT*MT))*( (MS1*MS1) + \
  
-   (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +\
+      (WS1*WS1))* (cos( alpha)*cos( alpha)))/( (svev*svev)*(\
  
-    (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (6* (gc80*gc80)* (MH*MH)*(s -\
+      (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (6*\
  
-   4* (MT*MT))*( (MH*MH) +  (WH*WH))* (sin(alpha)*sin(alpha)))/(\
+      (gc80*gc80)* (MH*MH)*(s - 4* (MT*MT))*( (MH*MH) +  (WH*WH))*\
  
-   (svev*svev)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) +\
+      (sin(alpha)*sin(alpha)))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   (6*gc102*gc80*MH*MS1*(s - 4* (MT*MT))*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s\
+      (MH*MH)*(-2*s +  (WH*WH)))) + (6*gc102*gc80*MH*MS1*(s - 4*\
  
-   +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
+      (MT*MT))*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s +  (MS1*MS1) + \
  
-   (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
+      (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
  
-   (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s\
+      (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
  
-   +  (WS1*WS1))));
+      (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+ 
+      (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
 double DT::A1A1Dd(const double &cos_t, const double &s){
 return (6* (gc96*gc96)*(s - 4* (MD*MD))* (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))*\
  
-   (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+      (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) +\
  
-   (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (6* (gc56*gc56)*(s - 4* (MD*MD))*\
+       (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (6* (gc56*gc56)*(s - 4* (MD*MD))*\
  
-   (MH*MH)*( (MH*MH) +  (WH*WH))* (sin(alpha)*sin(alpha)))/( (svev*svev)*(\
+      (MH*MH)*( (MH*MH) +  (WH*WH))* (sin(alpha)*sin(alpha)))/( (svev*svev)*(\
  
-   (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) +\
+      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) +\
  
-   (6*gc56*gc96*MH*MS1*(s - 4* (MD*MD))*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s\
+      (6*gc56*gc96*MH*MS1*(s - 4* (MD*MD))*(WH*WS1* (s*s) + MS1*\
  
-   +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
+      (MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +\
  
-   (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
+       (MS1*MS1) +  (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +\
  
-   (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s\
+       (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) + \
  
-   +  (WS1*WS1))));
+      (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
 double DT::A1A1Ss(const double &cos_t, const double &s){
 return (6* (gc97*gc97)*(s - 4* (MS*MS))* (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))*\
  
-   (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+      (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) +\
  
-   (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (6* (gc57*gc57)* (MH*MH)*(s - 4*\
+       (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (6* (gc57*gc57)* (MH*MH)*(s - 4*\
  
-   (MS*MS))*( (MH*MH) +  (WH*WH))* (sin(alpha)*sin(alpha)))/( (svev*svev)*(\
+      (MS*MS))*( (MH*MH) +  (WH*WH))* (sin(alpha)*sin(alpha)))/(\
  
-   (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) +\
+      (svev*svev)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) +\
  
-   (6*gc57*gc97*MH*MS1*(s - 4* (MS*MS))*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s\
+      (6*gc57*gc97*MH*MS1*(s - 4* (MS*MS))*(WH*WS1* (s*s) + MS1*\
  
-   +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
+      (MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +\
  
-   (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
+       (MS1*MS1) +  (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +\
  
-   (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s\
+       (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) + \
  
-   +  (WS1*WS1))));
+      (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }
 double DT::A1A1Bb(const double &cos_t, const double &s){
 return (6* (gc95*gc95)*(s - 4* (MB*MB))* (MS1*MS1)*( (MS1*MS1) +  (WS1*WS1))*\
  
-   (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) + \
+      (cos( alpha)*cos( alpha)))/( (svev*svev)*( (MS1*MS1*MS1*MS1) +  (s*s) +\
  
-   (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (6* (gc55*gc55)*(s - 4* (MB*MB))*\
+       (MS1*MS1)*(-2*s +  (WS1*WS1)))) + (6* (gc55*gc55)*(s - 4* (MB*MB))*\
  
-   (MH*MH)*( (MH*MH) +  (WH*WH))* (sin(alpha)*sin(alpha)))/( (svev*svev)*(\
+      (MH*MH)*( (MH*MH) +  (WH*WH))* (sin(alpha)*sin(alpha)))/( (svev*svev)*(\
  
-   (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) +\
+      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) +\
  
-   (6*gc55*gc95*MH*MS1*(s - 4* (MB*MB))*(WH*WS1* (s*s) + MS1* (MH*MH*MH)*(-s\
+      (6*gc55*gc95*MH*MS1*(s - 4* (MB*MB))*(WH*WS1* (s*s) + MS1*\
  
-   +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +  (MS1*MS1) + \
+      (MH*MH*MH)*(-s +  (MS1*MS1) +  (WS1*WS1)) - MH*MS1*(s -  (WH*WH))*(-s +\
  
-   (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +  (s*s) + \
+       (MS1*MS1) +  (WS1*WS1)))*sin(2*alpha))/( (svev*svev)*( (MH*MH*MH*MH) +\
  
-   (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) +  (MS1*MS1)*(-2*s\
+       (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))*( (MS1*MS1*MS1*MS1) +  (s*s) + \
  
-   +  (WS1*WS1))));
+      (MS1*MS1)*(-2*s +  (WS1*WS1))));
 }

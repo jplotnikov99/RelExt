@@ -51,86 +51,26 @@ namespace DT{
 		double G = 1.21358;
 		double FAGS = 1.21358;
 
-		channelnames.push_back("A1A1HH");
-		amp2s["A1A1HH"]=A1A1HH;
-		amp2fls["A1A1HH"]=A1A1HHfl;
-		mass1s["A1A1HH"]=&MA1;
-		mass2s["A1A1HH"]=&MA1;
-		channelnames.push_back("A1A1HS1");
-		amp2s["A1A1HS1"]=A1A1HS1;
-		amp2fls["A1A1HS1"]=A1A1HS1fl;
-		mass1s["A1A1HS1"]=&MA1;
-		mass2s["A1A1HS1"]=&MA1;
-		channelnames.push_back("A1A1S1S1");
-		amp2s["A1A1S1S1"]=A1A1S1S1;
-		amp2fls["A1A1S1S1"]=A1A1S1S1fl;
-		mass1s["A1A1S1S1"]=&MA1;
-		mass2s["A1A1S1S1"]=&MA1;
-		channelnames.push_back("A1A1ZZ");
-		amp2s["A1A1ZZ"]=A1A1ZZ;
-		amp2fls["A1A1ZZ"]=A1A1ZZfl;
-		mass1s["A1A1ZZ"]=&MA1;
-		mass2s["A1A1ZZ"]=&MA1;
-		channelnames.push_back("A1A1wW");
-		amp2s["A1A1wW"]=A1A1wW;
-		amp2fls["A1A1wW"]=A1A1wWfl;
-		mass1s["A1A1wW"]=&MA1;
-		mass2s["A1A1wW"]=&MA1;
-		channelnames.push_back("A1A1Ee");
-		amp2s["A1A1Ee"]=A1A1Ee;
-		amp2fls["A1A1Ee"]=A1A1Eefl;
-		mass1s["A1A1Ee"]=&MA1;
-		mass2s["A1A1Ee"]=&MA1;
-		channelnames.push_back("A1A1MUmu");
-		amp2s["A1A1MUmu"]=A1A1MUmu;
-		amp2fls["A1A1MUmu"]=A1A1MUmufl;
-		mass1s["A1A1MUmu"]=&MA1;
-		mass2s["A1A1MUmu"]=&MA1;
-		channelnames.push_back("A1A1TAta");
-		amp2s["A1A1TAta"]=A1A1TAta;
-		amp2fls["A1A1TAta"]=A1A1TAtafl;
-		mass1s["A1A1TAta"]=&MA1;
-		mass2s["A1A1TAta"]=&MA1;
-		channelnames.push_back("A1A1Uu");
-		amp2s["A1A1Uu"]=A1A1Uu;
-		amp2fls["A1A1Uu"]=A1A1Uufl;
-		mass1s["A1A1Uu"]=&MA1;
-		mass2s["A1A1Uu"]=&MA1;
-		channelnames.push_back("A1A1Cc");
-		amp2s["A1A1Cc"]=A1A1Cc;
-		amp2fls["A1A1Cc"]=A1A1Ccfl;
-		mass1s["A1A1Cc"]=&MA1;
-		mass2s["A1A1Cc"]=&MA1;
-		channelnames.push_back("A1A1Tt");
-		amp2s["A1A1Tt"]=A1A1Tt;
-		amp2fls["A1A1Tt"]=A1A1Ttfl;
-		mass1s["A1A1Tt"]=&MA1;
-		mass2s["A1A1Tt"]=&MA1;
-		channelnames.push_back("A1A1Dd");
-		amp2s["A1A1Dd"]=A1A1Dd;
-		amp2fls["A1A1Dd"]=A1A1Ddfl;
-		mass1s["A1A1Dd"]=&MA1;
-		mass2s["A1A1Dd"]=&MA1;
-		channelnames.push_back("A1A1Ss");
-		amp2s["A1A1Ss"]=A1A1Ss;
-		amp2fls["A1A1Ss"]=A1A1Ssfl;
-		mass1s["A1A1Ss"]=&MA1;
-		mass2s["A1A1Ss"]=&MA1;
-		channelnames.push_back("A1A1Bb");
-		amp2s["A1A1Bb"]=A1A1Bb;
-		amp2fls["A1A1Bb"]=A1A1Bbfl;
-		mass1s["A1A1Bb"]=&MA1;
-		mass2s["A1A1Bb"]=&MA1;
-		channelnames.push_back("A1A1");
-		amp2fls["A1A1"]=A1A1;
-		mass1s["A1A1"]=&MA1;
-		mass2s["A1A1"]=&MA1;
-		inifuncs.push_back(A1A1);
-		N_initial_states = 1;
-		inimasses.push_back(&MA1);
-		inimasses.push_back(&MA1);
+		particles["A1"]=&MA1;
 		dsmasses.push_back(&MA1);
 		neutraldsmasses.push_back(&MA1);
+		ADDCHANNEL(A1A1HH, A1A1HHfl, MA1, MA1, MH, MH)
+		ADDCHANNEL(A1A1HS1, A1A1HS1fl, MA1, MA1, MH, MS1)
+		ADDCHANNEL(A1A1S1S1, A1A1S1S1fl, MA1, MA1, MS1, MS1)
+		ADDCHANNEL(A1A1ZZ, A1A1ZZfl, MA1, MA1, MZ, MZ)
+		ADDCHANNEL(A1A1wW, A1A1wWfl, MA1, MA1, MW, MW)
+		ADDCHANNEL(A1A1Ee, A1A1Eefl, MA1, MA1, Me, Me)
+		ADDCHANNEL(A1A1MUmu, A1A1MUmufl, MA1, MA1, MMU, MMU)
+		ADDCHANNEL(A1A1TAta, A1A1TAtafl, MA1, MA1, MTA, MTA)
+		ADDCHANNEL(A1A1Uu, A1A1Uufl, MA1, MA1, MU, MU)
+		ADDCHANNEL(A1A1Cc, A1A1Ccfl, MA1, MA1, MC, MC)
+		ADDCHANNEL(A1A1Tt, A1A1Ttfl, MA1, MA1, MT, MT)
+		ADDCHANNEL(A1A1Dd, A1A1Ddfl, MA1, MA1, MD, MD)
+		ADDCHANNEL(A1A1Ss, A1A1Ssfl, MA1, MA1, MS, MS)
+		ADDCHANNEL(A1A1Bb, A1A1Bbfl, MA1, MA1, MB, MB)
+		ADDCHANNEL(A1A1, A1A1, MA1, MA1, MA1, MA1)
+		ADDINITIALSTATE(A1A1, MA1, MA1)
+		N_initial_states = 1;
 		denstructures.push_back(&MH);
 		denstructures.push_back(&WH);
 		denstructures.push_back(&MS1);
