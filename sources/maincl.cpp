@@ -26,6 +26,22 @@ namespace DT
         mod->assigndm();
     }
 
+    void Main::change_parameter(const std::string &par, const double &newval)
+    {
+        mod->change_parameter(par, newval);
+    }
+
+    double Main::get_parameter_val(const std::string &par)
+    {
+        return mod->get_parmater_val(par);
+    }
+
+    void Main::set_mechanism(const size_t mech)
+    {
+        mechanism = mech;
+        bsol->set_mechanism(mech);
+    }
+
     void Main::def_thermal_bath(const vstring &prtcls)
     {
         mod->assign_bath_masses(prtcls);
@@ -40,20 +56,20 @@ namespace DT
 
     void Main::calc_initial_strength(const vstring &ch_str)
     {
-        Tac temptac(mod);
+        std::unique_ptr<Tac> temptac = std::make_unique<Tac>(mod);
         double ma, mb;
-        double tacFull = temptac.tac(xinitial);
+        double tacFull = temptac->tac(xinitial);
         vstring cur_channel_name = {""};
         if (ch_str.size() == 0)
         {
             size_t N = mod->get_N_all_channels();
             for (size_t i = 0; i < N; i++)
             {
-                temptac.clear_state();
+                temptac->clear_state();
                 cur_channel_name.at(0) = mod->get_channel_name(i);
-                temptac.sort_inimasses(cur_channel_name);
+                temptac->sort_inimasses(cur_channel_name);
 
-                channel_strength[cur_channel_name.at(0)] = temptac.tac(xinitial) / tacFull;
+                channel_strength[cur_channel_name.at(0)] = temptac->tac(xinitial) / tacFull;
             }
         }
     }
@@ -109,30 +125,37 @@ namespace DT
         }
     }
 
-    double Main::calc_Omega_FO(const double ch_contrib, const vstring &ch_str)
+    double Main::calc_Omega(const double ch_contrib, const vstring &ch_str)
     {
-        double x, y;
-
-        bsol->set_mechanism(0);
-
+        double x, y, xtoday;
         if (ch_str.size() != 0)
         {
             bath_procs = ch_str;
         }
-
         if (bath_procs.size() != 0)
             bsol->sort_inimasses(bath_procs);
-        x = bsol->secant_method(15., 15.1);
-        y = 1.5 * bsol->yeq(x);
-        xinitial = x;
+        switch (mechanism)
+        {
+        case 0:
+            x = bsol->secant_method(15., 15.1);
+            y = 1.5 * bsol->yeq(x);
+            xinitial = x;
+            xtoday = xtoday_FO;
+            break;
+        case 1:
+            x = xR;
+            y = 0;
+            xtoday = xtoday_FI;
+            break;
 
-        printf("Initial x: %.5e\n", x);
+        default:
+            std::cout << "This mechanism ID is not valid. Please set the mechanism to 0 or 1.\n";
+            exit(1);
+            break;
+        }
 
-        bsol->adap_rk4(xtoday_FO, x, y);
-
+        bsol->adap_rk4(xtoday, x, y);
         omega = 2.742e8 * mod->MDM * y;
-        std::cout << "Omega full:\n"
-                  << omega << "\n\n";
 
         if (ch_contrib != 1)
         {
@@ -141,28 +164,17 @@ namespace DT
         return omega;
     }
 
-    double Main::calc_Omega_FI(const double ch_contrib, const vstring &ch_str)
+    void Main::find_pars(const vstring &pars, const double relic, const double err)
     {
-        bsol->set_mechanism(0);
-
-        double x = xR;
-        double y = 0;
-        if (ch_str.size() != 0)
+        double om1, om2;
+        do
         {
-            bath_procs = ch_str;
-        }
-
-        if (bath_procs.size() != 0)
-            bsol->sort_inimasses(bath_procs);
-        bsol->adap_rk4(xtoday_FI, x, y);
-
-        omega = 2.742e8 * mod->MDM * y;
-        std::cout << "Omega full:\n"
-                  << omega << "\n\n";
-
-        return omega;
+            for (auto it : pars)
+            {
+                om1 = calc_Omega();
+            }
+        } while (fabs(omega - relic) > err);
     }
-
 
     void Main::save_data(char **argv, const vstring save_pars, bool channels)
     {

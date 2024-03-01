@@ -9,18 +9,20 @@ int main(int argc, char **argv)
     Main main(argc, argv);
     clock_t begin_time = clock();
 
+    // std::vector<std::string> bath = {};
+    // main.def_thermal_bath(bath);
+    main.set_mechanism(0);
+    double om;
 
-    //std::vector<std::string> bath = {};
-    //main.def_thermal_bath(bath);
 
     for (size_t i = 1; i < main.N_par_points; i++)
     {
 
         std::vector<std::string> ch = {};
         main.load_parameters(i);
-
-        main.calc_Omega_FO();
-
+        om = main.calc_Omega();
+        std::cout << "Omega full:\n"
+                  << om << "\n\n";
         std::vector<std::string> par = {"mH1"};
         main.save_data(argv, par);
     }

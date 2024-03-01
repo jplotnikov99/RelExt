@@ -13,6 +13,7 @@ namespace DT
     class Main
     {
     private:
+        size_t mechanism = 0;
         double xtoday_FO = 1e8;
         double xtoday_FI = 100;
         double xR = 0.0001;
@@ -31,6 +32,16 @@ namespace DT
         // loads parameter point and assigns DM mass
         void load_parameters(const size_t i);
 
+        // changes a parameters value
+        void change_parameter(const std::string &par, const double &newval);
+
+        // returns the value of the parameter
+        double get_parameter_val(const std::string &par);
+
+        // sets the mechanism for the relic density calculation
+        // freeze-out = 0; freeze-in = 1
+        void set_mechanism(const size_t mech);
+
         // defines which particles are in the DS bath via the particle names
         void def_thermal_bath(const vstring &prtcls = {});
 
@@ -43,14 +54,10 @@ namespace DT
         // calculate the fraction between single channel relic density and full relic density
         void calc_relic_frac(const double ch_contrib, const vstring &ch_str = {});
 
-        // calculates the DM relic density via freeze-out
-        double calc_Omega_FO(const double ch_contrib = 1., const vstring &ch_str = {});
+        double calc_Omega(const double ch_contrib = 1., const vstring &ch_str = {});
 
-        // calculates the DM relic density via freeze-in
-        double calc_Omega_FI(const double ch_contrib = 1., const vstring &ch_str = {});
-
-        // calculates the DM relic density via exponential growth
-        double calc_Omega_EXP();
+        // finds the parameter values for which the needed relic density is reached within a certain limit
+        void find_pars(const vstring &pars, const double relic = 0.119, const double err = 0.003);
 
         // saves the scanned data
         void save_data(char** argv, const vstring save_pars, bool channels = false);

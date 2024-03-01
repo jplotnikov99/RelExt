@@ -15,7 +15,8 @@ int main(int argc, char **argv)
     {
         std::vector<std::string> channels = {"ChiChi"};
         main.load_parameters(i);
-        main.calc_Omega_FI(1., channels);
+        main.set_mechanism(1);
+        main.calc_Omega(1., channels);
     }
 
     std::cout << "Computation time:\n"
