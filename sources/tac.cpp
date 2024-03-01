@@ -30,13 +30,6 @@ namespace DT
         }
     }
 
-    void Tac::clear_state()
-    {
-        tac_x.clear();
-        sig_s.clear();
-        inimap.clear();
-    }
-
     double Tac::simpson38(const double l, const double r, const double &s)
     {
         return (r - l) / 8 * (mod->eval(l, s) + 3 * mod->eval((2 * l + r) / 3, s) + 3 * mod->eval((l + 2 * r) / 3, s) + mod->eval(r, s));
@@ -55,7 +48,10 @@ namespace DT
         if (depth > 13)
             eps = 1e-1;
         if (depth > 14)
+        {
+            std::cout << "Maximum depth of cos_t integration is reached. Result might lose precision.\n";
             return ans;
+        }
         double m = (l + r) / 2, x = simpson38(l, m, s), y = simpson38(m, r, s);
         if (fabs(((x + y) / ans - 1)) < eps)
             return x + y;
@@ -177,7 +173,6 @@ namespace DT
 
         for (int j = 0; j < mod->N_widths; j++)
         {
-
             peak_xf = peak_relevance(*mod->denstructures.at(2 * j));
 
             if (peak_xf > 0 && x < peak_xf)
@@ -212,7 +207,7 @@ namespace DT
     // Kronrod abisscas [-1,1] intervall
 
     // 31 point gauss kronrod
-    const double kronx_31[31] = {
+    static const double kronx_31[31] = {
         -0.9980022986934,
         -0.98799251802049,
         -0.96773907567914,
@@ -260,7 +255,7 @@ namespace DT
     }
 
     // 13 point gauss kronrod
-    const double kronx_13[13] = {
+    static const double kronx_13[13] = {
         -0.988703202612678858,
         -0.932469514203152028,
         -0.82137334086502794,
@@ -277,20 +272,23 @@ namespace DT
 
     double Tac::adap_gauss_kronrod(const double l, const double r, const double &x, const double &est, int depth)
     {
-        double I1, I2, h, y[13], eps1;
-        h = (r - l) / 2;
+        double I1, I2, y[13];
+        double h = (r - l) / 2;
         for (int i = 0; i < 13; i++)
         {
             y[i] = sigv((kronx_13[i] + 1) * h + l, x);
         }
+
         I1 = h * (0.030396154 * (y[0] + y[12]) + 0.0836944404 * (y[1] + y[11]) + 0.1373206046 * (y[2] + y[10]) + 0.1810719943 * (y[3] + y[9]) + 0.2132096523 * (y[4] + y[8]) + 0.2337708641 * (y[5] + y[7]) + 0.2410725802 * y[6]);
-        I2 = h * (0.171324492 * (y[1] + y[11]) + 0.360761573 * (y[3] + y[9]) + 0.4679139346 * (y[5] + y[7]));
-        eps1 = gauss_kronrod_eps * est / I1 * pow(2, depth);
+        if (depth > 14)
+            return I1;
         if (I1 == 0)
             return 0.;
-        if (depth > 12)
-            return I1;
-        if (fabs(I2 / I1 - 1) < eps1 || eps1 > 1)
+
+        double eps1 = gauss_kronrod_eps * est / I1 * pow(2, depth);
+        I2 = h * (0.171324492 * (y[1] + y[11]) + 0.360761573 * (y[3] + y[9]) + 0.4679139346 * (y[5] + y[7]));
+
+        if (fabs(I2 / I1 - 1) < eps1)
             return I1;
         double m = (l + r) / 2;
         return adap_gauss_kronrod(l, m, x, est, depth + 1) + adap_gauss_kronrod(m, r, x, est, depth + 1);
@@ -336,7 +334,8 @@ namespace DT
         }
         else
         {
-            estimate += gauss_kronrod_31(0, 1, x);
+            estimate += gauss_kronrod_31(0, 1e-3, x);
+            estimate += gauss_kronrod_31(1e-3, 1, x);
             res += adap_gauss_kronrod(0, 1, x, estimate);
         }
         return res;
@@ -378,6 +377,14 @@ namespace DT
         {
             return tac_x.at(x);
         }
+    }
+
+    void Tac::clear_state()
+    {
+        max_prec_s = false;
+        tac_x.clear();
+        sig_s.clear();
+        inimap.clear();
     }
 
 } // namespace DT

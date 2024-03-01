@@ -82,8 +82,16 @@ namespace DT
 
     void Model::assign_masses(double &m1, double &m2, std::string ch_str)
     {
-        m1 = *mass1s[ch_str];
-        m2 = *mass2s[ch_str];
+        if (*mass1s[ch_str] + *mass2s[ch_str] >= *mass3s[ch_str] + *mass4s[ch_str])
+        {
+            m1 = *mass1s[ch_str];
+            m2 = *mass2s[ch_str];
+        }
+        else
+        {
+            m1 = *mass3s[ch_str];
+            m2 = *mass4s[ch_str];
+        }
     }
 
     void Model::set_channel(double &m1, double &m2, const size_t i, vstring ch_str)

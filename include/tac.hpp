@@ -15,8 +15,9 @@ namespace DT
         double m1;
         double m2;
         size_t N_relevant_peaks;
-        std::vector<double> boundaries;
+        bool max_prec_s = false;
         std::shared_ptr<Model> mod;
+        std::vector<double> boundaries;
         std::map<double, vstring>::iterator ini_it;
 
     public:
