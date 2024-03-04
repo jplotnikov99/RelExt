@@ -4,7 +4,7 @@ namespace DT
 {
     //TAC parameters
     const double simpson_eps = 1e-5;
-    const double beps_eps = 1e-4;
+    const double beps_eps = 1e-6;
     const double trapezoidal_eps = 1e-4;
     const double gauss_kronrod_eps = 1e-7;
 

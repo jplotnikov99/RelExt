@@ -23,7 +23,7 @@ namespace DT
         void set_mechanism(const size_t &m);
 
         // clear TAC maps which are necessary for faster computation
-        void reset_tac_state();
+        void reset_tac_state(const bool full);
 
         // sorts different channels by their total initial state masses
         void sort_inimasses(const vstring &ch_str = {});

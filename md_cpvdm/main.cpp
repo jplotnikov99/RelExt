@@ -9,13 +9,14 @@ int main(int argc, char **argv)
     Main main(argc, argv);
     clock_t begin_time = clock();
 
-    // std::vector<std::string> bath = {};
-    // main.def_thermal_bath(bath);
+    vstring bath = {};
+    main.def_thermal_bath(bath);
+    vstring channels = {};
+    main.set_channels(channels);
     main.set_mechanism(0);
     double om;
 
-
-    for (size_t i = 1; i < main.N_par_points; i++)
+    for (size_t i = 1; i < 1001; i++)
     {
 
         std::vector<std::string> ch = {};

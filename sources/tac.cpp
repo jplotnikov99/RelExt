@@ -280,7 +280,7 @@ namespace DT
         }
 
         I1 = h * (0.030396154 * (y[0] + y[12]) + 0.0836944404 * (y[1] + y[11]) + 0.1373206046 * (y[2] + y[10]) + 0.1810719943 * (y[3] + y[9]) + 0.2132096523 * (y[4] + y[8]) + 0.2337708641 * (y[5] + y[7]) + 0.2410725802 * y[6]);
-        if (depth > 14)
+        if (depth > 16)
             return I1;
         if (I1 == 0)
             return 0.;
@@ -290,7 +290,7 @@ namespace DT
 
         if (fabs(I2 / I1 - 1) < eps1)
             return I1;
-        double m = (l + r) / 2;
+        double m = (2 * l + r) / 3;
         return adap_gauss_kronrod(l, m, x, est, depth + 1) + adap_gauss_kronrod(m, r, x, est, depth + 1);
     }
 
@@ -379,12 +379,13 @@ namespace DT
         }
     }
 
-    void Tac::clear_state()
+    void Tac::clear_state(const bool full)
     {
         max_prec_s = false;
         tac_x.clear();
         sig_s.clear();
-        inimap.clear();
+        if (full)
+            inimap.clear();
     }
 
 } // namespace DT

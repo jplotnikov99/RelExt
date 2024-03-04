@@ -8,8 +8,13 @@ int main(int argc, char **argv)
     Main main(argc, argv);
 
     clock_t begin_time = clock();
-    std::vector<std::string> par = {"MA1"};
+
+    vstring bath = {};
+    main.def_thermal_bath(bath);
+    vstring channels = {};
+    main.set_channels(channels);
     main.set_mechanism(0);
+    std::vector<std::string> par = {"MA1"};
 
     double om;
 
@@ -17,7 +22,7 @@ int main(int argc, char **argv)
     {
         std::vector<std::string> channels = {};
         main.load_parameters(i);
-        om = main.calc_Omega(0.01);
+        om = main.calc_Omega();
 
         std::cout << "Omega full:\n"
                   << om << "\n\n";

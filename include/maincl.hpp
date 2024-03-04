@@ -19,10 +19,10 @@ namespace DT
         double xR = 0.0001;
         double xinitial;
         double omega;
+        vstring bath_particles = {}; 
         vstring bath_procs = {};
         std::unordered_map<std::string, double> channel_strength;
         std::unique_ptr<DataReader> rdr;
-        std::shared_ptr<Dof> dof;
         std::shared_ptr<Model> mod;
         std::unique_ptr<BeqSolver> bsol;
 
@@ -45,6 +45,9 @@ namespace DT
         // defines which particles are in the DS bath via the particle names
         void def_thermal_bath(const vstring &prtcls = {});
 
+        // sets the channels which contribute to the relic density
+        void set_channels(const vstring &ch_str);
+
         // checks if the thermal bath particles and the input channels match
         void check_procs(const vstring &ch_str);
 
@@ -60,7 +63,7 @@ namespace DT
         void find_pars(const vstring &pars, const double relic = 0.119, const double err = 0.003);
 
         // saves the scanned data
-        void save_data(char** argv, const vstring save_pars, bool channels = false);
+        void save_data(char **argv, const vstring save_pars, bool channels = false);
 
         Main(int argc, char **argv);
         ~Main(){};

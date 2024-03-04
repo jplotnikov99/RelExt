@@ -119,7 +119,7 @@ namespace DT
         {
             h = xtoday - x;
             rk4(x, y, h);
-            beq->reset_tac_state();
+            beq->reset_tac_state(false);
         }
         else
         {

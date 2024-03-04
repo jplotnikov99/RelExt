@@ -82,7 +82,7 @@ namespace DT
         // the one. the only. the THERMALLY AVERAGED CROSS SECTION!! at a certain x value
         double tac(const double &x);
 
-        void clear_state();
+        void clear_state(const bool full);
 
         ~Tac(){};
     };

@@ -5,7 +5,6 @@ namespace DT
     Main::Main(int argc, char **argv)
     {
         rdr = std::make_unique<DataReader>(argv);
-        dof = std::make_shared<Dof>();
         mod = std::make_shared<Model>();
 
         mod->init();
@@ -44,14 +43,42 @@ namespace DT
 
     void Main::def_thermal_bath(const vstring &prtcls)
     {
-        mod->assign_bath_masses(prtcls);
+        bath_particles = prtcls;
         if (prtcls.size() != 0)
-            bath_procs = mod->find_thermal_procs(prtcls);
+        {
+            bath_procs = mod->find_thermal_procs(bath_particles);
+        }
+        mod->assign_bath_masses(bath_particles);
     }
 
     void Main::check_procs(const vstring &ch_str)
     {
-        // TO DO
+        size_t found;
+        for (auto it : ch_str)
+        {
+            for (auto jt : bath_procs)
+            {
+                found = it.find(jt);
+                if (found == std::string::npos)
+                {
+                    std::cout << "The channel " << it << " does not exist in this thermal bath.\n";
+                    exit(1);
+                }
+            }
+        }
+    }
+
+    void Main::set_channels(const vstring &ch_str)
+    {
+        if (ch_str.size() != 0)
+        {
+            if (bath_particles.size() != 0)
+            {
+                check_procs(ch_str);
+            }
+            bath_procs = ch_str;
+        }
+        bsol->sort_inimasses(bath_procs);
     }
 
     void Main::calc_initial_strength(const vstring &ch_str)
@@ -65,7 +92,7 @@ namespace DT
             size_t N = mod->get_N_all_channels();
             for (size_t i = 0; i < N; i++)
             {
-                temptac->clear_state();
+                temptac->clear_state(true);
                 cur_channel_name.at(0) = mod->get_channel_name(i);
                 temptac->sort_inimasses(cur_channel_name);
 
@@ -89,8 +116,7 @@ namespace DT
             {
                 stronk_channels.at(0) = it->first;
                 channels.push_back(it->first);
-
-                bsol->sort_inimasses(stronk_channels);
+                set_channels(stronk_channels);
                 x = bsol->secant_method(15., 15.1);
                 y = 1.5 * bsol->yeq(x);
                 bsol->adap_rk4(xtoday_FO, x, y);
@@ -128,12 +154,7 @@ namespace DT
     double Main::calc_Omega(const double ch_contrib, const vstring &ch_str)
     {
         double x, y, xtoday;
-        if (ch_str.size() != 0)
-        {
-            bath_procs = ch_str;
-        }
-        if (bath_procs.size() != 0)
-            bsol->sort_inimasses(bath_procs);
+
         switch (mechanism)
         {
         case 0:
