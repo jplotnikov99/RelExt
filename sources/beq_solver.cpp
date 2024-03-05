@@ -30,7 +30,6 @@ namespace DT
         double x2;
         double y1;
         double y0 = beq->fstart(x0);
-        std::cout << "test\n";
         // Loop until the tolerance is reached
         while (fabs(x1 - x0) > secant_eps)
         {
@@ -120,7 +119,7 @@ namespace DT
         {
             h = xtoday - x;
             rk4(x, y, h);
-            beq->reset_tac_state(false);
+            beq->reset_tac_state(true);
         }
         else
         {

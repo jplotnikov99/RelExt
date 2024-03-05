@@ -117,12 +117,10 @@ namespace DT
     double Model::eval(const double cos_t, const double s)
     {
         double res = 0;
-        std::cout << res << std::endl;
         for (auto it : cur_channel)
         {
             res += it(cos_t, s);
         }
-        std::cout << res << std::endl;
         return res;
     }
 

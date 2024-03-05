@@ -66,7 +66,7 @@ namespace DT
         // calculate the fraction between single channel relic density and full relic density
         void calc_relic_frac(const double ch_contrib, const vstring &ch_str = {});
 
-        double calc_Omega(const double ch_contrib = 1., const vstring &ch_str = {});
+        double calc_Omega(const double ch_contrib = 1.);
 
         // finds the parameter values for which the needed relic density is reached within a certain limit
         void find_pars(const vstring &pars, const double relic = 0.119, const double err = 0.003);

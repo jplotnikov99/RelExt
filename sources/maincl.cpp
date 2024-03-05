@@ -14,10 +14,9 @@ namespace DT
 
         N_par_points = rdr->datalines();
         rdr->scanpars = rdr->assignHeaders(mod->parmap);
-        
+
         def_thermal_bath();
         set_channels();
-
     }
 
     void Main::load_setting(const std::string sg_file)
@@ -60,8 +59,9 @@ namespace DT
 
     void Main::def_thermal_bath()
     {
-        if (bath_procs.size() != 0)
+        if (bath_particles.size() != 0)
         {
+            std::cout << "test\n";
             bath_procs = mod->find_thermal_procs(bath_particles);
         }
         mod->assign_bath_masses(bath_particles);
@@ -94,8 +94,6 @@ namespace DT
             }
             bath_procs = considered_procs;
         }
-        bsol->sort_inimasses(bath_procs);
-        
     }
 
     void Main::calc_initial_strength(const vstring &ch_str)
@@ -168,9 +166,11 @@ namespace DT
         }
     }
 
-    double Main::calc_Omega(const double ch_contrib, const vstring &ch_str)
+    double Main::calc_Omega(const double ch_contrib)
     {
         double x, y, xtoday;
+        if (bath_procs.size() != 0)
+            bsol->sort_inimasses(bath_procs);
 
         switch (mechanism)
         {
@@ -216,7 +216,7 @@ namespace DT
 
     void Main::save_data(bool channels)
     {
-        std::string filesave = "../dataOutput/" + output_file; 
+        std::string filesave = "../dataOutput/" + output_file;
 
         std::ofstream outfile(filesave, std::ios::out | std::ios::app);
 

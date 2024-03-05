@@ -1,12 +1,12 @@
-########  Setting file for the CxSM model ########
+########  Setting file for the CPVDM model ########
 
 ######## Standard settings ########
 
 InputFile           |CPVDMTest.csv
 OutputFile          |cpvdm.csv
 SavedParameters     |mH1, mH2
-ThermalBath         |
-ConsideredChannels  |H1H2
+ThermalBath         | 
+ConsideredChannels  |
 BepsEps             |1e-6
 
 ######## Advanced settings ########

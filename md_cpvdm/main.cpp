@@ -11,8 +11,7 @@ int main(int argc, char **argv)
 
     main.set_mechanism(0);
     double om;
-
-    for (size_t i = 11; i < main.N_par_points; i++)
+    for (size_t i = 1; i < main.N_par_points; i++)
     {
         main.load_parameters(i);
         om = main.calc_Omega();

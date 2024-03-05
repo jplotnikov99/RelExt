@@ -366,7 +366,6 @@ namespace DT
                 for (ini_it = inimap.begin(); ini_it != inimap.end(); ini_it++)
                 {
                     mod->set_channel(m1, m2, 0, ini_it->second);
-                    std::cout << ini_it->first << std::endl;
                     if (beps(x, mod->MDM))
                     {
                         set_boundaries(x);

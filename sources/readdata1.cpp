@@ -76,7 +76,8 @@ namespace DT
 		while (getline(ss, temp, delimiter))
 		{
 			rmv_spaces(temp);
-			res.push_back(temp);
+			if (temp.size() != 0)
+				res.push_back(temp);
 		}
 		return res;
 	}
@@ -89,6 +90,8 @@ namespace DT
 		getline(ss, line, '|');
 		getline(ss, line, '|');
 		rmv_spaces(line);
+		if (line.size() == 0)
+			line = "0";
 
 		return std::stod(line);
 	}
