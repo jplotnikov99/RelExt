@@ -4,19 +4,36 @@ namespace DT
 {
     Main::Main(int argc, char **argv)
     {
-        rdr = std::make_unique<DataReader>(argv);
-        mod = std::make_shared<Model>();
+        load_setting(std::string(argv[1]));
+        rdr = std::make_unique<DataReader>(input_file, 1);
 
+        mod = std::make_shared<Model>();
         mod->init();
         mod->load_parameter_map();
-        mod->assign_bath_masses();
+        bsol = std::make_unique<BeqSolver>(mod);
 
         N_par_points = rdr->datalines();
         rdr->scanpars = rdr->assignHeaders(mod->parmap);
+        
+        def_thermal_bath();
+        set_channels();
 
-        bsol = std::make_unique<BeqSolver>(mod);
     }
 
+    void Main::load_setting(const std::string sg_file)
+    {
+        std::unique_ptr<DataReader> sgr = std::make_unique<DataReader>(sg_file, 0);
+        input_file = sgr->get_name_of("InputFile");
+        output_file = sgr->get_name_of("OutputFile");
+        bath_particles = sgr->get_slist_of("ThermalBath");
+        considered_procs = sgr->get_slist_of("ConsideredChannels");
+        saved_pars = sgr->get_slist_of("SavedParameters");
+        beps_eps = sgr->get_val_of("BepsEps");
+        simpson_eps = sgr->get_val_of("ThetaIntEps");
+        trapezoidal_eps = sgr->get_val_of("PeakIntEps");
+        gauss_kronrod_eps = sgr->get_val_of("sIntEps");
+        rk4_eps = sgr->get_val_of("rk4Eps");
+    }
     void Main::load_parameters(const size_t i)
     {
         std::cout << "Parameter point: " << i << std::endl;
@@ -41,10 +58,9 @@ namespace DT
         bsol->set_mechanism(mech);
     }
 
-    void Main::def_thermal_bath(const vstring &prtcls)
+    void Main::def_thermal_bath()
     {
-        bath_particles = prtcls;
-        if (prtcls.size() != 0)
+        if (bath_procs.size() != 0)
         {
             bath_procs = mod->find_thermal_procs(bath_particles);
         }
@@ -68,17 +84,18 @@ namespace DT
         }
     }
 
-    void Main::set_channels(const vstring &ch_str)
+    void Main::set_channels()
     {
-        if (ch_str.size() != 0)
+        if (considered_procs.size() != 0)
         {
             if (bath_particles.size() != 0)
             {
-                check_procs(ch_str);
+                check_procs(considered_procs);
             }
-            bath_procs = ch_str;
+            bath_procs = considered_procs;
         }
         bsol->sort_inimasses(bath_procs);
+        
     }
 
     void Main::calc_initial_strength(const vstring &ch_str)
@@ -116,7 +133,7 @@ namespace DT
             {
                 stronk_channels.at(0) = it->first;
                 channels.push_back(it->first);
-                set_channels(stronk_channels);
+                set_channels();
                 x = bsol->secant_method(15., 15.1);
                 y = 1.5 * bsol->yeq(x);
                 bsol->adap_rk4(xtoday_FO, x, y);
@@ -197,9 +214,9 @@ namespace DT
         } while (fabs(omega - relic) > err);
     }
 
-    void Main::save_data(char **argv, const vstring save_pars, bool channels)
+    void Main::save_data(bool channels)
     {
-        std::string filesave = "../dataOutput/" + std::string(argv[2]);
+        std::string filesave = "../dataOutput/" + output_file; 
 
         std::ofstream outfile(filesave, std::ios::out | std::ios::app);
 
@@ -209,16 +226,16 @@ namespace DT
         {
             outfile << "Omega";
 
-            for (int k = 0; k < save_pars.size(); k++)
+            for (int k = 0; k < saved_pars.size(); k++)
             {
-                outfile << "\t" << save_pars.at(k);
+                outfile << "\t" << saved_pars.at(k);
             }
             outfile << "\n";
         }
 
         outfile << omega;
 
-        for (auto it : save_pars)
+        for (auto it : saved_pars)
         {
             outfile << "\t" << mod->get_parmater_val(it);
         }

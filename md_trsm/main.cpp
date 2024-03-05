@@ -9,14 +9,12 @@ int main(int argc, char **argv)
     Main main(argc, argv);
 
     clock_t begin_time = clock();
-    main.def_thermal_bath({"Chi"});
 
     for (size_t i = 1; i < main.N_par_points; i++)
     {
-        std::vector<std::string> channels = {"ChiChi"};
         main.load_parameters(i);
         main.set_mechanism(1);
-        main.calc_Omega(1., channels);
+        main.calc_Omega(1.);
     }
 
     std::cout << "Computation time:\n"

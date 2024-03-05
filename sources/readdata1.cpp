@@ -2,28 +2,118 @@
 
 namespace DT
 {
-	DataReader::DataReader(char **argv, bool read)
+	DataReader::DataReader(const std::string file, const size_t mode)
 	{
-		if (read)
+		switch (mode)
 		{
-			filename = "../dataInput/" + std::string(argv[1]);
+		case 0:
+			filename = "../settings/" + file;
+			datafile.open(filename);
+			if (!datafile)
+			{
+				std::cerr << "Unable to open file " << filename << ". Check if the name of the file is correct and if it is stored in the setting directory.\n";
+				exit(1);
+			}
+			break;
+		case 1:
+			filename = "../dataInput/" + file;
 			datafile.open(filename);
 			if (!datafile)
 			{
 				std::cerr << "Unable to open file " << filename << ". Check if the name of the file is correct and if it is stored in the dataInput directory.\n";
 				exit(1);
 			}
-		}
-		else{
-			filename = "../dataOutput/" + std::string(argv[2]);
-			outfile.open(filename);
+			break;
+		case 2:
+			filename = "../dataOutput/" + file;
+			datafile.open(filename);
+			if (!datafile)
+			{
+				std::cerr << "Unable to open file " << filename << ". Check if the name of the file is correct and if it is stored in the dataOutput directory.\n";
+				exit(1);
+			}
+			break;
+
+		default:
+			std::cerr << "Wrong case in " << __func__ << "\n";
+			break;
 		}
 	}
 
-	DataReader::~DataReader()
+	std::string DataReader::get_line_at(const std::string name)
 	{
-		datafile.close();
-		outfile.close();
+		datafile.clear();
+		datafile.seekg(0);
+		size_t found;
+		std::string line;
+		while (getline(datafile, line))
+		{
+			found = line.find(name);
+			if (found != std::string::npos)
+			{
+				break;
+			}
+		}
+		if (found == std::string::npos)
+		{
+			std::cout << name << " was not found in " << filename << ".\n";
+			exit(1);
+		}
+		return line;
+	}
+
+	void DataReader::rmv_spaces(std::string &str)
+	{
+		str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
+	}
+
+	vstring DataReader::line_to_strings(const std::string line, const char delimiter)
+	{
+		std::string temp;
+		vstring res;
+		std::stringstream ss(line);
+
+		while (getline(ss, temp, delimiter))
+		{
+			rmv_spaces(temp);
+			res.push_back(temp);
+		}
+		return res;
+	}
+
+	double DataReader::get_val_of(const std::string name)
+	{
+		std::string line;
+		line = get_line_at(name);
+		std::stringstream ss(line);
+		getline(ss, line, '|');
+		getline(ss, line, '|');
+		rmv_spaces(line);
+
+		return std::stod(line);
+	}
+
+	std::string DataReader::get_name_of(const std::string name)
+	{
+		std::string line;
+		line = get_line_at(name);
+		std::stringstream ss(line);
+		getline(ss, line, '|');
+		getline(ss, line, '|');
+		rmv_spaces(line);
+
+		return line;
+	}
+
+	vstring DataReader::get_slist_of(const std::string name)
+	{
+		std::string line;
+		line = get_line_at(name);
+		std::stringstream ss(line);
+		getline(ss, line, '|');
+		getline(ss, line, '|');
+
+		return line_to_strings(line, ',');
 	}
 
 	double DataReader::datalines()
@@ -118,7 +208,6 @@ namespace DT
 
 	void DataReader::save_data(char **argv, std::vector<std::string> yourheader, std::vector<double> yourlist)
 	{
-		
 
 		outfile.seekp(0, std::ios::end);
 
@@ -139,6 +228,12 @@ namespace DT
 
 		outfile << "\n";
 
+		outfile.close();
+	}
+
+	DataReader::~DataReader()
+	{
+		datafile.close();
 		outfile.close();
 	}
 } // namespace DT

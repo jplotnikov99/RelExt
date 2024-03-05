@@ -1,0 +1,17 @@
+########  Setting file for the CxSM model ########
+
+######## Standard settings ########
+
+InputFile           |CPVDMTest.csv
+OutputFile          |cpvdm.csv
+SavedParameters     |mH1, mH2
+ThermalBath         |
+ConsideredChannels  |H1H2
+BepsEps             |1e-6
+
+######## Advanced settings ########
+
+ThetaIntEps         |1e-5
+PeakIntEps          |1e-5
+sIntEps             |1e-7
+rk4Eps              |1e-6
