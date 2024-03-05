@@ -16,7 +16,7 @@ int main(int argc, char **argv)
     main.set_mechanism(0);
     double om;
 
-    for (size_t i = 1; i < 1001; i++)
+    for (size_t i = 1; i < main.N_par_points; i++)
     {
 
         std::vector<std::string> ch = {};
