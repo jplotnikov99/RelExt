@@ -31,6 +31,5 @@ namespace DT
 
 	double polK2(const double &x);
 
-	bool is_substring(const std::string& str1, const std::string& str2);
-
+	void check_error(const double &val, const double &err);
 }

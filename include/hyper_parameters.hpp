@@ -12,4 +12,7 @@ namespace DT
     extern double secant_eps;
     extern double rk4_eps;
     extern size_t secant_maxiter;
+
+    // Options
+    extern bool iserror;
 } // namespace DT

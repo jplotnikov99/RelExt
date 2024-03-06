@@ -9,6 +9,7 @@ ThermalBath         |
 ConsideredChannels  |
 BepsEps             |1e-6
 ProductionMechanism |0
+CalcError           |false
 
 ######## Advanced settings ########
 

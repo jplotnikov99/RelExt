@@ -45,8 +45,3 @@ double DT::polK2(const double &x)
    return 1.2533141373155 / sqrt(x) *
           (1 + 1.875 * y * (1 + 0.4375 * y * (1 - 0.375 * y * (1 - 1.03125 * y * (1 - 1.625 * y * (1 - 2.1875 * y))))));
 }
-
-bool DT::is_substring(const std::string &str1, const std::string &str2)
-{
-   return str2.find(str1) != std::string::npos;
-}

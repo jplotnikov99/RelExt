@@ -9,12 +9,10 @@ int main(int argc, char **argv)
 
     clock_t begin_time = clock();
 
-    main.set_mechanism(0);
     double om;
 
     for (size_t i = 1; i < main.N_par_points; i++)
     {
-        std::cout << "test\n";
         main.load_parameters(i);
         om = main.calc_Omega();
 

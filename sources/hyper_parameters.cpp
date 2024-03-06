@@ -10,4 +10,6 @@ namespace DT
     double secant_eps = 0.01;
     double rk4_eps = 1e-6;
     size_t secant_maxiter = 100;
+
+    bool iserror = false;
 }

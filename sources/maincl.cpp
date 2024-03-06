@@ -33,6 +33,7 @@ namespace DT
         trapezoidal_eps = sgr->get_val_of("PeakIntEps");
         gauss_kronrod_eps = sgr->get_val_of("sIntEps");
         rk4_eps = sgr->get_val_of("rk4Eps");
+        iserror = sgr->get_name_of("CalcError") == "true";
     }
     void Main::load_parameters(const size_t i)
     {

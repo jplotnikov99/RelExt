@@ -283,16 +283,21 @@ namespace DT
         }
 
         I1 = h * (0.022935322010529224963732008058970 * (y[0] + y[14]) + 0.063092092629978553290700663189204 * (y[1] + y[13]) + 0.104790010322250183839876322541518 * (y[2] + y[12]) + 0.140653259715525918745189590510238 * (y[3] + y[11]) + 0.169004726639267902826583426598550 * (y[4] + y[10]) + 0.190350578064785409913256402421014 * (y[5] + y[9]) + 0.204432940075298892414161999234649 * (y[6] + y[8]) + 0.209482141084727828012999174891714 * y[7]);
-        if (depth > 16)
-            return I1;
         if (I1 == 0)
             return 0.;
 
         double eps1 = gauss_kronrod_eps * est / I1 * pow(2, depth);
         I2 = h * (0.129484966168869693270611432679082 * (y[1] + y[13]) + 0.279705391489276667901467771423780 * (y[3] + y[11]) + 0.381830050505118944950369775488975 * (y[5] + y[9]) + 0.417959183673469387755102040816327 * y[7]);
-
-        if (fabs(I2 / I1 - 1) < eps1)
+        if (depth > 16)
+        {
+            tac_error += fabs(I2 - I1);
             return I1;
+        }
+        if (fabs(I2 / I1 - 1) < eps1)
+        {
+            tac_error += fabs(I2 - I1);
+            return I1;
+        }
         double m = (2 * l + r) / 3;
         return adap_gauss_kronrod(l, m, x, est, depth + 1) + adap_gauss_kronrod(m, r, x, est, depth + 1);
     }
@@ -347,6 +352,7 @@ namespace DT
     double Tac::tac(const double &x)
     {
         double res = 0.;
+        tac_error = 0.;
         if (tac_x.find(x) == tac_x.end())
         {
             if (inimap.size() == 0)
@@ -374,12 +380,17 @@ namespace DT
                 }
             }
             tac_x[x] = res;
+            if (fabs(res - tac_error) > 0.1)
+            {
+                std::cout << "Result and error are of the same order in the TAC.\n";
+            }
             return res;
         }
         else
         {
             return tac_x.at(x);
         }
+        // exit(0);
     }
 
     void Tac::clear_state(const bool full)
