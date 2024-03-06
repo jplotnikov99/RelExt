@@ -14,7 +14,7 @@ namespace DT
     class Main
     {
     private:
-        size_t mechanism = 0;
+        size_t mechanism = 10;
         double xtoday_FO = 1e8;
         double xtoday_FI = 100;
         double xR = 0.0001;

@@ -28,6 +28,7 @@ namespace DT
         considered_procs = sgr->get_slist_of("ConsideredChannels");
         saved_pars = sgr->get_slist_of("SavedParameters");
         beps_eps = sgr->get_val_of("BepsEps");
+        mechanism = (size_t) sgr->get_val_of("ProductionMechanism");
         simpson_eps = sgr->get_val_of("ThetaIntEps");
         trapezoidal_eps = sgr->get_val_of("PeakIntEps");
         gauss_kronrod_eps = sgr->get_val_of("sIntEps");

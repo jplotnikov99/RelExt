@@ -8,6 +8,7 @@ SavedParameters     |mH1, mH2
 ThermalBath         | 
 ConsideredChannels  |
 BepsEps             |1e-6
+ProductionMechanism |0
 
 ######## Advanced settings ########
 
