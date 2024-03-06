@@ -50,10 +50,10 @@ namespace DT
         vamp2 cur_channel;
         size_t N_cur;
         size_t N_all_channels;
+        size_t N_initial_states;
         double ZERO = 0;
 
     public:
-        size_t N_initial_states;
         size_t N_widths;
         std::map<std::string, double *> parmap;
         std::vector<double *> denstructures;
@@ -69,7 +69,9 @@ namespace DT
         void change_parameter(const std::string par, const double newval);
 
         size_t get_N_all_channels();
+        size_t get_N_initial_states();
         std::string get_channel_name(const size_t i);
+        vstring get_subchannels(const std::string &ini_state);
         void assign_bath_masses(const vstring &prtcls = {});
         vstring find_thermal_procs(const vstring &prtcls = {});
 

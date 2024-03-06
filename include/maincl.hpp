@@ -26,7 +26,8 @@ namespace DT
         vstring bath_procs = {};
         vstring considered_procs = {};
         vstring saved_pars = {};
-        std::unordered_map<std::string, double> channel_strength;
+        double channel_contrib = 1.;
+        vstring strong_channels = {};
         std::unique_ptr<DataReader> rdr;
         std::shared_ptr<Model> mod;
         std::unique_ptr<BeqSolver> bsol;
@@ -60,13 +61,13 @@ namespace DT
         // checks if the thermal bath particles and the input channels match
         void check_procs(const vstring &ch_str);
 
-        // calculates the fraction between single channel TACs and full TAC
-        void calc_initial_strength(const vstring &ch_str = {});
+        // finds the channels which contribute to TAC more than channel_contrib
+        void find_strong_channels();
 
         // calculate the fraction between single channel relic density and full relic density
-        void calc_relic_frac(const double ch_contrib, const vstring &ch_str = {});
+        void calc_relic_frac();
 
-        double calc_Omega(const double ch_contrib = 1.);
+        double calc_Omega();
 
         // finds the parameter values for which the needed relic density is reached within a certain limit
         void find_pars(const vstring &pars, const double relic = 0.119, const double err = 0.003);

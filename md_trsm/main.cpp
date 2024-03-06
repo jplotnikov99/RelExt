@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     {
         main.load_parameters(i);
         main.set_mechanism(1);
-        main.calc_Omega(1.);
+        main.calc_Omega();
     }
 
     std::cout << "Computation time:\n"

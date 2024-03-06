@@ -357,7 +357,7 @@ namespace DT
         {
             if (inimap.size() == 0)
             {
-                for (size_t i = 0; i < mod->N_initial_states; i++)
+                for (size_t i = 0; i < mod->get_N_initial_states(); i++)
                 {
                     mod->set_channel(m1, m2, i);
                     if (beps(x, mod->MDM))
@@ -383,6 +383,7 @@ namespace DT
             if (fabs(res - tac_error) > 0.1)
             {
                 std::cout << "Result and error are of the same order in the TAC.\n";
+                std::cout << fabs(res - tac_error) << std::endl; 
             }
             return res;
         }

@@ -2,13 +2,14 @@
 
 ######## Standard settings ########
 
-InputFile           |relext_test.csv
+InputFile           |test2.csv
 OutputFile          |cxsm.csv
 SavedParameters     |MA1, svev, alpha
 ThermalBath         |
 ConsideredChannels  |
 BepsEps             |1e-6
 ProductionMechanism |0
+ChannelContributions|1
 CalcError           |true
 
 ######## Advanced settings ########

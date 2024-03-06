@@ -28,7 +28,8 @@ namespace DT
         considered_procs = sgr->get_slist_of("ConsideredChannels");
         saved_pars = sgr->get_slist_of("SavedParameters");
         beps_eps = sgr->get_val_of("BepsEps");
-        mechanism = (size_t) sgr->get_val_of("ProductionMechanism");
+        mechanism = (size_t)sgr->get_val_of("ProductionMechanism");
+        channel_contrib = sgr->get_val_of("ChannelContributions");
         simpson_eps = sgr->get_val_of("ThetaIntEps");
         trapezoidal_eps = sgr->get_val_of("PeakIntEps");
         gauss_kronrod_eps = sgr->get_val_of("sIntEps");
@@ -98,81 +99,13 @@ namespace DT
         }
     }
 
-    void Main::calc_initial_strength(const vstring &ch_str)
-    {
-        std::unique_ptr<Tac> temptac = std::make_unique<Tac>(mod);
-        double ma, mb;
-        double tacFull = temptac->tac(xinitial);
-        vstring cur_channel_name = {""};
-        if (ch_str.size() == 0)
-        {
-            size_t N = mod->get_N_all_channels();
-            for (size_t i = 0; i < N; i++)
-            {
-                temptac->clear_state(true);
-                cur_channel_name.at(0) = mod->get_channel_name(i);
-                temptac->sort_inimasses(cur_channel_name);
-
-                channel_strength[cur_channel_name.at(0)] = temptac->tac(xinitial) / tacFull;
-            }
-        }
-    }
-
-    void Main::calc_relic_frac(const double ch_contrib, const vstring &ch_str)
-    {
-        calc_initial_strength(ch_str);
-        std::unordered_map<std::string, double>::iterator it;
-        vstring stronk_channels = {""};
-        vstring channels;
-        std::vector<double> frac;
-        double total = 0.;
-        double x, y;
-        for (it = channel_strength.begin(); it != channel_strength.end(); it++)
-        {
-            if (it->second > ch_contrib / 1.5)
-            {
-                stronk_channels.at(0) = it->first;
-                channels.push_back(it->first);
-                set_channels();
-                x = bsol->secant_method(15., 15.1);
-                y = 1.5 * bsol->yeq(x);
-                bsol->adap_rk4(xtoday_FO, x, y);
-
-                x = omega / (2.742e8 * mod->MDM * y);
-                it->second = x;
-                total += x;
-                frac.push_back(x);
-            }
-            else
-            {
-                it->second *= 0.;
-            }
-        }
-        double max = 0;
-        double maxj = 0;
-
-        while (frac.size() > 0)
-        {
-            for (int j = 0; j < frac.size(); j++)
-            {
-                if (frac.at(j) > max)
-                {
-                    maxj = j;
-                    max = frac.at(j);
-                }
-            }
-            std::cout << channels.at(maxj) << ":\t" << max * 100 << "%" << std::endl;
-            max = 0;
-            channels.erase(channels.begin() + maxj);
-            frac.erase(frac.begin() + maxj);
-        }
-    }
-
-    double Main::calc_Omega(const double ch_contrib)
+    double Main::calc_Omega()
     {
         double x, y, xtoday;
         if (bath_procs.size() != 0)
+        {
             bsol->sort_inimasses(bath_procs);
+        }
 
         switch (mechanism)
         {
@@ -197,11 +130,57 @@ namespace DT
         bsol->adap_rk4(xtoday, x, y);
         omega = 2.742e8 * mod->MDM * y;
 
-        if (ch_contrib != 1)
-        {
-            calc_relic_frac(ch_contrib, bath_procs);
-        }
         return omega;
+    }
+
+    void Main::find_strong_channels()
+    {
+        strong_channels.clear();
+        std::unique_ptr<Tac> temptac = std::make_unique<Tac>(mod);
+        size_t N = mod->get_N_all_channels();
+        vstring temp_channel = {" "};
+        double tac_frac = 0.;
+        double full_tac = temptac->tac(xinitial);
+
+        vstring relevant_initial_states = {};
+        for (size_t i = 0; i < mod->get_N_initial_states(); i++)
+        {
+            temp_channel.at(0) = mod->get_channel_name(N + i);
+            temptac->clear_state(true);
+            temptac->sort_inimasses(temp_channel);
+            tac_frac = temptac->tac(xinitial) / full_tac;
+            if (tac_frac > channel_contrib / 2)
+            {
+                relevant_initial_states.push_back(temp_channel.at(0));
+            }
+        }
+
+        for (auto it : relevant_initial_states)
+        {
+            temp_channel = mod->get_subchannels(it);
+            for (auto jt : temp_channel)
+            {
+                temptac->clear_state(true);
+                temptac->sort_inimasses({jt});
+                tac_frac = temptac->tac(xinitial) / full_tac;
+                if (tac_frac > channel_contrib / 2)
+                {
+                    strong_channels.push_back(jt);
+                }
+            }
+        }
+    }
+
+    void Main::calc_relic_frac()
+    {
+        find_strong_channels();
+        vstring bath_save = bath_procs;
+        double om_save = omega;
+
+        bath_procs = strong_channels;
+        
+        bath_procs = bath_save;
+        omega = om_save;
     }
 
     void Main::find_pars(const vstring &pars, const double relic, const double err)

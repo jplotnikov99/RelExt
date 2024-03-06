@@ -15,7 +15,6 @@ int main(int argc, char **argv)
     {
         main.load_parameters(i);
         om = main.calc_Omega();
-
         std::cout << "Omega full:\n"
                   << om << "\n\n";
         main.save_data();

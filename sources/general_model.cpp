@@ -12,6 +12,11 @@ namespace DT
         return channelnames.size() - N_initial_states;
     }
 
+    size_t Model::get_N_initial_states()
+    {
+        return N_initial_states;
+    }
+
     std::string Model::get_channel_name(const size_t i)
     {
         assert(i < channelnames.size());
@@ -32,6 +37,21 @@ namespace DT
                 bath_masses.push_back(particles[it]);
             }
         }
+    }
+
+    vstring Model::get_subchannels(const std::string &ini_state)
+    {
+        vstring res = {};
+        size_t found;
+        for(size_t i = 0; i < channelnames.size() - N_initial_states; i++)
+        {
+            found = channelnames.at(i).find(ini_state);
+            if(found != std::string::npos)
+            {
+               res.push_back(channelnames.at(i));
+            }
+        }
+        return res;
     }
 
     vstring Model::find_thermal_procs(const vstring &prtcls)
