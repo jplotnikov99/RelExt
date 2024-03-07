@@ -309,14 +309,14 @@ namespace DT
         double h = 0.5 * (r - l);
 
         double res = 0;
-        for(size_t i = 0; i < 30; i++)
+        for (size_t i = 0; i < 30; i++)
         {
             double dx = h * kronx_61[i];
             res += wkron_61[i] * (sigv(m + dx, x) + sigv(m - dx, x));
         }
         res += wkron_61[30] * (sigv(m, x));
         res *= h;
-        
+
         return res;
     }
 
@@ -351,17 +351,16 @@ namespace DT
         I1 = h * (0.022935322010529224963732008058970 * (y[0] + y[14]) + 0.063092092629978553290700663189204 * (y[1] + y[13]) + 0.104790010322250183839876322541518 * (y[2] + y[12]) + 0.140653259715525918745189590510238 * (y[3] + y[11]) + 0.169004726639267902826583426598550 * (y[4] + y[10]) + 0.190350578064785409913256402421014 * (y[5] + y[9]) + 0.204432940075298892414161999234649 * (y[6] + y[8]) + 0.209482141084727828012999174891714 * y[7]);
         if (I1 == 0)
             return 0.;
-
-        double eps1 = gauss_kronrod_eps * est / I1 * pow(2, depth);
         I2 = h * (0.129484966168869693270611432679082 * (y[1] + y[13]) + 0.279705391489276667901467771423780 * (y[3] + y[11]) + 0.381830050505118944950369775488975 * (y[5] + y[9]) + 0.417959183673469387755102040816327 * y[7]);
+        double err = fabs(I1 - I2);
         if (depth > 16)
         {
-            tac_error += fabs(I2 - I1);
+            tac_error += err;
             return I1;
         }
-        if (fabs(I2 / I1 - 1) < eps1)
+        if (err < gauss_kronrod_eps * est)
         {
-            tac_error += fabs(I2 - I1);
+            tac_error += err;
             return I1;
         }
         double m = (2 * l + r) / 3;
@@ -410,7 +409,8 @@ namespace DT
         {
             estimate += kronrod_61(0, 1e-3, x);
             estimate += kronrod_61(1e-3, 1, x);
-            res += adap_gauss_kronrod(0, 1, x, estimate);
+            res += adap_gauss_kronrod(0, 1e-3, x, estimate);
+            res += adap_gauss_kronrod(1e-3, 1, x, estimate);
         }
         return res;
     }
