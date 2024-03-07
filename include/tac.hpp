@@ -35,10 +35,10 @@ namespace DT
         void sort_inimasses(const vstring &ch_str = {});
 
         // 3/8 simpson rule
-        double simpson38(const double l, const double r, const double &s);
+        double simpson38_cos_t(const double l, const double r, const double &s);
 
         // adaptive simpson
-        double adaptive_simpson38(const double l, const double r, const double &s, const double ans, int depth = 0);
+        double simpson38_adap_cos_t(const double l, const double r, const double &s, const double ans, size_t depth = 0);
 
         double wij(const double &s);
 
@@ -63,10 +63,10 @@ namespace DT
         void set_boundaries(const double &x);
 
         // trapezoidal method for the calculation of the peaks for TAC
-        double trapezoidal(const double l, const double r, const double &x);
+        double simpson38_peak(const double l, const double r, const double &x);
 
         // adaptive trapezoidal method for the calculation of the peaks for TAC
-        double adap_trapezoidal(const double l, const double r, const double &x, const double &ans, size_t depth = 0);
+        double simpson38_adap_peak(const double l, const double r, const double &x, const double &ans, size_t depth = 0);
 
         // gauss kronrod 31 point method to be used as quick estimation of TAC between peaks
         double gauss_kronrod_31(const double l, const double r, const double &x);

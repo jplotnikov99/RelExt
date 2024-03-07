@@ -64,7 +64,6 @@ namespace DT
     {
         if (bath_particles.size() != 0)
         {
-            std::cout << "test\n";
             bath_procs = mod->find_thermal_procs(bath_particles);
         }
         mod->assign_bath_masses(bath_particles);

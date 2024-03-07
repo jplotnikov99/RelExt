@@ -3,7 +3,7 @@
 ######## Standard settings ########
 
 InputFile           |test2.csv
-OutputFile          |cxsm.csv
+OutputFile          |newpeak.csv
 SavedParameters     |MA1, svev, alpha
 ThermalBath         |
 ConsideredChannels  |

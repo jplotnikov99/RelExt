@@ -30,34 +30,42 @@ namespace DT
         }
     }
 
-    double Tac::simpson38(const double l, const double r, const double &s)
+    double Tac::simpson38_cos_t(const double l, const double r, const double &s)
     {
         return (r - l) / 8 * (mod->eval(l, s) + 3 * mod->eval((2 * l + r) / 3, s) + 3 * mod->eval((l + 2 * r) / 3, s) + mod->eval(r, s));
     }
 
-    double Tac::adaptive_simpson38(const double l, const double r, const double &s, const double ans, int depth)
+    double Tac::simpson38_adap_cos_t(const double l, const double r, const double &s, const double ans, size_t depth)
     {
         // represents how much precision you need
         double eps = simpson_eps;
-        if (depth > 8)
-            eps = simpson_eps * 1e1;
-        if (depth > 10)
-            eps = simpson_eps * 1e2;
-        if (depth > 12)
-            eps = simpson_eps * 1e3;
-        if (depth > 13)
-            eps = simpson_eps * 1e4;
         if (depth > 14)
         {
             std::cout << "Maximum depth of cos_t integration is reached. Result might lose precision.\n";
             return ans;
         }
-        double m = (l + r) / 2, x = simpson38(l, m, s), y = simpson38(m, r, s);
+        else if (depth > 13)
+        {
+            eps *= 1e4;
+        }
+        else if (depth > 12)
+        {
+            eps *= 1e3;
+        }
+        else if (depth > 10)
+        {
+            eps *= 1e2;
+        }
+        else if (depth > 8)
+        {
+            eps *= 1e1;
+        }
+        double m = (l + r) / 2, x = simpson38_cos_t(l, m, s), y = simpson38_cos_t(m, r, s);
         if (fabs(((x + y) / ans - 1)) < eps)
             return x + y;
         if (ans == 0)
             return 0;
-        return adaptive_simpson38(l, m, s, x, depth + 1) + adaptive_simpson38(m, r, s, y, depth + 1);
+        return simpson38_adap_cos_t(l, m, s, x, depth + 1) + simpson38_adap_cos_t(m, r, s, y, depth + 1);
     }
 
     double Tac::wij(const double &s)
@@ -66,7 +74,7 @@ namespace DT
 
         if (sig_s.find(s) == sig_s.end())
         {
-            crs = 1 / (256 * M_PI * s * sqrt(s)) * adaptive_simpson38(-1, 1, s, simpson38(-1, 1, s)); // flux factors already included here
+            crs = 1 / (256 * M_PI * s * sqrt(s)) * simpson38_adap_cos_t(-1, 1, s, simpson38_cos_t(-1, 1, s)); // flux factors already included here
             sig_s[s] = crs;
             return crs;
         }
@@ -187,21 +195,44 @@ namespace DT
         i_sort_boundaries();
     }
 
-    double Tac::trapezoidal(const double l, const double r, const double &x)
+
+
+    double Tac::simpson38_peak(const double l, const double r, const double &x)
     {
-        return (r - l) / 2 * (sigv(l, x) + sigv(r, x));
+        return (r - l) / 8 * (sigv(l, x) + 3 * sigv((2 * l + r) / 3, x) + 3 * sigv((l + 2 * r) / 3, x) + sigv(r, x));
+        //return (r - l) / 2 * (sigv(l, x) + sigv(r, x));
     }
 
-    double Tac::adap_trapezoidal(const double l, const double r, const double &x, const double &ans, size_t depth)
+    double Tac::simpson38_adap_peak(const double l, const double r, const double &x, const double &ans, size_t depth)
     {
-        depth++;
-        double m = (l + r) / 2, I1 = trapezoidal(l, m, x), I2 = trapezoidal(m, r, x);
+        double eps = trapezoidal_eps;
+        if (depth > 14)
+        {
+            std::cout << "Maximum depth of peak integration is reached. Result might lose precision.\n";
+            return ans;
+        }
+        else if (depth > 13)
+        {
+            eps *= 1e4;
+        }
+        else if (depth > 12)
+        {
+            eps *= 1e3;
+        }
+        else if (depth > 10)
+        {
+            eps *= 1e2;
+        }
+        else if (depth > 8)
+        {
+            eps *= 1e1;
+        }
+        
+        double m = (l + r) / 2, I1 = simpson38_peak(l, m, x), I2 = simpson38_peak(m, r, x);
         double I = I1 + I2;
         if (ans == 0)
             return 0;
-        if (depth == 12)
-            return I;
-        return (fabs((I) / ans - 1) < trapezoidal_eps) ? I : adap_trapezoidal(l, m, x, I1, depth) + adap_trapezoidal(m, r, x, I2, depth);
+        return (fabs((I) / ans - 1) < eps) ? I : simpson38_adap_peak(l, m, x, I1, depth + 1) + simpson38_adap_peak(m, r, x, I2, depth + 1);
     }
 
     // Kronrod abisscas [-1,1] intervall
@@ -311,8 +342,8 @@ namespace DT
             b[0] = boundaries.at(3 * i);
             b[1] = boundaries.at(3 * i + 1);
             b[2] = boundaries.at(3 * i + 2);
-            res += adap_trapezoidal(b[2], b[1], x, trapezoidal(b[2], b[1], x));
-            res += adap_trapezoidal(b[1], b[0], x, trapezoidal(b[1], b[0], x));
+            res += simpson38_adap_peak(b[2], b[1], x, simpson38_peak(b[2], b[1], x));
+            res += simpson38_adap_peak(b[1], b[0], x, simpson38_peak(b[1], b[0], x));
         }
         return res;
     }

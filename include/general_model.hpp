@@ -46,7 +46,6 @@ namespace DT
         std::unordered_map<std::string, double *> mass4s;
         std::vector<double *> inimasses;
 
-        std::shared_ptr<Dof> dof;
         vamp2 cur_channel;
         size_t N_cur;
         size_t N_all_channels;
