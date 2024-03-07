@@ -69,7 +69,7 @@ namespace DT
         double simpson38_adap_peak(const double l, const double r, const double &x, const double &ans, size_t depth = 0);
 
         // gauss kronrod 31 point method to be used as quick estimation of TAC between peaks
-        double gauss_kronrod_31(const double l, const double r, const double &x);
+        double kronrod_61(const double l, const double r, const double &x);
 
         // adaptive gauss kronrod 13 point method for TAC between peaks
         double adap_gauss_kronrod(const double l, const double r, const double &x, const double &est, int depth = 0);
