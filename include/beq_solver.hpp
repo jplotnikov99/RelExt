@@ -3,7 +3,6 @@
 #include <vector>
 #include <iostream>
 #include "utils.hpp"
-#include "EffDof.hpp"
 #include "general_model.hpp"
 #include "boltzmann_equations.hpp"
 #include "hyper_parameters.hpp"
@@ -13,7 +12,6 @@ namespace DT
     class BeqSolver
     {
     private:
-        std::shared_ptr<Dof> dof;
         std::shared_ptr<Model> mod;
         std::unique_ptr<Beqs> beq;
 

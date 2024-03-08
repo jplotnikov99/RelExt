@@ -5,6 +5,8 @@ namespace DT
     Tac::Tac(std::shared_ptr<Model> model)
     {
         mod = model;
+        cos_err = std::make_unique<ErrorTracker>(iserror);
+        tac_err = std::make_unique<ErrorTracker>(iserror);
         for (size_t i = 0; i < mod->N_widths; i++)
         {
             boundaries.push_back(0);
@@ -38,9 +40,12 @@ namespace DT
     double Tac::simpson38_adap_cos_t(const double l, const double r, const double &s, const double ans, size_t depth)
     {
         // represents how much precision you need
+        if (ans == 0)
+            return 0;
         double eps = simpson_eps;
         if (depth > 14)
         {
+            cos_err->add_error(ans);
             std::cout << "Maximum depth of cos_t integration is reached. Result might lose precision.\n";
             return ans;
         }
@@ -60,26 +65,32 @@ namespace DT
         {
             eps *= 1e1;
         }
-        double m = (l + r) / 2, x = simpson38_cos_t(l, m, s), y = simpson38_cos_t(m, r, s);
-        if (fabs(((x + y) / ans - 1)) < eps)
-            return x + y;
-        if (ans == 0)
-            return 0;
-        return simpson38_adap_cos_t(l, m, s, x, depth + 1) + simpson38_adap_cos_t(m, r, s, y, depth + 1);
+        double m = (l + r) / 2, I1 = simpson38_cos_t(l, m, s), I2 = simpson38_cos_t(m, r, s);
+        double I = I1 + I2;
+        if (fabs(I / ans - 1) < eps)
+        {
+            cos_err->add_error(fabs(I - ans));
+            return I;
+        }
+        return simpson38_adap_cos_t(l, m, s, I1, depth + 1) + simpson38_adap_cos_t(m, r, s, I2, depth + 1);
     }
 
     double Tac::wij(const double &s)
     {
-        double crs;
 
         if (sig_s.find(s) == sig_s.end())
         {
-            crs = 1 / (256 * M_PI * s * sqrt(s)) * simpson38_adap_cos_t(-1, 1, s, simpson38_cos_t(-1, 1, s)); // flux factors already included here
+            double crs = 1 / (256 * M_PI * s * sqrt(s));
+            double cos_int = simpson38_adap_cos_t(-1, 1, s, simpson38_cos_t(-1, 1, s));
+            cos_err->mult_const(crs);
+            crs *= cos_int;
             sig_s[s] = crs;
+            cos_err->map_error(s);
             return crs;
         }
         else
         {
+            cos_err->load_error(s);
             return sig_s.at(s);
         }
     }
@@ -118,7 +129,11 @@ namespace DT
     double Tac::sigv(const double &u, const double &x)
     {
         double s = (m1 + m2) * (m1 + m2) + (1 - u) / u;
-        return wij(s) * lipsv(s, x) * 1 / (u * u);
+        double pre = lipsv(s, x) * 1 / (u * u);
+        double res = wij(s) * pre;
+        cos_err->mult_const(pre);
+        cos_err->reset_error();
+        return res;
     }
 
     bool Tac::beps(const double &x, const double &MDM)
@@ -197,18 +212,30 @@ namespace DT
 
     double Tac::simpson38_peak(const double l, const double r, const double &x)
     {
-        return (r - l) / 8 * (sigv(l, x) + 3 * sigv((2 * l + r) / 3, x) + 3 * sigv((l + 2 * r) / 3, x) + sigv(r, x));
+        cos_err->keep_track(4);
+        double h = (r - l) / 8;
+        double resll = sigv(l, x);
+        double resl = 3 * sigv((2 * l + r) / 3, x);
+        double resr = 3 * sigv((l + 2 * r) / 3, x);
+        double resrr = sigv(r, x);
+        cos_err->mult_error_stack({1, 3, 3, 1});
+        cos_err->mult_const(h);
+        tac_err->add_error(cos_err->transfer_error());
+        return h * (resll + resl + resr + resrr);
     }
 
     double Tac::simpson38_adap_peak(const double l, const double r, const double &x, const double &ans, size_t depth)
     {
+        if (ans == 0)
+            return 0;
         double eps = trapezoidal_eps;
-        if (depth > 14)
+        if (depth > 15)
         {
+            tac_err->add_error(ans);
             std::cout << "Maximum depth of peak integration is reached. Result might lose precision.\n";
             return ans;
         }
-        else if (depth > 13)
+        else if (depth > 14)
         {
             eps *= 1e4;
         }
@@ -227,9 +254,12 @@ namespace DT
 
         double m = (l + r) / 2, I1 = simpson38_peak(l, m, x), I2 = simpson38_peak(m, r, x);
         double I = I1 + I2;
-        if (ans == 0)
-            return 0;
-        return (fabs((I) / ans - 1) < eps) ? I : simpson38_adap_peak(l, m, x, I1, depth + 1) + simpson38_adap_peak(m, r, x, I2, depth + 1);
+        if (fabs(I / ans - 1) < eps)
+        {
+            tac_err->add_error(fabs(I - ans));
+            return I;
+        }
+        return simpson38_adap_peak(l, m, x, I1, depth + 1) + simpson38_adap_peak(m, r, x, I2, depth + 1);
     }
 
     // Kronrod abisscas [-1,1] intervall
@@ -343,6 +373,7 @@ namespace DT
     {
         double I1, I2, y[15];
         double h = (r - l) / 2;
+        cos_err->keep_track(15);
         for (int i = 0; i < 15; i++)
         {
             y[i] = sigv((kronx_15[i] + 1) * h + l, x);
@@ -350,19 +381,59 @@ namespace DT
 
         I1 = h * (0.022935322010529224963732008058970 * (y[0] + y[14]) + 0.063092092629978553290700663189204 * (y[1] + y[13]) + 0.104790010322250183839876322541518 * (y[2] + y[12]) + 0.140653259715525918745189590510238 * (y[3] + y[11]) + 0.169004726639267902826583426598550 * (y[4] + y[10]) + 0.190350578064785409913256402421014 * (y[5] + y[9]) + 0.204432940075298892414161999234649 * (y[6] + y[8]) + 0.209482141084727828012999174891714 * y[7]);
         if (I1 == 0)
+        {
+            cos_err->lose_track();
             return 0.;
+        }
         I2 = h * (0.129484966168869693270611432679082 * (y[1] + y[13]) + 0.279705391489276667901467771423780 * (y[3] + y[11]) + 0.381830050505118944950369775488975 * (y[5] + y[9]) + 0.417959183673469387755102040816327 * y[7]);
         double err = fabs(I1 - I2);
         if (depth > 16)
         {
-            tac_error += err;
+            cos_err->mult_error_stack(
+                {0.022935322010529224963732008058970,
+                 0.063092092629978553290700663189204,
+                 0.104790010322250183839876322541518,
+                 0.140653259715525918745189590510238,
+                 0.169004726639267902826583426598550,
+                 0.190350578064785409913256402421014,
+                 0.204432940075298892414161999234649,
+                 0.209482141084727828012999174891714,
+                 0.204432940075298892414161999234649,
+                 0.190350578064785409913256402421014,
+                 0.169004726639267902826583426598550,
+                 0.140653259715525918745189590510238,
+                 0.104790010322250183839876322541518,
+                 0.063092092629978553290700663189204,
+                 0.022935322010529224963732008058970});
+            cos_err->mult_const(h);
+            tac_err->add_error(cos_err->transfer_error());
+            tac_err->add_error(err);
             return I1;
         }
         if (err < gauss_kronrod_eps * est)
         {
-            tac_error += err;
+            cos_err->mult_error_stack(
+                {0.022935322010529224963732008058970,
+                 0.063092092629978553290700663189204,
+                 0.104790010322250183839876322541518,
+                 0.140653259715525918745189590510238,
+                 0.169004726639267902826583426598550,
+                 0.190350578064785409913256402421014,
+                 0.204432940075298892414161999234649,
+                 0.209482141084727828012999174891714,
+                 0.204432940075298892414161999234649,
+                 0.190350578064785409913256402421014,
+                 0.169004726639267902826583426598550,
+                 0.140653259715525918745189590510238,
+                 0.104790010322250183839876322541518,
+                 0.063092092629978553290700663189204,
+                 0.022935322010529224963732008058970});
+            cos_err->mult_const(h);
+            tac_err->add_error(cos_err->transfer_error());
+            tac_err->add_error(err);
             return I1;
         }
+        cos_err->lose_track();
         double m = (2 * l + r) / 3;
         return adap_gauss_kronrod(l, m, x, est, depth + 1) + adap_gauss_kronrod(m, r, x, est, depth + 1);
     }
@@ -418,7 +489,6 @@ namespace DT
     double Tac::tac(const double &x)
     {
         double res = 0.;
-        tac_error = 0.;
         if (tac_x.find(x) == tac_x.end())
         {
             if (inimap.size() == 0)
@@ -445,19 +515,27 @@ namespace DT
                     }
                 }
             }
-            tac_x[x] = res;
-            if (fabs(res - tac_error) > 0.1)
+            if (fabs(tac_err->get_error() / res) > 0.1)
             {
                 std::cout << "Result and error are of the same order in the TAC.\n";
-                std::cout << fabs(res - tac_error) << std::endl;
+                std::cout << x << " " << res << " " << tac_err->get_error() << std::endl;
             }
+            tac_x[x] = res;
+            tac_err->map_error(x);
+            error = tac_err->transfer_error();
             return res;
         }
         else
         {
+            tac_err->load_error(x);
+            error = tac_err->transfer_error();
             return tac_x.at(x);
         }
-        // exit(0);
+    }
+
+    double Tac::get_error()
+    {
+        return error;
     }
 
     void Tac::clear_state(const bool full)
@@ -465,6 +543,7 @@ namespace DT
         max_prec_s = false;
         tac_x.clear();
         sig_s.clear();
+        cos_err->clear_map();
         if (full)
             inimap.clear();
     }

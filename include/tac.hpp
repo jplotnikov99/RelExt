@@ -6,6 +6,7 @@
 #include "utils.hpp"
 #include "general_model.hpp"
 #include "hyper_parameters.hpp"
+#include "error_tracker.hpp"
 
 namespace DT
 {
@@ -13,20 +14,22 @@ namespace DT
     {
     private:
         std::shared_ptr<Model> mod;
+        std::unique_ptr<ErrorTracker> cos_err;
+        std::unique_ptr<ErrorTracker> tac_err;
+        double error = 0.;
         double m1;
         double m2;
-        double tac_error = 0.;
         size_t N_relevant_peaks;
         bool max_prec_s = false;
         std::vector<double> boundaries;
+        std::unordered_map<double, double> sig_s;
+        std::unordered_map<double, double> tac_x;
+        std::map<double, vstring> inimap;
         std::map<double, vstring>::iterator ini_it;
 
     public:
         Tac(std::shared_ptr<Model> model);
 
-        std::unordered_map<double, double> sig_s;
-        std::unordered_map<double, double> tac_x;
-        std::map<double, vstring> inimap;
 
         // change values of intial masses m1, m2
         void set_initial_masses(const double &ma, const double &mb);
@@ -62,10 +65,10 @@ namespace DT
         // sets all the relevant peak boundaries (sorted) and the number of relevant peaks dl
         void set_boundaries(const double &x);
 
-        // trapezoidal method for the calculation of the peaks for TAC
+        // simpson method for the calculation of the peaks for TAC
         double simpson38_peak(const double l, const double r, const double &x);
 
-        // adaptive trapezoidal method for the calculation of the peaks for TAC
+        // adaptive simpson method for the calculation of the peaks for TAC
         double simpson38_adap_peak(const double l, const double r, const double &x, const double &ans, size_t depth = 0);
 
         // gauss kronrod 31 point method to be used as quick estimation of TAC between peaks
@@ -82,6 +85,8 @@ namespace DT
 
         // the one. the only. the THERMALLY AVERAGED CROSS SECTION!! at a certain x value
         double tac(const double &x);
+
+        double get_error();
 
         void clear_state(const bool full);
 

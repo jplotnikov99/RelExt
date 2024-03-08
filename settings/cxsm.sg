@@ -10,7 +10,7 @@ ConsideredChannels  |
 BepsEps             |1e-6
 ProductionMechanism |0
 ChannelContributions|1
-CalcError           |true
+CalcError           |false
 
 ######## Advanced settings ########
 

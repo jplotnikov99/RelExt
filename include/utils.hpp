@@ -5,7 +5,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
-
+#include "hyper_parameters.hpp"
 namespace DT
 {
 
@@ -31,5 +31,4 @@ namespace DT
 
 	double polK2(const double &x);
 
-	void check_error(const double &val, const double &err);
 }

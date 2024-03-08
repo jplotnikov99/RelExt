@@ -93,11 +93,10 @@ namespace DT
 
     void BeqSolver::adap_rk4(const double &xtoday, double &x, double &y, double h)
     {
-        double xsave, ysave, ytemp;
-        xsave = x;
-        ysave = y;
+        double xsave = x;
+        double ysave = y;
         rk4(x, y, h);
-        ytemp = y;
+        double ytemp = y;
         x = xsave;
         y = ysave;
         rk4(x, y, h / 2);
