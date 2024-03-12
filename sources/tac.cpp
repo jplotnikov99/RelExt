@@ -15,20 +15,24 @@ namespace DT
         }
     }
 
-    void Tac::set_initial_masses(const double &ma, const double &mb)
-    {
-        m1 = ma;
-        m2 = mb;
-    }
-
     void Tac::sort_inimasses(const vstring &ch_str)
     {
-        double ma;
-        double mb;
-        for (auto it : ch_str)
+        if (ch_str.size() == 0)
         {
-            mod->assign_masses(ma, mb, it);
-            inimap[ma + mb].push_back(it);
+            vstring all_channels = mod->get_all_channels();
+            for (auto it : all_channels)
+            {
+                mod->assign_masses(m1, m2, it);
+                inimap[m1 + m2].push_back(it);
+            }
+        }
+        else
+        {
+            for (auto it : ch_str)
+            {
+                mod->assign_masses(m1, m2, it);
+                inimap[m1 + m2].push_back(it);
+            }
         }
     }
 
@@ -497,37 +501,22 @@ namespace DT
         double estimate = 0.;
         if (tac_x.find(x) == tac_x.end())
         {
-            if (inimap.size() == 0)
+            for (auto &it : inimap)
             {
-                for (size_t i = 0; i < mod->get_N_initial_states(); i++)
+                mod->set_channel(m1, m2, it.second);
+                if (beps(x))
                 {
-                    mod->set_channel(m1, m2, i);
-                    if (beps(x))
-                    {
-                        set_boundaries(x);
-                        estimate_integrate_s(x, res, estimate);
-                    }
-                }
-                for (size_t i = 0; i < mod->get_N_initial_states(); i++)
-                {
-                    mod->set_channel(m1, m2, i);
-                    if (beps(x))
-                    {
-                        set_boundaries(x);
-                        integrate_s(x, res, estimate);
-                    }
+                    set_boundaries(x);
+                    estimate_integrate_s(x, res, estimate);
                 }
             }
-            else
+            for (auto &it : inimap)
             {
-                for (ini_it = inimap.begin(); ini_it != inimap.end(); ini_it++)
+                mod->set_channel(m1, m2, it.second);
+                if (beps(x))
                 {
-                    mod->set_channel(m1, m2, 0, ini_it->second);
-                    if (beps(x))
-                    {
-                        set_boundaries(x);
-                        integrate_s(x, res, estimate);
-                    }
+                    set_boundaries(x);
+                    integrate_s(x, res, estimate);
                 }
             }
             if (fabs(tac_err->get_error() / res) > 0.1)

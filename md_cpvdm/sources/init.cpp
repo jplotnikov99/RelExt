@@ -1,10 +1,10 @@
 ///////////////////CODE GENERATED VIA MATHEMATICA///////////////////
 
-
 #include "general_model.hpp"
 #include "../model.hpp"
 
-namespace DT{
+namespace DT
+{
 	void Model::init()
 	{
 		MZ = 91.1876;
@@ -52,11 +52,11 @@ namespace DT{
 		double G = 1.21358;
 		double FAGS = 1.21358;
 
-		particles["H1"]=&mH1;
-		particles["H2"]=&mH2;
-		particles["H3"]=&mH3;
-		particles["Hc"]=&mHc;
-		particles["HC"]=&mHc;
+		particles["H1"] = &mH1;
+		particles["H2"] = &mH2;
+		particles["H3"] = &mH3;
+		particles["Hc"] = &mHc;
+		particles["HC"] = &mHc;
 		dsmasses.push_back(&mH1);
 		dsmasses.push_back(&mH2);
 		dsmasses.push_back(&mH3);
@@ -217,16 +217,6 @@ namespace DT{
 		ADDCHANNEL(HcHCDd, HcHCDdfl, mHc, mHc, MD, MD)
 		ADDCHANNEL(HcHCSs, HcHCSsfl, mHc, mHc, MS, MS)
 		ADDCHANNEL(HcHCBb, HcHCBbfl, mHc, mHc, MB, MB)
-		ADDCHANNEL(H1H1, H1H1, mH1, mH1, mH1, mH1)
-		ADDCHANNEL(H1H2, H1H2, mH1, mH2, mH1, mH2)
-		ADDCHANNEL(H1H3, H1H3, mH1, mH3, mH1, mH3)
-		ADDCHANNEL(H1Hc, H1Hc, mH1, mHc, mH1, mHc)
-		ADDCHANNEL(H2H2, H2H2, mH2, mH2, mH2, mH2)
-		ADDCHANNEL(H2H3, H2H3, mH2, mH3, mH2, mH3)
-		ADDCHANNEL(H2Hc, H2Hc, mH2, mHc, mH2, mHc)
-		ADDCHANNEL(H3H3, H3H3, mH3, mH3, mH3, mH3)
-		ADDCHANNEL(H3Hc, H3Hc, mH3, mHc, mH3, mHc)
-		ADDCHANNEL(HcHc, HcHc, mHc, mHc, mHc, mHc)
 		ADDINITIALSTATE(H1H1, mH1, mH1)
 		ADDINITIALSTATE(H1H2, mH1, mH2)
 		ADDINITIALSTATE(H1H3, mH1, mH3)

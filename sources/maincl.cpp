@@ -101,10 +101,7 @@ namespace DT
     double Main::calc_Omega()
     {
         double x, y, xtoday;
-        if (bath_procs.size() != 0)
-        {
-            bsol->sort_inimasses(bath_procs);
-        }
+        bsol->sort_inimasses(bath_procs);
 
         switch (mechanism)
         {
@@ -177,7 +174,7 @@ namespace DT
         double om_save = omega;
 
         bath_procs = strong_channels;
-        
+
         bath_procs = bath_save;
         omega = om_save;
     }

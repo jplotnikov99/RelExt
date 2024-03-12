@@ -7,6 +7,11 @@ namespace DT
     {
     }
 
+    vstring Model::get_all_channels()
+    {
+        return channelnames;
+    }
+
     size_t Model::get_N_all_channels()
     {
         return channelnames.size() - N_initial_states;
@@ -43,12 +48,12 @@ namespace DT
     {
         vstring res = {};
         size_t found;
-        for(size_t i = 0; i < channelnames.size() - N_initial_states; i++)
+        for (size_t i = 0; i < channelnames.size() - N_initial_states; i++)
         {
             found = channelnames.at(i).find(ini_state);
-            if(found != std::string::npos)
+            if (found != std::string::npos)
             {
-               res.push_back(channelnames.at(i));
+                res.push_back(channelnames.at(i));
             }
         }
         return res;
@@ -114,22 +119,13 @@ namespace DT
         }
     }
 
-    void Model::set_channel(double &m1, double &m2, const size_t i, vstring ch_str)
+    void Model::set_channel(double &m1, double &m2, vstring ch_str)
     {
         cur_channel.clear();
-        if (ch_str.size() == 0)
+        assign_masses(m1, m2, ch_str.at(0));
+        for (auto it : ch_str)
         {
-            m1 = *inimasses.at(2 * i);
-            m2 = *inimasses.at(2 * i + 1);
-            cur_channel.push_back(inifuncs.at(i));
-        }
-        else
-        {
-            assign_masses(m1, m2, ch_str.at(0));
-            for (auto it : ch_str)
-            {
-                cur_channel.push_back(amp2fls[it]);
-            }
+            cur_channel.push_back(amp2fls[it]);
         }
         N_cur = cur_channel.size();
     }

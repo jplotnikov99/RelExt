@@ -68,6 +68,7 @@ namespace DT
         void change_parameter(const std::string par, const double newval);
 
         size_t get_N_all_channels();
+        vstring get_all_channels();
         size_t get_N_initial_states();
         std::string get_channel_name(const size_t i);
         vstring get_subchannels(const std::string &ini_state);
@@ -77,7 +78,7 @@ namespace DT
         void assigndm();
 
         void assign_masses(double &m1, double &m2, const std::string ch_str);
-        void set_channel(double &m1, double &m2, const size_t i, const vstring ch_str = {});
+        void set_channel(double &m1, double &m2, const vstring ch_str = {});
         double eval(const double cos_t, const double s);
 
         ~Model(){};
