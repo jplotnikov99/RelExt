@@ -30,7 +30,6 @@ namespace DT
     public:
         Tac(std::shared_ptr<Model> model);
 
-
         // change values of intial masses m1, m2
         void set_initial_masses(const double &ma, const double &mb);
 
@@ -49,7 +48,7 @@ namespace DT
 
         double sigv(const double &u, const double &x);
 
-        bool beps(const double &x, const double &MDM);
+        bool beps(const double &x);
 
         void reset_switches();
 
@@ -80,8 +79,11 @@ namespace DT
         // integral of the peaks over s
         double integrate_peaks(const double &x);
 
+        // estimate s integral
+        void estimate_integrate_s(const double &x, double &res, double &estimate);
+
         // integral over s of the whole interval
-        double integrate_s(const double &x);
+        void integrate_s(const double &x, double &res, double &estimate);
 
         // the one. the only. the THERMALLY AVERAGED CROSS SECTION!! at a certain x value
         double tac(const double &x);

@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     clock_t begin_time = clock();
 
     double om;
-    for (size_t i = 1; i < main.N_par_points; i++)
+    for (size_t i = 1; i < 61; i++)
     {
         main.load_parameters(i);
         om = main.calc_Omega();

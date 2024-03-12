@@ -136,9 +136,9 @@ namespace DT
         return res;
     }
 
-    bool Tac::beps(const double &x, const double &MDM)
+    bool Tac::beps(const double &x)
     {
-        return (exp(-x * (m1 + m2 - 2 * MDM) / MDM) >= beps_eps);
+        return (exp(-x * (m1 + m2 - 2 * mod->MDM) / mod->MDM) >= beps_eps);
     }
 
     double Tac::peak_relevance(const double &peakpos)
@@ -452,14 +452,11 @@ namespace DT
         }
         return res;
     }
-
-    double Tac::integrate_s(const double &x)
+    void Tac::estimate_integrate_s(const double &x, double &res, double &estimate)
     {
-        double res = 0.;
-        double estimate = 0.;
         if (N_relevant_peaks > 0)
         {
-            res = integrate_peaks(x);
+            res += integrate_peaks(x);
             estimate = res;
 
             for (size_t i = 1; i < N_relevant_peaks; i++)
@@ -468,7 +465,18 @@ namespace DT
             }
 
             estimate += (kronrod_61(0, boundaries.at(3 * N_relevant_peaks - 1), x) + kronrod_61(boundaries.at(0), 1, x));
+        }
+        else
+        {
+            estimate += kronrod_61(0, 1e-3, x);
+            estimate += kronrod_61(1e-3, 1, x);
+        }
+    }
 
+    void Tac::integrate_s(const double &x, double &res, double &estimate)
+    {
+        if (N_relevant_peaks > 0)
+        {
             res += (adap_gauss_kronrod(0, boundaries.at(3 * N_relevant_peaks - 1), x, estimate) + adap_gauss_kronrod(boundaries.at(0), 1, x, estimate));
 
             for (size_t i = 1; i < N_relevant_peaks; i++)
@@ -478,17 +486,15 @@ namespace DT
         }
         else
         {
-            estimate += kronrod_61(0, 1e-3, x);
-            estimate += kronrod_61(1e-3, 1, x);
             res += adap_gauss_kronrod(0, 1e-3, x, estimate);
             res += adap_gauss_kronrod(1e-3, 1, x, estimate);
         }
-        return res;
     }
 
     double Tac::tac(const double &x)
     {
         double res = 0.;
+        double estimate = 0.;
         if (tac_x.find(x) == tac_x.end())
         {
             if (inimap.size() == 0)
@@ -496,10 +502,19 @@ namespace DT
                 for (size_t i = 0; i < mod->get_N_initial_states(); i++)
                 {
                     mod->set_channel(m1, m2, i);
-                    if (beps(x, mod->MDM))
+                    if (beps(x))
                     {
                         set_boundaries(x);
-                        res += integrate_s(x);
+                        estimate_integrate_s(x, res, estimate);
+                    }
+                }
+                for (size_t i = 0; i < mod->get_N_initial_states(); i++)
+                {
+                    mod->set_channel(m1, m2, i);
+                    if (beps(x))
+                    {
+                        set_boundaries(x);
+                        integrate_s(x, res, estimate);
                     }
                 }
             }
@@ -508,10 +523,10 @@ namespace DT
                 for (ini_it = inimap.begin(); ini_it != inimap.end(); ini_it++)
                 {
                     mod->set_channel(m1, m2, 0, ini_it->second);
-                    if (beps(x, mod->MDM))
+                    if (beps(x))
                     {
                         set_boundaries(x);
-                        res += integrate_s(x);
+                        integrate_s(x, res, estimate);
                     }
                 }
             }
