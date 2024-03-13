@@ -30,9 +30,6 @@ namespace DT
     public:
         Tac(std::shared_ptr<Model> model);
 
-        // change values of intial masses m1, m2
-        void set_initial_masses(const double &ma, const double &mb);
-
         // sorts different channels by their total initial state masses
         void sort_inimasses(const vstring &ch_str = {});
 
@@ -49,8 +46,6 @@ namespace DT
         double sigv(const double &u, const double &x);
 
         bool beps(const double &x);
-
-        void reset_switches();
 
         // checks if the peak is suppressed enough by the boltzmann factor to not matter for seperate integration
         double peak_relevance(const double &peakpos);

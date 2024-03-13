@@ -456,6 +456,7 @@ namespace DT
         }
         return res;
     }
+
     void Tac::estimate_integrate_s(const double &x, double &res, double &estimate)
     {
         if (N_relevant_peaks > 0)
