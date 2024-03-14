@@ -19,7 +19,8 @@ namespace DT
         double xtoday_FI = 100;
         double xR = 0.0001;
         double xinitial;
-        double omega;
+        ResError omega;
+        double omega_error;
         std::string input_file;
         std::string output_file;
         vstring bath_particles = {}; 
@@ -67,7 +68,9 @@ namespace DT
         // calculate the fraction between single channel relic density and full relic density
         void calc_relic_frac();
 
-        double calc_Omega();
+        ResError calc_Omega();
+
+        double get_error();
 
         // finds the parameter values for which the needed relic density is reached within a certain limit
         void find_pars(const vstring &pars, const double relic = 0.119, const double err = 0.003);

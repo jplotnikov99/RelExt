@@ -98,22 +98,23 @@ namespace DT
         }
     }
 
-    double Main::calc_Omega()
+    ResError Main::calc_Omega()
     {
-        double x, y, xtoday;
+        double x, xtoday;
+        ResError y{0., 0.};
         bsol->sort_inimasses(bath_procs);
 
         switch (mechanism)
         {
         case 0:
             x = bsol->secant_method(15., 15.1);
-            y = 1.5 * bsol->yeq(x);
+            y.res = 1.5 * bsol->yeq(x);
             xinitial = x;
             xtoday = xtoday_FO;
             break;
         case 1:
             x = xR;
-            y = 0;
+            y.res = 0;
             xtoday = xtoday_FI;
             break;
 
@@ -135,8 +136,8 @@ namespace DT
         std::unique_ptr<Tac> temptac = std::make_unique<Tac>(mod);
         size_t N = mod->get_N_all_channels();
         vstring temp_channel = {" "};
-        double tac_frac = 0.;
-        double full_tac = temptac->tac(xinitial);
+        ResError tac_frac{0., 0.};
+        ResError full_tac = temptac->tac(xinitial);
 
         vstring relevant_initial_states = {};
         for (size_t i = 0; i < mod->get_N_initial_states(); i++)
@@ -145,7 +146,7 @@ namespace DT
             temptac->clear_state(true);
             temptac->sort_inimasses(temp_channel);
             tac_frac = temptac->tac(xinitial) / full_tac;
-            if (tac_frac > channel_contrib / 2)
+            if (tac_frac.res > channel_contrib / 2)
             {
                 relevant_initial_states.push_back(temp_channel.at(0));
             }
@@ -159,7 +160,7 @@ namespace DT
                 temptac->clear_state(true);
                 temptac->sort_inimasses({jt});
                 tac_frac = temptac->tac(xinitial) / full_tac;
-                if (tac_frac > channel_contrib / 2)
+                if (tac_frac.res > channel_contrib / 2)
                 {
                     strong_channels.push_back(jt);
                 }
@@ -171,7 +172,7 @@ namespace DT
     {
         find_strong_channels();
         vstring bath_save = bath_procs;
-        double om_save = omega;
+        ResError om_save = omega;
 
         bath_procs = strong_channels;
 
@@ -181,14 +182,14 @@ namespace DT
 
     void Main::find_pars(const vstring &pars, const double relic, const double err)
     {
-        double om1, om2;
+        ResError om1, om2;
         do
         {
             for (auto it : pars)
             {
                 om1 = calc_Omega();
             }
-        } while (fabs(omega - relic) > err);
+        } while (fabs(omega.res - relic) > err);
     }
 
     void Main::save_data(bool channels)

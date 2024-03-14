@@ -43,7 +43,7 @@ namespace DT
         double fstart(double x);
 
         // Boltzmann equation that needs to be solved for freeze-out and simple freeze-in
-        double beq(const double &x, const double &y);
+        ResError beq(const double &x, const ResError &y);
 
         ~Beqs(){};
     };

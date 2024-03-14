@@ -54,16 +54,16 @@ namespace DT
         return x2;
     }
 
-    void BeqSolver::rk4(double &x, double &y, const double &h)
+    void BeqSolver::rk4(double &x, ResError &y, const double &h)
     {
-        double k1, k2, k3, k4;
+        ResError k1, k2, k3, k4;
         k1 = h * beq->beq(x, y);
         x = x + h / 2;
         k2 = h * beq->beq(x, (y + k1 / 2));
         k3 = h * beq->beq(x, (y + k2 / 2));
         x = x + h / 2;
         k4 = h * beq->beq(x, (y + k3));
-        y += (k1 + 2 * k2 + 2 * k3 + k4) / 6;
+        y = y + (k1 + 2 * k2 + 2 * k3 + k4) / 6;
     }
 
     double BeqSolver::setStep(const double &hnow, const double &err)
@@ -91,17 +91,17 @@ namespace DT
         return hnext;
     }
 
-    void BeqSolver::adap_rk4(const double &xtoday, double &x, double &y, double h)
+    void BeqSolver::adap_rk4(const double &xtoday, double &x, ResError &y, double h)
     {
         double xsave = x;
-        double ysave = y;
+        ResError ysave = y;
         rk4(x, y, h);
-        double ytemp = y;
+        ResError ytemp = y;
         x = xsave;
         y = ysave;
         rk4(x, y, h / 2);
         rk4(x, y, h / 2);
-        double err = fabs((y - ytemp) / ytemp) / rk4_eps;
+        double err = fabs((y.res - ytemp.res) / ytemp.res) / rk4_eps;
         h = setStep(h, err);
         if (x + h == x)
         {
@@ -122,6 +122,7 @@ namespace DT
         }
         else
         {
+            y.err += fabs(y.res - ytemp.res);
             adap_rk4(xtoday, x, y, h);
         }
     }

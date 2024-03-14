@@ -30,13 +30,15 @@ namespace DT
         double secant_method(double x0, double x1);
 
         // four point runge kutta method needed to solve Boltzmann Eq.
-        void rk4(double &x, double &y, const double &h);
+        void rk4(double &x, ResError &y, const double &h);
 
         // set new stepsize for the next runga kutta evaluation
         double setStep(const double &hnow, const double &err);
 
         // Solves the Boltzmann equation with the full TAC using the adaptive 4-point runge-kutta method
-        void adap_rk4(const double &xtoday, double &x, double &y, double h = 0.1);
+        void adap_rk4(const double &xtoday, double &x, ResError &y, double h = 0.1);
+
+        double get_error();
 
         ~BeqSolver(){};
     };

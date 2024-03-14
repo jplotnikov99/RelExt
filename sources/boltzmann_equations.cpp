@@ -82,21 +82,21 @@ namespace DT
         x = mod->MDM / T_ent(ent);
 
         // eq 6 from microlecture
-        return (dlnYeqdent * (sqrt(6 * M_PI * M_PI * M_PI / 30 * mod->MDM * mod->MDM * mod->MDM * mod->MDM / (x * x * x * x) * dof->geff(mod->MDM / x) * G) / tac->tac(x)) - dif * yeq(x));
+        return (dlnYeqdent * (sqrt(6 * M_PI * M_PI * M_PI / 30 * mod->MDM * mod->MDM * mod->MDM * mod->MDM / (x * x * x * x) * dof->geff(mod->MDM / x) * G) / tac->tac(x).res) - dif * yeq(x));
     }
 
-    double Beqs::beq(const double &x, const double &y)
+    ResError Beqs::beq(const double &x, const ResError &y)
     {
-        double res = 0.;
+        ResError res {0.,0.};
         switch (mech)
         {
         case 0:
-            res += -pre(x) * tac->tac(x) * (y * y - pow(yeq(x), 2));
+            res = res - pre(x) * tac->tac(x) * (y * y - pow(yeq(x), 2));
             break;
 
         case 1:
             mod->assign_bath_masses({"Chi"});
-            res += 0;
+            res = res + 0;
             break;
 
         default:
