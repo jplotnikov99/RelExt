@@ -9,12 +9,11 @@ ThermalBath         |
 ConsideredChannels  |
 BepsEps             |1e-6
 ProductionMechanism |0
-ChannelContributions|0.1
-CalcError           |false
+ChannelContributions|1
 
 ######## Advanced settings ########
 
-ThetaIntEps         |1e-5
-PeakIntEps          |1e-5
-sIntEps             |1e-7
-rk4Eps              |1e-6
+ThetaIntEps         |1e-6
+PeakIntEps          |1e-6
+sIntEps             |1e-6
+rk4Eps              |1e-8

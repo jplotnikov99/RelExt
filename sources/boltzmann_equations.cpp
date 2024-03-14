@@ -69,7 +69,7 @@ namespace DT
 
     double Beqs::fstart(double x)
     {
-        double dif = 0.5;       // (Y-Yeq)/Yeq at starting point
+        double dif = 0.1;       // (Y-Yeq)/Yeq at starting point
         double ent = ent_T(x);  // entropy as function of T
         double d = 0.001 * ent; // stepsize for entropy increase
         double upper, lower, dlnYeqdent;
@@ -77,17 +77,17 @@ namespace DT
         x = mod->MDM / T_ent(ent + d);
         upper = log(yeq(x)); // logYeq for entropy = entropy + d
         x = mod->MDM / T_ent(ent - d);
-        lower = log(yeq(x));               // logYeq for entropy = entropy - d
+        lower = log(yeq(x));                    // logYeq for entropy = entropy - d
         dlnYeqdent = (upper - lower) / (2 * d); // this is derivative of logYeq wrt entropy
         x = mod->MDM / T_ent(ent);
 
         // eq 6 from microlecture
         return (dlnYeqdent * (sqrt(6 * M_PI * M_PI * M_PI / 30 * mod->MDM * mod->MDM * mod->MDM * mod->MDM / (x * x * x * x) * dof->geff(mod->MDM / x) * G) / tac->tac(x).res) - dif * yeq(x));
     }
-
+    size_t a = 0;
     ResError Beqs::beq(const double &x, const ResError &y)
     {
-        ResError res {0.,0.};
+        ResError res{0., 0.};
         switch (mech)
         {
         case 0:

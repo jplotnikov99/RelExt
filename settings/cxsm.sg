@@ -17,4 +17,4 @@ CalcError           |false
 ThetaIntEps         |1e-6
 PeakIntEps          |1e-6
 sIntEps             |1e-6
-rk4Eps              |1e-8
+rk4Eps              |1e-6

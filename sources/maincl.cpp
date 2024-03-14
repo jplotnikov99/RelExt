@@ -34,7 +34,6 @@ namespace DT
         trapezoidal_eps = sgr->get_val_of("PeakIntEps");
         gauss_kronrod_eps = sgr->get_val_of("sIntEps");
         rk4_eps = sgr->get_val_of("rk4Eps");
-        iserror = sgr->get_name_of("CalcError") == "true";
     }
     void Main::load_parameters(const size_t i)
     {
@@ -108,7 +107,7 @@ namespace DT
         {
         case 0:
             x = bsol->secant_method(15., 15.1);
-            y.res = 1.5 * bsol->yeq(x);
+            y.res = 1.1 * bsol->yeq(x);
             xinitial = x;
             xtoday = xtoday_FO;
             break;
@@ -202,7 +201,7 @@ namespace DT
 
         if (outfile.tellp() == 0)
         {
-            outfile << "Omega";
+            outfile << "Omega\tOmega_err";
 
             for (int k = 0; k < saved_pars.size(); k++)
             {
@@ -211,7 +210,7 @@ namespace DT
             outfile << "\n";
         }
 
-        outfile << omega;
+        outfile << omega.res << "\t" << omega.err;
 
         for (auto it : saved_pars)
         {

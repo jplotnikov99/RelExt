@@ -216,27 +216,6 @@ namespace DT
         if (ans.res == 0)
             return ans;
         double eps = trapezoidal_eps;
-        if (depth > 15)
-        {
-            std::cout << "Maximum depth of peak integration is reached. Result might lose precision.\n";
-            return ans;
-        }
-        else if (depth > 14)
-        {
-            eps *= 1e4;
-        }
-        else if (depth > 12)
-        {
-            eps *= 1e3;
-        }
-        else if (depth > 10)
-        {
-            eps *= 1e2;
-        }
-        else if (depth > 8)
-        {
-            eps *= 1e1;
-        }
         double m = (l + r) / 2;
         ResError I1 = simpson38_peak(l, m, x), I2 = simpson38_peak(m, r, x);
         ResError I = I1 + I2;
@@ -371,11 +350,6 @@ namespace DT
         }
         I2 = h * (0.129484966168869693270611432679082 * (y[1] + y[13]) + 0.279705391489276667901467771423780 * (y[3] + y[11]) + 0.381830050505118944950369775488975 * (y[5] + y[9]) + 0.417959183673469387755102040816327 * y[7]);
         double err = fabs(I1.res - I2.res);
-        if (depth > 16)
-        {
-            I1.err += err;
-            return I1;
-        }
         if (err < gauss_kronrod_eps * est)
         {
             I1.err += err;
@@ -463,10 +437,10 @@ namespace DT
                     integrate_s(x, res, estimate);
                 }
             }
-            if (fabs(0.01) > 0.1)
+            if (fabs(res.err/res.res) > 1e-1)
             {
                 std::cout << "Result and error are of the same order in the TAC.\n";
-                std::cout << x << " " << res << " " << 1 << std::endl;
+                std::cout << x << " " << res << std::endl;
             }
             tac_x[x] = res;
             return res;
