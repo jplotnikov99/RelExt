@@ -15,7 +15,7 @@ namespace DT
     {
         ResError res;
         res.res = a.res + b.res;
-        res.err = a.err + b.err;
+        res.err = sqrt(a.err * a.err + b.err * b.err);
         return res;
     }
     ResError operator+(const ResError &a, const double &b)
@@ -40,7 +40,7 @@ namespace DT
     {
         ResError res;
         res.res = a.res - b.res;
-        res.err = a.err + b.err;
+        res.err = sqrt(a.err * a.err + b.err * b.err);
         return res;
     }
     ResError operator-(const ResError &a, const double &b)
@@ -65,7 +65,7 @@ namespace DT
     {
         ResError res;
         res.res = a.res * b.res;
-        res.err = a.err * b.res + a.res * b.err;
+        res.err = sqrt(a.err * a.err * b.res * b.res + a.res * a.res * b.err * b.err);
         return res;
     }
     ResError operator*(const double &a, const ResError &b)
@@ -90,7 +90,7 @@ namespace DT
     {
         ResError res;
         res.res = a.res / b.res;
-        res.err = fabs(a.err / b.res) + fabs(b.err * res.res / b.res);
+        res.err = sqrt(a.err * a.err / (b.res * b.res) + b.err * b.err * res.res * res.res / (b.res * b.res));
         return res;
     }
     ResError operator/(const double &a, const ResError &b)

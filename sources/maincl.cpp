@@ -181,14 +181,35 @@ namespace DT
 
     void Main::find_pars(const vstring &pars, const double relic, const double err)
     {
-        ResError om1, om2;
-        do
+        double om1 = fabs(calc_Omega().res - relic);
+        double om2;
+        static const double rate = 1;
+        static const double eps = 0.01;
+        double h;
+        double par;
+        double gradient[pars.size()];
+        while (fabs(om1) > err)
         {
-            for (auto it : pars)
+            for (size_t i = 0; i < pars.size(); i++)
             {
-                om1 = calc_Omega();
+                par = get_parameter_val(pars.at(i));
+                h = par * eps;
+                change_parameter(pars.at(i), par + h);
+                mod->load_parameters();
+                om2 = fabs(calc_Omega().res - 0.12);
+                gradient[i] = (om2 - om1) / h;
+                change_parameter(pars.at(i), par);
+                mod->load_parameters();
             }
-        } while (fabs(omega.res - relic) > err);
+            for(size_t i = 0; i < pars.size(); i++)
+            {
+                par = get_parameter_val(pars.at(i));
+                change_parameter(pars.at(i), par - rate*gradient[i]);
+                mod->load_parameters();
+            }
+            om1 = fabs(calc_Omega().res - 0.12);
+            std::cout << gradient[0] << " " << par << std::endl;
+        }
     }
 
     void Main::save_data(bool channels)

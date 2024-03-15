@@ -17,6 +17,7 @@ int main(int argc, char **argv)
         om = main.calc_Omega();
         std::cout << "Omega full:\n"
                   << om << "\n\n";
+        //main.find_pars({"MA1"});
         main.save_data();
     }
 
