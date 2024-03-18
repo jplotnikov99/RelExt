@@ -68,6 +68,7 @@ namespace DT
         // adaptive gauss kronrod 13 point method for TAC between peaks
         ResError adap_gauss_kronrod(const double l, const double r, const double &x, const double &est, int depth = 0);
 
+        ResError qthsh(double a, double b, const double &x);
         // integral of the peaks over s
         ResError integrate_peaks(const double &x);
 

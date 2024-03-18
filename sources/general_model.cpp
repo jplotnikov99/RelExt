@@ -98,6 +98,7 @@ namespace DT
     void Model::change_parameter(const std::string par, const double newval)
     {
         *parmap[par] = newval;
+        load_parameters();
     }
 
     double Model::get_parmater_val(const std::string par)

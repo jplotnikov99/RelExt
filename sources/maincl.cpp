@@ -179,36 +179,39 @@ namespace DT
         omega = om_save;
     }
 
+    double Main::get_next_step(const double &x1, const double &x2, const double &y1, const double &y2, const double &ytarget)
+    {
+        double gradient = (y2 - y1) / (x2 - x1);
+        double proximity = ytarget > y2 ? y2 / ytarget : ytarget / y2;
+        double step = (1 - proximity);
+
+        if (gradient > 0)
+        {
+            step *= -0.9 * exp(fabs(gradient));
+        }
+        else
+        {
+            step *= 0.1 * exp(fabs(gradient));
+        }
+        return x1 * step;
+    }
+
     void Main::find_pars(const vstring &pars, const double relic, const double err)
     {
-        double om1 = fabs(calc_Omega().res - relic);
+        double om1 = calc_Omega().res;
         double om2;
-        static const double rate = 1;
+        double par1, par2;
         static const double eps = 0.01;
-        double h;
-        double par;
-        double gradient[pars.size()];
-        while (fabs(om1) > err)
+        while (fabs((om1 - relic) / om1 - 1) > err)
         {
-            for (size_t i = 0; i < pars.size(); i++)
-            {
-                par = get_parameter_val(pars.at(i));
-                h = par * eps;
-                change_parameter(pars.at(i), par + h);
-                mod->load_parameters();
-                om2 = fabs(calc_Omega().res - 0.12);
-                gradient[i] = (om2 - om1) / h;
-                change_parameter(pars.at(i), par);
-                mod->load_parameters();
-            }
-            for(size_t i = 0; i < pars.size(); i++)
-            {
-                par = get_parameter_val(pars.at(i));
-                change_parameter(pars.at(i), par - rate*gradient[i]);
-                mod->load_parameters();
-            }
-            om1 = fabs(calc_Omega().res - 0.12);
-            std::cout << gradient[0] << " " << par << std::endl;
+            par1 = get_parameter_val(pars.at(0));
+            par2 = par1 * (1 + eps);
+            change_parameter(pars.at(0), par2);
+            om2 = calc_Omega().res;
+            par1 += get_next_step(par1, par2, om1, om2, relic);
+            change_parameter(pars.at(0), par1);
+            om1 = fabs(calc_Omega().res - relic);
+            std::cout << om1 << " " << par1 << std::endl;
         }
     }
 

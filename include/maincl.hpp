@@ -70,8 +70,7 @@ namespace DT
 
         ResError calc_Omega();
 
-        double get_error();
-
+        double get_next_step(const double &x1, const double &x2, const double &y1, const double &y2, const double &ytarget);
         // finds the parameter values for which the needed relic density is reached within a certain limit
         void find_pars(const vstring &pars, const double relic = 0.119, const double err = 0.003);
 

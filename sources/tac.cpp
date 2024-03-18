@@ -358,6 +358,58 @@ namespace DT
         double m = (2 * l + r) / 3;
         return adap_gauss_kronrod(l, m, x, est, depth + 1) + adap_gauss_kronrod(m, r, x, est, depth + 1);
     }
+    ResError Tac::qthsh(double a, double b, const double &x)
+    {
+        ResError res{0., 0.};
+        const double tol = 1e-5;
+        double c = (a + b) / 2;
+        double d = (b - a) / 2;
+        ResError s = sigv(c, x);
+        ResError v;
+        double h = 2;
+        int k = 0;
+        do
+        {
+            ResError fp, fm, q;
+            ResError p{0., 0.};
+            double t, eh;
+            h /= 2;
+            eh = exp(h);
+            t = eh;
+            if (k > 0)
+                eh *= eh;
+            do
+            {
+                double u = exp(1 / t - t);            // = exp(-2*sinh(j*h)) = 1/exp(sinh(j*h))^2
+                double r = 2 * u / (1 + u);           // = 1 - tanh(sinh(j*h))
+                double w = (t + 1 / t) * r / (1 + u); // = cosh(j*h)/cosh(sinh(j*h))^2
+                double dx = d * r;
+                if (a + dx > a)
+                {
+                    ResError y = sigv(a + dx, x);
+                    if (std::isfinite(y.res))
+                        fp = y; // if f(x) is finite, add to local sum
+                }
+                if (b - dx < b)
+                {
+                    ResError y = sigv(b - x, x);
+                    if (std::isfinite(y.res))
+                        fm = y; // if f(x) is finite, add to local sum
+                }
+                q = w * (fp + fm);
+                p = p + q;
+                t *= eh;
+            } while (fabs(q.res) > 1e-6 * fabs(p.res));
+            v = s - p;
+            s = s + p;
+            ++k;
+        } while (fabs(v.res) > tol * fabs(s.res) && k <= 6);
+        // if the estimated relative error is desired, then return it
+        res = d * s * h;
+        res.err += res.res * fabs(v.res) / (fabs(s.res) + 1e-6);
+
+        return res;
+    }
 
     ResError Tac::integrate_peaks(const double &x)
     {
@@ -437,7 +489,7 @@ namespace DT
                     integrate_s(x, res, estimate);
                 }
             }
-            if (fabs(res.err/res.res) > 1e-1)
+            if (fabs(res.err / res.res) > 1e-1)
             {
                 std::cout << "Result and error are of the same order in the TAC.\n";
                 std::cout << x << " " << res << std::endl;

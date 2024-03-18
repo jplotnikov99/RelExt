@@ -3,7 +3,7 @@
 ######## Standard settings ########
 
 InputFile           |test2.csv
-OutputFile          |new_sint.csv
+OutputFile          |dexp.csv
 SavedParameters     |MA1, svev, alpha
 ThermalBath         |
 ConsideredChannels  |
