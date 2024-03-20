@@ -13,9 +13,7 @@ int main(int argc, char **argv)
     for (size_t i = 1; i < main.N_par_points; i++)
     {
         main.load_parameters(i);
-        om = main.calc_Omega();
-        std::cout << "Omega full:\n"
-                  << om << "\n\n";
+        main.calc_relic();
         main.save_data();
     }
 

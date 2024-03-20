@@ -99,6 +99,7 @@ namespace DT
     {
         *parmap[par] = newval;
         load_parameters();
+        assigndm();
     }
 
     double Model::get_parmater_val(const std::string par)

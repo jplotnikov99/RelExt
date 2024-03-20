@@ -6,6 +6,7 @@
 #include "hyper_parameters.hpp"
 #include "readdata1.hpp"
 #include "general_model.hpp"
+#include "relic_ops.hpp"
 #include "tac.hpp"
 #include "beq_solver.hpp"
 
@@ -14,11 +15,7 @@ namespace DT
     class Main
     {
     private:
-        size_t mechanism = 10;
-        double xtoday_FO = 1e7;
-        double xtoday_FI = 100;
-        double xR = 0.0001;
-        double xinitial;
+        size_t mechanism = 10; 
         ResError omega;
         double omega_error;
         std::string input_file;
@@ -31,6 +28,7 @@ namespace DT
         vstring strong_channels = {};
         std::unique_ptr<DataReader> rdr;
         std::shared_ptr<Model> mod;
+        std::unique_ptr<RelicOps> relops;
         std::unique_ptr<BeqSolver> bsol;
 
     public:
@@ -68,9 +66,8 @@ namespace DT
         // calculate the fraction between single channel relic density and full relic density
         void calc_relic_frac();
 
-        ResError calc_Omega();
+        void calc_relic();
 
-        double get_next_step(const double &x1, const double &x2, const double &y1, const double &y2, const double &ytarget);
         // finds the parameter values for which the needed relic density is reached within a certain limit
         void find_pars(const vstring &pars, const double relic = 0.119, const double err = 0.003);
 

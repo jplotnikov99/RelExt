@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     {
         main.load_parameters(i);
         main.set_mechanism(1);
-        main.calc_Omega();
+        main.calc_relic();
     }
 
     std::cout << "Computation time:\n"

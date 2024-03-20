@@ -11,13 +11,11 @@ int main(int argc, char **argv)
 
     ResError om;
 
-    for (size_t i = 1; i < main.N_par_points; i++)
+    for (size_t i = 1; i < 2; i++)
     {
         main.load_parameters(i);
-        om = main.calc_Omega();
-        std::cout << "Omega full:\n"
-                  << om << "\n\n";
-        //main.find_pars({"MA1"});
+        main.calc_relic();
+        main.find_pars({"MA1"},0.199,0.1);
         main.save_data();
     }
 

@@ -11,6 +11,7 @@ namespace DT
         mod->init();
         mod->load_parameter_map();
         bsol = std::make_unique<BeqSolver>(mod);
+        relops = std::make_unique<RelicOps>(mod);
 
         N_par_points = rdr->datalines();
         rdr->scanpars = rdr->assignHeaders(mod->parmap);
@@ -97,121 +98,33 @@ namespace DT
         }
     }
 
-    ResError Main::calc_Omega()
+    void Main::calc_relic()
     {
-        double x, xtoday;
-        ResError y{0., 0.};
-        bsol->sort_inimasses(bath_procs);
-
-        switch (mechanism)
-        {
-        case 0:
-            x = bsol->secant_method(15., 15.1);
-            y.res = 1.1 * bsol->yeq(x);
-            xinitial = x;
-            xtoday = xtoday_FO;
-            break;
-        case 1:
-            x = xR;
-            y.res = 0;
-            xtoday = xtoday_FI;
-            break;
-
-        default:
-            std::cout << "This mechanism ID is not valid. Please set the mechanism to 0 or 1.\n";
-            exit(1);
-            break;
-        }
-
-        bsol->adap_rk4(xtoday, x, y);
-        omega = 2.742e8 * mod->MDM * y;
-
-        return omega;
+        relops->set_bath_procs(bath_procs);
+        ResError om = relops->calc_relic(mechanism);
+        std::cout << "Omega full:\n"
+                  << om << "\n\n";
+        omega = om;
     }
 
-    void Main::find_strong_channels()
-    {
-        strong_channels.clear();
-        std::unique_ptr<Tac> temptac = std::make_unique<Tac>(mod);
-        size_t N = mod->get_N_all_channels();
-        vstring temp_channel = {" "};
-        ResError tac_frac{0., 0.};
-        ResError full_tac = temptac->tac(xinitial);
-
-        vstring relevant_initial_states = {};
-        for (size_t i = 0; i < mod->get_N_initial_states(); i++)
-        {
-            temp_channel.at(0) = mod->get_channel_name(N + i);
-            temptac->clear_state(true);
-            temptac->sort_inimasses(temp_channel);
-            tac_frac = temptac->tac(xinitial) / full_tac;
-            if (tac_frac.res > channel_contrib / 2)
-            {
-                relevant_initial_states.push_back(temp_channel.at(0));
-            }
-        }
-
-        for (auto it : relevant_initial_states)
-        {
-            temp_channel = mod->get_subchannels(it);
-            for (auto jt : temp_channel)
-            {
-                temptac->clear_state(true);
-                temptac->sort_inimasses({jt});
-                tac_frac = temptac->tac(xinitial) / full_tac;
-                if (tac_frac.res > channel_contrib / 2)
-                {
-                    strong_channels.push_back(jt);
-                }
-            }
-        }
-    }
-
-    void Main::calc_relic_frac()
-    {
-        find_strong_channels();
-        vstring bath_save = bath_procs;
-        ResError om_save = omega;
-
-        bath_procs = strong_channels;
-
-        bath_procs = bath_save;
-        omega = om_save;
-    }
-
-    double Main::get_next_step(const double &x1, const double &x2, const double &y1, const double &y2, const double &ytarget)
-    {
-        double gradient = (y2 - y1) / (x2 - x1);
-        double proximity = ytarget > y2 ? y2 / ytarget : ytarget / y2;
-        double step = (1 - proximity);
-
-        if (gradient > 0)
-        {
-            step *= -0.9 * exp(fabs(gradient));
-        }
-        else
-        {
-            step *= 0.1 * exp(fabs(gradient));
-        }
-        return x1 * step;
-    }
+    
 
     void Main::find_pars(const vstring &pars, const double relic, const double err)
     {
-        double om1 = calc_Omega().res;
+        double om1 = fabs(relops->calc_relic(mechanism).res - 0.12);
         double om2;
         double par1, par2;
-        static const double eps = 0.01;
-        while (fabs((om1 - relic) / om1 - 1) > err)
+        static const double eps = 0.001;
+        while (om1 > err)
         {
             par1 = get_parameter_val(pars.at(0));
             par2 = par1 * (1 + eps);
             change_parameter(pars.at(0), par2);
-            om2 = calc_Omega().res;
-            par1 += get_next_step(par1, par2, om1, om2, relic);
+            om2 = relops->calc_relic(mechanism).res;
+            par1 += relops->get_next_step(par1, par2, om1, om2, relic);
             change_parameter(pars.at(0), par1);
-            om1 = fabs(calc_Omega().res - relic);
-            std::cout << om1 << " " << par1 << std::endl;
+            om1 = fabs(relops->calc_relic(mechanism).res - 0.12);
+            std::cout << par1 << " " << om1 << "\n";
         }
     }
 
