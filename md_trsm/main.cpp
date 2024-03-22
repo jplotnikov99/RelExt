@@ -13,7 +13,6 @@ int main(int argc, char **argv)
     for (size_t i = 1; i < main.N_par_points; i++)
     {
         main.load_parameters(i);
-        main.set_mechanism(1);
         main.calc_relic();
     }
 

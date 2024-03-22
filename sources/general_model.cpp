@@ -102,7 +102,7 @@ namespace DT
         assigndm();
     }
 
-    double Model::get_parmater_val(const std::string par)
+    double Model::get_parameter_val(const std::string par)
     {
         return (*parmap[par]);
     }

@@ -15,8 +15,9 @@ int main(int argc, char **argv)
     {
         main.load_parameters(i);
         main.calc_relic();
-        main.find_pars({"MA1"},0.199,0.1);
+        main.find_pars({"MA1"},0.119,0.01);
         main.save_data();
+        main.calc_relic();
     }
 
     std::cout << "Computation time:\n"

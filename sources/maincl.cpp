@@ -10,7 +10,6 @@ namespace DT
         mod = std::make_shared<Model>();
         mod->init();
         mod->load_parameter_map();
-        bsol = std::make_unique<BeqSolver>(mod);
         relops = std::make_unique<RelicOps>(mod);
 
         N_par_points = rdr->datalines();
@@ -42,22 +41,6 @@ namespace DT
         rdr->read_parameter(i);
         mod->load_parameters();
         mod->assigndm();
-    }
-
-    void Main::change_parameter(const std::string &par, const double &newval)
-    {
-        mod->change_parameter(par, newval);
-    }
-
-    double Main::get_parameter_val(const std::string &par)
-    {
-        return mod->get_parmater_val(par);
-    }
-
-    void Main::set_mechanism(const size_t mech)
-    {
-        mechanism = mech;
-        bsol->set_mechanism(mech);
     }
 
     void Main::def_thermal_bath()
@@ -96,36 +79,20 @@ namespace DT
             }
             bath_procs = considered_procs;
         }
+        relops->set_bath_procs(bath_procs);
     }
 
     void Main::calc_relic()
     {
-        relops->set_bath_procs(bath_procs);
         ResError om = relops->calc_relic(mechanism);
         std::cout << "Omega full:\n"
                   << om << "\n\n";
         omega = om;
     }
 
-    
-
     void Main::find_pars(const vstring &pars, const double relic, const double err)
     {
-        double om1 = fabs(relops->calc_relic(mechanism).res - 0.12);
-        double om2;
-        double par1, par2;
-        static const double eps = 0.001;
-        while (om1 > err)
-        {
-            par1 = get_parameter_val(pars.at(0));
-            par2 = par1 * (1 + eps);
-            change_parameter(pars.at(0), par2);
-            om2 = relops->calc_relic(mechanism).res;
-            par1 += relops->get_next_step(par1, par2, om1, om2, relic);
-            change_parameter(pars.at(0), par1);
-            om1 = fabs(relops->calc_relic(mechanism).res - 0.12);
-            std::cout << par1 << " " << om1 << "\n";
-        }
+        relops->find_pars(pars, relic, err, mechanism);
     }
 
     void Main::save_data(bool channels)
@@ -151,7 +118,7 @@ namespace DT
 
         for (auto it : saved_pars)
         {
-            outfile << "\t" << mod->get_parmater_val(it);
+            outfile << "\t" << mod->get_parameter_val(it);
         }
         outfile << "\n";
 

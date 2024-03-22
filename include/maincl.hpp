@@ -29,7 +29,6 @@ namespace DT
         std::unique_ptr<DataReader> rdr;
         std::shared_ptr<Model> mod;
         std::unique_ptr<RelicOps> relops;
-        std::unique_ptr<BeqSolver> bsol;
 
     public:
         Main(int argc, char **argv);
@@ -46,10 +45,6 @@ namespace DT
 
         // returns the value of the parameter
         double get_parameter_val(const std::string &par);
-
-        // sets the mechanism for the relic density calculation
-        // freeze-out = 0; freeze-in = 1
-        void set_mechanism(const size_t mech);
 
         // defines which particles are in the DS bath via the particle names
         void def_thermal_bath();

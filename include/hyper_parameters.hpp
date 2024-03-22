@@ -9,10 +9,15 @@ namespace DT
     extern double gauss_kronrod_eps;
 
     // Beq solver parameters
+    extern double xtoday_FO;
+    extern double xtoday_FI;
+    extern double x_reheating;
     extern double secant_eps;
     extern double rk4_eps;
     extern size_t secant_maxiter;
-
-    // Options
-    extern bool iserror;
+    
+    // parameter search parameters
+    extern double vanguard_step_size;
+    extern double descent_learning_rate;
+    extern size_t max_N_bisections;
 } // namespace DT

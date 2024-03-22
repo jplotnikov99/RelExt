@@ -48,17 +48,189 @@ namespace DT
 
     double RelicOps::get_next_step(const double &x1, const double &x2, const double &y1, const double &y2, const double &ytarget)
     {
-        double gradient = (y2 - y1) / (x2 - x1);
-        double proximity = ytarget > y2 ? y2 / ytarget : ytarget / y2;
-        double step = (1 - proximity);
-        if (gradient > 0)
+        double gradient = (fabs(y2) - fabs(y1)) / (x2 - x1);
+        switch (searchmode)
         {
-            step *= -0.1 * exp(-fabs(gradient));
+        case vanguard:
+        {
+            double step = fabs(y1) / ytarget > 1 ? 1. : fabs(y1) / ytarget;
+            if (gradient > 0)
+            {
+                step *= -vanguard_step_size;
+            }
+            else
+            {
+                step *= vanguard_step_size;
+            }
+            return fabs(x1) * step;
+            break;
+        }
+        case descent:
+            return -descent_learning_rate * gradient;
+            break;
+        default:
+            std::cout << "Wrong case in " << __func__ << ".\n";
+            exit(1);
+            break;
+        }
+    }
+
+    void RelicOps::check_sign_flip(const double step_new, const double omega_new, const double par_new)
+    {
+        if (first_step)
+        {
+            first_step = false;
         }
         else
         {
-            step *= 0.1 * exp(-fabs(gradient));
+            if (std::signbit(step_old) != std::signbit(step_new))
+            {
+                if (std::signbit(omega_old) != std::signbit(omega_new))
+                {
+                    searchmode = bisect;
+                    bi_x1 = par_old;
+                    bi_y1 = omega_old,
+                    bi_x2 = par_new;
+                    bi_y2 = omega_new;
+                    std::cout << "Switch to bisect mode (1).\n";
+                }
+                else
+                {
+                    std::cout << "Switch to descent mode.\n";
+                    searchmode = descent;
+                }
+            }
+            else
+            {
+                if (std::signbit(omega_old) != std::signbit(omega_new))
+                {
+                    searchmode = bisect;
+                    bi_x1 = par_old;
+                    bi_y1 = omega_old,
+                    bi_x2 = par_new;
+                    bi_y2 = omega_new;
+                    std::cout << "Switch to bisect mode (2).\n";
+                }
+            }
         }
-        return x1 * step;
+    }
+
+    double RelicOps::get_next_omega(const vstring &pars, const double om, const double relic, const size_t mech)
+    {
+        const double eps = 0.001;
+        double om1 = om;
+        double par1, par2, om2, step;
+
+        par1 = mod->get_parameter_val(pars.at(0));
+        par2 = par1 * (1 + eps);
+        mod->change_parameter(pars.at(0), par2);
+        om2 = calc_relic(mech).res - relic;
+
+        step = get_next_step(par1, par2, om1, om2, relic);
+        par1 += step;
+        mod->change_parameter(pars.at(0), par1);
+        om1 = calc_relic(mech).res - relic;
+
+        check_sign_flip(step, om1, par1);
+        par_old = par1;
+        step_old = step;
+        omega_old = om1;
+        return om1;
+    }
+
+    std::vector<double> RelicOps::vanguard_search(const vstring &pars, const double relic, const double err, const size_t mech)
+    {
+        std::vector<double> res = {};
+        double om1 = calc_relic(mech).res - relic;
+        double om2;
+        while ((fabs(om1) > err) && (searchmode == vanguard))
+        {
+            om2 = om1;
+            om1 = get_next_omega(pars, om1, relic, mech);
+            if (om2 == om1)
+            {
+                std::cout << pars.at(0) << " does not change the relic density.\n";
+                break;
+            }
+        }
+        if (searchmode == vanguard)
+        {
+            searchmode = stop;
+            res.push_back(mod->get_parameter_val(pars.at(0)));
+        }
+        return res;
+    }
+
+    std::vector<double> RelicOps::descent_search(const vstring &pars, const double relic, const size_t mech)
+    {
+        std::vector<double> res = {};
+        double om1 = omega_old;
+        double om2;
+        do
+        {
+            om2 = om1;
+            om1 = get_next_omega(pars, om1, relic, mech);
+        } while ((fabs(om2 / om1 - 1) > 0.01) && (searchmode == descent));
+        if (searchmode == descent)
+        {
+            searchmode = stop;
+            res.push_back(mod->get_parameter_val(pars.at(0)));
+        }
+        return res;
+    }
+
+    std::vector<double> RelicOps::bisect_search(const vstring &pars, const double relic, const double err, const size_t mech)
+    {
+        std::vector<double> res;
+        double dx, xmid, rtb;
+        rtb = bi_y1 < 0. ? (dx = bi_x2 - bi_x1, bi_x1) : (dx = bi_x1 - bi_x2, bi_x2);
+        for(size_t i = 0; i < max_N_bisections; i++)
+        {
+            dx *= 0.5;
+            xmid = rtb + dx;
+            mod->change_parameter(pars.at(0), xmid);
+            bi_y2 = calc_relic(mech).res - relic;
+            if(bi_y2 <= 0.) rtb = xmid;
+            if(fabs(bi_y2) < err)
+            {
+                searchmode = stop;
+                res.push_back(rtb);
+                return res;
+            }
+        }
+        searchmode = stop;
+        std::cout << "Bisection limit reached.\n";
+        res.push_back(rtb);
+        return res;
+    }
+
+    std::vector<double> RelicOps::find_pars(const vstring &pars, const double relic, const double err, const size_t mech)
+    {
+        first_step = true;
+        searchmode = vanguard;
+        std::vector<double> res;
+
+        while (searchmode != stop)
+        {
+            switch (searchmode)
+            {
+            case vanguard:
+                res = vanguard_search(pars, relic, err, mech);
+                break;
+
+            case descent:
+                res = descent_search(pars, relic, mech);
+                break;
+
+            case bisect:
+                res = bisect_search(pars, relic, err, mech);
+                break;
+
+            default:
+                break;
+            }
+        }
+
+        return res;
     }
 } // namespace DT

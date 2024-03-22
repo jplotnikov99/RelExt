@@ -64,7 +64,7 @@ namespace DT
         void init();
         void load_parameters();
         void load_parameter_map();
-        double get_parmater_val(const std::string par);
+        double get_parameter_val(const std::string par);
         void change_parameter(const std::string par, const double newval);
 
         size_t get_N_all_channels();
