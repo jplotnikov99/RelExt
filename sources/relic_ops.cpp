@@ -29,6 +29,11 @@ namespace DT
         omega_err = err;
     }
 
+    ResError RelicOps::get_last_relic()
+    {
+        return omega;
+    }
+
     ResError RelicOps::calc_relic()
     {
         bs->sort_inimasses(bath_procs);
@@ -92,6 +97,15 @@ namespace DT
 
     void RelicOps::check_sign_flip(const double step_new, const double omega_new, const double par_new)
     {
+        if (std::signbit(omega_old) != std::signbit(omega_new))
+        {
+            searchmode = bisect;
+            bi_x1 = par_old;
+            bi_y1 = omega_old,
+            bi_x2 = par_new;
+            bi_y2 = omega_new;
+            std::cout << "Switch to bisect mode (2).\n";
+        }
         if (first_step)
         {
             first_step = false;
@@ -113,18 +127,6 @@ namespace DT
                 {
                     std::cout << "Switch to descent mode.\n";
                     searchmode = descent;
-                }
-            }
-            else
-            {
-                if (std::signbit(omega_old) != std::signbit(omega_new))
-                {
-                    searchmode = bisect;
-                    bi_x1 = par_old;
-                    bi_y1 = omega_old,
-                    bi_x2 = par_new;
-                    bi_y2 = omega_new;
-                    std::cout << "Switch to bisect mode (2).\n";
                 }
             }
         }
@@ -156,8 +158,10 @@ namespace DT
     std::vector<double> RelicOps::vanguard_search(const vstring &pars)
     {
         std::vector<double> res = {};
-        double om1 = calc_relic().res - omega_target;
-        double om2;
+        double om1, om2;
+        om1 = calc_relic().res - omega_target;
+        omega_old = om1;
+        par_old = mod->get_parameter_val(pars.at(0));
         while ((fabs(om1) > omega_err) && (searchmode == vanguard))
         {
             om2 = om1;
@@ -199,14 +203,15 @@ namespace DT
         std::vector<double> res;
         double dx, xmid, rtb;
         rtb = bi_y1 < 0. ? (dx = bi_x2 - bi_x1, bi_x1) : (dx = bi_x1 - bi_x2, bi_x2);
-        for(size_t i = 0; i < max_N_bisections; i++)
+        for (size_t i = 0; i < max_N_bisections; i++)
         {
             dx *= 0.5;
             xmid = rtb + dx;
             mod->change_parameter(pars.at(0), xmid);
             bi_y2 = calc_relic().res - omega_target;
-            if(bi_y2 <= 0.) rtb = xmid;
-            if(fabs(bi_y2) < omega_err)
+            if (bi_y2 <= 0.)
+                rtb = xmid;
+            if (fabs(bi_y2) < omega_err)
             {
                 searchmode = stop;
                 res.push_back(rtb);

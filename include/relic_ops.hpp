@@ -43,6 +43,8 @@ namespace DT
 
         void set_omega_err(const double err);
 
+        ResError get_last_relic();
+
         // calculates the relic density for a specific mechanism
         ResError calc_relic();
 

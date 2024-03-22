@@ -11,10 +11,10 @@ int main(int argc, char **argv)
 
     ResError om;
 
-    for (size_t i = 1; i < 2; i++)
+    for (size_t i = 1; i < main.N_par_points; i++)
     {
         main.load_parameters(i);
-        main.calc_relic();
+        //main.calc_relic();
         main.find_pars({"MA1"},0.119,0.01);
         main.save_data();
         main.calc_relic();

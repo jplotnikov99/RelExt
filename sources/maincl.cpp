@@ -84,6 +84,7 @@ namespace DT
 
     void Main::calc_relic()
     {
+        relops->set_mechanism(mechanism);
         ResError om = relops->calc_relic();
         std::cout << "Omega full:\n"
                   << om << "\n\n";
@@ -96,6 +97,7 @@ namespace DT
         relops->set_omega_target(relic);
         relops->set_omega_err(err);
         relops->find_pars(pars);
+        omega = relops->get_last_relic();
     }
 
     void Main::save_data(bool channels)
