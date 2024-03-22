@@ -29,6 +29,11 @@ namespace DT
         return sqrt(M_PI / (45 * G)) * mod->MDM / (x * x) * dof->g12(mod->MDM / x);
     }
 
+    ResError Beqs::pre_tac(const double &x)
+    {
+        return -pre(x) * tac->tac(x);
+    }
+
     double Beqs::T_ent(const double &ent)
     {
         // assuming heff cte for the values of x (~25, ie, at FO) that are relevant (and small changes in ent)
@@ -84,14 +89,14 @@ namespace DT
         // eq 6 from microlecture
         return (dlnYeqdent * (sqrt(6 * M_PI * M_PI * M_PI / 30 * mod->MDM * mod->MDM * mod->MDM * mod->MDM / (x * x * x * x) * dof->geff(mod->MDM / x) * G) / tac->tac(x).res) - dif * yeq(x));
     }
-    size_t a = 0;
+
     ResError Beqs::beq(const double &x, const ResError &y)
     {
         ResError res{0., 0.};
         switch (mech)
         {
         case 0:
-            res = res - pre(x) * tac->tac(x) * (y * y - pow(yeq(x), 2));
+            res = -pre(x) * tac->tac(x) * (y * y - pow(yeq(x), 2));
             break;
 
         case 1:

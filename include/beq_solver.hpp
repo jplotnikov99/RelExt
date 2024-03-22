@@ -12,6 +12,8 @@ namespace DT
     class BeqSolver
     {
     private:
+        double xF;
+        double x0;
         std::shared_ptr<Model> mod;
         std::unique_ptr<Beqs> beq;
 
@@ -38,7 +40,16 @@ namespace DT
         // Solves the Boltzmann equation with the full TAC using the adaptive 4-point runge-kutta method
         void adap_rk4(const double &xtoday, double &x, ResError &y, double h = 0.1);
 
-        double get_error();
+        ResError pre_tac_t(const double t);
+
+        ResError simpson38_peak(const double l, const double r);
+
+        ResError simpson38_adap_peak(const double l, const double r, const ResError &ans, size_t depth = 0);
+
+        ResError adap_gauss_kronrod(const double l, const double r, int depth = 0);
+
+        // Solution for when Yeq << Y
+        ResError calc_yield(const double &xtoday, double &x, ResError &y);
 
         ~BeqSolver(){};
     };

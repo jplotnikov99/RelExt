@@ -31,6 +31,9 @@ namespace DT
         // prefactor of the boltzmann equation
         double pre(const double &x);
 
+        // prefactor + tac of the boltzmann equation
+        ResError pre_tac(const double &x);
+
         // Temperature for a given entropy
         double T_ent(const double &ent);
 

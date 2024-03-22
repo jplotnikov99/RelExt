@@ -98,6 +98,8 @@ namespace DT
         relops->set_omega_err(err);
         relops->find_pars(pars);
         omega = relops->get_last_relic();
+        std::cout << "Omega full:\n"
+                  << omega << "\n\n";
     }
 
     void Main::save_data(bool channels)

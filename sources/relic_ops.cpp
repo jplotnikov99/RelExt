@@ -59,8 +59,8 @@ namespace DT
             exit(1);
             break;
         }
-
-        bs->adap_rk4(xtoday, x, y);
+        y = bs->calc_yield(xtoday, x, y);
+        //bs->adap_rk4(xtoday, x, y);
         omega = 2.742e8 * mod->MDM * y;
 
         return omega;
