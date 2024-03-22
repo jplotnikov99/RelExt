@@ -18,7 +18,7 @@ namespace DT
 
         double rms, rmc, rmb, rmt, Q;
         // for decays
-        Q = mh; // here it should be the mass of the decaying particle
+        Q = 0.; // here it should be the mass of the decaying particle
         // masses of quarks must be replaced by these in the widths expressions
         rms = RunM(Q, 3, N0);
         rmc = RunM(Q, 4, N0);
@@ -26,7 +26,7 @@ namespace DT
         rmt = RunM(Q, 6, N0);
         // for DM annihilation
         // masses of quarks must be replaced by these in the tac expressions
-        Q = 2*mDM; // here is the mass of the annihilating initial state
+        Q = 2*0.; // here is the mass of the annihilating initial state
         rms = RunM(Q, 3, N0);
         rmc = RunM(Q, 4, N0);
         rmb = RunM(Q, 5, N0);

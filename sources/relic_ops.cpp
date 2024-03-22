@@ -13,14 +13,29 @@ namespace DT
         bath_procs = b;
     }
 
-    ResError RelicOps::calc_relic(const size_t mech)
+    void RelicOps::set_mechanism(const size_t mech)
     {
+        mechanism = mech;
         bs->set_mechanism(mech);
+    }
+
+    void RelicOps::set_omega_target(const double om)
+    {
+        omega_target = om;
+    }
+
+    void RelicOps::set_omega_err(const double err)
+    {
+        omega_err = err;
+    }
+
+    ResError RelicOps::calc_relic()
+    {
         bs->sort_inimasses(bath_procs);
         double x, xtoday;
         ResError y{0., 0.};
 
-        switch (mech)
+        switch (mechanism)
         {
         case 0:
             x = bs->secant_method(15., 15.1);
@@ -115,7 +130,7 @@ namespace DT
         }
     }
 
-    double RelicOps::get_next_omega(const vstring &pars, const double om, const double relic, const size_t mech)
+    double RelicOps::get_next_omega(const vstring &pars, const double om)
     {
         const double eps = 0.001;
         double om1 = om;
@@ -124,12 +139,12 @@ namespace DT
         par1 = mod->get_parameter_val(pars.at(0));
         par2 = par1 * (1 + eps);
         mod->change_parameter(pars.at(0), par2);
-        om2 = calc_relic(mech).res - relic;
+        om2 = calc_relic().res - omega_target;
 
-        step = get_next_step(par1, par2, om1, om2, relic);
+        step = get_next_step(par1, par2, om1, om2, omega_target);
         par1 += step;
         mod->change_parameter(pars.at(0), par1);
-        om1 = calc_relic(mech).res - relic;
+        om1 = calc_relic().res - omega_target;
 
         check_sign_flip(step, om1, par1);
         par_old = par1;
@@ -138,15 +153,15 @@ namespace DT
         return om1;
     }
 
-    std::vector<double> RelicOps::vanguard_search(const vstring &pars, const double relic, const double err, const size_t mech)
+    std::vector<double> RelicOps::vanguard_search(const vstring &pars)
     {
         std::vector<double> res = {};
-        double om1 = calc_relic(mech).res - relic;
+        double om1 = calc_relic().res - omega_target;
         double om2;
-        while ((fabs(om1) > err) && (searchmode == vanguard))
+        while ((fabs(om1) > omega_err) && (searchmode == vanguard))
         {
             om2 = om1;
-            om1 = get_next_omega(pars, om1, relic, mech);
+            om1 = get_next_omega(pars, om1);
             if (om2 == om1)
             {
                 std::cout << pars.at(0) << " does not change the relic density.\n";
@@ -161,7 +176,7 @@ namespace DT
         return res;
     }
 
-    std::vector<double> RelicOps::descent_search(const vstring &pars, const double relic, const size_t mech)
+    std::vector<double> RelicOps::descent_search(const vstring &pars)
     {
         std::vector<double> res = {};
         double om1 = omega_old;
@@ -169,7 +184,7 @@ namespace DT
         do
         {
             om2 = om1;
-            om1 = get_next_omega(pars, om1, relic, mech);
+            om1 = get_next_omega(pars, om1);
         } while ((fabs(om2 / om1 - 1) > 0.01) && (searchmode == descent));
         if (searchmode == descent)
         {
@@ -179,7 +194,7 @@ namespace DT
         return res;
     }
 
-    std::vector<double> RelicOps::bisect_search(const vstring &pars, const double relic, const double err, const size_t mech)
+    std::vector<double> RelicOps::bisect_search(const vstring &pars)
     {
         std::vector<double> res;
         double dx, xmid, rtb;
@@ -189,9 +204,9 @@ namespace DT
             dx *= 0.5;
             xmid = rtb + dx;
             mod->change_parameter(pars.at(0), xmid);
-            bi_y2 = calc_relic(mech).res - relic;
+            bi_y2 = calc_relic().res - omega_target;
             if(bi_y2 <= 0.) rtb = xmid;
-            if(fabs(bi_y2) < err)
+            if(fabs(bi_y2) < omega_err)
             {
                 searchmode = stop;
                 res.push_back(rtb);
@@ -204,7 +219,7 @@ namespace DT
         return res;
     }
 
-    std::vector<double> RelicOps::find_pars(const vstring &pars, const double relic, const double err, const size_t mech)
+    std::vector<double> RelicOps::find_pars(const vstring &pars)
     {
         first_step = true;
         searchmode = vanguard;
@@ -215,15 +230,15 @@ namespace DT
             switch (searchmode)
             {
             case vanguard:
-                res = vanguard_search(pars, relic, err, mech);
+                res = vanguard_search(pars);
                 break;
 
             case descent:
-                res = descent_search(pars, relic, mech);
+                res = descent_search(pars);
                 break;
 
             case bisect:
-                res = bisect_search(pars, relic, err, mech);
+                res = bisect_search(pars);
                 break;
 
             default:
