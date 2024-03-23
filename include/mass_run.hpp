@@ -28,10 +28,12 @@ namespace DT
         const int NN = 8;
         const double ZETA3 = 1.202056903159594;
         int NNLO = 0; // hdecay flag
-        double amc0, amb0, amt0, amsb, amcb, ambb;
+        double amsb, amcb, ambb;
+        //int N0, NalphaS;
 
 
     public:
+        int N0, NalphaS;
         Mrun();
         double B(size_t order, int NF);
         double als(size_t order, int NF, double X, double XLB);

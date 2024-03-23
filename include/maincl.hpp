@@ -9,6 +9,7 @@
 #include "relic_ops.hpp"
 #include "tac.hpp"
 #include "beq_solver.hpp"
+#include "mass_run.hpp"
 
 namespace DT
 {

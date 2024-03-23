@@ -3,6 +3,7 @@
 
 #include "../../model.hpp"
 #include "utils.hpp"
+#include "mass_run.hpp"
 
 double DT::wHHH(){
 	 if(heaviDecays(MH,MH,MH)){
@@ -166,6 +167,18 @@ double DT::wHBb(){
 
 }
 double DT::wwH(){
+	 Mrun running;
+	 double Q = MH;
+	 MS = running.RunM(Q, 3, running.N0);
+	 MC = running.RunM(Q, 4, running.N0);
+	 MB = running.RunM(Q, 5, running.N0);
+	 MT = running.RunM(Q, 6, running.N0);
+	 aS = running.alphaS(Q, running.NalphaS);
+	 FAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;
+	 yms = MS;
+	 ymc = MC;
+	 ymb = MB;
+	 ymt = MT;
 	 return ( wHHH() + wHHS1() + wHS1S1() + wHA1A1() + wHZZ() + wHwW() + wHEe()\
  
       + wHMUmu() + wHTAta() + wHUu() + wHCc() + wHTt() + wHDd() + wHSs() +\
