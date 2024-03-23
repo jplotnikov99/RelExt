@@ -42,13 +42,11 @@ namespace DT
 
         ResError pre_tac_t(const double t);
 
-        ResError simpson38_peak(const double l, const double r);
+        ResError simpson38(const double l, const double r);
 
-        ResError simpson38_adap_peak(const double l, const double r, const ResError &ans, size_t depth = 0);
+        ResError adap_simpson38(const double l, const double r, const ResError &ans, size_t depth = 0);
 
-        ResError adap_gauss_kronrod(const double l, const double r, int depth = 0);
-
-        // Solution for when Yeq << Y
+        // Solution for freeze-out approximation
         ResError calc_yield(const double &xtoday, double &x, ResError &y);
 
         ~BeqSolver(){};

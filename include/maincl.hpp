@@ -17,12 +17,12 @@ namespace DT
     private:
         size_t mechanism = 10; 
         ResError omega;
-        double omega_error;
         std::string input_file;
         std::string output_file;
         vstring bath_particles = {}; 
         vstring bath_procs = {};
         vstring considered_procs = {};
+        vstring subtracted_procs = {};
         vstring saved_pars = {};
         double channel_contrib = 1.;
         vstring strong_channels = {};

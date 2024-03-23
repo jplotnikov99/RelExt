@@ -7,6 +7,7 @@ OutputFile          |cpvdm.csv
 SavedParameters     |mH1, mH2
 ThermalBath         | 
 ConsideredChannels  |
+SubtractChannels    |
 BepsEps             |1e-6
 ProductionMechanism |0
 ChannelContributions|1

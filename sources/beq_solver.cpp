@@ -136,42 +136,25 @@ namespace DT
         return beq->pre_tac(x) * dx;
     }
 
-    ResError BeqSolver::simpson38_peak(const double l, const double r)
+    ResError BeqSolver::simpson38(const double l, const double r)
     {
         return (r - l) / 8 * (pre_tac_t(l) + 3 * pre_tac_t((2 * l + r) / 3) + 3 * pre_tac_t((l + 2 * r) / 3) + pre_tac_t(r));
     }
 
-    ResError BeqSolver::simpson38_adap_peak(const double l, const double r, const ResError &ans, size_t depth)
+    ResError BeqSolver::adap_simpson38(const double l, const double r, const ResError &ans, size_t depth)
     {
         if (ans.res == 0)
             return ans;
         double eps = 1e-3;
         double m = (l + r) / 2;
-        ResError I1 = simpson38_peak(l, m), I2 = simpson38_peak(m, r);
+        ResError I1 = simpson38(l, m), I2 = simpson38(m, r);
         ResError I = I1 + I2;
         if (fabs(I.res / ans.res - 1) < eps)
         {
             I.err += fabs(I.res - ans.res);
             return I;
         }
-        return simpson38_adap_peak(l, m, I1, depth + 1) + simpson38_adap_peak(m, r, I2, depth + 1);
-    }
-
-    ResError BeqSolver::adap_gauss_kronrod(const double l, const double r, int depth)
-    {
-        double m = 0.5 * (r + l);
-        double h = 0.5 * (r - l);
-
-        ResError res{0., 0.};
-        for (size_t i = 0; i < 30; i++)
-        {
-            double dx = h * kronx_61[i];
-            res = res + wkron_61[i] * (pre_tac_t(m + dx) + pre_tac_t(m - dx));
-        }
-        res = res + wkron_61[30] * (pre_tac_t(m));
-        res = res * h;
-
-        return res;
+        return adap_simpson38(l, m, I1, depth + 1) + adap_simpson38(m, r, I2, depth + 1);
     }
 
     ResError BeqSolver::calc_yield(const double &xtoday, double &x, ResError &y)
@@ -181,7 +164,7 @@ namespace DT
         xF = x;
         yF = y;
         x0 = xtoday;
-        y0 = 1 / yF - simpson38_adap_peak(0, 1, simpson38_peak(0, 1));
+        y0 = 1 / yF - adap_simpson38(0, 1, simpson38(0, 1));
         beq->reset_tac_state(true);
         return 1 / y0;
     }

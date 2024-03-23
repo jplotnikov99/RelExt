@@ -15,22 +15,10 @@ namespace DT
 
     void Tac::sort_inimasses(const vstring &ch_str)
     {
-        if (ch_str.size() == 0)
+        for (auto it : ch_str)
         {
-            vstring all_channels = mod->get_all_channels();
-            for (auto it : all_channels)
-            {
-                mod->assign_masses(m1, m2, it);
-                inimap[m1 + m2].push_back(it);
-            }
-        }
-        else
-        {
-            for (auto it : ch_str)
-            {
-                mod->assign_masses(m1, m2, it);
-                inimap[m1 + m2].push_back(it);
-            }
+            mod->assign_masses(m1, m2, it);
+            inimap[m1 + m2].push_back(it);
         }
     }
 
@@ -244,7 +232,6 @@ namespace DT
         return res;
     }
 
-    
     ResError Tac::adap_gauss_kronrod(const double l, const double r, const double &x, const double &est, int depth)
     {
         ResError I1, I2, y[15];

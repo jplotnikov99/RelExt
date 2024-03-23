@@ -22,14 +22,19 @@ namespace DT
     void Main::load_setting(const std::string sg_file)
     {
         std::unique_ptr<DataReader> sgr = std::make_unique<DataReader>(sg_file, 0);
+        // Standard settings
         input_file = sgr->get_name_of("InputFile");
         output_file = sgr->get_name_of("OutputFile");
         bath_particles = sgr->get_slist_of("ThermalBath");
         considered_procs = sgr->get_slist_of("ConsideredChannels");
+        subtracted_procs = sgr->get_slist_of("SubtractChannels");
+
         saved_pars = sgr->get_slist_of("SavedParameters");
         beps_eps = sgr->get_val_of("BepsEps");
         mechanism = (size_t)sgr->get_val_of("ProductionMechanism");
         channel_contrib = sgr->get_val_of("ChannelContributions");
+
+        // Advanced setting
         simpson_eps = sgr->get_val_of("ThetaIntEps");
         trapezoidal_eps = sgr->get_val_of("PeakIntEps");
         gauss_kronrod_eps = sgr->get_val_of("sIntEps");
@@ -78,6 +83,23 @@ namespace DT
                 check_procs(considered_procs);
             }
             bath_procs = considered_procs;
+        }
+        else
+        {
+            bath_procs = mod->get_all_channels();
+            if (subtracted_procs.size() != 0)
+            {
+                for (auto it : subtracted_procs)
+                {
+                    for (size_t i = 0; i < bath_procs.size(); i++)
+                    {
+                        if (it == bath_procs.at(i))
+                        {
+                            bath_procs.erase(bath_procs.begin() + i);
+                        }
+                    }
+                }
+            }
         }
         relops->set_bath_procs(bath_procs);
     }

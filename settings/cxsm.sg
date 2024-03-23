@@ -7,10 +7,10 @@ OutputFile          |new.csv
 SavedParameters     |MA1, svev, alpha
 ThermalBath         |
 ConsideredChannels  |
+SubtractChannels    |A1A1Ee, A1A1MUmu, A1A1Uu, A1A1Dd, A1A1Ss
 BepsEps             |1e-6
 ProductionMechanism |0
 ChannelContributions|1
-CalcError           |false
 
 ######## Advanced settings ########
 
