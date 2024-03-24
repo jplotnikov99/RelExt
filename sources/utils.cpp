@@ -45,3 +45,11 @@ double DT::polK2(const double &x)
    return 1.2533141373155 / sqrt(x) *
           (1 + 1.875 * y * (1 + 0.4375 * y * (1 - 0.375 * y * (1 - 1.03125 * y * (1 - 1.625 * y * (1 - 2.1875 * y))))));
 }
+
+void DT::append_to_vstring(vstring &a, const vstring &b)
+{
+   for(auto it : b)
+   {
+      a.push_back(it);
+   }
+}

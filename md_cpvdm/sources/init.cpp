@@ -217,17 +217,6 @@ namespace DT
 		ADDCHANNEL(HcHCDd, HcHCDdfl, mHc, mHc, MD, MD)
 		ADDCHANNEL(HcHCSs, HcHCSsfl, mHc, mHc, MS, MS)
 		ADDCHANNEL(HcHCBb, HcHCBbfl, mHc, mHc, MB, MB)
-		ADDINITIALSTATE(H1H1, mH1, mH1)
-		ADDINITIALSTATE(H1H2, mH1, mH2)
-		ADDINITIALSTATE(H1H3, mH1, mH3)
-		ADDINITIALSTATE(H1Hc, mH1, mHc)
-		ADDINITIALSTATE(H2H2, mH2, mH2)
-		ADDINITIALSTATE(H2H3, mH2, mH3)
-		ADDINITIALSTATE(H2Hc, mH2, mHc)
-		ADDINITIALSTATE(H3H3, mH3, mH3)
-		ADDINITIALSTATE(H3Hc, mH3, mHc)
-		ADDINITIALSTATE(HcHc, mHc, mHc)
-		N_initial_states = 10;
 		denstructures.push_back(&MZ);
 		denstructures.push_back(&WZ);
 		denstructures.push_back(&MW);

@@ -770,19 +770,6 @@ Write[sfile, "\t\tADDCHANNEL(",ToString[possibleini[[i]]],", ",ToString[possible
 ,StringReplace[ToString[ReplaceAll[inimass[[2*i-1]],subrule]],"0"->"ZERO"],", ",StringReplace[ToString[ReplaceAll[inimass[[2*i]],subrule]],"0"->"ZERO"],", "
 ,StringReplace[ToString[ReplaceAll[inimass[[2*i-1]],subrule]],"0"->"ZERO"],", ",StringReplace[ToString[ReplaceAll[inimass[[2*i]],subrule]],"0"->"ZERO"],")"];
 ,{i,Length[possibleini]}]
-
-Do[
-	Write[sfile, "\t\tADDINITIALSTATE(", ToString[possibleini[[i]]] ,", ",
-	StringReplace[ToString[ReplaceAll[inimass[[2*i-1]],subrule]],"0"->"ZERO"],", ",StringReplace[ToString[ReplaceAll[inimass[[2*i]],subrule]],"0"->"ZERO"],")"];
-,{i,Length[possibleini]}]
-
-(*Do[
-	Write[sfile, "\t\tinifuncs.push_back(", possibleini[[i]] ,");"];
-,{i,Length[possibleini]}]
-Do[
-	Write[sfile, "\t\tinimasses.push_back(&", inimass[[i]] , ");"];
-,{i,Length[inimass]}]*)
-Write[sfile,"\t\tN_initial_states = ",ToString[Length[possibleini]],";"];
 Do[
 	Write[sfile, "\t\tdenstructures.push_back(&", StringReplace[ToString[relevantWs[[i]]],{"FeynCalc`"->""}] ,");"];
 ,{i,Length[relevantWs]}]

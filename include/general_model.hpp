@@ -71,7 +71,7 @@ namespace DT
         vstring get_all_channels();
         size_t get_N_initial_states();
         std::string get_channel_name(const size_t i);
-        vstring get_subchannels(const std::string &ini_state);
+        vstring find_channels_by_particle(const std::string &particle);
         void assign_bath_masses(const vstring &prtcls = {});
         vstring find_thermal_procs(const vstring &prtcls = {});
 

@@ -28,7 +28,7 @@ namespace DT
         bath_particles = sgr->get_slist_of("ThermalBath");
         considered_procs = sgr->get_slist_of("ConsideredChannels");
         subtracted_procs = sgr->get_slist_of("SubtractChannels");
-
+        neglected_particles = sgr->get_slist_of("NeglectParticles");
         saved_pars = sgr->get_slist_of("SavedParameters");
         beps_eps = sgr->get_val_of("BepsEps");
         mechanism = (size_t)sgr->get_val_of("ProductionMechanism");
@@ -87,6 +87,15 @@ namespace DT
         else
         {
             bath_procs = mod->get_all_channels();
+            if (neglected_particles.size() != 0)
+            {
+                vstring temp;
+                for (auto it : neglected_particles)
+                {
+                    temp = mod->find_channels_by_particle(it);
+                    append_to_vstring(subtracted_procs, temp);
+                }
+            }
             if (subtracted_procs.size() != 0)
             {
                 for (auto it : subtracted_procs)

@@ -44,16 +44,16 @@ namespace DT
         }
     }
 
-    vstring Model::get_subchannels(const std::string &ini_state)
+    vstring Model::find_channels_by_particle(const std::string &particle)
     {
         vstring res = {};
         size_t found;
-        for (size_t i = 0; i < channelnames.size() - N_initial_states; i++)
+        for (auto it : channelnames)
         {
-            found = channelnames.at(i).find(ini_state);
+            found = it.find(particle);
             if (found != std::string::npos)
             {
-                res.push_back(channelnames.at(i));
+                res.push_back(it);
             }
         }
         return res;
@@ -61,22 +61,23 @@ namespace DT
 
     vstring Model::find_thermal_procs(const vstring &prtcls)
     {
-        size_t N = channelnames.size();
         vstring res = {};
         size_t found;
         for (auto it : prtcls)
         {
-            for (size_t i = N - N_initial_states; i < N; i++)
+            for (auto jt : channelnames)
             {
-                found = channelnames.at(i).find(it);
+                found = jt.find(it);
                 if (found != std::string::npos)
-                    for (auto jt : prtcls)
+                {
+                    for (auto kt : prtcls)
                     {
-                        if (channelnames.at(i).find(jt, found + 1) != std::string::npos)
+                        if (jt.find(kt, found + 1) != std::string::npos)
                         {
-                            res.push_back(channelnames.at(i));
+                            res.push_back(jt);
                         }
                     }
+                }
             }
         }
         return res;

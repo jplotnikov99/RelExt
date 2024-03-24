@@ -68,8 +68,6 @@ namespace DT{
 		ADDCHANNEL(A1A1Dd, A1A1Ddfl, MA1, MA1, MD, MD)
 		ADDCHANNEL(A1A1Ss, A1A1Ssfl, MA1, MA1, MS, MS)
 		ADDCHANNEL(A1A1Bb, A1A1Bbfl, MA1, MA1, MB, MB)
-		ADDINITIALSTATE(A1A1, MA1, MA1)
-		N_initial_states = 1;
 		denstructures.push_back(&MH);
 		denstructures.push_back(&WH);
 		denstructures.push_back(&MS1);

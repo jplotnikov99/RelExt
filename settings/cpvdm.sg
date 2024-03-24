@@ -3,11 +3,12 @@
 ######## Standard settings ########
 
 InputFile           |CPVDMTest.csv
-OutputFile          |cpvdm.csv
+OutputFile          |cpvdm_heavy.csv
 SavedParameters     |mH1, mH2
-ThermalBath         | 
+ThermalBath         |
 ConsideredChannels  |
 SubtractChannels    |
+NeglectParticles    |
 BepsEps             |1e-6
 ProductionMechanism |0
 ChannelContributions|1

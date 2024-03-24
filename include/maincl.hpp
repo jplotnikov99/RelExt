@@ -23,6 +23,7 @@ namespace DT
         vstring bath_procs = {};
         vstring considered_procs = {};
         vstring subtracted_procs = {};
+        vstring neglected_particles = {};
         vstring saved_pars = {};
         double channel_contrib = 1.;
         vstring strong_channels = {};

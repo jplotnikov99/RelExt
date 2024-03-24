@@ -31,4 +31,6 @@ namespace DT
 
 	double polK2(const double &x);
 
+	void append_to_vstring(vstring &a, const vstring &b);
+
 }
