@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
-directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
+directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cpvdm/FR_modfiles" <> "/FA_modfiles";
 Print[directory]
 
 (*start FA and FC*)
@@ -67,12 +67,6 @@ For[i = 1, i <= Length[particlelist], i++,
 	For[j=1, j<=Length[chmass],j++,If[ToString[particlelist[[i,2]]]==chmass[[j]],AppendTo[dslist,particlelist[[i,1]]]]]];
 dsmass=Table[TheMass[dslist[[i]]],{i,Length[dslist]}];(*masses of fields*)
 dsnames = Table[Select[particlelist, #[[1]]== dslist[[i]]&][[1,3]],{i,Length[dslist]}];(*name of fields*)
-
-
-(*create list with dark sector particles; labels of dark sector particles must have a tilde at the start in the FA mod files*)
-(*dslist = Select[particlelist, StringTake[#[[3]], 1] == "~" &][[All, 1]](*FAs fields*)
-dsmass=Table[TheMass[dslist[[i]]],{i,Length[dslist]}];(*masses of fields*)
-dsnames = StringReplace[Table[Select[particlelist, #[[1]]== dslist[[i]]&][[1,3]],{i,Length[dslist]}],"~"->""];*)(*name of fields*)
 
 
 (*if the FA identifiers change, this list must be manually changed*)
@@ -766,11 +760,6 @@ Write[sfile, "\t\tADDCHANNEL(",ToString[processname[[i]]],", ",ToString[processn
 ,{i,Length[processname]}]
 
 Do[
-Write[sfile, "\t\tADDCHANNEL(",ToString[possibleini[[i]]],", ",ToString[possibleini[[i]]],", "
-,StringReplace[ToString[ReplaceAll[inimass[[2*i-1]],subrule]],"0"->"ZERO"],", ",StringReplace[ToString[ReplaceAll[inimass[[2*i]],subrule]],"0"->"ZERO"],", "
-,StringReplace[ToString[ReplaceAll[inimass[[2*i-1]],subrule]],"0"->"ZERO"],", ",StringReplace[ToString[ReplaceAll[inimass[[2*i]],subrule]],"0"->"ZERO"],")"];
-,{i,Length[possibleini]}]
-Do[
 	Write[sfile, "\t\tdenstructures.push_back(&", StringReplace[ToString[relevantWs[[i]]],{"FeynCalc`"->""}] ,");"];
 ,{i,Length[relevantWs]}]
 Write[sfile,"\t\tN_widths = ",ToString[Length[relevantWs]/2],";"];
@@ -876,18 +865,7 @@ Do[
 		Write[sfile, "\t else{ return 0; }\n"];
 		Write[sfile, "}"]
 	,{j,Length[inifunc[i]]}];
-	Write[sfile, "double DT::" , ToString[possibleini[[i]]] , "(const double &cos_t, const double &s){"];
-	allcontr="( ";
 	
-	Do[
-		If[j!=Length[inifunc[i]],
-			allcontr=StringJoin[allcontr,ToString[inifunc[i][[j,1]]],"fl(cos_t, s) + "],
-			allcontr=StringJoin[allcontr,ToString[inifunc[i][[j,1]]],"fl(cos_t, s) );"]
-		]
-	,{j,Length[inifunc[i]]}];
-	
-	Write[sfile, "\t return ", allcontr];
-	Write[sfile, "}"];
 	Close[sfile];
 ,{i,Length[possibleini]}]
 
@@ -931,6 +909,3 @@ Do[
 	Close[sfile];
 	
 ,{i,Length[possibleiniDecays]}]
-
-
-StringReplace[ToString[mk[[2]]],"0"->"ZERO"]
