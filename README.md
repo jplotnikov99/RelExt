@@ -1,6 +1,7 @@
 Program: DarkTree version 1.0
 
-Released by: Rodrigo Capucha, Karim Elyaouti, Margarete Mühlleitner, Johann Plotnikov, Rui SantosManual: version 2.0
+Released by: Rodrigo Capucha, Karim Elyaouti, Margarete Mühlleitner, Johann Plotnikov, Rui Santos
+Manual: version 1.0
 
 [TODO]
 DarkTree: The C++ program DarkTree is a tool to efficiently search parameter spaces of extension of the Standard Model. 
