@@ -34,6 +34,7 @@ namespace DT
             double get_val_of(const std::string name);
             std::string get_name_of(const std::string name);
             vstring get_slist_of(const std::string name);
+            std::vector<vstring> get_operation_slist();
             std::vector<double *> assignHeaders(std::map<std::string, double *> pars);
             void read_parameter(const size_t row);
             void save_data(char **argv, std::vector<std::string> yourheader, std::vector<double> yourlist);

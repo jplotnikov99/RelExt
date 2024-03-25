@@ -3,30 +3,32 @@
 #include <memory>
 #include <vector>
 #include <unordered_map>
+#include <functional>
 #include "hyper_parameters.hpp"
 #include "readdata1.hpp"
 #include "general_model.hpp"
 #include "relic_ops.hpp"
-#include "tac.hpp"
-#include "beq_solver.hpp"
 
 namespace DT
 {
     class Main
     {
     private:
-        size_t mechanism = 10; 
+        size_t mechanism = 10;
         ResError omega;
         std::string input_file;
         std::string output_file;
-        vstring bath_particles = {}; 
+        vstring bath_particles = {};
         vstring bath_procs = {};
         vstring considered_procs = {};
         vstring subtracted_procs = {};
         vstring neglected_particles = {};
         vstring saved_pars = {};
+        bool first_save = true;
         double channel_contrib = 1.;
         vstring strong_channels = {};
+        std::unordered_map<std::string, std::function<void(const vstring)>> operations_map;
+        std::vector<vstring> user_operations;
         std::unique_ptr<DataReader> rdr;
         std::shared_ptr<Model> mod;
         std::unique_ptr<RelicOps> relops;
@@ -37,6 +39,8 @@ namespace DT
         size_t N_par_points;
 
         void load_setting(const std::string sg_file);
+
+        void load_user_operations();
 
         // loads parameter point and assigns DM mass
         void load_parameters(const size_t i);
@@ -65,10 +69,12 @@ namespace DT
         void calc_relic();
 
         // finds the parameter values for which the needed relic density is reached within a certain limit
-        void find_pars(const vstring &pars, const double relic = 0.119, const double err = 0.003);
+        void find_pars(const vstring &args);
 
         // saves the scanned data
-        void save_data(bool channels = false);
+        void save_data();
+
+        void do_user_operations();
 
         ~Main(){};
     };

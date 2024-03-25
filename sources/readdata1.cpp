@@ -119,6 +119,36 @@ namespace DT
 		return line_to_strings(line, ',');
 	}
 
+	std::vector<vstring> DataReader::get_operation_slist()
+	{
+		std::vector<vstring> res = {};
+		vstring temp;
+		std::string hold;
+		std::string line;
+		line = get_line_at("START");
+		while (getline(datafile, line))
+		{
+			if (line == "END")
+			{
+				break;
+			}
+			rmv_spaces(line);
+			if (line != "")
+			{
+				temp.clear();
+				temp = line_to_strings(line, '|');
+				if (temp.size() != 1)
+				{
+					hold = temp.at(0);
+					temp = line_to_strings(temp.at(1), ',');
+					temp.insert(temp.begin(), hold);
+				}
+				res.push_back(temp);
+			}
+		}
+		return res;
+	}
+
 	double DataReader::datalines()
 	{
 		std::string line;

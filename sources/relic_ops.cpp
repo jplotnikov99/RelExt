@@ -60,7 +60,7 @@ namespace DT
             break;
         }
         y = bs->calc_yield(xtoday, x, y);
-        //bs->adap_rk4(xtoday, x, y);
+        // bs->adap_rk4(xtoday, x, y);
         omega = 2.742e8 * mod->MDM * y;
 
         return omega;
@@ -132,20 +132,20 @@ namespace DT
         }
     }
 
-    double RelicOps::get_next_omega(const vstring &pars, const double om)
+    double RelicOps::get_next_omega(const std::string &par, const double om)
     {
         const double eps = 0.001;
         double om1 = om;
         double par1, par2, om2, step;
 
-        par1 = mod->get_parameter_val(pars.at(0));
+        par1 = mod->get_parameter_val(par);
         par2 = par1 * (1 + eps);
-        mod->change_parameter(pars.at(0), par2);
+        mod->change_parameter(par, par2);
         om2 = calc_relic().res - omega_target;
 
         step = get_next_step(par1, par2, om1, om2, omega_target);
         par1 += step;
-        mod->change_parameter(pars.at(0), par1);
+        mod->change_parameter(par, par1);
         om1 = calc_relic().res - omega_target;
 
         check_sign_flip(step, om1, par1);
@@ -155,95 +155,95 @@ namespace DT
         return om1;
     }
 
-    std::vector<double> RelicOps::vanguard_search(const vstring &pars)
+    double RelicOps::vanguard_search(const std::string &par)
     {
-        std::vector<double> res = {};
+        double res = {};
         double om1, om2;
         om1 = calc_relic().res - omega_target;
         omega_old = om1;
-        par_old = mod->get_parameter_val(pars.at(0));
+        par_old = mod->get_parameter_val(par);
         while ((fabs(om1) > omega_err) && (searchmode == vanguard))
         {
             om2 = om1;
-            om1 = get_next_omega(pars, om1);
+            om1 = get_next_omega(par, om1);
             if (om2 == om1)
             {
-                std::cout << pars.at(0) << " does not change the relic density.\n";
+                std::cout << par << " does not change the relic density.\n";
                 break;
             }
         }
         if (searchmode == vanguard)
         {
             searchmode = stop;
-            res.push_back(mod->get_parameter_val(pars.at(0)));
+            res = mod->get_parameter_val(par);
         }
         return res;
     }
 
-    std::vector<double> RelicOps::descent_search(const vstring &pars)
+    double RelicOps::descent_search(const std::string &par)
     {
-        std::vector<double> res = {};
+        double res = {};
         double om1 = omega_old;
         double om2;
         do
         {
             om2 = om1;
-            om1 = get_next_omega(pars, om1);
+            om1 = get_next_omega(par, om1);
         } while ((fabs(om2 / om1 - 1) > 0.01) && (searchmode == descent));
         if (searchmode == descent)
         {
             searchmode = stop;
-            res.push_back(mod->get_parameter_val(pars.at(0)));
+            res = mod->get_parameter_val(par);
         }
         return res;
     }
 
-    std::vector<double> RelicOps::bisect_search(const vstring &pars)
+    double RelicOps::bisect_search(const std::string &par)
     {
-        std::vector<double> res;
+        double res;
         double dx, xmid, rtb;
         rtb = bi_y1 < 0. ? (dx = bi_x2 - bi_x1, bi_x1) : (dx = bi_x1 - bi_x2, bi_x2);
         for (size_t i = 0; i < max_N_bisections; i++)
         {
             dx *= 0.5;
             xmid = rtb + dx;
-            mod->change_parameter(pars.at(0), xmid);
+            mod->change_parameter(par, xmid);
             bi_y2 = calc_relic().res - omega_target;
             if (bi_y2 <= 0.)
                 rtb = xmid;
             if (fabs(bi_y2) < omega_err)
             {
                 searchmode = stop;
-                res.push_back(rtb);
+                res = rtb;
                 return res;
             }
         }
         searchmode = stop;
         std::cout << "Bisection limit reached.\n";
-        res.push_back(rtb);
+        res = rtb;
         return res;
     }
 
-    std::vector<double> RelicOps::find_pars(const vstring &pars)
+    double RelicOps::find_pars(const std::string &par)
     {
         first_step = true;
         searchmode = vanguard;
-        std::vector<double> res;
+        double res;
 
         while (searchmode != stop)
         {
             switch (searchmode)
             {
             case vanguard:
-                res = vanguard_search(pars);
+                res = vanguard_search(par);
                 break;
 
             case descent:
-                res = descent_search(pars);
+                res = descent_search(par);
                 break;
 
             case bisect:
-                res = bisect_search(pars);
+                res = bisect_search(par);
                 break;
 
             default:

@@ -13,6 +13,13 @@ BepsEps             |1e-6
 ProductionMechanism |0
 ChannelContributions|1
 
+######## Operations on scan ########
+START
+
+CalcRelic
+SaveData
+
+END
 ######## Advanced settings ########
 
 ThetaIntEps         |1e-6

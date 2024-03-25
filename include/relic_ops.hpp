@@ -52,15 +52,15 @@ namespace DT
 
         void check_sign_flip(const double step_new, const double omega_new, const double par_new);
 
-        double get_next_omega(const vstring &pars, const double om);
+        double get_next_omega(const std::string &par, const double om);
 
-        std::vector<double> vanguard_search(const vstring &pars);
+        double vanguard_search(const std::string &par);
 
-        std::vector<double> descent_search(const vstring &pars);
+        double descent_search(const std::string &par);
 
-        std::vector<double> bisect_search(const vstring &pars);
+        double bisect_search(const std::string &par);
 
-        std::vector<double> find_pars(const vstring &pars);
+        double find_pars(const std::string &par);
 
         ~RelicOps(){};
     };

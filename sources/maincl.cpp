@@ -4,6 +4,13 @@ namespace DT
 {
     Main::Main(int argc, char **argv)
     {
+        operations_map["CalcRelic"] = [this](const vstring a)
+        { this->calc_relic(); };
+        operations_map["SaveData"] = [this](const vstring a)
+        { this->save_data(); };
+        operations_map["FindParameter"] = [this](const vstring a)
+        { this->find_pars(a); };
+
         load_setting(std::string(argv[1]));
         rdr = std::make_unique<DataReader>(input_file, 1);
 
@@ -39,7 +46,10 @@ namespace DT
         trapezoidal_eps = sgr->get_val_of("PeakIntEps");
         gauss_kronrod_eps = sgr->get_val_of("sIntEps");
         rk4_eps = sgr->get_val_of("rk4Eps");
+
+        user_operations = sgr->get_operation_slist();
     }
+
     void Main::load_parameters(const size_t i)
     {
         std::cout << "Parameter point: " << i << std::endl;
@@ -116,26 +126,34 @@ namespace DT
     void Main::calc_relic()
     {
         relops->set_mechanism(mechanism);
-        ResError om = relops->calc_relic();
+        omega = relops->calc_relic();
         std::cout << "Omega full:\n"
-                  << om << "\n\n";
-        omega = om;
+                  << omega << "\n\n";
     }
 
-    void Main::find_pars(const vstring &pars, const double relic, const double err)
+    void Main::find_pars(const vstring &args)
     {
         relops->set_mechanism(mechanism);
-        relops->set_omega_target(relic);
-        relops->set_omega_err(err);
-        relops->find_pars(pars);
+        relops->set_omega_target(std::stod(args.at(2)));
+        relops->set_omega_err(std::stod(args.at(3)));
+        relops->find_pars(args.at(1));
         omega = relops->get_last_relic();
         std::cout << "Omega full:\n"
                   << omega << "\n\n";
     }
 
-    void Main::save_data(bool channels)
+    void Main::save_data()
     {
+
         std::string filesave = "../dataOutput/" + output_file;
+
+        if (first_save)
+        {
+            std::ofstream reset;
+            reset.open(filesave, std::ofstream::out | std::ofstream::trunc);
+            reset.close();
+            first_save = false;
+        }
 
         std::ofstream outfile(filesave, std::ios::out | std::ios::app);
 
@@ -161,5 +179,13 @@ namespace DT
         outfile << "\n";
 
         outfile.close();
+    }
+
+    void Main::do_user_operations()
+    {
+        for (auto it : user_operations)
+        {
+            operations_map[it.at(0)](it);
+        }
     }
 } // namespace DT
