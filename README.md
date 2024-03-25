@@ -3,7 +3,7 @@ Program: DarkTree version 1.0
 Released by: Rodrigo Capucha, Karim Elyaouti, Margarete Mühlleitner, Johann Plotnikov, Rui SantosManual: version 2.0
 
 
-#### TODO
+##  Abstract [TODO]
 DarkTree: The C++ program DarkTree is a tool to efficiently search parameter spaces of extension of the Standard Model. 
 calculates the dark matter relic density in extensions of the Standard Model. For this the annihillation amplitudes, cross sections and thermal average cross sections are calculated and the boltzmann equation is solved. 
 
@@ -23,7 +23,7 @@ Sample input and output files are provided.
 For additional information, comments, complaints or suggestions please e-mail to: johann.plotnikov@partner.kit.edu, open a corresponding issue or start a discussion.
 
 
-### Citation:
+## Citation:
 
 If you use this program for your work please cite
 ### TODO
@@ -65,8 +65,16 @@ where NameOfTheLagrangian is given by the name of the full Lagrangian in your Fe
 5. To complete the implementation of the new model, build your project again.
 
 
-# Running the Code
+## Running the Code
+To run the code for a specific model, type
 
+    cd build 
+    ./YourModel YourModel.sg
+
+
+### Settings Files [ToDo]
+
+- Here you do some cool stuff. For example input/output etc.
 
 
 
