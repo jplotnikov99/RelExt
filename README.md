@@ -2,8 +2,7 @@ Program: DarkTree version 1.0
 
 Released by: Rodrigo Capucha, Karim Elyaouti, Margarete Mühlleitner, Johann Plotnikov, Rui SantosManual: version 2.0
 
-
-##  Abstract [TODO]
+[TODO]
 DarkTree: The C++ program DarkTree is a tool to efficiently search parameter spaces of extension of the Standard Model. 
 calculates the dark matter relic density in extensions of the Standard Model. For this the annihillation amplitudes, cross sections and thermal average cross sections are calculated and the boltzmann equation is solved. 
 
@@ -60,7 +59,7 @@ This will generate you a folder called md_YourModel and creates a new entry in t
 
 4. From the source directory run
     `./model -l Path/To/FeynRules YourModel.fr NameOfTheLagrangian`,
-where NameOfTheLagrangian is given by the name of the full Lagrangian in your FeynRules file. This will generate the necessary FeynArts files to calculated the Dark Matter annihilation amplitudes squared.
+where `NameOfTheLagrangian` is given by the name of the full Lagrangian in your FeynRules file. This will generate the necessary FeynArts files to calculated the Dark Matter annihilation amplitudes squared.
 
 5. To complete the implementation of the new model, build your project again.
 
@@ -70,6 +69,8 @@ To run the code for a specific model, type
 
     cd build 
     ./YourModel YourModel.sg
+
+where `YourModel.sg` is the settings file which is automatically generated and can be modified.
 
 
 ### Settings Files [ToDo]
