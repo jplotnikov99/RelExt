@@ -51,8 +51,22 @@ You can build the program with
 To add a new model you have to:
 
 1. Go to the source directory path/to/DarkTree.
+
 2. Generate a new model folder via
-       `./model -n NameOfYourModel`
-This will generate you a folder called md_NameOfYourModel and creates a new entry in the CMakeLists.txt .
+       `./model -n YourModel`
+This will generate you a folder called md_YourModel and creates a new entry in the CMakeLists.txt .
+
+3. Put your FeynRules modelfiles.fr into the directory /md_YourModel/FR_modfiles.
+
+4. From the source directory run
+    `./model -l Path/To/FeynRules YourModel.fr NameOfTheLagrangian`,
+where NameOfTheLagrangian is given by the name of the full Lagrangian in your FeynRules file. This will generate the necessary FeynArts files to calculated the Dark Matter annihilation amplitudes squared.
+
+5. To complete the implementation of the new model, build your project again.
+
+
+
+
+
 
 
