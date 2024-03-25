@@ -1,6 +1,7 @@
 Program: DarkTree version 1.0
 
 Released by: Rodrigo Capucha, Karim Elyaouti, Margarete Mühlleitner, Johann Plotnikov, Rui Santos
+
 Manual: version 1.0
 
 [TODO]
