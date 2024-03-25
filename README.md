@@ -48,8 +48,11 @@ You can build the program with
 
 ## How to add a new model (for further details, also see the manual):
 
-To add a new model you have to 
+To add a new model you have to:
 
-1. cd path/to/DarkTree
+1. Go to the source directory path/to/DarkTree.
+2. Generate a new model folder via
+       ./model -n NameOfYourModel
+This will generate you a folder called md_NameOfYourModel and creates a new entry in the CMakeLists.txt .
 
 
