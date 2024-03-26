@@ -114,20 +114,9 @@ namespace DT
         {
             if (std::signbit(step_old) != std::signbit(step_new))
             {
-                if (std::signbit(omega_old) != std::signbit(omega_new))
-                {
-                    searchmode = bisect;
-                    bi_x1 = par_old;
-                    bi_y1 = omega_old,
-                    bi_x2 = par_new;
-                    bi_y2 = omega_new;
-                    std::cout << "Switch to bisect mode (1).\n";
-                }
-                else
-                {
-                    std::cout << "Switch to descent mode.\n";
-                    searchmode = descent;
-                }
+
+                std::cout << "Switch to descent mode.\n";
+                searchmode = descent;
             }
         }
     }
