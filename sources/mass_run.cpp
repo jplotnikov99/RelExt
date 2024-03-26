@@ -2,39 +2,6 @@
 
 namespace DT
 {   
-    // discuss how and where to implement this part
-    Mrun::Mrun()
-    {
-        amc0 = amc;
-        amb0 = amb;
-        amt0 = 3.0e8;
-        amsb = ams;
-        amcb = 0.986;
-        ambb = 4.18;
-
-        lambda = xitla(nloop, alsmz);
-        int N0 = 5;
-        alsini(N0);
-
-        double rms, rmc, rmb, rmt, Q;
-        // for decays
-        Q = 0.; // here it should be the mass of the decaying particle
-        // masses of quarks must be replaced by these in the widths expressions
-        rms = RunM(Q, 3, N0);
-        rmc = RunM(Q, 4, N0);
-        rmb = RunM(Q, 5, N0);
-        rmt = RunM(Q, 6, N0);
-        // for DM annihilation
-        // masses of quarks must be replaced by these in the tac expressions
-        Q = 2*0.; // here is the mass of the annihilating initial state
-        rms = RunM(Q, 3, N0);
-        rmc = RunM(Q, 4, N0);
-        rmb = RunM(Q, 5, N0);
-        rmt = RunM(Q, 6, N0);
-
-        // besides running mass of quarks, we can also compute alphaS. What else?
-
-    }
 
     double Mrun::B(size_t order, int NF)
     {
@@ -605,6 +572,32 @@ namespace DT
 
         return YMSB[no] * CQ(alphaS(q, 3) / M_PI, no) / CQ(alphaS(Q0, 3) / M_PI, no);
 
-    }   
+    }  
+
+    Mrun::Mrun()
+    {
+        //amc0 = amc;
+        //amb0 = amb;
+        //amt0 = 3.0e8;
+        // are these supposed to change?
+        amsb = ams;
+        amcb = 0.986;
+        ambb = 4.18;
+
+        lambda = xitla(nloop, alsmz);
+        N0 = 5;
+        NalphaS = 3;
+        alsini(N0);
+        
+        // for DM annihilation
+        // masses of quarks must be replaced by these in the tac expressions
+        //double Q = 2.0*mDM; // here is the mass of the annihilating initial state
+        //rms = RunM(Q, 3, N0);
+        //rmc = RunM(Q, 4, N0);
+        //rmb = RunM(Q, 5, N0);
+        //rmt = RunM(Q, 6, N0);
+        //aS = running.alphaS(Q, NalphaS);
+        //FAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;
+    } 
 
 } // namespace DT

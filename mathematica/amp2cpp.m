@@ -376,7 +376,7 @@ Do[
 Stuff to-do:
 1) declare wH = wwH() (same for other relevant widths, problably in init.cpp?)  
 2) add off-shell, 1to3/4?, QCD, decay to photons/gluons?, etc
-3) check widths with CH in the end
+3) check widths with CH/Hdecay in the end
 *)
 
 
@@ -870,6 +870,9 @@ Do[
 ,{i,Length[possibleini]}]
 
 
+runMasses = {TheMass[F[11]], TheMass[F[8]], TheMass[F[12]], TheMass[F[9]]}/.subrule;
+
+
 (*decays functions files*)
 Do[
 	ofile=directory<>"sources/amp2s/totalW"<> ToString[possibleiniDecays[[i]]] <> ".cpp";
@@ -877,6 +880,7 @@ Do[
 	Write[sfile, mathlabel];
 	Write[sfile, "#include \"../../model.hpp\""];
 	Write[sfile, "#include \"utils.hpp\"\n"];
+	Write[sfile, "#include \"mass_run.hpp\"\n"];
 	
 	Do[
 		subsDecays=Replace[inifuncDecays[i][[j,8]],defer,All];
@@ -886,7 +890,7 @@ Do[
 		Write[sfile, "double DT::w" , ToString[inifuncDecays[i][[j,1]]] , "(){"];
 		
 		symfac="";
-		If[inifuncDecays[i][[j,6]]===inifuncDecays[i][[j,7]],symfac="0.5*"];
+		If[inifuncDecays[i][[j,6]]===inifuncDecays[i][[j,7]],symfac="0.5*"];	
 		Write[sfile, "\t if(heaviDecays(" , ToString[inifuncDecays[i][[j,2]]] , "," , ToString[inifuncDecays[i][[j,3]]], "," , ToString[inifuncDecays[i][[j,4]]] , ")){"];
 		Write[sfile, "\t\t return " , symfac, subsDecays , ";"];
 		Write[sfile, "\t }"];
@@ -903,6 +907,22 @@ Do[
 			allcontr=StringJoin[allcontr,"w",ToString[inifuncDecays[i][[j,1]]],"() );"]
 		]
 	,{j,Length[inifuncDecays[i]]}];
+	
+	(*running masses and couplings*)
+	Write[sfile, "\t Mrun running;"];
+	Write[sfile, "\t double Q = ", ToString[inifuncDecays[i][[1,2]]], ";"];
+	Write[sfile, "\t ", ToString[runMasses[[1]]], " = running.RunM(Q, 3, running.N0);"];
+	Write[sfile, "\t ", ToString[runMasses[[2]]], " = running.RunM(Q, 4, running.N0);"];
+	Write[sfile, "\t ", ToString[runMasses[[3]]], " = running.RunM(Q, 5, running.N0);"];
+	Write[sfile, "\t ", ToString[runMasses[[4]]], " = running.RunM(Q, 6, running.N0);"];
+	Write[sfile, "\t aS = running.alphaS(Q, running.NalphaS);"];
+	Write[sfile, "\t FAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;"];
+	If[ContainsAll[external[[All,1]], {"yms", "ymb", "ymt", "ymc"}],
+		Write[sfile, "\t yms = ", ToString[runMasses[[1]]], ";"];
+		Write[sfile, "\t ymc = ", ToString[runMasses[[2]]], ";"];
+		Write[sfile, "\t ymb = ", ToString[runMasses[[3]]], ";"];
+		Write[sfile, "\t ymt = ", ToString[runMasses[[4]]], ";"];
+	];
 	
 	Write[sfile, "\t return ", allcontr];
 	Write[sfile, "}"];

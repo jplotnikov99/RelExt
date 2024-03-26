@@ -3,6 +3,7 @@
 
 #include "../../model.hpp"
 #include "utils.hpp"
+#include "mass_run.hpp"
 
 double DT::wS1HH(){
 	 if(heaviDecays(MS1,MH,MH)){
@@ -168,6 +169,18 @@ double DT::wS1Bb(){
 
 }
 double DT::wwS1(){
+	 Mrun running;
+	 double Q = MS1;
+	 MS = running.RunM(Q, 3, running.N0);
+	 MC = running.RunM(Q, 4, running.N0);
+	 MB = running.RunM(Q, 5, running.N0);
+	 MT = running.RunM(Q, 6, running.N0);
+	 aS = running.alphaS(Q, running.NalphaS);
+	 FAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;
+	 yms = MS;
+	 ymc = MC;
+	 ymb = MB;
+	 ymt = MT;
 	 return ( wS1HH() + wS1HS1() + wS1S1S1() + wS1A1A1() + wS1ZZ() + wS1wW() +\
  
    wS1Ee() + wS1MUmu() + wS1TAta() + wS1Uu() + wS1Cc() + wS1Tt() + wS1Dd() +\
