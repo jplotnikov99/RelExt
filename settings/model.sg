@@ -1,10 +1,10 @@
-########  Setting file for the CxSM model ########
+########  Setting file for the placeholder model ########
 
 ######## Standard settings ########
 
-InputFile           |test2.csv
-OutputFile          |new.csv
-SavedParameters     |MA1, svev, alpha
+InputFile           |
+OutputFile          |
+SavedParameters     |
 ThermalBath         |
 ConsideredChannels  |
 SubtractChannels    |
