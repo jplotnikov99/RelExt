@@ -1,0 +1,28 @@
+(********************)
+(*** Gauge Groups ***)
+(********************)
+
+M$GaugeGroups = {
+  U1Y  == { 
+    Abelian          -> True,  
+    CouplingConstant -> g1, 
+    GaugeBoson       -> B, 
+    Charge           -> Y
+  },
+  SU2L == { 
+    Abelian           -> False, 
+    CouplingConstant  -> gw, 
+    GaugeBoson        -> Wi, 
+    StructureConstant -> Eps, 
+    Representations   -> {Ta,SU2D}, 
+    Definitions       -> {Ta[a_,b_,c_]->PauliSigma[a,b,c]/2, FSU2L[i_,j_,k_]:> I Eps[i,j,k]}
+  },
+  SU3C == { 
+    Abelian           -> False, 
+    CouplingConstant  -> gs, 
+    GaugeBoson        -> G,
+    StructureConstant -> f, 
+    Representations   -> {T,Colour}, 
+    SymmetricTensor   -> dSUN
+  } 
+}
