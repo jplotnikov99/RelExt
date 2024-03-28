@@ -1,0 +1,442 @@
+(*****************************************************)
+(*** Parameters of the TRSM **************************)
+(*****************************************************)
+
+(*-------------------------*)
+(*** Internal Parameters ***)
+(*-------------------------*)
+
+M$IntPrm = {
+
+vev == {
+    ParameterType    -> Internal,
+    Value            -> 2*MW*sw/ee, 
+    InteractionOrder -> {QED,-1},
+    Description      -> "Higgs vacuum expectation value"
+  },
+
+  lam == {
+    ParameterType    -> Internal,
+    Value            -> MH^2/(2*vev^2),
+    InteractionOrder -> {QED, 2},
+    Description      -> "Higgs quartic coupling"
+  },
+
+  muH == {
+    ParameterType -> Internal,
+    Value         -> Sqrt[vev^2 lam],
+    TeX           -> \[Mu],
+    Description   -> "Coefficient of the quadratic piece of the Higgs potential"
+  },
+
+  (*MH == {
+    ParameterType     -> Internal,
+    ComplexParameter  -> False,
+    Value             -> mMH ,
+    Description       -> "Mass of SM Higgs"
+  },*)
+
+  MChi == {
+    ParameterType    -> Internal,
+    ComplexParameter -> False,
+    Value            -> mMChi,
+    Description      -> "Mass of Higgs2 (DM1)"
+  },
+
+  MPsi == {
+    ParameterType    -> Internal,
+    ComplexParameter -> False,
+    Value            -> mMPsi ,
+    Description      -> "Mass of Higgs3 (DM2)"
+  },
+
+  m22sq == {
+    ParameterType    -> Internal,
+    ComplexParameter -> False,
+    Value            -> (MChi^2 + MPsi^2 - vev^2 lam12 + (MChi^2 - MPsi^2)*Cos[2 alpha])/2,
+    Description      -> "m22 parameter squared"
+  },
+
+  m33sq == {
+    ParameterType    -> Internal,
+    ComplexParameter -> False,
+    Value            -> (MChi^2 + MPsi^2 - vev^2 lam13 + (-MChi^2 + MPsi^2)*Cos[2 alpha])/2,
+    Description      -> "m33 parameter squared"
+  },
+
+  m23sq == {
+    ParameterType    -> Internal,
+    ComplexParameter -> False,
+    Value            -> (-vev^2 lam123 + Tan[2 alpha]*( 2*(m22sq - m33sq) + vev^2 (lam12 - lam13)))/2,
+    Description      -> "m23 parameter squared"
+  },
+
+  (* Back to SM Parameters *)
+
+  aEW == {
+    ParameterType    -> Internal,
+    Value            -> 1/aEWM1,
+    InteractionOrder -> {QED,2},
+    TeX              -> Subscript[\[Alpha], EW],
+    Description      -> "Electroweak coupling contant"
+  },
+
+  MW == { 
+    ParameterType -> Internal, 
+    Value         -> Sqrt[MZ^2/2+Sqrt[MZ^4/4-Pi/Sqrt[2]*aEW/Gf*MZ^2]], 
+    TeX           -> Subscript[M,W], 
+    Description   -> "W mass"
+  },
+
+  sw2 == { 
+    ParameterType -> Internal, 
+    Value         -> 1-(MW/MZ)^2, 
+    Description   -> "Squared Sin of the Weinberg angle"
+  },
+
+  ee == { 
+    ParameterType    -> Internal, 
+    Value            -> Sqrt[4 Pi aEW], 
+    InteractionOrder -> {QED,1}, 
+    TeX              -> e,  
+    Description      -> "Electric coupling constant"
+  },
+
+  cw == { 
+    ParameterType -> Internal, 
+    Value         -> Sqrt[1-sw2], 
+    TeX           -> Subscript[c,w], 
+    Description   -> "Cosine of the Weinberg angle"
+  },
+
+  sw == { 
+    ParameterType -> Internal, 
+    Value         -> Sqrt[sw2], 
+    TeX           -> Subscript[s,w], 
+    Description   -> "Sine of the Weinberg angle"
+  },
+
+  gw == { 
+    ParameterType    -> Internal, 
+    Definitions      -> {gw->ee/sw}, 
+    InteractionOrder -> {QED,1},  
+    TeX              -> Subscript[g,w], 
+    Description      -> "Weak coupling constant at the Z pole"
+  },
+
+  g1 == { 
+    ParameterType    -> Internal, 
+    Definitions      -> {g1->ee/cw}, 
+    InteractionOrder -> {QED,1},  
+    TeX              -> Subscript[g,1], 
+    Description      -> "U(1)Y coupling constant at the Z pole"
+  },
+
+  gs == { 
+    ParameterType    -> Internal, 
+    Value            -> Sqrt[4 Pi aS],
+    InteractionOrder -> {QCD,1},  
+    TeX              -> Subscript[g,s], 
+    ParameterName    -> G,
+    Description      -> "Strong coupling constant at the Z pole"
+  },
+
+  yl == {
+    ParameterType    -> Internal,
+    Indices          -> {Index[Generation], Index[Generation]},
+    Definitions      -> {yl[i_?NumericQ, j_?NumericQ] :> 0  /; (i =!= j)},
+    Value            -> {yl[1,1] -> Sqrt[2] yme / vev, yl[2,2] -> Sqrt[2] ymm / vev, yl[3,3] -> Sqrt[2] ymtau / vev},
+    InteractionOrder -> {QED, 1},
+    ParameterName    -> {yl[1,1] -> ye, yl[2,2] -> ym, yl[3,3] -> ytau},
+    TeX              -> Superscript[y, l],
+    Description      -> "Lepton Yukawa couplings"
+  },
+
+  yu == {
+    ParameterType    -> Internal,
+    Indices          -> {Index[Generation], Index[Generation]},
+    Definitions      -> {yu[i_?NumericQ, j_?NumericQ] :> 0  /; (i =!= j)},
+    Value            -> {yu[1,1] -> Sqrt[2] ymup/vev, yu[2,2] -> Sqrt[2] ymc/vev, yu[3,3] -> Sqrt[2] ymt/vev},
+    InteractionOrder -> {QED, 1},
+    ParameterName    -> {yu[1,1] -> yup, yu[2,2] -> yc, yu[3,3] -> yt},
+    TeX              -> Superscript[y, u],
+    Description      -> "Up-type Yukawa couplings"
+  },
+
+  yd == {
+    ParameterType    -> Internal,
+    Indices          -> {Index[Generation], Index[Generation]},
+    Definitions      -> {yd[i_?NumericQ, j_?NumericQ] :> 0  /; (i =!= j)},
+    Value            -> {yd[1,1] -> Sqrt[2] ymdo/vev, yd[2,2] -> Sqrt[2] yms/vev, yd[3,3] -> Sqrt[2] ymb/vev},
+    InteractionOrder -> {QED, 1},
+    ParameterName    -> {yd[1,1] -> ydo, yd[2,2] -> ys, yd[3,3] -> yb},
+    TeX              -> Superscript[y, d],
+    Description      -> "Down-type Yukawa couplings"
+  },
+
+  (* N.B. : only Cabibbo mixing! *)
+  CKM == { 
+    ParameterType -> Internal,
+    Indices       -> {Index[Generation], Index[Generation]},
+    Unitary       -> True,
+    Value         -> {CKM[1,1] -> Cos[cabi],  CKM[1,2] -> Sin[cabi], CKM[1,3] -> 0,
+                      CKM[2,1] -> -Sin[cabi], CKM[2,2] -> Cos[cabi], CKM[2,3] -> 0,
+                      CKM[3,1] -> 0,          CKM[3,2] -> 0,         CKM[3,3] -> 1},
+    TeX         -> Superscript[V,CKM],
+    Description -> "CKM-Matrix"
+    },
+
+  (* not used *)  
+  CKMnew == {
+  TeX              -> Superscript[VNEW, CKM],
+  ParameterType    -> Internal,
+  ComplexParameter -> True,
+  Indices          -> {Index[Generation], Index[Generation]},
+  TensorClass      -> CKM,
+  Unitary          -> True,
+  Value            -> {CKM[1,1] -> 0.97428, CKM[1,2] -> 0.2253, CKM[1,3] -> 0.00347, 
+                            CKM[2,1] -> 0.2252, CKM[2,2] -> 0.97345, CKM[2,3] -> 0.0410, 
+                            CKM[3,1] -> 0.00862, CKM[3,2] -> 0.0403, CKM[3,3] -> 0.999152},
+  Description      -> "CKM-Matrix new"},
+
+
+  (* EFFECTIVE HIGGS TO GLUON/PHOTON COUPLING *)
+  AH == {
+       TeX           -> Subscript[A, H],
+       ParameterType -> Internal,
+       InteractionOrder -> {HIG, 1},
+       Value -> ee^2/4/Pi/(Pi*vev)*(47/18)*serw[(MH/2/MW)^2, (MH/2/MT)^2]
+       },
+
+  GH == {
+       TeX -> Subscript[G, H],
+       ParameterType -> Internal,
+       InteractionOrder -> {HIG, 1},
+       Value -> -gs^2/(4Pi(3Pi vev)) sert[(MH/2/MT)^2] 
+       }
+
+}
+
+
+(*-------------------------*)
+(*** External Parameters ***)
+(*-------------------------*)
+
+M$ExtPrm = {
+
+(*** Electroweak interaction ***)
+
+aEWM1 == { 
+    ParameterType    -> External, 
+    Value            -> 127.9,
+    InteractionOrder -> {QED,-2},
+    Description      -> "Inverse of the EW coupling constant at the Z pole"
+  },
+
+  Gf == {
+    ParameterType    -> External,
+    Value            -> 1.16637*^-5, 
+    InteractionOrder -> {QED,2},
+    TeX              -> Subscript[G,f],
+    Description      -> "Fermi constant"
+  },
+
+  aS    == { 
+    ParameterType    -> External,
+    Value            -> 0.1184, 
+    InteractionOrder -> {QCD,2},
+    TeX              -> Subscript[\[Alpha],s],
+    Description      -> "Strong coupling constant at the Z pole"
+  },
+
+  ymdo == {
+    ParameterType -> External,
+    Value         -> 5.04*^-3,
+    Description   -> "Down Yukawa mass"
+  },
+
+  ymup == {
+    ParameterType -> External,
+    Value         -> 2.55*^-3,
+    Description   -> "Up Yukawa mass"
+  },
+
+  yms == {
+    ParameterType -> External,
+    Value         -> 0.101,
+    Description   -> "Strange Yukawa mass"
+  },
+
+  ymc == {
+    ParameterType -> External,
+    Value         -> 1.27,
+    Description   -> "Charm Yukawa mass"
+  },
+
+  ymb == {
+    ParameterType -> External,
+    Value         -> 4.7,
+    Description   -> "Bottom Yukawa mass"
+  },
+
+  ymt == {
+    ParameterType -> External,
+    Value         -> 172,
+    Description   -> "Top Yukawa mass"
+  },
+
+  yme == {
+    ParameterType -> External,
+    Value         -> 5.11*^-4,
+    Description   -> "Electron Yukawa mass"
+  },
+
+  ymm == {
+    ParameterType -> External,
+    Value         -> 0.10566,
+    Description   -> "Muon Yukawa mass"
+  },
+
+  ymtau == {
+    ParameterType -> External,
+    Value         -> 1.777,
+    Description   -> "Tau Yukawa mass"
+  },
+
+  cabi == {
+    ParameterType -> External,
+    Value         -> 0.227736,
+    TeX           -> Subscript[\[Theta], c],
+    Description   -> "Cabibbo angle"
+  },
+
+
+(******************************************)
+(********** TRSM **************************)
+(******************************************)
+
+  (*mMH == {
+    ParameterType     -> External,
+    ComplexParameter  -> False,
+    Value             -> 125,
+    Description       -> "Mass of SM Higgs"
+  },*)
+
+  mMChi == {
+    ParameterType     -> External,
+    ComplexParameter  -> False,
+    Value             -> 1 ,
+    Description       -> "Mass of Higgs2 (DM1)"
+  },
+
+  mMPsi == {
+    ParameterType     -> External,
+    ComplexParameter  -> False,
+    Value             -> 2 ,
+    Description       -> "Mass of Higgs3 (DM2)"
+  },
+
+  alpha == {
+    ParameterType     -> External,
+    ComplexParameter  -> False,
+    Value             -> 0.785398 , (*use N[angle] here*)
+    Description       -> "Mixing angle"
+  },
+
+  lam2 == {
+    ParameterType      -> External,
+    ComplexParameter   -> False,
+    Value              -> 1 ,
+    InteractionOrder   -> {QED,2},
+    Description        -> "lambda2"
+  },
+
+  lam3 == {
+    ParameterType      -> External,
+    ComplexParameter   -> False,
+    Value              -> 1 ,
+    InteractionOrder   -> {QED,2},
+    Description        -> "lambda3"
+  },
+
+  lam12 == {
+    ParameterType      -> External,
+    ComplexParameter   -> False,
+    Value              -> 1 ,
+    InteractionOrder   -> {QED,2},
+    Description        -> "lambda12"
+  },
+
+  lam13 == {
+    ParameterType      -> External,
+    ComplexParameter   -> False,
+    Value              -> 1 ,
+    InteractionOrder   -> {QED,2},
+    Description        -> "lambda13"
+  },
+
+  lam23 == {
+    ParameterType      -> External,
+    ComplexParameter   -> False,
+    Value              -> 1 ,
+    InteractionOrder   -> {QED,2},
+    Description        -> "lambda23"
+  },
+
+  lam123 == {
+    ParameterType      -> External,
+    ComplexParameter   -> False,
+    Value              -> 1 ,
+    InteractionOrder   -> {QED,2},
+    Description        -> "lambda123"
+  },
+
+  lam223 == {
+    ParameterType      -> External,
+    ComplexParameter   -> False,
+    Value              -> 1 ,
+    InteractionOrder   -> {QED,2},
+    Description        -> "lambda223"
+  },
+
+  lam332 == {
+    ParameterType      -> External,
+    ComplexParameter   -> False,
+    Value              -> 1 ,
+    InteractionOrder   -> {QED,2},
+    Description        -> "lambda332"
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
