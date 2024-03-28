@@ -36,3 +36,5 @@ target_include_directories(trsm_sources PRIVATE ${include_dir})
 target_include_directories(trsm PRIVATE ${include_dir})
 target_include_directories(sources PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/md_trsm/include)
 target_link_libraries(trsm PRIVATE sources trsm_sources trsm_amp2s)
+ 
+ 
