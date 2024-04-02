@@ -16,13 +16,14 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
-CalcRelic
+FindParameter       |MA1, 0.12, 0.01
+FindParameter       |svev, 0.12, 0.01
 SaveData            |
 
 END
 ######## Advanced settings ########
 
-ThetaIntEps         |1e-4
+ThetaIntEps         |1e-6
 PeakIntEps          |1e-6
 sIntEps             |1e-6
 rk4Eps              |1e-6
