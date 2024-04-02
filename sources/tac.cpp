@@ -28,18 +28,28 @@ namespace DT
         return res;
     }
 
-    ResError Tac::simpson38_adap_cos_t(const double l, const double r, const double &s, const ResError ans, size_t depth)
+    ResError Tac::simpson38_adap_cos_t(const double l, const double r, const double &s, ResError *y, size_t depth)
     {
         // represents how much precision you need
-        if (ans.res == 0)
-        {
-            return ans;
-        }
+        ResError I1, I2, y1[4];
+        double m = (r + l) / 2.;
+        double h = (r - l) / 8.;
+        ResError I = h * (y[0] + 3 * y[1] + 3 * y[2] + y[3]);
+        y1[0] = {mod->eval(m, s), 0.};
+        y1[1] = y[2];
+        y1[2] = {mod->eval((l + 5 * r) / 6, s), 0.};
+        y1[3] = y[3];
+        y[3] = y1[0];
+        y[2] = y[1];
+        y[1] = {mod->eval((5 * l + r) / 6, s), 0.};
+        I1 = h * (y[0] + 3 * y[1] + 3 * y[2] + y[3]);
+        I2 = h * (y1[0] + 3 * y1[1] + 3 * y1[2] + y1[3]);
         double eps = simpson_eps;
+
         if (depth > 14)
         {
             std::cout << "Maximum depth of cos_t integration is reached. Result might lose precision.\n";
-            return ans;
+            return {1., 0.};
         }
         else if (depth > 13)
         {
@@ -57,15 +67,13 @@ namespace DT
         {
             eps *= 1e1;
         }
-        double m = (l + r) / 2;
-        ResError I1 = simpson38_cos_t(l, m, s), I2 = simpson38_cos_t(m, r, s);
-        ResError I = I1 + I2;
-        if (fabs(I.res / ans.res - 1) < eps)
+
+        if (fabs(I.res - 1) < eps)
         {
-            I.err = fabs(I.res - ans.res);
+            I.err = fabs(I.res);
             return I1 + I2;
         }
-        return simpson38_adap_cos_t(l, m, s, I1, depth + 1) + simpson38_adap_cos_t(m, r, s, I2, depth + 1);
+        return simpson38_adap_cos_t(l, m, s, depth + 1) + simpson38_adap_cos_t(m, r, s, depth + 1);
     }
 
     ResError Tac::wij(const double &s)
@@ -73,7 +81,7 @@ namespace DT
 
         if (sig_s.find(s) == sig_s.end())
         {
-            ResError crs = 1 / (256 * M_PI * s * sqrt(s)) * simpson38_adap_cos_t(-1, 1, s, simpson38_cos_t(-1, 1, s));
+            ResError crs = 1 / (256 * M_PI * s * sqrt(s)) * simpson38_adap_cos_t(-1, 1, s);
             sig_s[s] = crs;
             return crs;
         }
