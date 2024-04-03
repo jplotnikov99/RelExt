@@ -92,6 +92,19 @@ namespace DT
         }
     }
 
+    void Tac::calc_polK2(const double &x)
+    {
+        double Tinv = x / mod->MDM;
+        double mtemp, cur;
+        polK2s.clear();
+        for (auto it : mod->bath_masses)
+        {
+            mtemp = *it;
+            cur = mtemp * mtemp * polK2(Tinv * mtemp);
+            polK2s.push_back(cur);
+        }
+    }
+
     double Tac::lipsv(const double &s, const double &x)
     {
         double num = 0.;
@@ -102,10 +115,10 @@ namespace DT
         if (x > 10)
         {
             num += Tinv * polK1(sqrt(s) * Tinv);
-            for (auto it : mod->bath_masses)
+            for (size_t i = 0; i < mod->bath_masses.size(); i++)
             {
-                mtemp = *it;
-                den += mtemp * mtemp * exp(-Tinv * (mtemp - sqrt(s) / 2)) * polK2(Tinv * mtemp);
+                mtemp = *mod->bath_masses.at(i);
+                den += exp(-Tinv * (mtemp - sqrt(s) / 2)) * polK2s.at(i);
             }
             den *= den;
         }
@@ -326,6 +339,7 @@ namespace DT
         double estimate = 0.;
         if (tac_x.find(x) == tac_x.end())
         {
+            calc_polK2(x);
             for (auto &it : inimap)
             {
                 mod->set_channel(m1, m2, it.second);

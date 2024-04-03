@@ -16,8 +16,7 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
-FindParameter       |MA1, 0.12, 0.01
-FindParameter       |svev, 0.12, 0.01
+CalcRelic
 SaveData            |
 
 END

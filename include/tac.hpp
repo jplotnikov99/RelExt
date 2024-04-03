@@ -19,6 +19,7 @@ namespace DT
         size_t N_relevant_peaks;
         bool max_prec_s = false;
         std::vector<double> boundaries;
+        std::vector<double> polK2s;
         std::unordered_map<double, ResError> sig_s;
         std::unordered_map<double, ResError> tac_x;
         std::map<double, vstring> inimap;
@@ -34,6 +35,8 @@ namespace DT
         ResError simpson38_adap_cos_t(const double l, const double r, const double &s, ResError *y, size_t depth = 0);
 
         ResError wij(const double &s);
+
+        void calc_polK2(const double &x);
 
         double lipsv(const double &s, const double &x);
 
