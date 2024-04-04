@@ -22,67 +22,49 @@ namespace DT
         }
     }
 
-    ResError Tac::simpson38_adap_cos_t(const double l, const double r, const double &s, ResError *y, size_t depth)
+    ResError Tac::simpson38_adap_cos_t(const double l, const double r, const double &s, ResError *f, const double &est)
     {
         // represents how much precision you need
-        ResError I1, I2, I3, y1[4];
+        ResError I1, I2, I3, f1[4];
         double m = (r + l) / 2.;
         double h = (r - l) / 8.;
-        ResError I = h * (y[0] + 3 * y[1] + 3 * y[2] + y[3]);
-        y1[0] = {mod->eval(m, s), 0.};
-        y1[1] = y[2];
-        y1[2] = {mod->eval((l + 5 * r) / 6, s), 0.};
-        y1[3] = y[3];
-        y[3] = y1[0];
-        y[2] = y[1];
-        y[1] = {mod->eval((5 * l + r) / 6, s), 0.};
-        I1 = h / 2 * (y[0] + 3 * y[1] + 3 * y[2] + y[3]);
-        I2 = h / 2 * (y1[0] + 3 * y1[1] + 3 * y1[2] + y1[3]);
+        ResError I = h * (f[0] + 3 * f[1] + 3 * f[2] + f[3]);
+        f1[0] = {mod->eval(m, s), 0.};
+        f1[1] = f[2];
+        f1[2] = {mod->eval((l + 5 * r) / 6, s), 0.};
+        f1[3] = f[3];
+        f[3] = f1[0];
+        f[2] = f[1];
+        f[1] = {mod->eval((5 * l + r) / 6, s), 0.};
+        I1 = h / 2 * (f[0] + 3 * f[1] + 3 * f[2] + f[3]);
+        I2 = h / 2 * (f1[0] + 3 * f1[1] + 3 * f1[2] + f1[3]);
         I3 = I1 + I2;
         double eps = simpson_eps;
 
-        if (depth > 14)
-        {
-            std::cout << "Maximum depth of cos_t integration is reached. Result might lose precision.\n";
-            I3.err = fabs(I.res - I3.res);
-            return I3;
-        }
-        else if (depth > 13)
-        {
-            eps *= 1e4;
-        }
-        else if (depth > 12)
-        {
-            eps *= 1e3;
-        }
-        else if (depth > 10)
-        {
-            eps *= 1e2;
-        }
-        else if (depth > 8)
-        {
-            eps *= 1e1;
-        }
-
-        if (fabs(I.res / I3.res - 1) < eps)
+        if (fabs(I.res - I3.res) < simpson_eps * est)
         {
             I3.err = fabs(I.res - I3.res);
             return I3;
         }
-        return simpson38_adap_cos_t(l, m, s, y, depth + 1) + simpson38_adap_cos_t(m, r, s, y1, depth + 1);
+        return simpson38_adap_cos_t(l, m, s, f, est) + simpson38_adap_cos_t(m, r, s, f1, est);
     }
 
     ResError Tac::wij(const double &s)
     {
-
-        if (sig_s.find(s) == sig_s.end())
+        if (sig_s.count(s) == 0)
         {
-            ResError y[4];
-            y[0] = {mod->eval(-1., s), 0.};
-            y[1] = {mod->eval(-1. / 3., s), 0.};
-            y[2] = {mod->eval(1. / 3., s), 0.};
-            y[3] = {mod->eval(1., s), 0.};
-            ResError crs = 1 / (256 * M_PI * s * sqrt(s)) * simpson38_adap_cos_t(-1, 1, s, y);
+            double f_est[10];
+            for(size_t i = 0; i < 10; i++)
+            {
+                f_est[i] = mod->eval(-1 + 0.2222222222222222*i,s);
+            }
+            double est = simpson_est(-1, 1, f_est);
+            ResError f[4];
+            f[0] = {f_est[0], 0.};
+            f[1] = {f_est[3], 0.};
+            f[2] = {f_est[6], 0.};
+            f[3] = {f_est[9], 0.};
+            ResError crs = 1 / (256 * M_PI * s * sqrt(s)) * simpson38_adap_cos_t(-1, 1, s, f, est);
             sig_s[s] = crs;
             return crs;
         }
@@ -138,7 +120,7 @@ namespace DT
 
     ResError Tac::sigv(const double &u, const double &x)
     {
-        double s = (m1 + m2) * (m1 + m2) + (1 - u) / u;
+        double s = lower_bound + (1 - u) / u;
         return wij(s) * lipsv(s, x) * 1 / (u * u);
     }
 
@@ -254,7 +236,7 @@ namespace DT
         return res;
     }
 
-    ResError Tac::adap_gauss_kronrod(const double l, const double r, const double &x, const double &est, int depth)
+    ResError Tac::adap_gauss_kronrod(const double l, const double r, const double &x, const double &est)
     {
         ResError I1, I2, y[15];
         double h = (r - l) / 2;
@@ -276,7 +258,7 @@ namespace DT
             return I1;
         }
         double m = (2 * l + r) / 3;
-        return adap_gauss_kronrod(l, m, x, est, depth + 1) + adap_gauss_kronrod(m, r, x, est, depth + 1);
+        return adap_gauss_kronrod(l, m, x, est) + adap_gauss_kronrod(m, r, x, est);
     }
 
     ResError Tac::integrate_peaks(const double &x)
@@ -337,12 +319,13 @@ namespace DT
     {
         ResError res{0., 0.};
         double estimate = 0.;
-        if (tac_x.find(x) == tac_x.end())
+        if (tac_x.count(x) == 0)
         {
             calc_polK2(x);
             for (auto &it : inimap)
             {
                 mod->set_channel(m1, m2, it.second);
+                lower_bound = (m1 + m2) * (m1 + m2);
                 if (beps(x))
                 {
                     set_boundaries(x);
@@ -352,6 +335,7 @@ namespace DT
             for (auto &it : inimap)
             {
                 mod->set_channel(m1, m2, it.second);
+                lower_bound = (m1 + m2) * (m1 + m2);
                 if (beps(x))
                 {
                     set_boundaries(x);

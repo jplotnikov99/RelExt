@@ -6,6 +6,8 @@
 #include <fstream>
 #include <vector>
 #include "hyper_parameters.hpp"
+#include "result_error_pair.hpp"
+
 namespace DT
 {
 
@@ -32,5 +34,7 @@ namespace DT
 	double polK2(const double &x);
 
 	void append_to_vstring(vstring &a, const vstring &b);
+
+	double simpson_est(const double l, const double r, double *f);
 
 }

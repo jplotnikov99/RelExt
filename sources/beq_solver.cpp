@@ -129,42 +129,63 @@ namespace DT
             adap_rk4(xtoday, x, y, h);
         }
     }
-    ResError BeqSolver::pre_tac_t(const double t)
-    {
-        double dx = x0 - xF;
-        double x = t * dx + xF;
-        return beq->pre_tac(x) * dx;
-    }
 
-    ResError BeqSolver::simpson38(const double l, const double r)
+    ResError BeqSolver::adap_simpson38(const double l, const double r, ResError *y, const double &est)
     {
-        return (r - l) / 8 * (pre_tac_t(l) + 3 * pre_tac_t((2 * l + r) / 3) + 3 * pre_tac_t((l + 2 * r) / 3) + pre_tac_t(r));
-    }
+        ResError I1, I2, I3, y1[4];
+        double m = (r + l) / 2.;
+        double h = (r - l) / 8.;
+        ResError I = h * (y[0] + 3 * y[1] + 3 * y[2] + y[3]);
+        y1[0] = beq->pre_tac(m);
+        y1[1] = y[2];
+        y1[2] = beq->pre_tac((l + 5 * r) / 6);
+        y1[3] = y[3];
+        y[3] = y1[0];
+        y[2] = y[1];
+        y[1] = beq->pre_tac((5 * l + r) / 6);
+        I1 = h / 2 * (y[0] + 3 * y[1] + 3 * y[2] + y[3]);
+        I2 = h / 2 * (y1[0] + 3 * y1[1] + 3 * y1[2] + y1[3]);
+        I3 = I1 + I2;
 
-    ResError BeqSolver::adap_simpson38(const double l, const double r, const ResError &ans, size_t depth)
-    {
-        if (ans.res == 0)
-            return ans;
-        double eps = 1e-3;
-        double m = (l + r) / 2;
-        ResError I1 = simpson38(l, m), I2 = simpson38(m, r);
-        ResError I = I1 + I2;
-        if (fabs(I.res / ans.res - 1) < eps)
+        if (fabs(I.res - I3.res) < 1e-6 * fabs(est))
         {
-            I.err += fabs(I.res - ans.res);
-            return I;
+            I3.err += fabs(I.res - I3.res);
+            return I3;
         }
-        return adap_simpson38(l, m, I1, depth + 1) + adap_simpson38(m, r, I2, depth + 1);
+        return adap_simpson38(l, m, y, est) + adap_simpson38(m, r, y1, est);
+    }
+
+    ResError BeqSolver::icoll(const double xf, const double x0)
+    {
+        ResError f[4];
+        double f_est[10];
+        double f_err[10];
+        double h = (x0 - xf) / 9;
+        for (size_t i = 0; i < 10; i++)
+        {
+            f[0] = beq->pre_tac(xf + h * i);
+            f_est[i] = f[0].res;
+            f_err[i] = f[0].err;
+        }
+        double est = simpson_est(xf, x0, f_est);
+
+        std::cout << est << std::endl;
+
+        f[0] = {f_est[0], f_err[0]};
+        f[1] = {f_est[3], f_err[3]};
+        f[2] = {f_est[6], f_err[6]};
+        f[3] = {f_est[9], f_err[9]};
+
+        return adap_simpson38(xf, x0, f, est);
     }
 
     ResError BeqSolver::calc_yield(const double &xtoday, double &x, ResError &y)
     {
-        ResError yF, y0;
+        ResError yf, y0;
         adap_rk4(xtoday, x, y);
-        xF = x;
-        yF = y;
-        x0 = xtoday;
-        y0 = 1 / yF - adap_simpson38(0, 1, simpson38(0, 1));
+        yf = y;
+
+        y0 = 1 / yf - icoll(x, xtoday);
         beq->reset_tac_state(true);
         return 1 / y0;
     }

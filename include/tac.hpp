@@ -16,6 +16,7 @@ namespace DT
         std::shared_ptr<Model> mod;
         double m1;
         double m2;
+        double lower_bound;
         size_t N_relevant_peaks;
         bool max_prec_s = false;
         std::vector<double> boundaries;
@@ -32,7 +33,7 @@ namespace DT
         void sort_inimasses(const vstring &ch_str = {});
 
         // adaptive simpson
-        ResError simpson38_adap_cos_t(const double l, const double r, const double &s, ResError *y, size_t depth = 0);
+        ResError simpson38_adap_cos_t(const double l, const double r, const double &s, ResError *f, const double &est);
 
         ResError wij(const double &s);
 
@@ -66,7 +67,7 @@ namespace DT
         double kronrod_61(const double l, const double r, const double &x);
 
         // adaptive gauss kronrod 13 point method for TAC between peaks
-        ResError adap_gauss_kronrod(const double l, const double r, const double &x, const double &est, int depth = 0);
+        ResError adap_gauss_kronrod(const double l, const double r, const double &x, const double &est);
 
         // integral of the peaks over s
         ResError integrate_peaks(const double &x);
