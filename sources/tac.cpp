@@ -41,7 +41,7 @@ namespace DT
         I3 = I1 + I2;
         double eps = simpson_eps;
 
-        if (fabs(I.res - I3.res) < simpson_eps * est)
+        if (fabs(I.res - I3.res) < simpson_eps * fabs(est))
         {
             I3.err = fabs(I.res - I3.res);
             return I3;
