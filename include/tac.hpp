@@ -35,6 +35,8 @@ namespace DT
         // adaptive simpson
         ResError simpson38_adap_cos_t(const double l, const double r, const double &s, ResError *f, const double &est);
 
+        ResError xsec(const double &s, const std::string &channel);
+
         ResError wij(const double &s);
 
         void calc_polK2(const double &x);

@@ -26,8 +26,8 @@ namespace DT
 			break;
 		case 2:
 			filename = "../dataOutput/" + file;
-			datafile.open(filename);
-			if (!datafile)
+			outfile.open(filename);
+			if (!outfile)
 			{
 				std::cerr << "Unable to open file " << filename << ". Check if the name of the file is correct and if it is stored in the dataOutput directory.\n";
 				exit(1);
@@ -239,7 +239,7 @@ namespace DT
 		}
 	}
 
-	void DataReader::save_data(char **argv, std::vector<std::string> yourheader, std::vector<double> yourlist)
+	void DataReader::save_data(std::vector<std::string> yourheader, std::vector<double> yourlist)
 	{
 
 		outfile.seekp(0, std::ios::end);
@@ -260,8 +260,6 @@ namespace DT
 		}
 
 		outfile << "\n";
-
-		outfile.close();
 	}
 
 	DataReader::~DataReader()

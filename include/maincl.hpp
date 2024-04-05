@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_map>
 #include <functional>
+#include "macros.hpp"
 #include "hyper_parameters.hpp"
 #include "readdata1.hpp"
 #include "general_model.hpp"
@@ -38,15 +39,14 @@ namespace DT
 
         size_t N_par_points;
 
+        void check_arguments_number(const bool exact, const size_t needs, const size_t has, const std::string &func);
+
         void load_setting(const std::string sg_file);
 
         void load_user_operations();
 
         // loads parameter point and assigns DM mass
         void load_parameters(const size_t i);
-
-        // changes a parameters value
-        void change_parameter(const std::string &par, const double &newval);
 
         // returns the value of the parameter
         double get_parameter_val(const std::string &par);
@@ -60,16 +60,12 @@ namespace DT
         // checks if the thermal bath particles and the input channels match
         void check_procs(const vstring &ch_str);
 
-        // finds the channels which contribute to TAC more than channel_contrib
-        void find_strong_channels();
+        void CalcXsec(const vstring &args);
 
-        // calculate the fraction between single channel relic density and full relic density
-        void calc_relic_frac();
-
-        void calc_relic();
+        void CalcRelic();
 
         // finds the parameter values for which the needed relic density is reached within a certain limit
-        void find_pars(const vstring &args);
+        void FindParameter(const vstring &args);
 
         // saves the scanned data
         void save_data();

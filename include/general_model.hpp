@@ -70,15 +70,15 @@ namespace DT
         size_t get_N_all_channels();
         vstring get_all_channels();
         size_t get_N_initial_states();
-        std::string get_channel_name(const size_t i);
+        void get_channel_masses(double &m1, double &m2, double &m3, double &m4, const std::string &channel);
         vstring find_channels_by_particle(const std::string &particle);
         void assign_bath_masses(const vstring &prtcls = {});
         vstring find_thermal_procs(const vstring &prtcls = {});
 
         void assigndm();
 
-        void assign_masses(double &m1, double &m2, const std::string ch_str);
-        void set_channel(double &m1, double &m2, const vstring ch_str = {});
+        void assign_masses(double &m1, double &m2, const std::string &channel);
+        void set_channel(double &m1, double &m2, const vstring &ch_str, const bool flux = true);
         double eval(const double cos_t, const double s);
 
         ~Model(){};

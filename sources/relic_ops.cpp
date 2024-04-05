@@ -34,7 +34,7 @@ namespace DT
         return omega;
     }
 
-    ResError RelicOps::calc_relic()
+    ResError RelicOps::CalcRelic()
     {
         bs->sort_inimasses(bath_procs);
         double x, xtoday;
@@ -130,12 +130,12 @@ namespace DT
         par1 = mod->get_parameter_val(par);
         par2 = par1 * (1 + eps);
         mod->change_parameter(par, par2);
-        om2 = calc_relic().res - omega_target;
+        om2 = CalcRelic().res - omega_target;
 
         step = get_next_step(par1, par2, om1, om2, omega_target);
         par1 += step;
         mod->change_parameter(par, par1);
-        om1 = calc_relic().res - omega_target;
+        om1 = CalcRelic().res - omega_target;
 
         check_sign_flip(step, om1, par1);
         par_old = par1;
@@ -148,7 +148,7 @@ namespace DT
     {
         double res = {};
         double om1, om2;
-        om1 = calc_relic().res - omega_target;
+        om1 = CalcRelic().res - omega_target;
         omega_old = om1;
         par_old = mod->get_parameter_val(par);
         while ((fabs(om1) > omega_err) && (searchmode == vanguard))
@@ -197,7 +197,7 @@ namespace DT
             dx *= 0.5;
             xmid = rtb + dx;
             mod->change_parameter(par, xmid);
-            bi_y2 = calc_relic().res - omega_target;
+            bi_y2 = CalcRelic().res - omega_target;
             if (bi_y2 <= 0.)
                 rtb = xmid;
             if (fabs(bi_y2) < omega_err)

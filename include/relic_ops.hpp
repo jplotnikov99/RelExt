@@ -46,7 +46,7 @@ namespace DT
         ResError get_last_relic();
 
         // calculates the relic density for a specific mechanism
-        ResError calc_relic();
+        ResError CalcRelic();
 
         double get_next_step(const double &x1, const double &x2, const double &y1, const double &y2, const double &ytarget);
 

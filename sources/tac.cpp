@@ -49,6 +49,30 @@ namespace DT
         return simpson38_adap_cos_t(l, m, s, f, est) + simpson38_adap_cos_t(m, r, s, f1, est);
     }
 
+    ResError Tac::xsec(const double &s, const std::string &channel)
+    {
+        double m1, m2, m3, m4;
+        mod->set_channel(m1, m2, {channel}, false);
+        if (sqrt(s) < m1 + m2)
+        {
+            return {0., 0.};
+        }
+        mod->get_channel_masses(m1, m2, m3, m4, channel);
+
+        double f_est[10];
+        for (size_t i = 0; i < 10; i++)
+        {
+            f_est[i] = mod->eval(-1 + 0.2222222222222222 * i, s);
+        }
+        double est = simpson_est(-1, 1, f_est);
+        ResError f[4];
+        f[0] = {f_est[0], 0.};
+        f[1] = {f_est[3], 0.};
+        f[2] = {f_est[6], 0.};
+        f[3] = {f_est[9], 0.};
+        return 1 / (32 * M_PI * s) * sqrt(kaellen(s, m3, m4) / kaellen(s, m1, m2)) * simpson38_adap_cos_t(-1, 1, s, f, est);
+    }
+
     ResError Tac::wij(const double &s)
     {
         if (sig_s.count(s) == 0)

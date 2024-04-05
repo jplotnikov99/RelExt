@@ -7,6 +7,18 @@ namespace DT
     {
     }
 
+    double Model::get_parameter_val(const std::string par)
+    {
+        return (*parmap[par]);
+    }
+
+    void Model::change_parameter(const std::string par, const double newval)
+    {
+        *parmap[par] = newval;
+        load_parameters();
+        assigndm();
+    }
+
     vstring Model::get_all_channels()
     {
         return channelnames;
@@ -21,11 +33,13 @@ namespace DT
     {
         return N_initial_states;
     }
-
-    std::string Model::get_channel_name(const size_t i)
+    
+    void Model::get_channel_masses(double &m1, double &m2, double &m3, double &m4, const std::string &channel)
     {
-        assert(i < channelnames.size());
-        return channelnames.at(i);
+        m1 = *mass1s.at(channel);
+        m2 = *mass2s.at(channel);
+        m3 = *mass3s.at(channel);
+        m4 = *mass4s.at(channel);
     }
 
     void Model::assign_bath_masses(const vstring &prtcls)
@@ -96,39 +110,37 @@ namespace DT
         }
     }
 
-    void Model::change_parameter(const std::string par, const double newval)
+    void Model::assign_masses(double &m1, double &m2, const std::string &channel)
     {
-        *parmap[par] = newval;
-        load_parameters();
-        assigndm();
-    }
-
-    double Model::get_parameter_val(const std::string par)
-    {
-        return (*parmap[par]);
-    }
-
-    void Model::assign_masses(double &m1, double &m2, std::string ch_str)
-    {
-        if (*mass1s[ch_str] + *mass2s[ch_str] >= *mass3s[ch_str] + *mass4s[ch_str])
+        if (*mass1s[channel] + *mass2s[channel] >= *mass3s[channel] + *mass4s[channel])
         {
-            m1 = *mass1s[ch_str];
-            m2 = *mass2s[ch_str];
+            m1 = *mass1s[channel];
+            m2 = *mass2s[channel];
         }
         else
         {
-            m1 = *mass3s[ch_str];
-            m2 = *mass4s[ch_str];
+            m1 = *mass3s[channel];
+            m2 = *mass4s[channel];
         }
     }
 
-    void Model::set_channel(double &m1, double &m2, vstring ch_str)
+    void Model::set_channel(double &m1, double &m2, const vstring &ch_str, const bool flux)
     {
         cur_channel.clear();
         assign_masses(m1, m2, ch_str.at(0));
-        for (auto it : ch_str)
+        if (flux)
         {
-            cur_channel.push_back(amp2fls[it]);
+            for (auto it : ch_str)
+            {
+                cur_channel.push_back(amp2fls[it]);
+            }
+        }
+        else
+        {
+            for (auto it : ch_str)
+            {
+                cur_channel.push_back(amp2s[it]);
+            }
         }
         N_cur = cur_channel.size();
     }

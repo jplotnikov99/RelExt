@@ -19,6 +19,8 @@ namespace DT
 
 	bool heavi(const double &s, const double &m1, const double &m2);
 
+	double kaellen(const double &s, const double &m1, const double &m2);
+
 	double flux(const double &s, const double &m1, const double &m2, const double &m3, const double &m4);
 
 	// Bessel functions

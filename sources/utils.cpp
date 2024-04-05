@@ -13,6 +13,11 @@ namespace DT
       return ((m1 + m2) * (m1 + m2) - s <= 0);
    }
 
+   double kaellen(const double &s, const double &m1, const double &m2)
+   {
+      return (s - (m1 + m2) * (m1 + m2)) * (s - (m1 - m2) * (m1 - m2));
+   }
+
    double flux(const double &s, const double &m1, const double &m2, const double &m3, const double &m4)
    {
       return sqrt((s - (m1 + m2) * (m1 + m2)) * (s - (m1 - m2) * (m1 - m2)) * (s - (m3 + m4) * (m3 + m4)) * (s - (m3 - m4) * (m3 - m4)));

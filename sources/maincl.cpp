@@ -5,11 +5,13 @@ namespace DT
     Main::Main(int argc, char **argv)
     {
         operations_map["CalcRelic"] = [this](const vstring a)
-        { this->calc_relic(); };
+        { this->CalcRelic(); };
         operations_map["SaveData"] = [this](const vstring a)
         { this->save_data(); };
         operations_map["FindParameter"] = [this](const vstring a)
-        { this->find_pars(a); };
+        { this->FindParameter(a); };
+        operations_map["CalcXsec"] = [this](const vstring a)
+        { this->CalcXsec(a); };
 
         load_setting(std::string(argv[1]));
         rdr = std::make_unique<DataReader>(input_file, 1);
@@ -24,6 +26,26 @@ namespace DT
 
         def_thermal_bath();
         set_channels();
+    }
+
+    void Main::check_arguments_number(const bool exact, const size_t needs, const size_t has, const std::string &func)
+    {
+        if (exact)
+        {
+            if ((needs + 1) != has)
+            {
+                std::cout << func << " has the wrong number of arguments.\n";
+                exit(1);
+            }
+        }
+        else
+        {
+            if ((needs + 1) > has)
+            {
+                std::cout << func << " has the wrong number of arguments.\n";
+                exit(1);
+            }
+        }
     }
 
     void Main::load_setting(const std::string sg_file)
@@ -123,20 +145,63 @@ namespace DT
         relops->set_bath_procs(bath_procs);
     }
 
-    void Main::calc_relic()
+    void Main::CalcXsec(const vstring &args)
     {
+        check_arguments_number(false, 4, args.size(), (std::string) __func__);
+
+        std::unique_ptr<Tac> tac = std::make_unique<Tac>(mod);
+        std::unique_ptr<DataReader> xsr = std::make_unique<DataReader>(output_file, 2);
+
+        double min_sqs = std::stod(args.at(1));
+        double max_sqs = std::stod(args.at(2));
+        ASSERT((min_sqs < 0) || (max_sqs < 0), "Boundaries in " << __func__ << "can not have negative values.")
+        if (min_sqs > max_sqs)
+        {
+            double temp = max_sqs;
+            max_sqs = min_sqs;
+            min_sqs = max_sqs;
+        }
+
+        size_t points = std::stoi(args.at(3));
+        vstring channel;
+        for (size_t i = 4; i < args.size(); i++)
+        {
+            channel.push_back(args.at(i));
+        }
+
+        double step = (max_sqs - min_sqs) / ((double)points);
+        double res;
+        for (double sqs = min_sqs; sqs <= max_sqs; sqs += step)
+        {
+            res = 0;
+            std::cout << sqs << std::endl;
+            for (auto it : channel)
+            {
+                res += tac->xsec(sqs * sqs, it).res;
+            }
+            xsr->save_data({"sqrts", "xsec"}, {sqs, res});
+        }
+    }
+
+    void Main::CalcRelic()
+    {
+        check_arguments_number(true, 0, 1, (std::string) __func__);
+
         relops->set_mechanism(mechanism);
-        omega = relops->calc_relic();
+        omega = relops->CalcRelic();
         std::cout << "Omega full:\n"
                   << omega << "\n\n";
     }
 
-    void Main::find_pars(const vstring &args)
+    void Main::FindParameter(const vstring &args)
     {
+        check_arguments_number(true, 3, args.size(), (std::string) __func__);
+
         relops->set_mechanism(mechanism);
         relops->set_omega_target(std::stod(args.at(2)));
         relops->set_omega_err(std::stod(args.at(3)));
         relops->find_pars(args.at(1));
+
         omega = relops->get_last_relic();
         std::cout << "Omega full:\n"
                   << omega << "\n\n";
