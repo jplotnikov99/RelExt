@@ -62,6 +62,8 @@ namespace DT
 
         void CalcXsec(const vstring &args);
 
+        void calc_tac();
+
         void CalcRelic();
 
         // finds the parameter values for which the needed relic density is reached within a certain limit

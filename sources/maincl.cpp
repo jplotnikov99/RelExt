@@ -182,6 +182,20 @@ namespace DT
             xsr->save_data({"sqrts", "xsec"}, {sqs, res});
         }
     }
+    
+    void Main::calc_tac()
+    {
+        double t;
+        std::unique_ptr<Tac> tac = std::make_unique<Tac>(mod);
+        tac->sort_inimasses(bath_procs);
+        std::ofstream filename("../dataOutput/out_tac.csv");
+        for(double i = 1; i < 10000; i+=0.5)
+        {
+            t = tac->tac(i).res;
+            filename << i << "\t" << t <<"\n";
+        }
+        filename.close();
+    }
 
     void Main::CalcRelic()
     {
