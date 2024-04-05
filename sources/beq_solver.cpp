@@ -169,8 +169,6 @@ namespace DT
         }
         double est = simpson_est(xf, x0, f_est);
 
-        std::cout << est << std::endl;
-
         f[0] = {f_est[0], f_err[0]};
         f[1] = {f_est[3], f_err[3]};
         f[2] = {f_est[6], f_err[6]};

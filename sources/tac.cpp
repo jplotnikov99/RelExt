@@ -54,9 +54,9 @@ namespace DT
         if (sig_s.count(s) == 0)
         {
             double f_est[10];
-            for(size_t i = 0; i < 10; i++)
+            for (size_t i = 0; i < 10; i++)
             {
-                f_est[i] = mod->eval(-1 + 0.2222222222222222*i,s);
+                f_est[i] = mod->eval(-1 + 0.2222222222222222 * i, s);
             }
             double est = simpson_est(-1, 1, f_est);
             ResError f[4];
@@ -126,12 +126,12 @@ namespace DT
 
     bool Tac::beps(const double &x)
     {
-        return (exp(-x * (m1 + m2 - 2 * mod->MDM) / mod->MDM) >= beps_eps);
+        return (x * (m1 + m2 - 2 * mod->MDM) / mod->MDM <= -beps_eps);
     }
 
     double Tac::peak_relevance(const double &peakpos)
     {
-        return 13.8155105579643 * mod->MDM / (peakpos - m1 - m2);
+        return -(beps_eps - 4.6051701859880) * mod->MDM / (peakpos - m1 - m2);
     }
 
     double *Tac::peak_bounds(const double &peakpos, const double &width)
