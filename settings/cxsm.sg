@@ -2,7 +2,7 @@
 
 ######## Standard settings ########
 
-InputFile           |test2.csv
+InputFile           |micro_cxsm.csv
 OutputFile          |new.csv
 SavedParameters     |MA1, svev, alpha
 ThermalBath         |
