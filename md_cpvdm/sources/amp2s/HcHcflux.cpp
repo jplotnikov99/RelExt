@@ -144,18 +144,3 @@ double DT::HcHCBbfl(const double &cos_t, const double &s){
 	 else{ return 0; }
 
 }
-double DT::HcHc(const double &cos_t, const double &s){
-	 return ( HcHcWWfl(cos_t, s) + HcHChhfl(cos_t, s) + HcHChAfl(cos_t, s) +\
- 
-   HcHChZfl(cos_t, s) + HcHCAAfl(cos_t, s) + HcHCAZfl(cos_t, s) +\
- 
-   HcHCZZfl(cos_t, s) + HcHCwWfl(cos_t, s) + HcHCVEvefl(cos_t, s) +\
- 
-   HcHCVMvmfl(cos_t, s) + HcHCVTvtfl(cos_t, s) + HcHCEefl(cos_t, s) +\
- 
-   HcHCMmfl(cos_t, s) + HcHCTAtafl(cos_t, s) + HcHCUufl(cos_t, s) +\
- 
-   HcHCCcfl(cos_t, s) + HcHCTtfl(cos_t, s) + HcHCDdfl(cos_t, s) +\
- 
-   HcHCSsfl(cos_t, s) + HcHCBbfl(cos_t, s) );
-}

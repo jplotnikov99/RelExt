@@ -109,14 +109,3 @@ double DT::H2HctBfl(const double &cos_t, const double &s){
 	 else{ return 0; }
 
 }
-double DT::H2Hc(const double &cos_t, const double &s){
-	 return ( H2HchWfl(cos_t, s) + H2HcAWfl(cos_t, s) + H2HcZWfl(cos_t, s) +\
- 
-   H2HcveEfl(cos_t, s) + H2HcvmMfl(cos_t, s) + H2HcvtTAfl(cos_t, s) +\
- 
-   H2HcuDfl(cos_t, s) + H2HcuSfl(cos_t, s) + H2HcuBfl(cos_t, s) +\
- 
-   H2HccDfl(cos_t, s) + H2HccSfl(cos_t, s) + H2HccBfl(cos_t, s) +\
- 
-   H2HctDfl(cos_t, s) + H2HctSfl(cos_t, s) + H2HctBfl(cos_t, s) );
-}

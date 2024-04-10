@@ -95,14 +95,3 @@ double DT::H1H1Bbfl(const double &cos_t, const double &s){
 	 else{ return 0; }
 
 }
-double DT::H1H1(const double &cos_t, const double &s){
-	 return ( H1H1hhfl(cos_t, s) + H1H1hZfl(cos_t, s) + H1H1ZZfl(cos_t, s) +\
- 
-   H1H1wWfl(cos_t, s) + H1H1Eefl(cos_t, s) + H1H1Mmfl(cos_t, s) +\
- 
-   H1H1TAtafl(cos_t, s) + H1H1Uufl(cos_t, s) + H1H1Ccfl(cos_t, s) +\
- 
-   H1H1Ttfl(cos_t, s) + H1H1Ddfl(cos_t, s) + H1H1Ssfl(cos_t, s) +\
- 
-   H1H1Bbfl(cos_t, s) );
-}

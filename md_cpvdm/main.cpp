@@ -9,11 +9,11 @@ int main(int argc, char **argv)
     Main main(argc, argv);
     clock_t begin_time = clock();
 
-    for (size_t i = 1; i < main.N_par_points; i++)
+    for (size_t i = 7396; i < 7397; i++)
     {
         main.load_parameters(i);
-        main.CalcRelic();
-        main.save_data();
+        main.do_user_operations();
+        //main.calc_tac();
     }
 
     std::cout << "Computation time:\n"

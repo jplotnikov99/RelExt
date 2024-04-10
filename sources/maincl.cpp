@@ -77,6 +77,7 @@ namespace DT
         std::cout << "Parameter point: " << i << std::endl;
         rdr->read_parameter(i);
         mod->load_parameters();
+        mod->load_tokens();
         mod->assigndm();
     }
 
@@ -174,7 +175,6 @@ namespace DT
         for (double sqs = min_sqs; sqs <= max_sqs; sqs += step)
         {
             res = 0;
-            std::cout << sqs << std::endl;
             for (auto it : channel)
             {
                 res += tac->xsec(sqs * sqs, it).res;
@@ -188,8 +188,8 @@ namespace DT
         double t;
         std::unique_ptr<Tac> tac = std::make_unique<Tac>(mod);
         tac->sort_inimasses(bath_procs);
-        std::ofstream filename("../dataOutput/out_tac.csv");
-        for(double i = 1; i < 10000; i+=0.5)
+        std::ofstream filename("../dataOutput/our_tac.csv");
+        for(double i = 20; i < 1e5; i+=1)
         {
             t = tac->tac(i).res;
             filename << i << "\t" << t <<"\n";

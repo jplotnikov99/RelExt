@@ -1,10 +1,10 @@
 ///////////////////CODE GENERATED VIA MATHEMATICA///////////////////
 
+
 #include "general_model.hpp"
 #include "../model.hpp"
 
-namespace DT
-{
+namespace DT{
 	void Model::init()
 	{
 		MZ = 91.1876;
@@ -52,11 +52,11 @@ namespace DT
 		double G = 1.21358;
 		double FAGS = 1.21358;
 
-		particles["H1"] = &mH1;
-		particles["H2"] = &mH2;
-		particles["H3"] = &mH3;
-		particles["Hc"] = &mHc;
-		particles["HC"] = &mHc;
+		particles["H1"]=&mH1;
+		particles["H2"]=&mH2;
+		particles["H3"]=&mH3;
+		particles["Hc"]=&mHc;
+		particles["HC"]=&mHc;
 		dsmasses.push_back(&mH1);
 		dsmasses.push_back(&mH2);
 		dsmasses.push_back(&mH3);

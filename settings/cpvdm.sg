@@ -3,7 +3,7 @@
 ######## Standard settings ########
 
 InputFile           |CPVDMTest.csv
-OutputFile          |cpvdm_heavy.csv
+OutputFile          |tata.csv
 SavedParameters     |mH1, mH2
 ThermalBath         |
 ConsideredChannels  |
@@ -17,7 +17,7 @@ ChannelContributions|1
 START
 
 CalcRelic
-SaveData
+CalcXsec            |123.3, 200, 100000, H1H1TAta
 
 END
 ######## Advanced settings ########

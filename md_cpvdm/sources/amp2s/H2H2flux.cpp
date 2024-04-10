@@ -95,14 +95,3 @@ double DT::H2H2Bbfl(const double &cos_t, const double &s){
 	 else{ return 0; }
 
 }
-double DT::H2H2(const double &cos_t, const double &s){
-	 return ( H2H2hhfl(cos_t, s) + H2H2hZfl(cos_t, s) + H2H2ZZfl(cos_t, s) +\
- 
-   H2H2wWfl(cos_t, s) + H2H2Eefl(cos_t, s) + H2H2Mmfl(cos_t, s) +\
- 
-   H2H2TAtafl(cos_t, s) + H2H2Uufl(cos_t, s) + H2H2Ccfl(cos_t, s) +\
- 
-   H2H2Ttfl(cos_t, s) + H2H2Ddfl(cos_t, s) + H2H2Ssfl(cos_t, s) +\
- 
-   H2H2Bbfl(cos_t, s) );
-}

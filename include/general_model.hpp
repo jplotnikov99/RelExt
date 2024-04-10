@@ -64,6 +64,7 @@ namespace DT
         void init();
         void load_parameters();
         void load_parameter_map();
+        void load_tokens();
         double get_parameter_val(const std::string par);
         void change_parameter(const std::string par, const double newval);
 

@@ -2,8 +2,8 @@
 
 ######## Standard settings ########
 
-InputFile           |test2.csv
-OutputFile          |nothing.csv
+InputFile           |micro_cxsm.csv
+OutputFile          |cxsm_tokenized.csv
 SavedParameters     |MA1, svev, alpha
 ThermalBath         |
 ConsideredChannels  |
@@ -16,7 +16,8 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
-CalcXsec            |100, 1e6, 10000, A1A1ZZ
+CalcRelic
+SaveData
 
 END
 ######## Advanced settings ########

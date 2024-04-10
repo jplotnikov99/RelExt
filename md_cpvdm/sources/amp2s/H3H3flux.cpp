@@ -95,14 +95,3 @@ double DT::H3H3Bbfl(const double &cos_t, const double &s){
 	 else{ return 0; }
 
 }
-double DT::H3H3(const double &cos_t, const double &s){
-	 return ( H3H3hhfl(cos_t, s) + H3H3hZfl(cos_t, s) + H3H3ZZfl(cos_t, s) +\
- 
-   H3H3wWfl(cos_t, s) + H3H3Eefl(cos_t, s) + H3H3Mmfl(cos_t, s) +\
- 
-   H3H3TAtafl(cos_t, s) + H3H3Uufl(cos_t, s) + H3H3Ccfl(cos_t, s) +\
- 
-   H3H3Ttfl(cos_t, s) + H3H3Ddfl(cos_t, s) + H3H3Ssfl(cos_t, s) +\
- 
-   H3H3Bbfl(cos_t, s) );
-}
