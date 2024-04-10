@@ -77,34 +77,13 @@ fi
 
 if [ -n "$load" ]; then
   case $args in
-    #3)   
-    #  p1="md_"
-    #  p2="$2"
-    #  p3="/FR_modfiles/CH_modfiles"
-    #  mdl_path=$(printf "%s%s%s" "$p1" "$p2" "$p3") 
-    #  cd "$mdl_path"
-#
-    #  if [[ -f vars1.mdl ]]; then
-    #    cd -
-    #    cur_dir=$(pwd)
-    #    md_dir=$(printf "%s%s%s" "$cur_dir" "/md_" "$p2")
-    #    
-    #    file_name=$3
-    #    math -script mathematica/gen_init.m $3 $md_dir
-    #    exit 0
-    #  else
-    #    echo "The model has not been implemented yet. Run the following code to load the model:"
-    #    echo "./gen_amps [path/to/feynrules-current] [modelname.fr] [Name of Lagrangian]"
-    #    exit 1
-    #  fi
-    #  ;;
     4)
       fr_path=$(find . -name $3)
       fr_dir=$(dirname "$fr_path")
       fr_full_dir=$(readlink -f "$fr_dir")
       
       math -script mathematica/FR_to_CH_FA.m $2 $3 $4 $fr_full_dir
-      math -script mathematica/amp2cpp.m $fr_full_dir
+      math -script mathematica/amp2cpp_v2.m $fr_full_dir
       exit 0
       ;;
     *)	

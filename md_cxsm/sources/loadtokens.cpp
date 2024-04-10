@@ -27,7 +27,7 @@ namespace DT{
 		token19 = pow(MH,2) + 2*pow(MS1,2);
 		token20 = vev*cos(alpha) + svev*sin(alpha);
 		token21 = vev*cos(alpha)*(pow(MH,2) + pow(MS1,2) + (-pow(MH,2) + pow(MS1,2))*cos(2*alpha)) + 2*(MH - MS1)*(MH + MS1)*svev*pow(sin(alpha),3);
-		token22 = 12;
+		token22 = 6;
 		token23 = pow(MS1,4);
 		token24 = -(vev*pow(cos(alpha),3)) + svev*pow(sin(alpha),3);
 		token25 = pow(EL,2);
