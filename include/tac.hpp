@@ -18,7 +18,7 @@ namespace DT
         double m2;
         double lower_bound;
         size_t N_relevant_peaks;
-        bool max_prec_s = false;
+        bool tac_error_reached = false;
         std::vector<double> boundaries;
         std::vector<double> polK2s;
         std::unordered_map<double, ResError> sig_s;

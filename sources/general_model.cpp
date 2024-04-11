@@ -16,6 +16,7 @@ namespace DT
     {
         *parmap[par] = newval;
         load_parameters();
+        load_tokens();
         assigndm();
     }
 

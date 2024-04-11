@@ -16,7 +16,7 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
-CalcRelic
+FindParameter       |alph1, 0.12, 0.005
 SaveData
 
 END

@@ -158,12 +158,11 @@ namespace DT
     ResError BeqSolver::icoll(const double xf, const double x0)
     {
         ResError f[4];
-        double f_est[10];
-        double f_err[10];
+        double f_est[10], f_err[10];
         double h = (x0 - xf) / 9;
         for (size_t i = 0; i < 10; i++)
         {
-            f[0] = beq->pre_tac(xf + h * i);
+            f[0] = beq->pre_tac(xf + h * (double)i);
             f_est[i] = f[0].res;
             f_err[i] = f[0].err;
         }

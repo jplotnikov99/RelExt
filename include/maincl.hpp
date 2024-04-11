@@ -39,6 +39,8 @@ namespace DT
 
         size_t N_par_points;
 
+        void check_if_number(const std::string &arg, const std::string &func);
+
         void check_arguments_number(const bool exact, const size_t needs, const size_t has, const std::string &func);
 
         void load_setting(const std::string sg_file);

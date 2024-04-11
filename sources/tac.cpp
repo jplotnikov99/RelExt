@@ -39,7 +39,6 @@ namespace DT
         I1 = h / 2 * (f[0] + 3 * f[1] + 3 * f[2] + f[3]);
         I2 = h / 2 * (f1[0] + 3 * f1[1] + 3 * f1[2] + f1[3]);
         I3 = I1 + I2;
-        double eps = simpson_eps;
 
         if (fabs(I.res - I3.res) < simpson_eps * fabs(est))
         {
@@ -231,11 +230,10 @@ namespace DT
     {
         if (ans.res == 0)
             return ans;
-        double eps = trapezoidal_eps;
         double m = (l + r) / 2;
         ResError I1 = simpson38_peak(l, m, x), I2 = simpson38_peak(m, r, x);
         ResError I = I1 + I2;
-        if (fabs(I.res / ans.res - 1) < eps)
+        if ((fabs(I.res / ans.res - 1) < trapezoidal_eps) || (depth == 20))
         {
             I.err += fabs(I.res - ans.res);
             return I;
@@ -366,8 +364,9 @@ namespace DT
                     integrate_s(x, res, estimate);
                 }
             }
-            if (fabs(res.err / res.res) > 1e-1)
+            if ((fabs(res.err / res.res) > 1e-1) && (!tac_error_reached))
             {
+                tac_error_reached = true;
                 std::cout << "Result and error are of the same order in the TAC.\n";
                 std::cout << x << " " << res << std::endl;
             }
@@ -382,7 +381,7 @@ namespace DT
 
     void Tac::clear_state(const bool full)
     {
-        max_prec_s = false;
+        tac_error_reached = false;
         tac_x.clear();
         sig_s.clear();
         if (full)

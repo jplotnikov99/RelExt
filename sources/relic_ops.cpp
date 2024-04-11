@@ -104,7 +104,7 @@ namespace DT
             bi_y1 = omega_old,
             bi_x2 = par_new;
             bi_y2 = omega_new;
-            std::cout << "Switch to bisect mode (2).\n";
+            std::cout << "Switch to bisect mode.\n";
         }
         if (first_step)
         {
@@ -114,9 +114,11 @@ namespace DT
         {
             if (std::signbit(step_old) != std::signbit(step_new))
             {
-
-                std::cout << "Switch to descent mode.\n";
-                searchmode = descent;
+                if (!(searchmode == descent))
+                {
+                    std::cout << "Switch to descent mode.\n";
+                    searchmode = descent;
+                }
             }
         }
     }
@@ -136,7 +138,6 @@ namespace DT
         par1 += step;
         mod->change_parameter(par, par1);
         om1 = CalcRelic().res - omega_target;
-
         check_sign_flip(step, om1, par1);
         par_old = par1;
         step_old = step;
@@ -178,7 +179,7 @@ namespace DT
         {
             om2 = om1;
             om1 = get_next_omega(par, om1);
-        } while ((fabs(om2 / om1 - 1) > 0.01) && (searchmode == descent));
+        } while ((fabs(om2 / om1 - 1) > 0.001) && (searchmode == descent));
         if (searchmode == descent)
         {
             searchmode = stop;

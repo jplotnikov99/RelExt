@@ -28,6 +28,19 @@ namespace DT
         set_channels();
     }
 
+    void Main::check_if_number(const std::string &arg, const std::string &func)
+    {
+        try
+        {
+            double val = std::stod(arg);
+        }
+        catch (const std::invalid_argument &)
+        {
+            std::cout << "Error in " << func << ": " << arg << " is not a double.\n";
+            exit(1);
+        }
+    }
+
     void Main::check_arguments_number(const bool exact, const size_t needs, const size_t has, const std::string &func)
     {
         if (exact)
@@ -148,7 +161,10 @@ namespace DT
 
     void Main::CalcXsec(const vstring &args)
     {
-        check_arguments_number(false, 4, args.size(), (std::string) __func__);
+        check_arguments_number(false, 4, args.size(), __func__);
+        check_if_number(args.at(1), __func__);
+        check_if_number(args.at(2), __func__);
+        check_if_number(args.at(3), __func__);
 
         std::unique_ptr<Tac> tac = std::make_unique<Tac>(mod);
         std::unique_ptr<DataReader> xsr = std::make_unique<DataReader>(output_file, 2);
@@ -182,24 +198,24 @@ namespace DT
             xsr->save_data({"sqrts", "xsec"}, {sqs, res});
         }
     }
-    
+
     void Main::calc_tac()
     {
         double t;
         std::unique_ptr<Tac> tac = std::make_unique<Tac>(mod);
         tac->sort_inimasses(bath_procs);
         std::ofstream filename("../dataOutput/our_tac.csv");
-        for(double i = 20; i < 1e5; i+=1)
+        for (double i = 20; i < 1e5; i += 1)
         {
             t = tac->tac(i).res;
-            filename << i << "\t" << t <<"\n";
+            filename << i << "\t" << t << "\n";
         }
         filename.close();
     }
 
     void Main::CalcRelic()
     {
-        check_arguments_number(true, 0, 1, (std::string) __func__);
+        check_arguments_number(true, 0, 1, __func__);
 
         relops->set_mechanism(mechanism);
         omega = relops->CalcRelic();
@@ -210,6 +226,8 @@ namespace DT
     void Main::FindParameter(const vstring &args)
     {
         check_arguments_number(true, 3, args.size(), (std::string) __func__);
+        check_if_number(args.at(2), __func__);
+        check_if_number(args.at(3), __func__);
 
         relops->set_mechanism(mechanism);
         relops->set_omega_target(std::stod(args.at(2)));
