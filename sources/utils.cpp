@@ -62,6 +62,39 @@ namespace DT
       }
    }
 
+   void check_arguments_number(const bool exact, const size_t needs, const size_t has, const std::string &func)
+   {
+      if (exact)
+      {
+         if ((needs + 1) != has)
+         {
+            std::cout << func << " has the wrong number of arguments.\n";
+            exit(1);
+         }
+      }
+      else
+      {
+         if ((needs + 1) > has)
+         {
+            std::cout << func << " has the wrong number of arguments.\n";
+            exit(1);
+         }
+      }
+   }
+
+   void check_if_number(const std::string &arg, const std::string &func)
+   {
+      try
+      {
+         double val = std::stod(arg);
+      }
+      catch (const std::invalid_argument &)
+      {
+         std::cout << "Error in " << func << ": " << arg << " is not a number.\n";
+         exit(1);
+      }
+   }
+
    double simpson_est(const double l, const double r, double *f)
    {
       return (r - l) / 24 * (f[0] + f[9] + 3 * (f[1] + f[2] + f[4] + f[5] + f[7] + f[8]) + 2 * (f[3] * f[6]));

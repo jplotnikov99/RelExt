@@ -37,6 +37,10 @@ namespace DT
 
 	void append_to_vstring(vstring &a, const vstring &b);
 
+	void check_arguments_number(const bool exact, const size_t needs, const size_t has, const std::string &func);
+
+	void check_if_number(const std::string &arg, const std::string &func);
+
 	double simpson_est(const double l, const double r, double *f);
 
 }

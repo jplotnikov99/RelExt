@@ -9,7 +9,7 @@ int main(int argc, char **argv)
     Main main(argc, argv);
     clock_t begin_time = clock();
 
-    for (size_t i = 1; i < main.N_par_points; i++)
+    for (size_t i = main.start_point; i < main.end_point; i++)
     {
         main.load_parameters(i);
         main.do_user_operations();

@@ -21,44 +21,24 @@ namespace DT
         mod->load_parameter_map();
         relops = std::make_unique<RelicOps>(mod);
 
-        N_par_points = rdr->datalines();
+        size_t N_par_points = rdr->datalines();
+        if (start_point < 1)
+        {
+            std::cout << "StartPoint is out of range and was set to 1.\n";
+            start_point = 1;
+        }
+        if (end_point == 0)
+            end_point = N_par_points;
+        if (end_point > N_par_points)
+        {
+            std::cout << "EndPoint is out of range and is set to" << N_par_points - 1 << ".\n";
+            end_point = N_par_points;
+        }
+
         rdr->scanpars = rdr->assignHeaders(mod->parmap);
 
         def_thermal_bath();
         set_channels();
-    }
-
-    void Main::check_if_number(const std::string &arg, const std::string &func)
-    {
-        try
-        {
-            double val = std::stod(arg);
-        }
-        catch (const std::invalid_argument &)
-        {
-            std::cout << "Error in " << func << ": " << arg << " is not a double.\n";
-            exit(1);
-        }
-    }
-
-    void Main::check_arguments_number(const bool exact, const size_t needs, const size_t has, const std::string &func)
-    {
-        if (exact)
-        {
-            if ((needs + 1) != has)
-            {
-                std::cout << func << " has the wrong number of arguments.\n";
-                exit(1);
-            }
-        }
-        else
-        {
-            if ((needs + 1) > has)
-            {
-                std::cout << func << " has the wrong number of arguments.\n";
-                exit(1);
-            }
-        }
     }
 
     void Main::load_setting(const std::string sg_file)
@@ -67,6 +47,8 @@ namespace DT
         // Standard settings
         input_file = sgr->get_name_of("InputFile");
         output_file = sgr->get_name_of("OutputFile");
+        start_point = (size_t)sgr->get_val_of("StartPoint");
+        end_point = (size_t)sgr->get_val_of("EndPoint") + 1;
         bath_particles = sgr->get_slist_of("ThermalBath");
         considered_procs = sgr->get_slist_of("ConsideredChannels");
         subtracted_procs = sgr->get_slist_of("SubtractChannels");
@@ -165,6 +147,13 @@ namespace DT
         check_if_number(args.at(1), __func__);
         check_if_number(args.at(2), __func__);
         check_if_number(args.at(3), __func__);
+
+        if(start_point != (end_point - 1))
+        {
+            std::cout << "CalcXsec can only be called for one point, not a range. " << \
+            "Please choose the same StartPoint and EndPoint.\n";
+            exit(1);
+        }
 
         std::unique_ptr<Tac> tac = std::make_unique<Tac>(mod);
         std::unique_ptr<DataReader> xsr = std::make_unique<DataReader>(output_file, 2);

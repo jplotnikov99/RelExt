@@ -92,6 +92,7 @@ namespace DT
 		rmv_spaces(line);
 		if (line.size() == 0)
 			line = "0";
+		check_if_number((std::string) line, name);
 
 		return std::stod(line);
 	}

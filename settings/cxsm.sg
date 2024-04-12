@@ -4,6 +4,8 @@
 
 InputFile           |micro_cxsm.csv
 OutputFile          |cxsm_tokenized.csv
+StartPoint          |1
+EndPoint            |100
 SavedParameters     |MA1, svev, alpha
 ThermalBath         |
 ConsideredChannels  |
@@ -23,6 +25,6 @@ END
 ######## Advanced settings ########
 
 ThetaIntEps         |1e-6
-PeakIntEps          |1e-7
+PeakIntEps          |1e-6
 sIntEps             |1e-6
 rk4Eps              |1e-6
