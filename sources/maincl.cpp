@@ -4,14 +4,16 @@ namespace DT
 {
     Main::Main(int argc, char **argv)
     {
-        operations_map["CalcRelic"] = [this](const vstring a)
-        { this->CalcRelic(); };
-        operations_map["SaveData"] = [this](const vstring a)
-        { this->save_data(); };
-        operations_map["FindParameter"] = [this](const vstring a)
-        { this->FindParameter(a); };
         operations_map["CalcXsec"] = [this](const vstring a)
         { this->CalcXsec(a); };
+        operations_map["CalcTac"] = [this](const vstring a)
+        { this->CalcTac(a); };
+        operations_map["CalcRelic"] = [this](const vstring a)
+        { this->CalcRelic(); };
+        operations_map["FindParameter"] = [this](const vstring a)
+        { this->FindParameter(a); };
+        operations_map["SaveData"] = [this](const vstring a)
+        { this->save_data(); };
 
         load_setting(std::string(argv[1]));
         rdr = std::make_unique<DataReader>(input_file, 1);
@@ -148,10 +150,10 @@ namespace DT
         check_if_number(args.at(2), __func__);
         check_if_number(args.at(3), __func__);
 
-        if(start_point != (end_point - 1))
+        if (start_point != (end_point - 1))
         {
-            std::cout << "CalcXsec can only be called for one point, not a range. " << \
-            "Please choose the same StartPoint and EndPoint.\n";
+            std::cout << "CalcXsec can only be called for one point, not a range. "
+                      << "Please choose the same StartPoint and EndPoint.\n";
             exit(1);
         }
 
@@ -188,18 +190,49 @@ namespace DT
         }
     }
 
-    void Main::calc_tac()
+    void Main::CalcTac(const vstring &args)
     {
-        double t;
-        std::unique_ptr<Tac> tac = std::make_unique<Tac>(mod);
-        tac->sort_inimasses(bath_procs);
-        std::ofstream filename("../dataOutput/our_tac.csv");
-        for (double i = 20; i < 1e5; i += 1)
+        check_arguments_number(false, 4, args.size(), __func__);
+        check_if_number(args.at(1), __func__);
+        check_if_number(args.at(2), __func__);
+        check_if_number(args.at(3), __func__);
+
+        if (start_point != (end_point - 1))
         {
-            t = tac->tac(i).res;
-            filename << i << "\t" << t << "\n";
+            std::cout << "CalcTac can only be called for one point, not a range. "
+                      << "Please choose the same StartPoint and EndPoint.\n";
+            exit(1);
         }
-        filename.close();
+
+        std::unique_ptr<Tac> tac = std::make_unique<Tac>(mod);
+        std::unique_ptr<DataReader> tar = std::make_unique<DataReader>(output_file, 2);
+
+        double min_x = std::stod(args.at(1));
+        double max_x = std::stod(args.at(2));
+        ASSERT((min_x < 0) || (max_x < 0), "Boundaries in " << __func__ << "can not have negative values.")
+        if (min_x > max_x)
+        {
+            double temp = max_x;
+            max_x = min_x;
+            min_x = max_x;
+        }
+
+        size_t points = std::stoi(args.at(3));
+        vstring channel;
+        for (size_t i = 4; i < args.size(); i++)
+        {
+            channel.push_back(args.at(i));
+        }
+
+        double step = (max_x - min_x) / ((double)points);
+        ResError res;
+
+        tac->sort_inimasses(channel);
+        for (double i = min_x; i <= max_x; i += step)
+        {
+            res = tac->tac(i);
+            tar->save_data({"x", "tac", "error"}, {i, res.res, res.err});
+        }
     }
 
     void Main::CalcRelic()

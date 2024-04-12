@@ -60,7 +60,7 @@ namespace DT
 
         void CalcXsec(const vstring &args);
 
-        void calc_tac();
+        void CalcTac(const vstring &args);
 
         void CalcRelic();
 
