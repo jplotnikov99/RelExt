@@ -20,17 +20,17 @@ namespace DT{
 		ymm = 0.10566;
 		ymtau = 1.777;
 		cabi = 0.227736;
-		mMChi = 100;
-		mMPsi = 200;
+		mMChi = 1;
+		mMPsi = 2;
 		alpha = 0.785398;
 		lam2 = 1;
 		lam3 = 1;
-		lam12 = 1e-11;
-		lam13 = 0;
-		lam23 = 0;
-		lam123 = 0.;
-		lam223 = 0.;
-		lam332 = 0.;
+		lam12 = 1;
+		lam13 = 1;
+		lam23 = 1;
+		lam123 = 1;
+		lam223 = 1;
+		lam332 = 1;
 		GG = 1.21978;
 		Me = 0.000511;
 		MMU = 0.10566;
@@ -57,254 +57,54 @@ namespace DT{
 		double G = 1.21358;
 		double FAGS = 1.21358;
 
+		particles["Chi"]=&MChi;
+		particles["Psi"]=&MPsi;
 		dsmasses.push_back(&MChi);
 		dsmasses.push_back(&MPsi);
 		neutraldsmasses.push_back(&MChi);
 		neutraldsmasses.push_back(&MPsi);
-		particles["Chi"]=&MChi;
-		particles["Psi"]=&MPsi;
-		channelnames.push_back("ChiChiHH");
-		amp2s["ChiChiHH"]=ChiChiHH;
-		amp2fls["ChiChiHH"]=ChiChiHHfl;
-		mass1s["ChiChiHH"]=&MChi;
-		mass2s["ChiChiHH"]=&MChi;
-		channelnames.push_back("ChiChiAA");
-		amp2s["ChiChiAA"]=ChiChiAA;
-		amp2fls["ChiChiAA"]=ChiChiAAfl;
-		mass1s["ChiChiAA"]=&MChi;
-		mass2s["ChiChiAA"]=&MChi;
-		channelnames.push_back("ChiChiZZ");
-		amp2s["ChiChiZZ"]=ChiChiZZ;
-		amp2fls["ChiChiZZ"]=ChiChiZZfl;
-		mass1s["ChiChiZZ"]=&MChi;
-		mass2s["ChiChiZZ"]=&MChi;
-		channelnames.push_back("ChiChiwW");
-		amp2s["ChiChiwW"]=ChiChiwW;
-		amp2fls["ChiChiwW"]=ChiChiwWfl;
-		mass1s["ChiChiwW"]=&MChi;
-		mass2s["ChiChiwW"]=&MChi;
-		channelnames.push_back("ChiChiGG");
-		amp2s["ChiChiGG"]=ChiChiGG;
-		amp2fls["ChiChiGG"]=ChiChiGGfl;
-		mass1s["ChiChiGG"]=&MChi;
-		mass2s["ChiChiGG"]=&MChi;
-		channelnames.push_back("ChiChiEe");
-		amp2s["ChiChiEe"]=ChiChiEe;
-		amp2fls["ChiChiEe"]=ChiChiEefl;
-		mass1s["ChiChiEe"]=&MChi;
-		mass2s["ChiChiEe"]=&MChi;
-		channelnames.push_back("ChiChiMUmu");
-		amp2s["ChiChiMUmu"]=ChiChiMUmu;
-		amp2fls["ChiChiMUmu"]=ChiChiMUmufl;
-		mass1s["ChiChiMUmu"]=&MChi;
-		mass2s["ChiChiMUmu"]=&MChi;
-		channelnames.push_back("ChiChiTAta");
-		amp2s["ChiChiTAta"]=ChiChiTAta;
-		amp2fls["ChiChiTAta"]=ChiChiTAtafl;
-		mass1s["ChiChiTAta"]=&MChi;
-		mass2s["ChiChiTAta"]=&MChi;
-		channelnames.push_back("ChiChiUu");
-		amp2s["ChiChiUu"]=ChiChiUu;
-		amp2fls["ChiChiUu"]=ChiChiUufl;
-		mass1s["ChiChiUu"]=&MChi;
-		mass2s["ChiChiUu"]=&MChi;
-		channelnames.push_back("ChiChiCc");
-		amp2s["ChiChiCc"]=ChiChiCc;
-		amp2fls["ChiChiCc"]=ChiChiCcfl;
-		mass1s["ChiChiCc"]=&MChi;
-		mass2s["ChiChiCc"]=&MChi;
-		channelnames.push_back("ChiChiTt");
-		amp2s["ChiChiTt"]=ChiChiTt;
-		amp2fls["ChiChiTt"]=ChiChiTtfl;
-		mass1s["ChiChiTt"]=&MChi;
-		mass2s["ChiChiTt"]=&MChi;
-		channelnames.push_back("ChiChiDd");
-		amp2s["ChiChiDd"]=ChiChiDd;
-		amp2fls["ChiChiDd"]=ChiChiDdfl;
-		mass1s["ChiChiDd"]=&MChi;
-		mass2s["ChiChiDd"]=&MChi;
-		channelnames.push_back("ChiChiSs");
-		amp2s["ChiChiSs"]=ChiChiSs;
-		amp2fls["ChiChiSs"]=ChiChiSsfl;
-		mass1s["ChiChiSs"]=&MChi;
-		mass2s["ChiChiSs"]=&MChi;
-		channelnames.push_back("ChiChiBb");
-		amp2s["ChiChiBb"]=ChiChiBb;
-		amp2fls["ChiChiBb"]=ChiChiBbfl;
-		mass1s["ChiChiBb"]=&MChi;
-		mass2s["ChiChiBb"]=&MChi;
-		channelnames.push_back("ChiPsiHH");
-		amp2s["ChiPsiHH"]=ChiPsiHH;
-		amp2fls["ChiPsiHH"]=ChiPsiHHfl;
-		mass1s["ChiPsiHH"]=&MChi;
-		mass2s["ChiPsiHH"]=&MPsi;
-		channelnames.push_back("ChiPsiAA");
-		amp2s["ChiPsiAA"]=ChiPsiAA;
-		amp2fls["ChiPsiAA"]=ChiPsiAAfl;
-		mass1s["ChiPsiAA"]=&MChi;
-		mass2s["ChiPsiAA"]=&MPsi;
-		channelnames.push_back("ChiPsiZZ");
-		amp2s["ChiPsiZZ"]=ChiPsiZZ;
-		amp2fls["ChiPsiZZ"]=ChiPsiZZfl;
-		mass1s["ChiPsiZZ"]=&MChi;
-		mass2s["ChiPsiZZ"]=&MPsi;
-		channelnames.push_back("ChiPsiwW");
-		amp2s["ChiPsiwW"]=ChiPsiwW;
-		amp2fls["ChiPsiwW"]=ChiPsiwWfl;
-		mass1s["ChiPsiwW"]=&MChi;
-		mass2s["ChiPsiwW"]=&MPsi;
-		channelnames.push_back("ChiPsiGG");
-		amp2s["ChiPsiGG"]=ChiPsiGG;
-		amp2fls["ChiPsiGG"]=ChiPsiGGfl;
-		mass1s["ChiPsiGG"]=&MChi;
-		mass2s["ChiPsiGG"]=&MPsi;
-		channelnames.push_back("ChiPsiEe");
-		amp2s["ChiPsiEe"]=ChiPsiEe;
-		amp2fls["ChiPsiEe"]=ChiPsiEefl;
-		mass1s["ChiPsiEe"]=&MChi;
-		mass2s["ChiPsiEe"]=&MPsi;
-		channelnames.push_back("ChiPsiMUmu");
-		amp2s["ChiPsiMUmu"]=ChiPsiMUmu;
-		amp2fls["ChiPsiMUmu"]=ChiPsiMUmufl;
-		mass1s["ChiPsiMUmu"]=&MChi;
-		mass2s["ChiPsiMUmu"]=&MPsi;
-		channelnames.push_back("ChiPsiTAta");
-		amp2s["ChiPsiTAta"]=ChiPsiTAta;
-		amp2fls["ChiPsiTAta"]=ChiPsiTAtafl;
-		mass1s["ChiPsiTAta"]=&MChi;
-		mass2s["ChiPsiTAta"]=&MPsi;
-		channelnames.push_back("ChiPsiUu");
-		amp2s["ChiPsiUu"]=ChiPsiUu;
-		amp2fls["ChiPsiUu"]=ChiPsiUufl;
-		mass1s["ChiPsiUu"]=&MChi;
-		mass2s["ChiPsiUu"]=&MPsi;
-		channelnames.push_back("ChiPsiCc");
-		amp2s["ChiPsiCc"]=ChiPsiCc;
-		amp2fls["ChiPsiCc"]=ChiPsiCcfl;
-		mass1s["ChiPsiCc"]=&MChi;
-		mass2s["ChiPsiCc"]=&MPsi;
-		channelnames.push_back("ChiPsiTt");
-		amp2s["ChiPsiTt"]=ChiPsiTt;
-		amp2fls["ChiPsiTt"]=ChiPsiTtfl;
-		mass1s["ChiPsiTt"]=&MChi;
-		mass2s["ChiPsiTt"]=&MPsi;
-		channelnames.push_back("ChiPsiDd");
-		amp2s["ChiPsiDd"]=ChiPsiDd;
-		amp2fls["ChiPsiDd"]=ChiPsiDdfl;
-		mass1s["ChiPsiDd"]=&MChi;
-		mass2s["ChiPsiDd"]=&MPsi;
-		channelnames.push_back("ChiPsiSs");
-		amp2s["ChiPsiSs"]=ChiPsiSs;
-		amp2fls["ChiPsiSs"]=ChiPsiSsfl;
-		mass1s["ChiPsiSs"]=&MChi;
-		mass2s["ChiPsiSs"]=&MPsi;
-		channelnames.push_back("ChiPsiBb");
-		amp2s["ChiPsiBb"]=ChiPsiBb;
-		amp2fls["ChiPsiBb"]=ChiPsiBbfl;
-		mass1s["ChiPsiBb"]=&MChi;
-		mass2s["ChiPsiBb"]=&MPsi;
-		channelnames.push_back("PsiPsiHH");
-		amp2s["PsiPsiHH"]=PsiPsiHH;
-		amp2fls["PsiPsiHH"]=PsiPsiHHfl;
-		mass1s["PsiPsiHH"]=&MPsi;
-		mass2s["PsiPsiHH"]=&MPsi;
-		channelnames.push_back("PsiPsiAA");
-		amp2s["PsiPsiAA"]=PsiPsiAA;
-		amp2fls["PsiPsiAA"]=PsiPsiAAfl;
-		mass1s["PsiPsiAA"]=&MPsi;
-		mass2s["PsiPsiAA"]=&MPsi;
-		channelnames.push_back("PsiPsiZZ");
-		amp2s["PsiPsiZZ"]=PsiPsiZZ;
-		amp2fls["PsiPsiZZ"]=PsiPsiZZfl;
-		mass1s["PsiPsiZZ"]=&MPsi;
-		mass2s["PsiPsiZZ"]=&MPsi;
-		channelnames.push_back("PsiPsiwW");
-		amp2s["PsiPsiwW"]=PsiPsiwW;
-		amp2fls["PsiPsiwW"]=PsiPsiwWfl;
-		mass1s["PsiPsiwW"]=&MPsi;
-		mass2s["PsiPsiwW"]=&MPsi;
-		channelnames.push_back("PsiPsiGG");
-		amp2s["PsiPsiGG"]=PsiPsiGG;
-		amp2fls["PsiPsiGG"]=PsiPsiGGfl;
-		mass1s["PsiPsiGG"]=&MPsi;
-		mass2s["PsiPsiGG"]=&MPsi;
-		channelnames.push_back("PsiPsiEe");
-		amp2s["PsiPsiEe"]=PsiPsiEe;
-		amp2fls["PsiPsiEe"]=PsiPsiEefl;
-		mass1s["PsiPsiEe"]=&MPsi;
-		mass2s["PsiPsiEe"]=&MPsi;
-		channelnames.push_back("PsiPsiMUmu");
-		amp2s["PsiPsiMUmu"]=PsiPsiMUmu;
-		amp2fls["PsiPsiMUmu"]=PsiPsiMUmufl;
-		mass1s["PsiPsiMUmu"]=&MPsi;
-		mass2s["PsiPsiMUmu"]=&MPsi;
-		channelnames.push_back("PsiPsiTAta");
-		amp2s["PsiPsiTAta"]=PsiPsiTAta;
-		amp2fls["PsiPsiTAta"]=PsiPsiTAtafl;
-		mass1s["PsiPsiTAta"]=&MPsi;
-		mass2s["PsiPsiTAta"]=&MPsi;
-		channelnames.push_back("PsiPsiUu");
-		amp2s["PsiPsiUu"]=PsiPsiUu;
-		amp2fls["PsiPsiUu"]=PsiPsiUufl;
-		mass1s["PsiPsiUu"]=&MPsi;
-		mass2s["PsiPsiUu"]=&MPsi;
-		channelnames.push_back("PsiPsiCc");
-		amp2s["PsiPsiCc"]=PsiPsiCc;
-		amp2fls["PsiPsiCc"]=PsiPsiCcfl;
-		mass1s["PsiPsiCc"]=&MPsi;
-		mass2s["PsiPsiCc"]=&MPsi;
-		channelnames.push_back("PsiPsiTt");
-		amp2s["PsiPsiTt"]=PsiPsiTt;
-		amp2fls["PsiPsiTt"]=PsiPsiTtfl;
-		mass1s["PsiPsiTt"]=&MPsi;
-		mass2s["PsiPsiTt"]=&MPsi;
-		channelnames.push_back("PsiPsiDd");
-		amp2s["PsiPsiDd"]=PsiPsiDd;
-		amp2fls["PsiPsiDd"]=PsiPsiDdfl;
-		mass1s["PsiPsiDd"]=&MPsi;
-		mass2s["PsiPsiDd"]=&MPsi;
-		channelnames.push_back("PsiPsiSs");
-		amp2s["PsiPsiSs"]=PsiPsiSs;
-		amp2fls["PsiPsiSs"]=PsiPsiSsfl;
-		mass1s["PsiPsiSs"]=&MPsi;
-		mass2s["PsiPsiSs"]=&MPsi;
-		channelnames.push_back("PsiPsiBb");
-		amp2s["PsiPsiBb"]=PsiPsiBb;
-		amp2fls["PsiPsiBb"]=PsiPsiBbfl;
-		mass1s["PsiPsiBb"]=&MPsi;
-		mass2s["PsiPsiBb"]=&MPsi;
-		channelnames.push_back("ChiChiChiPsi");
-		amp2s["ChiChiChiPsi"]=ChiChiChiPsi;
-		amp2fls["ChiChiChiPsi"]=ChiChiChiPsifl;
-		mass1s["ChiChiChiPsi"]=&MChi;
-		mass2s["ChiChiChiPsi"]=&MChi;
-		channelnames.push_back("ChiChiPsiPsi");
-		amp2s["ChiChiPsiPsi"]=ChiChiPsiPsi;
-		amp2fls["ChiChiPsiPsi"]=ChiChiPsiPsifl;
-		mass1s["ChiChiPsiPsi"]=&MChi;
-		mass2s["ChiChiPsiPsi"]=&MChi;
-		channelnames.push_back("ChiChi");
-		amp2fls["ChiChi"]=ChiChi;
-		mass1s["ChiChi"]=&MChi;
-		mass2s["ChiChi"]=&MChi;
-		channelnames.push_back("ChiPsi");
-		amp2fls["ChiPsi"]=ChiPsi;
-		mass1s["ChiPsi"]=&MChi;
-		mass2s["ChiPsi"]=&MPsi;
-		channelnames.push_back("PsiPsi");
-		amp2fls["PsiPsi"]=PsiPsi;
-		mass1s["PsiPsi"]=&MPsi;
-		mass2s["PsiPsi"]=&MPsi;
-		inifuncs.push_back(ChiChi);
-		inifuncs.push_back(ChiPsi);
-		inifuncs.push_back(PsiPsi);
-		N_initial_states = 3;
-		inimasses.push_back(&MChi);
-		inimasses.push_back(&MChi);
-		inimasses.push_back(&MChi);
-		inimasses.push_back(&MPsi);
-		inimasses.push_back(&MPsi);
-		inimasses.push_back(&MPsi);
+		ADDCHANNEL(ChiChiHH, ChiChiHHfl, MChi, MChi, MH, MH)
+		ADDCHANNEL(ChiChiAA, ChiChiAAfl, MChi, MChi, ZERO, ZERO)
+		ADDCHANNEL(ChiChiZZ, ChiChiZZfl, MChi, MChi, MZ, MZ)
+		ADDCHANNEL(ChiChiwW, ChiChiwWfl, MChi, MChi, MW, MW)
+		ADDCHANNEL(ChiChiGG, ChiChiGGfl, MChi, MChi, ZERO, ZERO)
+		ADDCHANNEL(ChiChiEe, ChiChiEefl, MChi, MChi, Me, Me)
+		ADDCHANNEL(ChiChiMUmu, ChiChiMUmufl, MChi, MChi, MMU, MMU)
+		ADDCHANNEL(ChiChiTAta, ChiChiTAtafl, MChi, MChi, MTA, MTA)
+		ADDCHANNEL(ChiChiUu, ChiChiUufl, MChi, MChi, MU, MU)
+		ADDCHANNEL(ChiChiCc, ChiChiCcfl, MChi, MChi, MC, MC)
+		ADDCHANNEL(ChiChiTt, ChiChiTtfl, MChi, MChi, MT, MT)
+		ADDCHANNEL(ChiChiDd, ChiChiDdfl, MChi, MChi, MD, MD)
+		ADDCHANNEL(ChiChiSs, ChiChiSsfl, MChi, MChi, MS, MS)
+		ADDCHANNEL(ChiChiBb, ChiChiBbfl, MChi, MChi, MB, MB)
+		ADDCHANNEL(ChiPsiHH, ChiPsiHHfl, MChi, MPsi, MH, MH)
+		ADDCHANNEL(ChiPsiAA, ChiPsiAAfl, MChi, MPsi, ZERO, ZERO)
+		ADDCHANNEL(ChiPsiZZ, ChiPsiZZfl, MChi, MPsi, MZ, MZ)
+		ADDCHANNEL(ChiPsiwW, ChiPsiwWfl, MChi, MPsi, MW, MW)
+		ADDCHANNEL(ChiPsiGG, ChiPsiGGfl, MChi, MPsi, ZERO, ZERO)
+		ADDCHANNEL(ChiPsiEe, ChiPsiEefl, MChi, MPsi, Me, Me)
+		ADDCHANNEL(ChiPsiMUmu, ChiPsiMUmufl, MChi, MPsi, MMU, MMU)
+		ADDCHANNEL(ChiPsiTAta, ChiPsiTAtafl, MChi, MPsi, MTA, MTA)
+		ADDCHANNEL(ChiPsiUu, ChiPsiUufl, MChi, MPsi, MU, MU)
+		ADDCHANNEL(ChiPsiCc, ChiPsiCcfl, MChi, MPsi, MC, MC)
+		ADDCHANNEL(ChiPsiTt, ChiPsiTtfl, MChi, MPsi, MT, MT)
+		ADDCHANNEL(ChiPsiDd, ChiPsiDdfl, MChi, MPsi, MD, MD)
+		ADDCHANNEL(ChiPsiSs, ChiPsiSsfl, MChi, MPsi, MS, MS)
+		ADDCHANNEL(ChiPsiBb, ChiPsiBbfl, MChi, MPsi, MB, MB)
+		ADDCHANNEL(PsiPsiHH, PsiPsiHHfl, MPsi, MPsi, MH, MH)
+		ADDCHANNEL(PsiPsiAA, PsiPsiAAfl, MPsi, MPsi, ZERO, ZERO)
+		ADDCHANNEL(PsiPsiZZ, PsiPsiZZfl, MPsi, MPsi, MZ, MZ)
+		ADDCHANNEL(PsiPsiwW, PsiPsiwWfl, MPsi, MPsi, MW, MW)
+		ADDCHANNEL(PsiPsiGG, PsiPsiGGfl, MPsi, MPsi, ZERO, ZERO)
+		ADDCHANNEL(PsiPsiEe, PsiPsiEefl, MPsi, MPsi, Me, Me)
+		ADDCHANNEL(PsiPsiMUmu, PsiPsiMUmufl, MPsi, MPsi, MMU, MMU)
+		ADDCHANNEL(PsiPsiTAta, PsiPsiTAtafl, MPsi, MPsi, MTA, MTA)
+		ADDCHANNEL(PsiPsiUu, PsiPsiUufl, MPsi, MPsi, MU, MU)
+		ADDCHANNEL(PsiPsiCc, PsiPsiCcfl, MPsi, MPsi, MC, MC)
+		ADDCHANNEL(PsiPsiTt, PsiPsiTtfl, MPsi, MPsi, MT, MT)
+		ADDCHANNEL(PsiPsiDd, PsiPsiDdfl, MPsi, MPsi, MD, MD)
+		ADDCHANNEL(PsiPsiSs, PsiPsiSsfl, MPsi, MPsi, MS, MS)
+		ADDCHANNEL(PsiPsiBb, PsiPsiBbfl, MPsi, MPsi, MB, MB)
 		denstructures.push_back(&MH);
 		denstructures.push_back(&WH);
 		N_widths = 1;

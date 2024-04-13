@@ -4,138 +4,46 @@
 #include "../../model.hpp"
 
 double DT::PsiPsiHH(const double &cos_t, const double &s){
-double t =  (MH*MH) + (-s + cos_t*sqrt(s - 4* (MH*MH))*sqrt(s - 4*\
- 
-      (MPsi*MPsi)))/2. +  (MPsi*MPsi);
-double u = -s - t + MPsi*MPsi + MPsi*MPsi + MH*MH + MH*MH;
-return  (lam13*lam13) + (lam13* (lam123*lam123)* (vev*vev))/(2.*(t - \
- 
-      (MChi*MChi))) + (lam13* (lam123*lam123)* (vev*vev))/(2.*(u - \
- 
-      (MChi*MChi))) + (2* (lam13*lam13*lam13)* (vev*vev))/(t -  (MPsi*MPsi))\
- 
-      + (2* (lam13*lam13*lam13)* (vev*vev))/(u -  (MPsi*MPsi)) + (\
- 
-      (lam123*lam123*lam123*lam123)* (vev*vev*vev*vev))/(8.*(-t + \
- 
-      (MChi*MChi))*(-u +  (MChi*MChi))) + ( (lam123*lam123)* (lam13*lam13)*\
- 
-      (vev*vev*vev*vev))/(2.*(t -  (MChi*MChi))*(t -  (MPsi*MPsi))) + (\
- 
-      (lam123*lam123)* (lam13*lam13)* (vev*vev*vev*vev))/(2.*(u - \
- 
-      (MChi*MChi))*(u -  (MPsi*MPsi))) + ( (lam123*lam123)* (lam13*lam13)*\
- 
-      (vev*vev*vev*vev))/(2.*(-u +  (MChi*MChi))*(-t +  (MPsi*MPsi))) + (\
- 
-      (lam123*lam123)* (lam13*lam13)* (vev*vev*vev*vev))/(2.*(-t + \
- 
-      (MChi*MChi))*(-u +  (MPsi*MPsi))) + (2* (lam13*lam13*lam13*lam13)*\
- 
-      (vev*vev*vev*vev))/((-t +  (MPsi*MPsi))*(-u +  (MPsi*MPsi))) + (\
- 
-      (lam123*lam123*lam123*lam123)* (vev*vev*vev*vev))/(16.* (( (MChi*MChi)\
- 
-      - t)*( (MChi*MChi) - t))) + ( (lam13*lam13*lam13*lam13)*\
- 
-      (vev*vev*vev*vev))/ (( (MPsi*MPsi) - t)*( (MPsi*MPsi) - t)) + (\
- 
-      (lam123*lam123*lam123*lam123)* (vev*vev*vev*vev))/(16.* (( (MChi*MChi)\
- 
-      - u)*( (MChi*MChi) - u))) + ( (lam13*lam13*lam13*lam13)*\
- 
-      (vev*vev*vev*vev))/ (( (MPsi*MPsi) - u)*( (MPsi*MPsi) - u)) + (12*lam*\
- 
-      (lam13*lam13)*(s -  (MH*MH))* (vev*vev))/( (MH*MH*MH*MH) +  (s*s) + \
- 
-      (MH*MH)*(-2*s +  (WH*WH))) + (36* (lam*lam)* (lam13*lam13)*\
- 
-      (vev*vev*vev*vev))/( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s + \
- 
-      (WH*WH))) + (3*lam*lam13* (lam123*lam123)*(-s +  (MH*MH))*\
- 
-      (vev*vev*vev*vev))/((-t +  (MChi*MChi))*( (MH*MH*MH*MH) +  (s*s) + \
- 
-      (MH*MH)*(-2*s +  (WH*WH)))) + (3*lam*lam13* (lam123*lam123)*(-s + \
- 
-      (MH*MH))* (vev*vev*vev*vev))/((-u +  (MChi*MChi))*( (MH*MH*MH*MH) + \
- 
-      (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) + (12*lam* (lam13*lam13*lam13)*(-s\
- 
-      +  (MH*MH))* (vev*vev*vev*vev))/((-t +  (MPsi*MPsi))*( (MH*MH*MH*MH) + \
- 
-      (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) + (12*lam* (lam13*lam13*lam13)*(-s\
- 
-      +  (MH*MH))* (vev*vev*vev*vev))/((-u +  (MPsi*MPsi))*( (MH*MH*MH*MH) + \
- 
-      (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
+	double t =  (MH*MH) + (-s + cos_t*sqrt(s - 4* (MH*MH))*sqrt(s - 4* (MPsi*MPsi)))/2. +  (MPsi*MPsi);
+	double u = -s - t + MPsi*MPsi + MPsi*MPsi + MH*MH + MH*MH;
+	return (-2*token37*token4*token6*token8)/(-(t*token10) + token10* (MChi*MChi)) - (2*token37*token4*token6*token8)/(-(token10*u) + token10* (MChi*MChi)) + (2*token37*token38*token4*token6)/(t -  (MPsi*MPsi)) + (2*token37*token38*token4*token6)/(u -  (MPsi*MPsi)) +  (token37*token37) + (2*token38*token8* (token4*token4)* (token6*token6))/(token10*(t -  (MChi*MChi))*(t -  (MPsi*MPsi))) + (2*token38*token8* (token4*token4)* (token6*token6))/(token10*(u -  (MChi*MChi))*(u -  (MPsi*MPsi))) + (2*token38*token8* (token4*token4)* (token6*token6))/(token10*(-u +  (MChi*MChi))*(-t +  (MPsi*MPsi))) + (2*token38*token8* (token4*token4)* (token6*token6))/(token10*(-t +  (MChi*MChi))*(-u +  (MPsi*MPsi))) + (2* (token38*token38)* (token4*token4)* (token6*token6))/((-t +  (MPsi*MPsi))*(-u +  (MPsi*MPsi))) + ( (token38*token38)* (token4*token4)* (token6*token6))/ (( (MPsi*MPsi) - t)*( (MPsi*MPsi) - t)) + (2* (token4*token4)* (token6*token6)* (token8*token8))/((-t +  (MChi*MChi))*(-u +  (MChi*MChi))* (token10*token10)) + ( (token4*token4)* (token6*token6)* (token8*token8))/( (( (MChi*MChi) - t)*( (MChi*MChi) - t))* (token10*token10)) + ( (token4*token4)* (token6*token6)* (token8*token8))/( (token10*token10)* (( (MChi*MChi) - u)*( (MChi*MChi) - u))) + ( (token38*token38)* (token4*token4)* (token6*token6))/ (( (MPsi*MPsi) - u)*( (MPsi*MPsi) - u)) + (2*token2*token3*token36*token37*token4*(s -  (MH*MH)))/( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))) + (2*token2*token3*token36*token6*token8*(-s +  (MH*MH))* (token4*token4))/(token10*(-t +  (MChi*MChi))*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) + (2*token2*token3*token36*token6*token8*(-s +  (MH*MH))* (token4*token4))/(token10*(-u +  (MChi*MChi))*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) + (2*token2*token3*token36*token38*token6*(-s +  (MH*MH))* (token4*token4))/((-t +  (MPsi*MPsi))*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) + (2*token2*token3*token36*token38*token6*(-s +  (MH*MH))* (token4*token4))/((-u +  (MPsi*MPsi))*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)))) + ( (token2*token2)* (token3*token3)* (token36*token36)* (token4*token4))/( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
 }
 double DT::PsiPsiAA(const double &cos_t, const double &s){
-return ( (gc29*gc29)* (lam13*lam13)* (s*s)* (vev*vev))/(2.*( (MH*MH*MH*MH) + \
- 
-      (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
+	return (4* (s*s)* (token11*token11)* (token12*token12)* (token13*token13)* (token36*token36))/( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
 }
 double DT::PsiPsiZZ(const double &cos_t, const double &s){
-return ( (gc132*gc132)* (lam13*lam13)*(-4*s* (MZ*MZ) + 12* (MZ*MZ*MZ*MZ) + \
- 
-      (s*s))* (vev*vev))/(4.* (MZ*MZ*MZ*MZ)*( (MH*MH*MH*MH) +  (s*s) + \
- 
-      (MH*MH)*(-2*s +  (WH*WH))));
+	return ((-4*s* (MZ*MZ) + 12* (MZ*MZ*MZ*MZ) +  (s*s))* (token14*token14)* (token15*token15)* (token36*token36)* (token4*token4))/(4.* (MZ*MZ*MZ*MZ)* (token16*token16)* (token17*token17)* (token18*token18)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::PsiPsiwW(const double &cos_t, const double &s){
-return ( (gc112*gc112)* (lam13*lam13)*(-4*s* (MW*MW) + 12* (MW*MW*MW*MW) + \
- 
-      (s*s))* (vev*vev))/(4.* (MW*MW*MW*MW)*( (MH*MH*MH*MH) +  (s*s) + \
- 
-      (MH*MH)*(-2*s +  (WH*WH))));
+	return ((-4*s* (MW*MW) + 12* (MW*MW*MW*MW) +  (s*s))* (token14*token14)* (token36*token36)* (token4*token4))/(4.* (MW*MW*MW*MW)* (token16*token16)* (token18*token18)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::PsiPsiGG(const double &cos_t, const double &s){
-return (4* (gc30*gc30)* (lam13*lam13)* (s*s)* (vev*vev))/( (MH*MH*MH*MH) + \
- 
-      (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
+	return (4* (s*s)* (token13*token13)* (token19*token19)* (token20*token20)* (token22*token22)* (token39*token39))/( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
 }
 double DT::PsiPsiEe(const double &cos_t, const double &s){
-return (2* (gc80*gc80)* (lam13*lam13)*(s - 4* (Me*Me))* (vev*vev))/(\
- 
-      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
+	return (2*(s - 4* (Me*Me))* (token13*token13)* (token23*token23)* (token36*token36)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::PsiPsiMUmu(const double &cos_t, const double &s){
-return (2* (gc81*gc81)* (lam13*lam13)*(s - 4* (MMU*MMU))* (vev*vev))/(\
- 
-      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
+	return (2*(s - 4* (MMU*MMU))* (token13*token13)* (token25*token25)* (token36*token36)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::PsiPsiTAta(const double &cos_t, const double &s){
-return (2* (gc82*gc82)* (lam13*lam13)*(s - 4* (MTA*MTA))* (vev*vev))/(\
- 
-      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
+	return (2*(s - 4* (MTA*MTA))* (token13*token13)* (token26*token26)* (token36*token36)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::PsiPsiUu(const double &cos_t, const double &s){
-return (6* (gc97*gc97)* (lam13*lam13)*(s - 4* (MU*MU))* (vev*vev))/(\
- 
-      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
+	return (6*(s - 4* (MU*MU))* (token13*token13)* (token27*token27)* (token36*token36)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::PsiPsiCc(const double &cos_t, const double &s){
-return (6* (gc95*gc95)* (lam13*lam13)*(s - 4* (MC*MC))* (vev*vev))/(\
- 
-      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
+	return (6*(s - 4* (MC*MC))* (token13*token13)* (token28*token28)* (token36*token36)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::PsiPsiTt(const double &cos_t, const double &s){
-return (6* (gc96*gc96)* (lam13*lam13)*(s - 4* (MT*MT))* (vev*vev))/(\
- 
-      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
+	return (6*(s - 4* (MT*MT))* (token13*token13)* (token29*token29)* (token36*token36)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::PsiPsiDd(const double &cos_t, const double &s){
-return (6* (gc72*gc72)* (lam13*lam13)*(s - 4* (MD*MD))* (vev*vev))/(\
- 
-      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
+	return (6*(s - 4* (MD*MD))* (token13*token13)* (token30*token30)* (token36*token36)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::PsiPsiSs(const double &cos_t, const double &s){
-return (6* (gc73*gc73)* (lam13*lam13)*(s - 4* (MS*MS))* (vev*vev))/(\
- 
-      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
+	return (6*(s - 4* (MS*MS))* (token13*token13)* (token31*token31)* (token36*token36)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::PsiPsiBb(const double &cos_t, const double &s){
-return (6* (gc71*gc71)* (lam13*lam13)*(s - 4* (MB*MB))* (vev*vev))/(\
- 
-      (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
+	return (6*(s - 4* (MB*MB))* (token13*token13)* (token32*token32)* (token36*token36)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }

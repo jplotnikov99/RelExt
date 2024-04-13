@@ -102,14 +102,3 @@ double DT::ChiPsiBbfl(const double &cos_t, const double &s){
 	 else{ return 0; }
 
 }
-double DT::ChiPsi(const double &cos_t, const double &s){
-	 return ( ChiPsiHHfl(cos_t, s) + ChiPsiAAfl(cos_t, s) + ChiPsiZZfl(cos_t, s)\
- 
-      + ChiPsiwWfl(cos_t, s) + ChiPsiGGfl(cos_t, s) + ChiPsiEefl(cos_t, s) +\
- 
-      ChiPsiMUmufl(cos_t, s) + ChiPsiTAtafl(cos_t, s) + ChiPsiUufl(cos_t, s)\
- 
-      + ChiPsiCcfl(cos_t, s) + ChiPsiTtfl(cos_t, s) + ChiPsiDdfl(cos_t, s) +\
- 
-      ChiPsiSsfl(cos_t, s) + ChiPsiBbfl(cos_t, s) );
-}

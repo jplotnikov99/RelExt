@@ -102,28 +102,3 @@ double DT::ChiChiBbfl(const double &cos_t, const double &s){
 	 else{ return 0; }
 
 }
-double DT::ChiChiChiPsifl(const double &cos_t, const double &s){
-	 if(heavi(s,MChi,MPsi)){
-		 return flux(s, MChi,MChi,MChi,MPsi)*ChiChiChiPsi(cos_t, s);
-	 }
-	 else{ return 0; }
-
-}
-double DT::ChiChiPsiPsifl(const double &cos_t, const double &s){
-	 if(heavi(s,MPsi,MPsi)){
-		 return 0.5*flux(s, MChi,MChi,MPsi,MPsi)*ChiChiPsiPsi(cos_t, s);
-	 }
-	 else{ return 0; }
-
-}
-double DT::ChiChi(const double &cos_t, const double &s){
-	 return ( ChiChiHHfl(cos_t, s) + ChiChiAAfl(cos_t, s) + ChiChiZZfl(cos_t, s)\
- 
-      + ChiChiwWfl(cos_t, s) + ChiChiGGfl(cos_t, s) + ChiChiEefl(cos_t, s) +\
- 
-      ChiChiMUmufl(cos_t, s) + ChiChiTAtafl(cos_t, s) + ChiChiUufl(cos_t, s)\
- 
-      + ChiChiCcfl(cos_t, s) + ChiChiTtfl(cos_t, s) + ChiChiDdfl(cos_t, s) +\
- 
-      ChiChiSsfl(cos_t, s) + ChiChiBbfl(cos_t, s));
-}

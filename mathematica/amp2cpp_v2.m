@@ -1,7 +1,8 @@
 (* ::Package:: *)
 
-directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
+(*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
 (*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
+directory = "/home/rodrigo/Downloads/darktree_new/md_cxsm/FR_modfiles"<>"/FA_modfiles";
 Print[directory]
 
 (*start FA and FC*)
@@ -29,6 +30,11 @@ mathlabel= "///////////////////CODE GENERATED VIA MATHEMATICA///////////////////
 subrule = {FCGV[x_]:>ToExpression[x]};
 gcsub=M$FACouplings;
 SetOptions[Polarization, Transversality->True];
+
+
+(*****************)
+(*AMPLITUDES PART*)
+(*****************)
 
 
 (*create list with particle identifiers, masses and names according to FA mod files*)
@@ -404,14 +410,8 @@ calcAmp2s[];
 
 
 (*****************)
-(*NEW WIDTHS PART*)
+(***WIDTHS PART***)
 (*****************)
-(*
-Stuff to-do:
-1) declare wH = wwH() (same for other relevant widths, problably in init.cpp?)  
-2) add off-shell, 1to3/4?, QCD, decay to photons/gluons?, etc
-3) check widths with CH/Hdecay in the end
-*)
 
 
 relevantWsfields = {};
@@ -420,7 +420,6 @@ Do[
 	AppendTo[relevantWsfields, particlelist[[j,1]]] ]
 	, {i, Length[relevantWs]}, {j, Length[particlelist]}
 ]
-(*relevantWsfields*)
 
 
 (*list with every 1 to 2 tree-level decay*)
@@ -504,9 +503,6 @@ If[Length[ampDecays] == 0,
 ]
 ,{i,1,Length[finallistDecays]}]
 
-(*foutlistDecays
-decayslist//TableForm*)
-
 
 (*computation of the widths for all the 1to2 processes from the previous list*)
 finalDecays = {};
@@ -554,17 +550,15 @@ Do[
 
 , {i, 1, Length[decayslist]}]
 
-(*finalDecays//TableForm*)
-
 
 (*list of all partial widths*)
 pfinalDecays = Table[1/(2*TheMass[foutlistDecays[[i,1]]])*Sqrt[(TheMass[foutlistDecays[[i,1]]]^2 - (TheMass[foutlistDecays[[i,2]]]+TheMass[foutlistDecays[[i,3]]])^2)*(TheMass[foutlistDecays[[i,1]]]^2 - (TheMass[foutlistDecays[[i,2]]]-TheMass[foutlistDecays[[i,3]]])^2)], {i, 1, Length[foutlistDecays]}]/.subrule;
 finalDecaysWidth = Table[pfinalDecays[[i]]/(32*Pi^2*TheMass[foutlistDecays[[i,1]]]^2)*finalDecays[[i]]*4*Pi, {i, 1, Length[foutlistDecays]}]/.subrule//FullSimplify (*//TableForm*);
 
 
-(***********************************)
-(*BACK TO ORIGINAL MATHEMATICA CODE*)
-(***********************************)
+(*************************)
+(*MATHEMATICA TO CPP PART*)
+(*************************)
 
 
 (*useful functions for the cpp code*)
@@ -768,17 +762,62 @@ Write[sfile, "}"];
 Close[sfile];
 
 
+(*MS, MC, MB, MT*)
+runMasses = {TheMass[F[11]], TheMass[F[8]], TheMass[F[12]], TheMass[F[9]]}/.subrule;
+(*loadparameters file*)
 sfile=OpenWrite[directory<>"sources/loadparameters.cpp",FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
 Write[sfile, mathlabel];
 Write[sfile, "#include \"general_model.hpp\""]
-Write[sfile, "#include \"../model.hpp\"\n"]
+Write[sfile, "#include \"../model.hpp\""]
+Write[sfile, "#include \"mass_run.hpp\"\n"]
 Write[sfile, "namespace DT{"]
 
 Write[sfile, "\tvoid Model::load_parameters(){"]
+
+(*running masses for widths*)
+Write[sfile, "\t\tMrun running;"];
+Write[sfile, "\t\tdouble Q;"];
+Do[ 
+	Write[sfile, "\t\tQ = ", ToString[inifuncDecays[j][[1,2]]], ";"];
+	Write[sfile, "\t\t", ToString[runMasses[[1]]], " = running.RunM(Q, 3, running.N0, 0);"];
+	Write[sfile, "\t\t", ToString[runMasses[[2]]], " = running.RunM(Q, 4, running.N0, 0);"];
+	Write[sfile, "\t\t", ToString[runMasses[[3]]], " = running.RunM(Q, 5, running.N0, 1);"];
+	Write[sfile, "\t\t", ToString[runMasses[[4]]], " = running.RunM(Q, 6, running.N0, 1);"];
+	Write[sfile, "\t\taS = running.alphaS(Q, running.NalphaS);"];
+	Write[sfile, "\t\tFAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;"];
+	If[ContainsAll[external[[All,1]], {"yms", "ymb", "ymt", "ymc"}],
+		Write[sfile, "\t\tyms = ", ToString[runMasses[[1]]], ";"];
+		Write[sfile, "\t\tymc = ", ToString[runMasses[[2]]], ";"];
+		Write[sfile, "\t\tymb = ", ToString[runMasses[[3]]], ";"];
+		Write[sfile, "\t\tymt = ", ToString[runMasses[[4]]], ";"];
+	];
+	Do[
+		Write[sfile, "\t\t", internal[[i,1]] ," = ", internal[[i,2]],";"]
+	,{i,Length[internal]}];
+	Write[sfile, "\t\tEL = EE;"];
+	(*widths assignment*)
+	Write[sfile, "\t\t", relevantWs[[2*j]], " = ww", ToString[possibleiniDecays[[j]]] , "();"];
+,{j,Length[possibleiniDecays]}]
+
+(*running masses for DM annihilation*)
+Write[sfile, "\t\tQ = 2*MDM;"];
+Write[sfile, "\t\t", ToString[runMasses[[1]]], " = running.RunM(Q, 3, running.N0, 0);"];
+Write[sfile, "\t\t", ToString[runMasses[[2]]], " = running.RunM(Q, 4, running.N0, 0);"];
+Write[sfile, "\t\t", ToString[runMasses[[3]]], " = running.RunM(Q, 5, running.N0, 1);"];
+Write[sfile, "\t\t", ToString[runMasses[[4]]], " = running.RunM(Q, 6, running.N0, 1);"];
+Write[sfile, "\t\taS = running.alphaS(Q, running.NalphaS);"];
+Write[sfile, "\t\tFAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;"];
+If[ContainsAll[external[[All,1]], {"yms", "ymb", "ymt", "ymc"}],
+	Write[sfile, "\t\tyms = ", ToString[runMasses[[1]]], ";"];
+	Write[sfile, "\t\tymc = ", ToString[runMasses[[2]]], ";"];
+	Write[sfile, "\t\tymb = ", ToString[runMasses[[3]]], ";"];
+	Write[sfile, "\t\tymt = ", ToString[runMasses[[4]]], ";"];
+];
 Do[
 	Write[sfile, "\t\t", internal[[i,1]] ," = ", internal[[i,2]],";"]
 ,{i,Length[internal]}]
 Write[sfile, "\t\tEL = EE;"];
+
 Write[sfile, "\t}"];
 Write[sfile, "}"];
 Close[sfile];
@@ -825,12 +864,12 @@ Do[
 			tsub=Replace[ttoct[inifunc[i][[j,2]],inifunc[i][[j,3]],inifunc[i][[j,4]],inifunc[i][[j,5]]]/.subrule,defer,All];
 			tsub=ToString[ToString[CForm[tsub],StandardForm]];
 			tsub=StringReplace[tsub,{"Sqrt"-> "sqrt","Defer"->" ","cost"->"cos_t"}];
-			Write[sfile, "double t = " , tsub , ";"];
-			Write[sfile, "double u = -s - t + " , ToString[inifunc[i][[j,2]]] , "*" , ToString[inifunc[i][[j,2]]] ," + ", ToString[inifunc[i][[j,3]]] , "*" , ToString[inifunc[i][[j,3]]] ," + "
+			Write[sfile, "\tdouble t = " , tsub , ";"];
+			Write[sfile, "\tdouble u = -s - t + " , ToString[inifunc[i][[j,2]]] , "*" , ToString[inifunc[i][[j,2]]] ," + ", ToString[inifunc[i][[j,3]]] , "*" , ToString[inifunc[i][[j,3]]] ," + "
 			, ToString[inifunc[i][[j,4]]] , "*" , ToString[inifunc[i][[j,4]]] ," + ", ToString[inifunc[i][[j,5]]] , "*" , ToString[inifunc[i][[j,5]]] , ";"];
 		];
 		
-		Write[sfile, "return " , subsamp2 , ";"];
+		Write[sfile, "\treturn " , subsamp2 , ";"];
 		Write[sfile, "}"]
 	,{j,Length[inifunc[i]]}];
 	Close[sfile];
@@ -868,17 +907,13 @@ Do[
 ,{i,Length[possibleini]}]
 
 
-runMasses = {TheMass[F[11]], TheMass[F[8]], TheMass[F[12]], TheMass[F[9]]}/.subrule;
-
-
 (*decays functions files*)
 Do[
 	ofile=directory<>"sources/amp2s/totalW"<> ToString[possibleiniDecays[[i]]] <> ".cpp";
-	sfile=OpenWrite[ofile,FormatType->StandardForm];
+	sfile=OpenWrite[ofile,FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
 	Write[sfile, mathlabel];
 	Write[sfile, "#include \"../../model.hpp\""];
 	Write[sfile, "#include \"utils.hpp\"\n"];
-	Write[sfile, "#include \"mass_run.hpp\"\n"];
 	
 	Do[
 		subsDecays=Replace[inifuncDecays[i][[j,8]],defer,All];
@@ -889,10 +924,10 @@ Do[
 		
 		symfac="";
 		If[inifuncDecays[i][[j,6]]===inifuncDecays[i][[j,7]],symfac="0.5*"];	
-		Write[sfile, "\t if(heaviDecays(" , ToString[inifuncDecays[i][[j,2]]] , "," , ToString[inifuncDecays[i][[j,3]]], "," , ToString[inifuncDecays[i][[j,4]]] , ")){"];
-		Write[sfile, "\t\t return " , symfac, subsDecays , ";"];
-		Write[sfile, "\t }"];
-		Write[sfile, "\t else{ return 0; }\n"];
+		Write[sfile, "\tif(heaviDecays(" , ToString[inifuncDecays[i][[j,2]]] , "," , ToString[inifuncDecays[i][[j,3]]], "," , ToString[inifuncDecays[i][[j,4]]] , ")){"];
+		Write[sfile, "\t\treturn " , symfac, subsDecays , ";"];
+		Write[sfile, "\t}"];
+		Write[sfile, "\telse{ return 0; }\n"];
 		Write[sfile, "}"]
 		
 	,{j,Length[inifuncDecays[i]]}];
@@ -906,23 +941,7 @@ Do[
 		]
 	,{j,Length[inifuncDecays[i]]}];
 	
-	(*running masses and couplings*)
-	Write[sfile, "\t Mrun running;"];
-	Write[sfile, "\t double Q = ", ToString[inifuncDecays[i][[1,2]]], ";"];
-	Write[sfile, "\t ", ToString[runMasses[[1]]], " = running.RunM(Q, 3, running.N0);"];
-	Write[sfile, "\t ", ToString[runMasses[[2]]], " = running.RunM(Q, 4, running.N0);"];
-	Write[sfile, "\t ", ToString[runMasses[[3]]], " = running.RunM(Q, 5, running.N0);"];
-	Write[sfile, "\t ", ToString[runMasses[[4]]], " = running.RunM(Q, 6, running.N0);"];
-	Write[sfile, "\t aS = running.alphaS(Q, running.NalphaS);"];
-	Write[sfile, "\t FAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;"];
-	If[ContainsAll[external[[All,1]], {"yms", "ymb", "ymt", "ymc"}],
-		Write[sfile, "\t yms = ", ToString[runMasses[[1]]], ";"];
-		Write[sfile, "\t ymc = ", ToString[runMasses[[2]]], ";"];
-		Write[sfile, "\t ymb = ", ToString[runMasses[[3]]], ";"];
-		Write[sfile, "\t ymt = ", ToString[runMasses[[4]]], ";"];
-	];
-	
-	Write[sfile, "\t return ", allcontr];
+	Write[sfile, "\treturn ", allcontr];
 	Write[sfile, "}"];
 	Close[sfile];
 	

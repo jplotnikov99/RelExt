@@ -5,7 +5,7 @@
 InputFile           |micro_cxsm.csv
 OutputFile          |cxsm_tokenized.csv
 StartPoint          |1
-EndPoint            |12
+EndPoint            |1
 SavedParameters     |MA1, svev, alpha
 ThermalBath         |
 ConsideredChannels  |
@@ -18,7 +18,8 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
-CalcTac             |10,100,1000,A1A1HH
+CalcRelic			|
+SaveData            |
 
 END
 ######## Advanced settings ########

@@ -73,9 +73,10 @@ namespace DT
     {
         std::cout << "Parameter point: " << i << std::endl;
         rdr->read_parameter(i);
+        mod->assigndm();
         mod->load_parameters();
         mod->load_tokens();
-        mod->assigndm();
+        //mod->assigndm();
     }
 
     void Main::def_thermal_bath()

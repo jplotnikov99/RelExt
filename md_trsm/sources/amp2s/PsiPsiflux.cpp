@@ -102,14 +102,3 @@ double DT::PsiPsiBbfl(const double &cos_t, const double &s){
 	 else{ return 0; }
 
 }
-double DT::PsiPsi(const double &cos_t, const double &s){
-	 return ( PsiPsiHHfl(cos_t, s) + PsiPsiAAfl(cos_t, s) + PsiPsiZZfl(cos_t, s)\
- 
-      + PsiPsiwWfl(cos_t, s) + PsiPsiGGfl(cos_t, s) + PsiPsiEefl(cos_t, s) +\
- 
-      PsiPsiMUmufl(cos_t, s) + PsiPsiTAtafl(cos_t, s) + PsiPsiUufl(cos_t, s)\
- 
-      + PsiPsiCcfl(cos_t, s) + PsiPsiTtfl(cos_t, s) + PsiPsiDdfl(cos_t, s) +\
- 
-      PsiPsiSsfl(cos_t, s) + PsiPsiBbfl(cos_t, s) );
-}
