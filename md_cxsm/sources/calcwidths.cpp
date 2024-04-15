@@ -15,7 +15,6 @@ namespace DT{
 		load_parameters();
 		WH = wwH();
 		scale = MS1;
-		scale = 825.09473117437415;
 		Run->calc_quark_masses(scale, quark_masses, aS);
 		load_parameters();
 		WS1 = wwS1();
