@@ -5,7 +5,7 @@
 InputFile           |micro_cxsm.csv
 OutputFile          |cxsm_tokenized.csv
 StartPoint          |1
-EndPoint            |1
+EndPoint            |2
 SavedParameters     |MA1, svev, alpha
 ThermalBath         |
 ConsideredChannels  |

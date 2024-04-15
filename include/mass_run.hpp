@@ -51,6 +51,7 @@ namespace DT
         double C(size_t order, int NF);
         double CQ(double X, int NF);
         double RunM(double q, int NF0, size_t no, int iif);
+        void calc_quark_masses(const double q, double *masses[], double &aS);
     };
 
 }

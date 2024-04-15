@@ -1,8 +1,8 @@
 (* ::Package:: *)
 
-(*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
+directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
 (*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
-directory = "/home/rodrigo/Downloads/darktree_new/md_cxsm/FR_modfiles"<>"/FA_modfiles";
+(*directory = "/home/rodrigo/Downloads/darktree_new/md_cxsm/FR_modfiles"<>"/FA_modfiles";*)
 Print[directory]
 
 (*start FA and FC*)
@@ -769,43 +769,12 @@ sfile=OpenWrite[directory<>"sources/loadparameters.cpp",FormatType->StandardForm
 Write[sfile, mathlabel];
 Write[sfile, "#include \"general_model.hpp\""]
 Write[sfile, "#include \"../model.hpp\""]
-Write[sfile, "#include \"mass_run.hpp\"\n"]
+
 Write[sfile, "namespace DT{"]
 
 Write[sfile, "\tvoid Model::load_parameters(){"]
 
-(*running masses for widths*)
-Write[sfile, "\t\tMrun running;"];
-Write[sfile, "\t\tdouble Q;"];
-Do[ 
-	Write[sfile, "\t\tQ = ", ToString[inifuncDecays[j][[1,2]]], ";"];
-	Write[sfile, "\t\t", ToString[runMasses[[1]]], " = running.RunM(Q, 3, running.N0, 0);"];
-	Write[sfile, "\t\t", ToString[runMasses[[2]]], " = running.RunM(Q, 4, running.N0, 0);"];
-	Write[sfile, "\t\t", ToString[runMasses[[3]]], " = running.RunM(Q, 5, running.N0, 1);"];
-	Write[sfile, "\t\t", ToString[runMasses[[4]]], " = running.RunM(Q, 6, running.N0, 1);"];
-	Write[sfile, "\t\taS = running.alphaS(Q, running.NalphaS);"];
-	Write[sfile, "\t\tFAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;"];
-	If[ContainsAll[external[[All,1]], {"yms", "ymb", "ymt", "ymc"}],
-		Write[sfile, "\t\tyms = ", ToString[runMasses[[1]]], ";"];
-		Write[sfile, "\t\tymc = ", ToString[runMasses[[2]]], ";"];
-		Write[sfile, "\t\tymb = ", ToString[runMasses[[3]]], ";"];
-		Write[sfile, "\t\tymt = ", ToString[runMasses[[4]]], ";"];
-	];
-	Do[
-		Write[sfile, "\t\t", internal[[i,1]] ," = ", internal[[i,2]],";"]
-	,{i,Length[internal]}];
-	Write[sfile, "\t\tEL = EE;"];
-	(*widths assignment*)
-	Write[sfile, "\t\t", relevantWs[[2*j]], " = ww", ToString[possibleiniDecays[[j]]] , "();"];
-,{j,Length[possibleiniDecays]}]
 
-(*running masses for DM annihilation*)
-Write[sfile, "\t\tQ = 2*MDM;"];
-Write[sfile, "\t\t", ToString[runMasses[[1]]], " = running.RunM(Q, 3, running.N0, 0);"];
-Write[sfile, "\t\t", ToString[runMasses[[2]]], " = running.RunM(Q, 4, running.N0, 0);"];
-Write[sfile, "\t\t", ToString[runMasses[[3]]], " = running.RunM(Q, 5, running.N0, 1);"];
-Write[sfile, "\t\t", ToString[runMasses[[4]]], " = running.RunM(Q, 6, running.N0, 1);"];
-Write[sfile, "\t\taS = running.alphaS(Q, running.NalphaS);"];
 Write[sfile, "\t\tFAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;"];
 If[ContainsAll[external[[All,1]], {"yms", "ymb", "ymt", "ymc"}],
 	Write[sfile, "\t\tyms = ", ToString[runMasses[[1]]], ";"];
@@ -815,8 +784,37 @@ If[ContainsAll[external[[All,1]], {"yms", "ymb", "ymt", "ymc"}],
 ];
 Do[
 	Write[sfile, "\t\t", internal[[i,1]] ," = ", internal[[i,2]],";"]
-,{i,Length[internal]}]
+,{i,Length[internal]}];
 Write[sfile, "\t\tEL = EE;"];
+
+Write[sfile, "\t}"];
+Write[sfile, "}"];
+Close[sfile];
+
+
+sfile=OpenWrite[directory<>"sources/calcwidths.cpp",FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
+Write[sfile, mathlabel];
+Write[sfile, "#include \"general_model.hpp\""]
+Write[sfile, "#include \"../model.hpp\""]
+Write[sfile, "#include \"mass_run.hpp\"\n"]
+Write[sfile, "namespace DT{"]
+
+Write[sfile, "\tvoid Model::calc_widths_and_scale(){"]
+
+(*running masses for widths*)
+Write[sfile, "\t\tstd::unique_ptr<Mrun> Run = std::make_unique<Mrun>();"];
+Write[sfile, "\t\tdouble *quark_masses[4] = {&",ToString[runMasses[[1]]],", &",ToString[runMasses[[2]]],", &",ToString[runMasses[[3]]],", &",ToString[runMasses[[4]]],"};"];
+Write[sfile, "\t\tdouble scale;"];
+Do[
+	Write[sfile, "\t\tscale = ", ToString[inifuncDecays[j][[1,2]]], ";"];
+	Write[sfile, "\t\tRun->calc_quark_masses(scale, quark_masses, aS);"];
+	Write[sfile, "\t\tload_parameters();"];
+	Write[sfile, "\t\t", relevantWs[[2*j]], " = ww", ToString[possibleiniDecays[[j]]] , "();"];
+,{j,Length[possibleiniDecays]}]
+
+(*running masses for DM annihilation*)
+Write[sfile, "\t\tscale = 2*MDM;"];
+Write[sfile, "\t\tRun->calc_quark_masses(scale, quark_masses, aS);"];
 
 Write[sfile, "\t}"];
 Write[sfile, "}"];

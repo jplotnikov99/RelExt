@@ -35,7 +35,7 @@ namespace DT
         case 1:
             return als1;
         case 2:
-            return als1 * (1. - B(1, NF) * llogx / logx); 
+            return als1 * (1. - B(1, NF) * llogx / logx);
         case 3:
             return als1 * ((1. - B(1, NF) * llogx / logx) + (pow(B(1, NF), 2) * (llogx * llogx - llogx - 1) + B(2, NF)) / (logx * logx));
         default:
@@ -78,7 +78,8 @@ namespace DT
     {
         double dy, x, xx, y;
         double Q = amz;
-        if (isc != 0) {
+        if (isc != 0)
+        {
             Q = scale;
         }
         int NF = 5;
@@ -298,7 +299,7 @@ namespace DT
         {
             NF = 4;
         }
-        //else if (Q <= amt) // this is how we think it should be
+        // else if (Q <= amt) // this is how we think it should be
         else if (Q <= amt0) // this is how it is in the fortran code
         {
             NF = 5;
@@ -499,7 +500,8 @@ namespace DT
             YMSB[2] = YMSB[3] * CQ(alphaS(QQS, 3) / M_PI, 3) / CQ(alphaS(AM[3], 3) / M_PI, 3);
         }
 
-        if (iif == 0){
+        if (iif == 0)
+        {
             if (q < amc)
             {
                 no = 3;
@@ -521,13 +523,26 @@ namespace DT
                 Q0 = amt;
             }
         }
-        else {
+        else
+        {
             YMSB[2] = amsb;
             no = NF0;
-            if (no == 3) { Q0 = QQS; }
-            if (no == 4) { Q0 = amc; }
-            if (no == 5) { Q0 = amb; }
-            if (no == 6) { Q0 = amt; }
+            if (no == 3)
+            {
+                Q0 = QQS;
+            }
+            if (no == 4)
+            {
+                Q0 = amc;
+            }
+            if (no == 5)
+            {
+                Q0 = amb;
+            }
+            if (no == 6)
+            {
+                Q0 = amt;
+            }
         }
 
         if (NNLO == 1 && NF > 3)
@@ -538,17 +553,26 @@ namespace DT
         {
             XKFAC = 1.0;
         }
-        
-        return YMSB[no-1] * CQ(alphaS(q, 3) / M_PI, no) / CQ(alphaS(Q0, 3) / M_PI, no);
+
+        return YMSB[no - 1] * CQ(alphaS(q, 3) / M_PI, no) / CQ(alphaS(Q0, 3) / M_PI, no);
     }
 
     Mrun::Mrun()
-    {        
+    {
         amsb = ams;
         lambda = xitla(nloop, alsmz, 0, amz);
         N0 = 5;
         NalphaS = 3;
         alsini(N0);
+    }
+
+    void Mrun::calc_quark_masses(const double q, double *masses[], double &aS)
+    {
+        *masses[0] = RunM(q, 3, N0, 0);
+        *masses[1] = RunM(q, 4, N0, 0);
+        *masses[2] = RunM(q, 5, N0, 1);
+        *masses[3] = RunM(q, 6, N0, 1);
+        aS = alphaS(q, NalphaS);
     }
 
 } // namespace DT

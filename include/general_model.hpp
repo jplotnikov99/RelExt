@@ -62,6 +62,7 @@ namespace DT
         Model();
 
         void init();
+        void calc_widths_and_scale();
         void load_parameters();
         void load_parameter_map();
         void load_tokens();
