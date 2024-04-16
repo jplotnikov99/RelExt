@@ -3,7 +3,7 @@
 namespace DT
 {
 
-    double Mrun::B(size_t order, int NF)
+    double Mrun::B(const size_t order, const int NF)
     {
         double B0 = 33. - 2. * NF;
         switch (order)
@@ -25,7 +25,7 @@ namespace DT
         }
     }
 
-    double Mrun::als(int NF, double x, double xlb)
+    double Mrun::als(const int NF, const double x, const double xlb)
     {
         double logx = log(x * x / (xlb * xlb));
         double llogx = log(logx);
@@ -33,7 +33,7 @@ namespace DT
         return als1 * ((1. - B(1, NF) * llogx / logx) + (pow(B(1, NF), 2) * (llogx * llogx - llogx - 1) + B(2, NF)) / (logx * logx));
     }
 
-    double Mrun::XX(size_t order, int NF)
+    double Mrun::XX(const size_t order, const int NF)
     {
         double AA = 12. * M_PI / B(0, NF);
         switch (order)
@@ -53,24 +53,24 @@ namespace DT
         }
     }
 
-    double Mrun::xit2(double a, double b, double c, double x)
+    double Mrun::xit2(const double a, const double b, const double c, const double x)
     {
         return a / 2. * (1. + sqrt(1. - 4. * b * log(x) * (1 - (a * b * (pow(log(x), 2) - log(x) - 1) + c / b) / x / log(x))));
     }
 
-    double Mrun::xitla(double alp, int isc, double scale)
+    double Mrun::xitla(const double alp, const int isc, const double scale)
     {
         double dy, x, xx, y;
         double Q = amz;
-        if (isc != 0) 
+        if (isc != 0)
         {
             Q = scale;
         }
-        int NF = 5;
+        static const int NF = 5;
         double xlb = Q * exp(-XX(0, NF) / alp / 2.);
-        double a = XX(0, NF) / alp;
-        double b = XX(1, NF) * alp;
-        double c = XX(2, NF) * alp;
+        const double a = XX(0, NF) / alp;
+        const double b = XX(1, NF) * alp;
+        const double c = XX(2, NF) * alp;
         do
         {
             x = log(Q * Q / (xlb * xlb));
@@ -82,16 +82,16 @@ namespace DT
         return xlb;
     }
 
-    double Mrun::xiter3(double q, double xlb1, int NF1, double xlb, int NF2)
+    double Mrun::xiter3(const double q, const double xlb1, const int NF1, const double xlb, const int NF2)
     {
         double x, y1, y2, dy;
         double xlb2 = xlb;
         double alp = als(NF1, q, xlb1);
-        double delta = 7. * pow(alp, 2) / (M_PI * M_PI) / 24.;
+        const double delta = 7. * pow(alp, 2) / (M_PI * M_PI) / 24.;
         alp = NF1 < NF2 ? alp * (1 + delta) : alp / (1 + delta);
-        double a = XX(0, NF2) / alp;
-        double b = XX(1, NF2) * alp;
-        double c = XX(2, NF2) * alp;
+        const double a = XX(0, NF2) / alp;
+        const double b = XX(1, NF2) * alp;
+        const double c = XX(2, NF2) * alp;
         do
         {
             x = log(q * q / (xlb2 * xlb2));
@@ -117,7 +117,7 @@ namespace DT
         vxlb3 = xlb;
     }
 
-    double Mrun::alphaS(double Q)
+    double Mrun::alphaS(const double Q)
     {
         std::vector<double> xlb = {0, 0, 0, 0, 0, 0};
         int NF;
@@ -145,14 +145,14 @@ namespace DT
         return als(NF, Q, xlb[NF - 1]);
     }
 
-    double Mrun::TRAN(double X, double XK, double XK2)
+    double Mrun::TRAN(const double X, const double XK, const double XK2)
     {
         return 1.0 + 4.0 / 3.0 * alphaS(X) / M_PI + XK * pow(alphaS(X) / M_PI, 2) + XK2 * pow(alphaS(X) / M_PI, 3);
     }
 
-    double Mrun::NB(size_t order, int NF)
+    double Mrun::NB(const size_t order, const int NF)
     {
-        double NB0 = (33. - 2. * NF) / 12.0;
+        const double NB0 = (33. - 2. * NF) / 12.0;
         switch (order)
         {
         case 0:
@@ -170,7 +170,7 @@ namespace DT
         }
     }
 
-    double Mrun::G(size_t order, int NF)
+    double Mrun::G(const size_t order, const int NF)
     {
         switch (order)
         {
@@ -186,9 +186,9 @@ namespace DT
         }
     }
 
-    double Mrun::C(size_t order, int NF)
+    double Mrun::C(const size_t order, const int NF)
     {
-        double C1 = G(1, NF) / NB(0, NF) - NB(1, NF) * 1.0 / (NB(0, NF) * NB(0, NF));
+        const double C1 = G(1, NF) / NB(0, NF) - NB(1, NF) * 1.0 / (NB(0, NF) * NB(0, NF));
         switch (order)
         {
         case 1:
@@ -203,20 +203,20 @@ namespace DT
         }
     }
 
-    double Mrun::CQ(double X, int NF)
+    double Mrun::CQ(const double X, const int NF)
     {
-        double G0 = 1.0;
+        static const double G0 = 1.0;
         return pow(2.0 * NB(0, NF) * X, G0 / NB(0, NF)) * (1.0 + LOOP2 * C(1, NF) * X + LOOP3 * C(2, NF) * X * X);
     }
 
-    double Mrun::RunM(double q, int NF0, int iif)
+    double Mrun::RunM(const double q, const int NF0, const int iif)
     {
         double AM[NN], YMSB[NN];
         double XMSB, XMHAT, Q0, XKFAC;
         int NF = NF0;
         int no;
-        double QQS = 2.0;
-        double QQC = 3.0;
+        static const double QQS = 2.0;
+        static const double QQC = 3.0;
         acc = 1e-8;
 
         AM[0] = 0.0;
@@ -306,25 +306,25 @@ namespace DT
                 Q0 = amt;
             }
         }
-        else 
+        else
         {
             YMSB[2] = ams;
             no = NF0;
-            if (no == 3) 
-            { 
-                Q0 = QQS; 
+            if (no == 3)
+            {
+                Q0 = QQS;
             }
-            if (no == 4) 
-            { 
-                Q0 = amc; 
+            if (no == 4)
+            {
+                Q0 = amc;
             }
-            if (no == 5) 
-            { 
-                Q0 = amb; 
+            if (no == 5)
+            {
+                Q0 = amb;
             }
-            if (no == 6) 
-            { 
-                Q0 = amt; 
+            if (no == 6)
+            {
+                Q0 = amt;
             }
         }
 
@@ -336,12 +336,12 @@ namespace DT
         {
             XKFAC = 1.0;
         }
-        
+
         return YMSB[no - 1] * CQ(alphaS(q) / M_PI, no) / CQ(alphaS(Q0) / M_PI, no);
     }
 
     Mrun::Mrun()
-    {        
+    {
         lambda = xitla(alsmz, 0, amz);
         alsini();
     }
