@@ -2,6 +2,11 @@
 
 namespace DT
 {
+    Mrun::Mrun()
+    {
+        lambda = xitla(alsmz, 0, amz);
+        alsini();
+    }
 
     double Mrun::B(const size_t order, const int NF)
     {
@@ -340,19 +345,19 @@ namespace DT
         return YMSB[no - 1] * CQ(alphaS(q) / M_PI, no) / CQ(alphaS(Q0) / M_PI, no);
     }
 
-    Mrun::Mrun()
+    double Mrun::delQCD(const double NF, const double aS)
     {
-        lambda = xitla(alsmz, 0, amz);
-        alsini();
+        double a = aS / M_PI;
+        return sqrt(1 + a * 5.6667 + (35.94 - NF) * a * a);
     }
 
     void Mrun::calc_quark_masses(const double q, double *masses[], double &aS)
     {
-        *masses[0] = RunM(q, 3, 0);
-        *masses[1] = RunM(q, 4, 0);
-        *masses[2] = RunM(q, 5, 1);
-        *masses[3] = RunM(q, 6, 1);
         aS = alphaS(q);
+        *masses[0] = RunM(q, 3, 0) * delQCD(3, aS);
+        *masses[1] = RunM(q, 4, 0) * delQCD(4, aS);
+        *masses[2] = RunM(q, 5, 1) * delQCD(5, aS);
+        *masses[3] = RunM(q, 6, 1) * delQCD(6, aS);
     }
 
 } // namespace DT
