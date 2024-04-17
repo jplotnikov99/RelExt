@@ -54,19 +54,31 @@ namespace DT
         return x2;
     }
 
-    void BeqSolver::rk4(double &x, ResError &y, const double &h)
+    double BeqSolver::dopr5(double &x, ResError &y, const double &h)
     {
-        ResError k1, k2, k3, k4;
-        k1 = h * beq->beq(x, y);
-        x = x + h / 2;
-        k2 = h * beq->beq(x, (y + k1 / 2));
-        k3 = h * beq->beq(x, (y + k2 / 2));
-        x = x + h / 2;
-        k4 = h * beq->beq(x, (y + k3));
-        y = y + (k1 + 2 * k2 + 2 * k3 + k4) / 6;
-    }
+        static const double c2 = 0.2, c3 = 0.3, c4 = 0.8, c5 = 8.0 / 9.0, a21 = 0.2, a31 = 3.0 / 40.0,
+                            a32 = 9.0 / 40.0, a41 = 44.0 / 45.0, a42 = -56.0 / 15.0, a43 = 32.0 / 9.0, a51 = 19372.0 / 6561.0,
+                            a52 = -25360.0 / 2187.0, a53 = 64448.0 / 6561.0, a54 = -212.0 / 729.0, a61 = 9017.0 / 3168.0,
+                            a62 = -355.0 / 33.0, a63 = 46732.0 / 5247.0, a64 = 49.0 / 176.0, a65 = -5103.0 / 18656.0,
+                            a71 = 35.0 / 384.0, a73 = 500.0 / 1113.0, a74 = 125.0 / 192.0, a75 = -2187.0 / 6784.0,
+                            a76 = 11.0 / 84.0, e1 = 71.0 / 57600.0, e3 = -71.0 / 16695.0, e4 = 71.0 / 1920.0,
+                            e5 = -17253.0 / 339200.0, e6 = 22.0 / 525.0, e7 = -1.0 / 40.0;
+        ResError k1, k2, k3, k4, k5, k6, k7, yout;
 
-    double BeqSolver::setStep(const double &hnow, const double &err)
+        k1 = h * beq->beq(x, y);
+        k2 = h * beq->beq(x + c2 * h, y + k1 * a21);
+        k3 = h * beq->beq(x + c3 * h, y + k1 * a31 + k2 * a32);
+        k4 = h * beq->beq(x + c4 * h, y + k1 * a41 + k2 * a42 + k3 * a43);
+        k5 = h * beq->beq(x + c5 * h, y + k1 * a51 + k2 * a52 + k3 * a53 + k4 * a54);
+        x = x + h;
+        k6 = h * beq->beq(x, y + k1 * a61 + k2 * a62 + k3 * a63 + k4 * a64 + k5 * a65);
+        yout = y + (k1 * a71 + k3 * a73 + k4 * a74 + k5 * a75 + k6 * a76);
+        k7 = h * beq->beq(x, yout);
+        y = yout;
+
+        return (e1 * k1.res + e3 * k3.res + e4 * k4.res + e5 * k5.res + e6 * k6.res + e7 * k7.res);
+    }
+    double BeqSolver::controller(const double &hnow, const double &err)
     {
         double hnext;
         if (err > 1)
@@ -91,18 +103,49 @@ namespace DT
         return hnext;
     }
 
-    void BeqSolver::adap_rk4(const double &xtoday, double &x, ResError &y, double h)
+    /* double BeqSolver::controller(const double &hnow, const double &err)
+    {
+        static const double beta = 0.05, alpha = 0.2 - beta * 0.75, safe = 0.9, minscale = 0.2,
+                            maxscale = 10.0;
+        double hnext;
+        double scale;
+        if (err > 1)
+        {
+            scale = std::max(safe * pow(err, -alpha), minscale);
+            hnext = hnow * scale;
+            reject = true;
+        }
+        else
+        {
+            if (err != 0)
+            {
+                scale = safe * pow(err, -alpha) * pow(errold, beta);
+                if (scale < minscale)
+                    scale = minscale;
+                if (scale > maxscale)
+                    scale = maxscale;
+            }
+            else
+            {
+                scale = maxscale;
+            }
+            if (reject)
+                hnext = hnow * std::min(scale, 1.);
+            else
+                hnext = hnow * scale;
+            errold = std::max(err, 1e-4);
+            reject = false;
+        }
+        return hnext;
+    } */
+
+    void BeqSolver::adap_dopr5(const double &xtoday, double &x, ResError &y, double h)
     {
         double xsave = x;
         ResError ysave = y;
-        rk4(x, y, h);
-        ResError ytemp = y;
-        x = xsave;
-        y = ysave;
-        rk4(x, y, h / 2);
-        rk4(x, y, h / 2);
-        double err = fabs((y.res - ytemp.res) / ytemp.res) / rk4_eps;
-        h = setStep(h, err);
+        double errest = fabs(dopr5(x, y, h));
+        double err = errest / std::max(ysave.res, y.res) / rk4_eps;
+        h = controller(h, err);
         if (x + h == x)
         {
             printf("Stepsize too small. Stiff system suspected.\n");
@@ -112,24 +155,26 @@ namespace DT
         {
             x = xsave;
             y = ysave;
-            adap_rk4(xtoday, x, y, h);
+            adap_dopr5(xtoday, x, y, h);
         }
         else if (x + h > xtoday)
         {
             h = xtoday - x;
-            rk4(x, y, h);
+            dopr5(x, y, h);
             beq->reset_tac_state(true);
         }
-        else if (y.res > 4. * beq->yeq(x))
+        else if (y.res > 10. * beq->yeq(x))
         {
+            y.err += errest;
         }
         else
         {
-            y.err += fabs(y.res - ytemp.res);
-            adap_rk4(xtoday, x, y, h);
+            y.err += errest;
+            adap_dopr5(xtoday, x, y, h);
         }
     }
 
+    size_t nn = 0;
     ResError BeqSolver::adap_simpson38(const double l, const double r, ResError *y, const double &est)
     {
         ResError I1, I2, I3, y1[4];
@@ -179,7 +224,7 @@ namespace DT
     ResError BeqSolver::calc_yield(const double &xtoday, double &x, ResError &y)
     {
         ResError yf, y0;
-        adap_rk4(xtoday, x, y);
+        adap_dopr5(xtoday, x, y);
         yf = y;
 
         y0 = 1 / yf - icoll(x, xtoday);

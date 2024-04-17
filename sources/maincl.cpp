@@ -29,7 +29,7 @@ namespace DT
             std::cout << "StartPoint is out of range and was set to 1.\n";
             start_point = 1;
         }
-        if (end_point == 0)
+        if ((end_point - 1) == 0)
             end_point = N_par_points;
         if (end_point > N_par_points)
         {
@@ -73,6 +73,7 @@ namespace DT
     {
         std::cout << "Parameter point: " << i << std::endl;
         rdr->read_parameter(i);
+        mod->load_parameters();
         mod->assigndm();
         mod->calc_widths_and_scale();
         mod->load_parameters();

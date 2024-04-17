@@ -3,9 +3,9 @@
 ######## Standard settings ########
 
 InputFile           |micro_cxsm.csv
-OutputFile          |cxsm_tokenized.csv
+OutputFile          |cxsm_dopr5.csv
 StartPoint          |1
-EndPoint            |2
+EndPoint            |
 SavedParameters     |MA1, svev, alpha
 ThermalBath         |
 ConsideredChannels  |
