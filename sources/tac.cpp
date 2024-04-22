@@ -115,21 +115,22 @@ namespace DT
         double num = 0.;
         double den = 0.;
         double mtemp;
+        double sqs = sqrt(s);
         double Tinv = x / mod->MDM;
 
         if (x > 10)
         {
-            num += Tinv * polK1(sqrt(s) * Tinv);
+            num += Tinv * polK1(sqs * Tinv);
             for (size_t i = 0; i < mod->bath_masses.size(); i++)
             {
                 mtemp = *mod->bath_masses.at(i);
-                den += exp(-Tinv * (mtemp - sqrt(s) / 2)) * polK2s.at(i);
+                den += exp(-Tinv * (mtemp - sqs / 2)) * polK2s.at(i);
             }
             den *= den;
         }
         else
         {
-            num += Tinv * std::cyl_bessel_k(1, sqrt(s) * Tinv);
+            num += Tinv * std::cyl_bessel_k(1, sqs * Tinv);
             for (auto it : mod->bath_masses)
             {
                 mtemp = *it;

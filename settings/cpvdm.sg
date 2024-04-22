@@ -5,7 +5,7 @@
 InputFile           |CPVDMTest.csv
 OutputFile          |cpvdm_rk4.csv
 StartPoint          |1
-EndPoint            |1
+EndPoint            |10
 SavedParameters     |mH1, mH2
 ThermalBath         |
 ConsideredChannels  |
