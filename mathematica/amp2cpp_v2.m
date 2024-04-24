@@ -415,10 +415,13 @@ calcAmp2s[];
 
 
 relevantWsfields = {};
+relevantWidth = {};
 Do[
-	If[relevantWs[[i]]==(particlelist[[j,2]]/.subrule) && StringPart[ToString[particlelist[[j,1]]],1]!="-" && StringPart[ToString[particlelist[[j,1]]],1]!="U" && ToString[particlelist[[j,1]]]!="S[2]" && ToString[particlelist[[j,1]]]!="S[3]",
-	AppendTo[relevantWsfields, particlelist[[j,1]]] ]
-	, {i, Length[relevantWs]}, {j, Length[particlelist]}
+	If[relevantWs[[i]]==(particlelist[[j,2]]/.subrule) && StringPart[ToString[particlelist[[j,1]]],1]!="-" && StringPart[ToString[particlelist[[j,1]]],1]!="U" && ToString[particlelist[[j,1]]]!="S[2]" && ToString[particlelist[[j,1]]]!="S[3]" && ToString[particlelist[[j,1]]]!="V[2]" && ToString[particlelist[[j,1]]]!="V[3]",
+		AppendTo[relevantWsfields, particlelist[[j,1]]];
+		AppendTo[relevantWidth, relevantWs[[i+1]]]; 
+	]
+, {i, Length[relevantWs]}, {j, Length[particlelist]}
 ]
 
 
@@ -469,20 +472,89 @@ DeleteDuplicates[remelemDecays];
 finallistDecays = Delete[diagsgroupedDecay[[All, 1]], remelemDecays];
 
 
+breakdownAmpDecays[proccess_, amp_]:=
+Block[{numerator,denominator,coefficient={},temp1,temp2},
+	numerator = Table[FullSimplify[Numerator[amp[[it]]]],{it,Length[amp]}];
+	
+	denominator =Table[Denominator[amp[[it]]],{it,Length[amp]}];
+	Do[
+		temp1 = 1;
+		temp2 = 1;
+		Do[
+			If[And[Length[placeholder*numerator[[it]]]===2,Length[numerator[[it]]]>=2],
+				temp1*=(numerator[[it]]);
+				Break[],
+				If[FreeQ[numerator[[it,jt]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__]}],
+					temp1*=(numerator[[it,jt]]),
+					temp2*=numerator[[it,jt]];
+				];
+			]
+		,{jt,Length[numerator[[it]]]}];
+		AppendTo[coefficient, temp1];
+	,{it,Length[numerator]}];
+	Do[
+		If[Length[denominator[[it]]]==0,
+			If[FreeQ[denominator[[it]],Alternatives @@ {s,t,u}],
+				coefficient[[it]]/=denominator[[it]]
+			];
+		];
+		Do[
+			
+				If[FreeQ[denominator[[it,jt]],Alternatives @@ {s,t,u}],
+					coefficient[[it]]/=(denominator[[it,jt]])
+				];
+		,{jt,Length[denominator[[it]]]}]
+	,{it,Length[denominator]}];
+	AppendTo[coefficientlist,coefficient];
+]
+
+
+(*function to determine type of particle appearing in the decay final states*)
+determineType[sts_, ind_]:=
+Block[{q1},
+		i1 = ind;
+		q1=StringPart[ToString[sts[[i1]]/.-x_:>x],1];
+		Which[
+			ToString[sts[[i1]]]==="V[2]",
+				q1 = "z_boson",
+			ToString[sts[[i1]]/.-x_:>x]==="V[3]",
+				q1 = "w_boson",
+			q1==="V",
+				If[PossibleZeroQ[TheMass[sts[[i1]]]],
+					q1 = "massless_vector_boson",
+					q1 = "massive_vector_boson"
+				],
+			q1==="F",
+				If[StringContainsQ[ToString[sts[[i1]]/.-x_:>x],"Col"],
+					q1 = "quark",
+					q1 = "lepton"
+				],
+			q1==="S",
+				q1 = "scalar"
+			];
+			Return[q1];
+]
+
+
 (*computation of the decays for all the 1to2 processes from the previous list*)
+calcAmpsDecays[]:=
+Block[{},
 decayslist = {};
 foutlistDecays = {};
 k = {};
 l = {};
 
-Do[
+particleType = {};
+(*massListDecays = {};*)
+coefficientlist = {};
+couplings = {};
 
+Do[
 FeynmangraphDecays = InsertFields[topologieDecay, {finallistDecays[[i,1]]} -> {finallistDecays[[i,2]], finallistDecays[[i,3]]}, 
 Model -> {modelname}, InsertionLevel -> {Particles}, GenericModel -> modelname, ExcludeParticles -> {}];
 FCClearScalarProducts[];
 ampDecays = FCFAConvert[CreateFeynAmp[FeynmangraphDecays], IncomingMomenta -> {p1}, OutgoingMomenta -> {p2, p3}, UndoChiralSplittings -> True, ChangeDimension -> 4, List -> True,
 SMP -> False, Contract -> True, DropSumOver -> True]/.gcsub/.subrule//DiracSubstitute67[#]&//DotSimplify[#]&//Simplify[#]&;
-
 (*if there are processes violating charge, recreate finallistDecays*)
 k = finallistDecays[[i,2]];
 l = finallistDecays[[i,3]];
@@ -500,8 +572,22 @@ If[Length[ampDecays] == 0,
 	,
 	AppendTo[decayslist, ampDecays];
 	AppendTo[foutlistDecays, {finallistDecays[[i,1]], k, l}];
-]
+];
+
+	AppendTo[particleType, {determineType[foutlistDecays[[i]], 2], determineType[foutlistDecays[[i]], 3]}];
+	(*AppendTo[massListDecays, {TheMass[foutlistDecays[[i, 2]]], TheMass[foutlistDecays[[i, 3]]]}/.subrule];*)
+	breakdownAmpDecays[foutlistDecays[[i]], decayslist[[i]]];
+	AppendTo[couplings, coefficientlist[[i]]*ComplexConjugate[coefficientlist[[i]]]];
+
 ,{i,1,Length[finallistDecays]}]
+]
+
+
+calcAmpsDecays[];
+(*particleType
+massListDecays
+coefficientlist;
+couplings*)
 
 
 (*computation of the widths for all the 1to2 processes from the previous list*)
@@ -511,6 +597,12 @@ tamp2 = {};
 subrule = {FCGV[x_]:>ToExpression[x]};
 
 Do[
+	
+	If[ (determineType[foutlistDecays[[i]], 1]=="scalar"), 
+		AppendTo[finalDecays, 0];
+		Continue[];
+	];
+	
 	FCClearScalarProducts[];
 	SP[p1, p1] = TheMass[foutlistDecays[[i,1]]]^2; 
 	SP[p2, p2] = TheMass[foutlistDecays[[i,2]]]^2; 
@@ -552,8 +644,10 @@ Do[
 
 
 (*list of all partial widths*)
-pfinalDecays = Table[1/(2*TheMass[foutlistDecays[[i,1]]])*Sqrt[(TheMass[foutlistDecays[[i,1]]]^2 - (TheMass[foutlistDecays[[i,2]]]+TheMass[foutlistDecays[[i,3]]])^2)*(TheMass[foutlistDecays[[i,1]]]^2 - (TheMass[foutlistDecays[[i,2]]]-TheMass[foutlistDecays[[i,3]]])^2)], {i, 1, Length[foutlistDecays]}]/.subrule;
-finalDecaysWidth = Table[pfinalDecays[[i]]/(32*Pi^2*TheMass[foutlistDecays[[i,1]]]^2)*finalDecays[[i]]*4*Pi, {i, 1, Length[foutlistDecays]}]/.subrule//FullSimplify (*//TableForm*);
+If[Length[finalDecays]!=0,
+	pfinalDecays = Table[1/(2*TheMass[foutlistDecays[[i,1]]])*Sqrt[(TheMass[foutlistDecays[[i,1]]]^2 - (TheMass[foutlistDecays[[i,2]]]+TheMass[foutlistDecays[[i,3]]])^2)*(TheMass[foutlistDecays[[i,1]]]^2 - (TheMass[foutlistDecays[[i,2]]]-TheMass[foutlistDecays[[i,3]]])^2)], {i, 1, Length[foutlistDecays]}]/.subrule;
+	finalDecaysWidth = Table[pfinalDecays[[i]]/(32*Pi^2*TheMass[foutlistDecays[[i,1]]]^2)*finalDecays[[i]]*4*Pi, {i, 1, Length[foutlistDecays]}]/.subrule//FullSimplify (*//TableForm*);
+]
 
 
 (*************************)
@@ -624,11 +718,12 @@ possibleiniDecays = DeleteDuplicates[Table[Select[particlelist, #[[1]]== templis
 
 (*auxiliary decays functions*)
 possiblemassesDecays= Table[TheMass[relevantWsfields[[i]]], {i, Length[relevantWsfields]}]/.subrule;
-
 Do[inifuncDecays[i]={},{i,Length[possibleiniDecays]}]
 Do[
 	pos=Position[possiblemassesDecays,TheMass[foutlistDecays[[i,1]]]/.subrule][[1,1]];
-	AppendTo[inifuncDecays[pos],{processnameDecays[[i]],TheMass[foutlistDecays[[i,1]]],TheMass[foutlistDecays[[i,2]]],TheMass[foutlistDecays[[i,3]]],templist2Decays[[i,1]],templist2Decays[[i,2]],templist2Decays[[i,3]],finalDecaysWidth[[i]]}/.subrule]
+	If[Length[finalDecaysWidth]!=0,
+		AppendTo[inifuncDecays[pos],{processnameDecays[[i]],TheMass[foutlistDecays[[i,1]]],TheMass[foutlistDecays[[i,2]]],TheMass[foutlistDecays[[i,3]]],templist2Decays[[i,1]],templist2Decays[[i,2]],templist2Decays[[i,3]],finalDecaysWidth[[i]], couplings[[i]], particleType[[i]] }/.subrule]
+	]
 ,{i,Length[processnameDecays]}]
 
 
@@ -809,7 +904,7 @@ Do[
 	Write[sfile, "\t\tscale = ", ToString[inifuncDecays[j][[1,2]]], ";"];
 	Write[sfile, "\t\tRun->calc_quark_masses(scale, quark_masses, aS);"];
 	Write[sfile, "\t\tload_parameters();"];
-	Write[sfile, "\t\t", relevantWs[[2*j]], " = ww", ToString[possibleiniDecays[[j]]] , "();"];
+	Write[sfile, "\t\t", relevantWidth[[j]], " = ww", ToString[possibleiniDecays[[j]]] , "();"];
 ,{j,Length[possibleiniDecays]}]
 
 (*running masses for DM annihilation*)
@@ -913,22 +1008,40 @@ Do[
 	Write[sfile, "#include \"../../model.hpp\""];
 	Write[sfile, "#include \"utils.hpp\"\n"];
 	
-	Do[
-		subsDecays=Replace[inifuncDecays[i][[j,8]],defer,All];
-		subsDecays=ToString[ToString[CForm[subsDecays],StandardForm]];
-		subsDecays=StringReplace[subsDecays,{"Sqrt"-> "sqrt","Defer"->" ","Cos("->"cos( ","Sin"->"sin", "Tan"->"tan", "Power"->"pow"}];
-		
-		Write[sfile, "double DT::w" , ToString[inifuncDecays[i][[j,1]]] , "(){"];
-		
-		symfac="";
-		If[inifuncDecays[i][[j,6]]===inifuncDecays[i][[j,7]],symfac="0.5*"];	
-		Write[sfile, "\tif(heaviDecays(" , ToString[inifuncDecays[i][[j,2]]] , "," , ToString[inifuncDecays[i][[j,3]]], "," , ToString[inifuncDecays[i][[j,4]]] , ")){"];
-		Write[sfile, "\t\treturn " , symfac, subsDecays , ";"];
-		Write[sfile, "\t}"];
-		Write[sfile, "\telse{ return 0; }\n"];
-		Write[sfile, "}"]
-		
-	,{j,Length[inifuncDecays[i]]}];
+	If[ inifuncDecays[i][[1,8]] != 0,
+		Do[
+			subsDecays=Replace[inifuncDecays[i][[j,8]],defer,All];
+			subsDecays=ToString[ToString[CForm[subsDecays],StandardForm]];
+			subsDecays=StringReplace[subsDecays,{"Sqrt"-> "sqrt","Defer"->" ","Cos("->"cos( ","Sin"->"sin", "Tan"->"tan", "Power"->"pow"}];
+			Write[sfile, "double DT::w" , ToString[inifuncDecays[i][[j,1]]] , "(){"];
+			symfac="";
+			If[inifuncDecays[i][[j,6]]===inifuncDecays[i][[j,7]],symfac="0.5*"];	
+			Write[sfile, "\tif(heaviDecays(" , ToString[inifuncDecays[i][[j,2]]] , "," , ToString[inifuncDecays[i][[j,3]]], "," , ToString[inifuncDecays[i][[j,4]]] , ")){"];
+			Write[sfile, "\t\treturn " , symfac, subsDecays , ";"];
+			Write[sfile, "\t}"];
+			Write[sfile, "\telse{ return 0; }\n"];
+			Write[sfile, "}"]
+		,{j,Length[inifuncDecays[i]]}];
+	];
+	(*if decaying particle is a scalar:*)
+	If[ inifuncDecays[i][[1,8]] == 0,
+		Do[
+			subsDecays=Replace[inifuncDecays[i][[j,9,1]],defer,All];
+			subsDecays=ToString[ToString[CForm[subsDecays],StandardForm]];
+			subsDecays=StringReplace[subsDecays,{"Sqrt"-> "sqrt","Defer"->" ","Cos("->"cos( ","Sin"->"sin", "Tan"->"tan", "Power"->"pow"}];
+			Write[sfile, "double DT::w" , ToString[inifuncDecays[i][[j,1]]] , "(){"];
+			symfac="";
+			If[inifuncDecays[i][[j,6]]===inifuncDecays[i][[j,7]],symfac="0.5*"];	
+			Write[sfile, "\tif(heaviDecays(" , ToString[inifuncDecays[i][[j,2]]] , "," , ToString[inifuncDecays[i][[j,3]]], "," , ToString[inifuncDecays[i][[j,4]]] , ")){"];
+			Write[sfile, "\t\tdouble coupling2 = ", symfac, subsDecays, ";"];
+			Write[sfile, "\t\tdouble m2 = ", ToString[inifuncDecays[i][[j,3]]],  ";"];
+			Write[sfile, "\t\tdouble m3 = ", ToString[inifuncDecays[i][[j,4]]],  ";"];
+			Write[sfile, "\t\treturn partial_width(" , inifuncDecays[i][[j,10,1]], ",", inifuncDecays[i][[j,10,2]], ", m2, m3, coupling2);"];
+			Write[sfile, "\t}"];
+			Write[sfile, "\telse{ return 0; }\n"];
+			Write[sfile, "}"]
+		,{j,Length[inifuncDecays[i]]}];
+	];
 	
 	Write[sfile, "double DT::ww" , ToString[possibleiniDecays[[i]]] , "(){"];
 	allcontr="( ";
@@ -938,9 +1051,7 @@ Do[
 			allcontr=StringJoin[allcontr,"w",ToString[inifuncDecays[i][[j,1]]],"() );"]
 		]
 	,{j,Length[inifuncDecays[i]]}];
-	
 	Write[sfile, "\treturn ", allcontr];
 	Write[sfile, "}"];
-	Close[sfile];
-	
+	Close[sfile];	
 ,{i,Length[possibleiniDecays]}]

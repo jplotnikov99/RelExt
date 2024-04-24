@@ -6,133 +6,190 @@
 
 double DT::whhh(){
 	if(heaviDecays(mHsm,mHsm,mHsm)){
-		return 0.5*(-9*sqrt(3)*mHsm* (L1*L1)* (v*v))/(16.*Pi*sqrt(- (mHsm*mHsm*mHsm*mHsm)));
+		double coupling2 = 0.5*9* (L1*L1)* (v*v);
+		double m2 = mHsm;
+		double m3 = mHsm;
+		return partial_width(scalar,scalar, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whH1H1(){
 	if(heaviDecays(mHsm,mH1,mH1)){
-		return 0.5*(sqrt(-4* (mH1*mH1)* (mHsm*mHsm) +  (mHsm*mHsm*mHsm*mHsm))* ((-2*RR1x2*RR1x3*Timag + 2*RR1x1*RR1x3*Treal + (L3 + L4 + L5)* (RR1x1*RR1x1)*v + (L3 + L4 - L5)* (RR1x2*RR1x2)*v + L7* (RR1x3*RR1x3)*v)*(-2*RR1x2*RR1x3*Timag + 2*RR1x1*RR1x3*Treal + (L3 + L4 + L5)* (RR1x1*RR1x1)*v + (L3 + L4 - L5)* (RR1x2*RR1x2)*v + L7* (RR1x3*RR1x3)*v)))/(16.*Pi* (mHsm*mHsm*mHsm));
+		double coupling2 = 0.5* ((2*RR1x2*RR1x3*Timag - 2*RR1x1*RR1x3*Treal - (L3 + L4 - L5)* (RR1x2*RR1x2)*v - ((L3 + L4 + L5)* (RR1x1*RR1x1) + L7* (RR1x3*RR1x3))*v)*(2*RR1x2*RR1x3*Timag - 2*RR1x1*RR1x3*Treal - (L3 + L4 - L5)* (RR1x2*RR1x2)*v - ((L3 + L4 + L5)* (RR1x1*RR1x1) + L7* (RR1x3*RR1x3))*v));
+		double m2 = mH1;
+		double m3 = mH1;
+		return partial_width(scalar,scalar, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whH1H2(){
 	if(heaviDecays(mHsm,mH1,mH2)){
-		return (sqrt((- ((mH1 - mH2)*(mH1 - mH2)) +  (mHsm*mHsm))*(- ((mH1 + mH2)*(mH1 + mH2)) +  (mHsm*mHsm)))* ((-(RR1x2*RR2x3*Timag) + RR1x1*RR2x3*Treal + (L3 + L4 + L5)*RR1x1*RR2x1*v + (L3 + L4 - L5)*RR1x2*RR2x2*v + RR1x3*(-(RR2x2*Timag) + RR2x1*Treal + L7*RR2x3*v))*(-(RR1x2*RR2x3*Timag) + RR1x1*RR2x3*Treal + (L3 + L4 + L5)*RR1x1*RR2x1*v + (L3 + L4 - L5)*RR1x2*RR2x2*v + RR1x3*(-(RR2x2*Timag) + RR2x1*Treal + L7*RR2x3*v))))/(16.*Pi* (mHsm*mHsm*mHsm));
+		double coupling2 =  ((RR1x2*RR2x3*Timag - RR1x1*RR2x3*Treal - (L3 + L4 + L5)*RR1x1*RR2x1*v - (L3 + L4 - L5)*RR1x2*RR2x2*v + RR1x3*(RR2x2*Timag - RR2x1*Treal - L7*RR2x3*v))*(RR1x2*RR2x3*Timag - RR1x1*RR2x3*Treal - (L3 + L4 + L5)*RR1x1*RR2x1*v - (L3 + L4 - L5)*RR1x2*RR2x2*v + RR1x3*(RR2x2*Timag - RR2x1*Treal - L7*RR2x3*v)));
+		double m2 = mH1;
+		double m3 = mH2;
+		return partial_width(scalar,scalar, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whH1H3(){
 	if(heaviDecays(mHsm,mH1,mH3)){
-		return (sqrt((- ((mH1 - mH3)*(mH1 - mH3)) +  (mHsm*mHsm))*(- ((mH1 + mH3)*(mH1 + mH3)) +  (mHsm*mHsm)))* ((-(RR1x2*RR3x3*Timag) + RR1x1*RR3x3*Treal + (L3 + L4 + L5)*RR1x1*RR3x1*v + (L3 + L4 - L5)*RR1x2*RR3x2*v + RR1x3*(-(RR3x2*Timag) + RR3x1*Treal + L7*RR3x3*v))*(-(RR1x2*RR3x3*Timag) + RR1x1*RR3x3*Treal + (L3 + L4 + L5)*RR1x1*RR3x1*v + (L3 + L4 - L5)*RR1x2*RR3x2*v + RR1x3*(-(RR3x2*Timag) + RR3x1*Treal + L7*RR3x3*v))))/(16.*Pi* (mHsm*mHsm*mHsm));
+		double coupling2 =  ((RR1x2*RR3x3*Timag - RR1x1*RR3x3*Treal - (L3 + L4 + L5)*RR1x1*RR3x1*v - (L3 + L4 - L5)*RR1x2*RR3x2*v + RR1x3*(RR3x2*Timag - RR3x1*Treal - L7*RR3x3*v))*(RR1x2*RR3x3*Timag - RR1x1*RR3x3*Treal - (L3 + L4 + L5)*RR1x1*RR3x1*v - (L3 + L4 - L5)*RR1x2*RR3x2*v + RR1x3*(RR3x2*Timag - RR3x1*Treal - L7*RR3x3*v)));
+		double m2 = mH1;
+		double m3 = mH3;
+		return partial_width(scalar,scalar, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whH2H2(){
 	if(heaviDecays(mHsm,mH2,mH2)){
-		return 0.5*(sqrt(-4* (mH2*mH2)* (mHsm*mHsm) +  (mHsm*mHsm*mHsm*mHsm))* ((-2*RR2x2*RR2x3*Timag + 2*RR2x1*RR2x3*Treal + (L3 + L4 + L5)* (RR2x1*RR2x1)*v + (L3 + L4 - L5)* (RR2x2*RR2x2)*v + L7* (RR2x3*RR2x3)*v)*(-2*RR2x2*RR2x3*Timag + 2*RR2x1*RR2x3*Treal + (L3 + L4 + L5)* (RR2x1*RR2x1)*v + (L3 + L4 - L5)* (RR2x2*RR2x2)*v + L7* (RR2x3*RR2x3)*v)))/(16.*Pi* (mHsm*mHsm*mHsm));
+		double coupling2 = 0.5* ((2*RR2x2*RR2x3*Timag - 2*RR2x1*RR2x3*Treal - (L3 + L4 - L5)* (RR2x2*RR2x2)*v - ((L3 + L4 + L5)* (RR2x1*RR2x1) + L7* (RR2x3*RR2x3))*v)*(2*RR2x2*RR2x3*Timag - 2*RR2x1*RR2x3*Treal - (L3 + L4 - L5)* (RR2x2*RR2x2)*v - ((L3 + L4 + L5)* (RR2x1*RR2x1) + L7* (RR2x3*RR2x3))*v));
+		double m2 = mH2;
+		double m3 = mH2;
+		return partial_width(scalar,scalar, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whH2H3(){
 	if(heaviDecays(mHsm,mH2,mH3)){
-		return (sqrt((- ((mH2 - mH3)*(mH2 - mH3)) +  (mHsm*mHsm))*(- ((mH2 + mH3)*(mH2 + mH3)) +  (mHsm*mHsm)))* ((-(RR2x2*RR3x3*Timag) + RR2x1*RR3x3*Treal + (L3 + L4 + L5)*RR2x1*RR3x1*v + (L3 + L4 - L5)*RR2x2*RR3x2*v + RR2x3*(-(RR3x2*Timag) + RR3x1*Treal + L7*RR3x3*v))*(-(RR2x2*RR3x3*Timag) + RR2x1*RR3x3*Treal + (L3 + L4 + L5)*RR2x1*RR3x1*v + (L3 + L4 - L5)*RR2x2*RR3x2*v + RR2x3*(-(RR3x2*Timag) + RR3x1*Treal + L7*RR3x3*v))))/(16.*Pi* (mHsm*mHsm*mHsm));
+		double coupling2 =  ((RR2x2*RR3x3*Timag - RR2x1*RR3x3*Treal - (L3 + L4 + L5)*RR2x1*RR3x1*v - (L3 + L4 - L5)*RR2x2*RR3x2*v + RR2x3*(RR3x2*Timag - RR3x1*Treal - L7*RR3x3*v))*(RR2x2*RR3x3*Timag - RR2x1*RR3x3*Treal - (L3 + L4 + L5)*RR2x1*RR3x1*v - (L3 + L4 - L5)*RR2x2*RR3x2*v + RR2x3*(RR3x2*Timag - RR3x1*Treal - L7*RR3x3*v)));
+		double m2 = mH2;
+		double m3 = mH3;
+		return partial_width(scalar,scalar, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whH3H3(){
 	if(heaviDecays(mHsm,mH3,mH3)){
-		return 0.5*(sqrt(-4* (mH3*mH3)* (mHsm*mHsm) +  (mHsm*mHsm*mHsm*mHsm))* ((-2*RR3x2*RR3x3*Timag + 2*RR3x1*RR3x3*Treal + (L3 + L4 + L5)* (RR3x1*RR3x1)*v + (L3 + L4 - L5)* (RR3x2*RR3x2)*v + L7* (RR3x3*RR3x3)*v)*(-2*RR3x2*RR3x3*Timag + 2*RR3x1*RR3x3*Treal + (L3 + L4 + L5)* (RR3x1*RR3x1)*v + (L3 + L4 - L5)* (RR3x2*RR3x2)*v + L7* (RR3x3*RR3x3)*v)))/(16.*Pi* (mHsm*mHsm*mHsm));
+		double coupling2 = 0.5* ((2*RR3x2*RR3x3*Timag - 2*RR3x1*RR3x3*Treal - (L3 + L4 - L5)* (RR3x2*RR3x2)*v - ((L3 + L4 + L5)* (RR3x1*RR3x1) + L7* (RR3x3*RR3x3))*v)*(2*RR3x2*RR3x3*Timag - 2*RR3x1*RR3x3*Treal - (L3 + L4 - L5)* (RR3x2*RR3x2)*v - ((L3 + L4 + L5)* (RR3x1*RR3x1) + L7* (RR3x3*RR3x3))*v));
+		double m2 = mH3;
+		double m3 = mH3;
+		return partial_width(scalar,scalar, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whHCHc(){
 	if(heaviDecays(mHsm,mHc,mHc)){
-		return ( (L3*L3)*sqrt(-4* (mHc*mHc)* (mHsm*mHsm) +  (mHsm*mHsm*mHsm*mHsm))* (v*v))/(16.*Pi* (mHsm*mHsm*mHsm));
+		double coupling2 =  (L3*L3)* (v*v);
+		double m2 = mHc;
+		double m3 = mHc;
+		return partial_width(scalar,scalar, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whZZ(){
 	if(heaviDecays(mHsm,MZ,MZ)){
-		return 0.5*( (EL*EL*EL*EL)*sqrt( (mHsm*mHsm*mHsm*mHsm) - 4* (mHsm*mHsm)* (MZ*MZ))*( (mHsm*mHsm*mHsm*mHsm) - 4* (mHsm*mHsm)* (MZ*MZ) + 12* (MZ*MZ*MZ*MZ))* (v*v)* (( (CW*CW) +  (SW*SW))*( (CW*CW) +  (SW*SW))*( (CW*CW) +  (SW*SW))*( (CW*CW) +  (SW*SW))))/(256.*Pi* (CW*CW*CW*CW)* (mHsm*mHsm*mHsm)* (MZ*MZ*MZ*MZ)* (SW*SW*SW*SW));
+		double coupling2 = 0.5*( (EL*EL*EL*EL)* (v*v)* (( (CW*CW) +  (SW*SW))*( (CW*CW) +  (SW*SW))*( (CW*CW) +  (SW*SW))*( (CW*CW) +  (SW*SW))))/(4.* (CW*CW*CW*CW)* (SW*SW*SW*SW));
+		double m2 = MZ;
+		double m3 = MZ;
+		return partial_width(z_boson,z_boson, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whwW(){
 	if(heaviDecays(mHsm,MW,MW)){
-		return ( (EL*EL*EL*EL)*sqrt( (mHsm*mHsm*mHsm*mHsm) - 4* (mHsm*mHsm)* (MW*MW))*( (mHsm*mHsm*mHsm*mHsm) - 4* (mHsm*mHsm)* (MW*MW) + 12* (MW*MW*MW*MW))* (v*v))/(256.*Pi* (mHsm*mHsm*mHsm)* (MW*MW*MW*MW)* (SW*SW*SW*SW));
+		double coupling2 = ( (EL*EL*EL*EL)* (v*v))/(4.* (SW*SW*SW*SW));
+		double m2 = MW;
+		double m3 = MW;
+		return partial_width(w_boson,w_boson, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whEe(){
 	if(heaviDecays(mHsm,Me,Me)){
-		return ( (Me*Me)*(-4* (Me*Me) +  (mHsm*mHsm))*sqrt(-4* (Me*Me)* (mHsm*mHsm) +  (mHsm*mHsm*mHsm*mHsm)))/(8.*Pi* (mHsm*mHsm*mHsm)* (v*v));
+		double coupling2 =  (Me*Me)/ (v*v);
+		double m2 = Me;
+		double m3 = Me;
+		return partial_width(lepton,lepton, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whMm(){
 	if(heaviDecays(mHsm,MM,MM)){
-		return (( (mHsm*mHsm) - 4* (MM*MM))* (MM*MM)*sqrt( (mHsm*mHsm*mHsm*mHsm) - 4* (mHsm*mHsm)* (MM*MM)))/(8.*Pi* (mHsm*mHsm*mHsm)* (v*v));
+		double coupling2 =  (MM*MM)/ (v*v);
+		double m2 = MM;
+		double m3 = MM;
+		return partial_width(lepton,lepton, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whTAta(){
 	if(heaviDecays(mHsm,MTA,MTA)){
-		return (( (mHsm*mHsm) - 4* (MTA*MTA))* (MTA*MTA)*sqrt( (mHsm*mHsm*mHsm*mHsm) - 4* (mHsm*mHsm)* (MTA*MTA)))/(8.*Pi* (mHsm*mHsm*mHsm)* (v*v));
+		double coupling2 =  (MTA*MTA)/ (v*v);
+		double m2 = MTA;
+		double m3 = MTA;
+		return partial_width(lepton,lepton, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whUu(){
 	if(heaviDecays(mHsm,MU,MU)){
-		return (3*( (mHsm*mHsm) - 4* (MU*MU))* (MU*MU)*sqrt( (mHsm*mHsm*mHsm*mHsm) - 4* (mHsm*mHsm)* (MU*MU)))/(8.*Pi* (mHsm*mHsm*mHsm)* (v*v));
+		double coupling2 =  (MU*MU)/ (v*v);
+		double m2 = MU;
+		double m3 = MU;
+		return partial_width(quark,quark, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whCc(){
 	if(heaviDecays(mHsm,MC,MC)){
-		return (3* (MC*MC)*(-4* (MC*MC) +  (mHsm*mHsm))*sqrt(-4* (MC*MC)* (mHsm*mHsm) +  (mHsm*mHsm*mHsm*mHsm)))/(8.*Pi* (mHsm*mHsm*mHsm)* (v*v));
+		double coupling2 =  (MC*MC)/ (v*v);
+		double m2 = MC;
+		double m3 = MC;
+		return partial_width(quark,quark, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whTt(){
 	if(heaviDecays(mHsm,MT,MT)){
-		return (3*( (mHsm*mHsm) - 4* (MT*MT))* (MT*MT)*sqrt( (mHsm*mHsm*mHsm*mHsm) - 4* (mHsm*mHsm)* (MT*MT)))/(8.*Pi* (mHsm*mHsm*mHsm)* (v*v));
+		double coupling2 =  (MT*MT)/ (v*v);
+		double m2 = MT;
+		double m3 = MT;
+		return partial_width(quark,quark, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whDd(){
 	if(heaviDecays(mHsm,MD,MD)){
-		return (3* (MD*MD)*(-4* (MD*MD) +  (mHsm*mHsm))*sqrt(-4* (MD*MD)* (mHsm*mHsm) +  (mHsm*mHsm*mHsm*mHsm)))/(8.*Pi* (mHsm*mHsm*mHsm)* (v*v));
+		double coupling2 =  (MD*MD)/ (v*v);
+		double m2 = MD;
+		double m3 = MD;
+		return partial_width(quark,quark, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whSs(){
 	if(heaviDecays(mHsm,MS,MS)){
-		return (3*( (mHsm*mHsm) - 4* (MS*MS))* (MS*MS)*sqrt( (mHsm*mHsm*mHsm*mHsm) - 4* (mHsm*mHsm)* (MS*MS)))/(8.*Pi* (mHsm*mHsm*mHsm)* (v*v));
+		double coupling2 =  (MS*MS)/ (v*v);
+		double m2 = MS;
+		double m3 = MS;
+		return partial_width(quark,quark, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
 }
 double DT::whBb(){
 	if(heaviDecays(mHsm,MB,MB)){
-		return (3* (MB*MB)*(-4* (MB*MB) +  (mHsm*mHsm))*sqrt(-4* (MB*MB)* (mHsm*mHsm) +  (mHsm*mHsm*mHsm*mHsm)))/(8.*Pi* (mHsm*mHsm*mHsm)* (v*v));
+		double coupling2 =  (MB*MB)/ (v*v);
+		double m2 = MB;
+		double m3 = MB;
+		return partial_width(quark,quark, m2, m3, coupling2);
 	}
 	else{ return 0; }
 
