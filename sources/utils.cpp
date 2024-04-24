@@ -13,9 +13,9 @@ namespace DT
       return ((m1 + m2) * (m1 + m2) - s <= 0);
    }
 
-   double kaellen(const double &s, const double &m1, const double &m2)
+   double kaellen(const double x, const double y, const double z)
    {
-      return (s - (m1 + m2) * (m1 + m2)) * (s - (m1 - m2) * (m1 - m2));
+      return (x - y - z) * (x - y - z) - 4 * y * z;
    }
 
    double flux(const double &s, const double &m1, const double &m2, const double &m3, const double &m4)
@@ -99,4 +99,5 @@ namespace DT
    {
       return (r - l) / 24 * (f[0] + f[9] + 3 * (f[1] + f[2] + f[4] + f[5] + f[7] + f[8]) + 2 * (f[3] * f[6]));
    }
+
 } // namespace DT

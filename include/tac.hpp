@@ -32,6 +32,8 @@ namespace DT
         // sorts different channels by their total initial state masses
         void sort_inimasses(const vstring &ch_str = {});
 
+        ResError eval(const double cos_t, const double s);
+
         // adaptive simpson
         ResError simpson38_adap_cos_t(const double l, const double r, const double &s, ResError *f, const double &est);
 

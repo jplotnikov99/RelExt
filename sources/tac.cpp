@@ -24,18 +24,17 @@ namespace DT
 
     ResError Tac::simpson38_adap_cos_t(const double l, const double r, const double &s, ResError *f, const double &est)
     {
-        // represents how much precision you need
         ResError I1, I2, I3, f1[4];
         double m = (r + l) / 2.;
         double h = (r - l) / 8.;
         ResError I = h * (f[0] + 3 * f[1] + 3 * f[2] + f[3]);
-        f1[0] = {mod->eval(m, s), 0.};
+        f1[0] = mod->eval(m, s);
         f1[1] = f[2];
-        f1[2] = {mod->eval((l + 5 * r) / 6, s), 0.};
+        f1[2] = mod->eval((l + 5 * r) / 6, s);
         f1[3] = f[3];
         f[3] = f1[0];
         f[2] = f[1];
-        f[1] = {mod->eval((5 * l + r) / 6, s), 0.};
+        f[1] = mod->eval((5 * l + r) / 6, s);
         I1 = h / 2 * (f[0] + 3 * f[1] + 3 * f[2] + f[3]);
         I2 = h / 2 * (f1[0] + 3 * f1[1] + 3 * f1[2] + f1[3]);
         I3 = I1 + I2;
@@ -61,7 +60,7 @@ namespace DT
         double f_est[10];
         for (size_t i = 0; i < 10; i++)
         {
-            f_est[i] = mod->eval(-1 + 0.2222222222222222 * i, s);
+            f_est[i] = mod->eval(-1 + 0.2222222222222222 * i, s).res;
         }
         double est = simpson_est(-1, 1, f_est);
         ResError f[4];
@@ -69,7 +68,7 @@ namespace DT
         f[1] = {f_est[3], 0.};
         f[2] = {f_est[6], 0.};
         f[3] = {f_est[9], 0.};
-        return 1 / (32 * M_PI * s) * sqrt(kaellen(s, m3, m4) / kaellen(s, m1, m2)) * simpson38_adap_cos_t(-1, 1, s, f, est);
+        return 1 / (32 * M_PI * s) * sqrt(kaellen(s, m3 * m3, m4 * m4) / kaellen(s, m1 * m1, m2 * m2)) * simpson38_adap_cos_t(-1, 1, s, f, est);
     }
 
     ResError Tac::wij(const double &s)
@@ -79,7 +78,7 @@ namespace DT
             double f_est[10];
             for (size_t i = 0; i < 10; i++)
             {
-                f_est[i] = mod->eval(-1 + 0.2222222222222222 * i, s);
+                f_est[i] = mod->eval(-1 + 0.2222222222222222 * i, s).res;
             }
             double est = simpson_est(-1, 1, f_est);
             ResError f[4];

@@ -147,12 +147,12 @@ namespace DT
         N_cur = cur_channel.size();
     }
 
-    double Model::eval(const double cos_t, const double s)
+    ResError Model::eval(const double cos_t, const double s)
     {
-        double res = 0;
+        ResError res = {0.,0.};
         for (auto it : cur_channel)
         {
-            res += it(cos_t, s);
+            res.res += it(cos_t, s);
         }
         return res;
     }

@@ -19,7 +19,7 @@ namespace DT
 
 	bool heavi(const double &s, const double &m1, const double &m2);
 
-	double kaellen(const double &s, const double &m1, const double &m2);
+	double kaellen(const double x, const double y, const double z);
 
 	double flux(const double &s, const double &m1, const double &m2, const double &m3, const double &m4);
 
@@ -42,5 +42,6 @@ namespace DT
 	void check_if_number(const std::string &arg, const std::string &func);
 
 	double simpson_est(const double l, const double r, double *f);
+
 
 }
