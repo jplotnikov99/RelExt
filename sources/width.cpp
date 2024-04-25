@@ -173,7 +173,7 @@ namespace DT
         case quark + quark:
             if (mh > m1 + m2)
             {
-                res *= (mh * mh - (m1 + m2) * (m1 + m2));
+                res *= 3 * (mh * mh - (m1 + m2) * (m1 + m2));
             }
             else
             {
