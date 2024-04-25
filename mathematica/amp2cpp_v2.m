@@ -1007,7 +1007,8 @@ Do[
 	Write[sfile, mathlabel];
 	Write[sfile, "#include \"../../model.hpp\""];
 	Write[sfile, "#include \"utils.hpp\""];
-	Write[sfile,"#include \"width.hpp\"\n"]
+	Write[sfile,"#include \"width.hpp\""];
+	Write[sfile,"#include <memory>\n"];
 	
 	If[ inifuncDecays[i][[1,8]] != 0,
 		Do[
@@ -1033,14 +1034,11 @@ Do[
 			Write[sfile, "double DT::w" , ToString[inifuncDecays[i][[j,1]]] , "(){"];
 			symfac="";
 			If[inifuncDecays[i][[j,6]]===inifuncDecays[i][[j,7]],symfac="0.5*"];	
-			Write[sfile, "\tif(heaviDecays(" , ToString[inifuncDecays[i][[j,2]]] , "," , ToString[inifuncDecays[i][[j,3]]], "," , ToString[inifuncDecays[i][[j,4]]] , ")){"];
 			Write[sfile, "\tstd::unique_ptr<Width> w = std::make_unique<Width>(MH);"];
 			Write[sfile, "\t\tdouble coupling2 = ", symfac, subsDecays, ";"];
 			Write[sfile, "\t\tdouble m2 = ", ToString[inifuncDecays[i][[j,3]]],  ";"];
 			Write[sfile, "\t\tdouble m3 = ", ToString[inifuncDecays[i][[j,4]]],  ";"];
-			Write[sfile, "\t\treturn partial_width(" , inifuncDecays[i][[j,10,1]], ",", inifuncDecays[i][[j,10,2]], ", m2, m3, coupling2);"];
-			Write[sfile, "\t}"];
-			Write[sfile, "\telse{ return 0; }\n"];
+			Write[sfile, "\t\treturn w->partial_width(" , inifuncDecays[i][[j,10,1]], ",", inifuncDecays[i][[j,10,2]], ", m2, m3, coupling2);"];
 			Write[sfile, "}"]
 		,{j,Length[inifuncDecays[i]]}];
 	];

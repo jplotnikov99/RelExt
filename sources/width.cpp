@@ -149,6 +149,8 @@ namespace DT
         switch (ptype1 + ptype2)
         {
         case scalar + scalar:
+            if (mh < m1 + m2)
+                return 0;
             break;
         case massive_vector_boson + massive_vector_boson:
             if (mh > m1 + m2)
@@ -189,7 +191,7 @@ namespace DT
             {
                 double sw2 = pow(sin(thetaw), 2);
                 return 3 * mh / (512 * M_PI * M_PI * M_PI * m1 * m1) * g2 * g2 * R_T(m1 * m1 / (mh * mh)) /
-                       pow(cos(thetaw), 2) * (7 / 12. - 10 / 9. * sw2 + 40 / 27. * sw2 * sw2);
+                       pow(cos(thetaw), 2) * (7 / 12. - 10 / 9. * sw2 + 40 / 27. * sw2 * sw2) * coupling;
             }
             else
             {
@@ -205,7 +207,7 @@ namespace DT
             }
             else if (heaviDecays(mh, m1, 0))
             {
-                return 3 * mh / (512 * M_PI * M_PI * M_PI * m1 * m1) * g2 * g2 * R_T(m1 * m1 / (mh * mh));
+                return 3 * mh / (512 * M_PI * M_PI * M_PI * m1 * m1) * g2 * g2 * R_T(m1 * m1 / (mh * mh)) * coupling;
             }
             else
             {
