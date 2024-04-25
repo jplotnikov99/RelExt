@@ -11,6 +11,7 @@ namespace DT{
 		double *quark_masses[4] = {&MS, &MC, &MB, &MT};
 		double scale;
 		scale = MH;
+		alpha = 0;
 		Run->calc_quark_masses(scale, quark_masses, aS);
 		load_parameters();
 		WH = wwH();

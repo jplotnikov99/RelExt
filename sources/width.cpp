@@ -154,10 +154,10 @@ namespace DT
             res *= (3 + kaellen(mh * mh, m1 * m1, m2 * m2) / (4 * m1 * m1 * m2 * m2));
             break;
         case lepton + lepton:
-            res *= 2 * (mh * mh - (m1 + m2) * (m1 + m2));
+            res *= (mh * mh - (m1 + m2) * (m1 + m2));
             break;
         case quark + quark:
-            res *= 6 * (mh * mh - (m1 + m2) * (m1 + m2));
+            res *= 3 * (mh * mh - (m1 + m2) * (m1 + m2));
             break;
         case z_boson + z_boson:
             if (heaviDecays(mh, m1, m2))
