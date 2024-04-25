@@ -24,12 +24,18 @@ namespace DT
         const double ww = 2.091;
         const double thetaw = 0.49169738195642276;
         const double g2 = 0.6613384415493881;
+        double aS;
         bool Z = false;
         double m1, m2;
 
     public:
+        //formulas and expression taken from [1612.07651] and [2106.05038]
         Width(const double m) : mh(m){};
+        void set_alphaS(const double x);
+        double Li2(const double x);
         double R_T(const double x);
+        double A(const double x); 
+        double Delta_phi(const double x);
         double gamma0_gauge_bosons(const double s1, const double s2);
         void s2_evaluations(const double l, const double r, const double s1, double *f);
         double s2_integration(const double l, const double r, const double s1,

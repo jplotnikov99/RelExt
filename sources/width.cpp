@@ -2,6 +2,39 @@
 
 namespace DT
 {
+    void Width::set_alphaS(const double x)
+    {
+        aS = x;
+    }
+
+    double Width::Li2(const double x)
+    {
+        if (x > 1)
+            return li2_table[200];
+        if (x < -1)
+            return li2_table[0];
+        int i = x * 100;
+        double x1 = (double)i / 100.;
+        double x2 = x1 + 0.01;
+        double y1 = li2_table[i + 100];
+        double y2 = li2_table[i + 101];
+
+        return linint(x, x1, x2, y1, y2);
+    }
+
+    double Width::A(const double x)
+    {
+        double frac = (1 - x) / (1 + x);
+        return (1 + x * x) * (4 * Li2(frac) + 2 * Li2(-frac) - log(1 / frac) * (3 * log(2 / (1 + x)) + 2 * log(x))) -
+               3 * x * log(4 / (1 - x * x)) - 4 * x * log(x);
+    }
+
+    double Width::Delta_phi(const double x)
+    {
+        double x2 = x * x;
+        return A(x) / x + (3 + 34 * x2 - 13 * x2 * x2) * log((1 + x) / (1 - x)) / (16 * x * x2) + 21 / 8 - 3 / (8 * x2);
+    }
+
     double Width::R_T(const double x)
     {
         return 3 * (1 - 8 * x + 20 * x * x) / sqrt(4 * x - 1) * acos((3 * x - 1) / (2 * x * sqrt(x))) -
@@ -35,8 +68,6 @@ namespace DT
     double Width::s2_integration(const double l, const double r, const double s1,
                                  double *f, size_t depth)
     {
-        if (l >= r)
-            return 0.;
         double I1, I2, I3, f1[4];
         double m = (r + l) / 2.;
         double h = (r - l) / 8.;
@@ -151,7 +182,7 @@ namespace DT
             {
                 res *= (3 + kaellen(mh * mh, m1 * m1, m2 * m2) / (4. * m1 * m1 * m2 * m2));
             }
-            else if (/* heaviDecays(mh, m1, 0) */ false)
+            else if (heaviDecays(mh, m1, 0))
             {
                 return 3 * mh / (512 * M_PI * M_PI * M_PI * m1 * m1) * g2 * g2 * R_T(m1 * m1 / (mh * mh));
             }

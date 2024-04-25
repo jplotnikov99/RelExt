@@ -23,11 +23,6 @@ namespace DT
       return sqrt((s - (m1 + m2) * (m1 + m2)) * (s - (m1 - m2) * (m1 - m2)) * (s - (m3 + m4) * (m3 + m4)) * (s - (m3 - m4) * (m3 - m4)));
    }
 
-   double besselK(const int n, const double &x)
-   {
-      return 1.2533141373155 * 1 / sqrt(x) * exp(-x) * (1 + (4 * n * n - 1) / (8 * x) + (4 * n * n - 1) * (4 * n * n - 9) / (128 * x * x) + (4 * n * n - 1) * (4 * n * n - 9) * (4 * n * n - 25) / (3072 * x * x * x));
-   }
-
    double polK(const int n, const double &x)
    {
       return 1.2533141373155 * 1 / sqrt(x) * (1 + (4 * n * n - 1) / (8 * x) + (4 * n * n - 1) * (4 * n * n - 9) / (128 * x * x) + (4 * n * n - 1) * (4 * n * n - 9) * (4 * n * n - 25) / (3072 * x * x * x));
@@ -93,6 +88,11 @@ namespace DT
          std::cout << "Error in " << func << ": " << arg << " is not a number.\n";
          exit(1);
       }
+   }
+
+   double linint(const double x, const double x1, const double x2, const double y1, const double y2)
+   {
+      return ((y2 - y1) / (x2 - x1)) * (x - x1) + y1;
    }
 
    double simpson_est(const double l, const double r, double *f)

@@ -25,8 +25,6 @@ namespace DT
 
 	// Bessel functions
 
-	double besselK(const int n, const double &x);
-
 	double polK(const int n, const double &x);
 
 	double besselK2(const double &x);
@@ -41,7 +39,8 @@ namespace DT
 
 	void check_if_number(const std::string &arg, const std::string &func);
 
-	double simpson_est(const double l, const double r, double *f);
+	double linint(const double x, const double x1, const double x2, const double y1, const double y2);
 
+	double simpson_est(const double l, const double r, double *f);
 
 }

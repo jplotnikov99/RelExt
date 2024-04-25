@@ -2,6 +2,7 @@
 
 #include <readdata1.hpp>
 #include <vector>
+#include "utils.hpp"
 
 namespace DT
 {
@@ -17,7 +18,6 @@ namespace DT
     public:
         Dof();
         ~Dof() {};
-        double linint(const double x, const double x1, const double x2, const double y1, const double y2);
         // Effective dof (energy)
         double geff(const double T);
         // Effective dof (entropy)
