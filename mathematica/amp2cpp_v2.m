@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
-directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
+directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";
 (*directory = "/home/rodrigo/Downloads/darktree_new/md_cxsm/FR_modfiles"<>"/FA_modfiles";*)
 Print[directory]
 
@@ -1006,7 +1006,8 @@ Do[
 	sfile=OpenWrite[ofile,FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
 	Write[sfile, mathlabel];
 	Write[sfile, "#include \"../../model.hpp\""];
-	Write[sfile, "#include \"utils.hpp\"\n"];
+	Write[sfile, "#include \"utils.hpp\""];
+	Write[sfile,"#include \"width.hpp\"\n"]
 	
 	If[ inifuncDecays[i][[1,8]] != 0,
 		Do[
@@ -1033,6 +1034,7 @@ Do[
 			symfac="";
 			If[inifuncDecays[i][[j,6]]===inifuncDecays[i][[j,7]],symfac="0.5*"];	
 			Write[sfile, "\tif(heaviDecays(" , ToString[inifuncDecays[i][[j,2]]] , "," , ToString[inifuncDecays[i][[j,3]]], "," , ToString[inifuncDecays[i][[j,4]]] , ")){"];
+			Write[sfile, "\tstd::unique_ptr<Width> w = std::make_unique<Width>(MH);"];
 			Write[sfile, "\t\tdouble coupling2 = ", symfac, subsDecays, ";"];
 			Write[sfile, "\t\tdouble m2 = ", ToString[inifuncDecays[i][[j,3]]],  ";"];
 			Write[sfile, "\t\tdouble m3 = ", ToString[inifuncDecays[i][[j,4]]],  ";"];

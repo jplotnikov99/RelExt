@@ -14,6 +14,8 @@ namespace DT{
 		Run->calc_quark_masses(scale, quark_masses, aS);
 		load_parameters();
 		WH = wwH();
+		std::cout << WH << std::endl;
+		exit(0);
 		scale = MS1;
 		Run->calc_quark_masses(scale, quark_masses, aS);
 		load_parameters();
