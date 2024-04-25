@@ -151,13 +151,34 @@ namespace DT
         case scalar + scalar:
             break;
         case massive_vector_boson + massive_vector_boson:
-            res *= (3 + kaellen(mh * mh, m1 * m1, m2 * m2) / (4 * m1 * m1 * m2 * m2));
+            if (mh > m1 + m2)
+            {
+                res *= (3 + kaellen(mh * mh, m1 * m1, m2 * m2) / (4 * m1 * m1 * m2 * m2));
+            }
+            else
+            {
+                return 0.;
+            }
             break;
         case lepton + lepton:
-            res *= (mh * mh - (m1 + m2) * (m1 + m2));
+            if (mh > m1 + m2)
+            {
+                res *= (mh * mh - (m1 + m2) * (m1 + m2));
+            }
+            else
+            {
+                return 0.;
+            }
             break;
         case quark + quark:
-            res *= 3 * (mh * mh - (m1 + m2) * (m1 + m2));
+            if (mh > m1 + m2)
+            {
+                res *= (mh * mh - (m1 + m2) * (m1 + m2));
+            }
+            else
+            {
+                return 0.;
+            }
             break;
         case z_boson + z_boson:
             if (heaviDecays(mh, m1, m2))
