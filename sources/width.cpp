@@ -150,7 +150,7 @@ namespace DT
         {
         case scalar + scalar:
             if (mh < m1 + m2)
-                return 0;
+                return 0.;
             break;
         case massive_vector_boson + massive_vector_boson:
             if (mh > m1 + m2)
