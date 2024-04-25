@@ -18,7 +18,6 @@ namespace DT
     class Width
     {
     private:
-        const double closeness = 0.9999;
         const double eps = 1e-6;
         const double mh;
         const double wz = 2.4952;

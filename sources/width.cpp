@@ -13,10 +13,14 @@ namespace DT
         double mh2 = mh * mh;
         double mv2 = m1 * m1;
         double lam = kaellen(1., s1 / mh2, s2 / mh2);
+        if (lam < 0)
+            lam = 0;
         double wv = Z ? wz : ww;
         double prop1 = 1 / ((s1 - mv2) * (s1 - mv2) + mv2 * wv * wv);
         double prop2 = 1 / ((s2 - mv2) * (s2 - mv2) + mv2 * wv * wv);
         double res = sqrt(lam) * (lam + 12 * s1 * s2 / (mh2 * mh2)) * prop1 * prop2;
+        if (std::isnan(res))
+            std::cout << s1 << "\t" << s2 << "\t" << sqrt(lam) << "\n";
         return res;
     }
 
@@ -31,6 +35,8 @@ namespace DT
     double Width::s2_integration(const double l, const double r, const double s1,
                                  double *f, size_t depth)
     {
+        if (l >= r)
+            return 0.;
         double I1, I2, I3, f1[4];
         double m = (r + l) / 2.;
         double h = (r - l) / 8.;
@@ -61,18 +67,18 @@ namespace DT
         double h = (r - l) / 8.;
         double I = h * (f[0] + 3 * f[1] + 3 * f[2] + f[3]);
         double x = sqrt(m);
-        s2_evaluations(0, closeness * (mh - x) * (mh - x), x * x, fs2);
-        f1[0] = s2_integration(0, (mh - x) * (mh - x), x * x, fs2);
+        s2_evaluations(x * x, (mh - x) * (mh - x), x * x, fs2);
+        f1[0] = s2_integration(x * x, (mh - x) * (mh - x), x * x, fs2);
         f1[1] = f[2];
         x = sqrt((l + 5 * r) / 6.);
-        s2_evaluations(0, closeness * (mh - x) * (mh - x), x * x, fs2);
-        f1[2] = s2_integration(0, (mh - x) * (mh - x), x * x, fs2);
+        s2_evaluations(x * x, (mh - x) * (mh - x), x * x, fs2);
+        f1[2] = s2_integration(x * x, (mh - x) * (mh - x), x * x, fs2);
         f1[3] = f[3];
         f[3] = f1[0];
         f[2] = f[1];
         x = sqrt((5 * l + r) / 6.);
-        s2_evaluations(0, closeness * (mh - x) * (mh - x), x * x, fs2);
-        f[1] = s2_integration(0, (mh - x) * (mh - x), x * x, fs2);
+        s2_evaluations(x * x, (mh - x) * (mh - x), x * x, fs2);
+        f[1] = s2_integration(x * x, (mh - x) * (mh - x), x * x, fs2);
         I1 = h / 2 * (f[0] + 3 * f[1] + 3 * f[2] + f[3]);
         I2 = h / 2 * (f1[0] + 3 * f1[1] + 3 * f1[2] + f1[3]);
         I3 = I1 + I2;
@@ -92,15 +98,15 @@ namespace DT
         double x = 0;
         s2_evaluations(0, mh * mh, 0, fs2);
         f[0] = s2_integration(0, mh * mh, 0, fs2);
-        x = mh / sqrt(3);
-        s2_evaluations(0, (mh - x) * (mh - x), x * x, fs2);
-        f[1] = s2_integration(0, (mh - x) * (mh - x), x * x, fs2);
-        x = mh * sqrt(2 / 3);
-        s2_evaluations(0, (mh - x) * (mh - x), x * x, fs2);
-        f[2] = s2_integration(0, (mh - x) * (mh - x), x * x, fs2);
-        x = mh;
+        x = mh / sqrt(12);
+        s2_evaluations(x * x, (mh - x) * (mh - x), x * x, fs2);
+        f[1] = s2_integration(x * x, (mh - x) * (mh - x), x * x, fs2);
+        x = mh / sqrt(6);
+        s2_evaluations(x * x, (mh - x) * (mh - x), x * x, fs2);
+        f[2] = s2_integration(x * x, (mh - x) * (mh - x), x * x, fs2);
+        x = mh / 4.;
         f[3] = 0.;
-        return s1_integration(0, mh * mh, f);
+        return 2 * s1_integration(0, mh * mh / 4, f);
     }
 
     double Width::partial_width(const ParticleType ptype1, const ParticleType ptype2, const double ma,
@@ -145,7 +151,7 @@ namespace DT
             {
                 res *= (3 + kaellen(mh * mh, m1 * m1, m2 * m2) / (4. * m1 * m1 * m2 * m2));
             }
-            else if (heaviDecays(mh, m1, 0))
+            else if (/* heaviDecays(mh, m1, 0) */ false)
             {
                 return 3 * mh / (512 * M_PI * M_PI * M_PI * m1 * m1) * g2 * g2 * R_T(m1 * m1 / (mh * mh));
             }
