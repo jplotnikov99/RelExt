@@ -14,6 +14,8 @@ namespace DT
     private:
         std::shared_ptr<Model> mod;
         std::unique_ptr<Beqs> beq;
+        bool reject = false;
+        double errold = 1e-4;
 
     public:
         BeqSolver(std::shared_ptr<Model> model);
@@ -29,14 +31,13 @@ namespace DT
         // secant method implementation to find a root between x1 and x2
         double secant_method(double x0, double x1);
 
-        // four point runge kutta method needed to solve Boltzmann Eq.
-        void rk4(double &x, ResError &y, const double &h);
+        double dopr5(double &x, ResError &y, const double &h);
 
-        // set new stepsize for the next runga kutta evaluation
-        double setStep(const double &hnow, const double &err);
+        // step size controller for the next dopr5 iteration
+        double controller(const double &hnow, const double &err);
 
-        // Solves the Boltzmann equation with the full TAC using the adaptive 4-point runge-kutta method
-        void adap_rk4(const double &xtoday, double &x, ResError &y, double h = 1e-3);
+        // solves 1D boltzmann-eq using the Dormand-Prince-Method
+        void adap_dopr5(const double &xtoday, double &x, ResError &y, double h = 1e-3);
 
         ResError adap_simpson38(const double l, const double r, ResError *y, const double &est);
 

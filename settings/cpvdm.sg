@@ -3,9 +3,9 @@
 ######## Standard settings ########
 
 InputFile           |CPVDMTest.csv
-OutputFile          |cpvdm_tokenized.csv
+OutputFile          |cpvdm_rk4.csv
 StartPoint          |1
-EndPoint            |100
+EndPoint            |10
 SavedParameters     |mH1, mH2
 ThermalBath         |
 ConsideredChannels  |
@@ -18,8 +18,8 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
-FindParameter       |alph1, 0.12, 0.005
-SaveData
+CalcRelic           |
+SaveData            |
 
 END
 ######## Advanced settings ########

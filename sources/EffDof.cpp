@@ -64,11 +64,6 @@ namespace DT
         g12_file.close();
     }
 
-    double Dof::linint(const double x, const double x1, const double x2, const double y1, const double y2)
-    {
-        return ((y2 - y1) / (x2 - x1)) * (x - x1) + y1;
-    }
-
     double Dof::geff(const double T)
     {
         int size = geff_x.size();
