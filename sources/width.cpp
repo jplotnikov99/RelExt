@@ -35,6 +35,12 @@ namespace DT
         return A(x) / x + (3 + 34 * x2 - 13 * x2 * x2) * log((1 + x) / (1 - x)) / (16 * x * x2) + 21 / 8 - 3 / (8 * x2);
     }
 
+    double Width::Delta_phi_mass(const double m)
+    {
+        double frac = m * m / (mh * mh);
+        return 2 * (1 + 3 / 4. * log(1 / frac)) * (1 - 10 * frac) / (1 - 4 * frac);
+    }
+
     double Width::R_T(const double x)
     {
         return 3 * (1 - 8 * x + 20 * x * x) / sqrt(4 * x - 1) * acos((3 * x - 1) / (2 * x * sqrt(x))) -
@@ -143,6 +149,7 @@ namespace DT
     double Width::partial_width(const ParticleType ptype1, const ParticleType ptype2, const double ma,
                                 const double mb, const double coupling)
     {
+        double pre = 1 / (16 * M_PI * mh);
         double res = 1;
         m1 = ma;
         m2 = mb;
@@ -176,6 +183,20 @@ namespace DT
             if (mh > m1 + m2)
             {
                 res *= 3 * (mh * mh - (m1 + m2) * (m1 + m2));
+            }
+            else
+            {
+                return 0.;
+            }
+            break;
+        case s_quark + s_quark:
+            if (mh > ms_pole + ms_pole)
+            {
+                double a = aS / M_PI;
+                double frac = m1 * m1 / (mh * mh);
+                double beta = sqrt(1 - 4 * frac);
+                double gamlight = pre * (1 - 4 * frac) * coupling * mh * mh * (1 - 4 * frac) *
+                                  (1 + 4 / 3. * a * (Delta_phi(beta) + Delta_phi_mass(m1)) + (35.94 - NF) * a * a);
             }
             else
             {
@@ -220,7 +241,7 @@ namespace DT
         default:
             break;
         }
-        res = res * sqrt(kaellen(mh * mh, m1 * m1, m2 * m2)) / (16 * M_PI * mh * mh * mh) * coupling;
+        res = res * sqrt(kaellen(1, m1 * m1 / (mh * mh), m2 * m2 / (mh * mh))) / (16 * M_PI * mh) * coupling;
 
         return res;
     }

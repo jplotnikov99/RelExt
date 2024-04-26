@@ -2,6 +2,11 @@
 #include <iostream>
 namespace DT
 {
+    // SM parameters
+    extern double ms_pole;
+    extern double mc_pole;
+    extern double mb_pole;
+    extern double mt_pole;
 
     // TAC parameters
     extern double simpson_eps;
