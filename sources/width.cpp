@@ -180,7 +180,7 @@ namespace DT
         case quark + quark:
             if (mh > pole_m + pole_m)
             {
-                if (pole_m == 0)
+                if (pole_m == m1)
                 {
                     res *= 3 * (mh * mh - (m1 + m2) * (m1 + m2));
                 }
@@ -188,9 +188,14 @@ namespace DT
                 {
                     double a = aS / M_PI;
                     double frac = m1 * m1 / (mh * mh);
-                    double beta = sqrt(1 - 4 * frac);
-                    double gamlight = pre * (1 - 4 * frac) * coupling * mh * mh * (1 - 4 * frac) *
-                                      (1 + 4 / 3. * a * (Delta_phi(beta) + Delta_phi_mass(m1)) + (35.94 - 5.) * a * a);
+                    double frac_pole = pole_m * pole_m / (mh * mh);
+                    double beta = (1 - 4 * frac);
+                    double beta_pole = (1 - 4 * frac_pole);
+                    double gam_light = pre * beta * beta * coupling * mh * mh *
+                                       (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 5.) * a * a);
+                    double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh *
+                                       (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
+                    return beta_pole * gam_light + 4 * pole_m * pole_m / (mh * mh) * gam_heavy;
                 }
             }
             else
