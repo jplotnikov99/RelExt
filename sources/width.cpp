@@ -58,8 +58,6 @@ namespace DT
         double prop1 = 1 / ((s1 - mv2) * (s1 - mv2) + mv2 * wv * wv);
         double prop2 = 1 / ((s2 - mv2) * (s2 - mv2) + mv2 * wv * wv);
         double res = sqrt(lam) * (lam + 12 * s1 * s2 / (mh2 * mh2)) * prop1 * prop2;
-        if (std::isnan(res))
-            std::cout << s1 << "\t" << s2 << "\t" << sqrt(lam) << "\n";
         return res;
     }
 
@@ -147,7 +145,7 @@ namespace DT
     }
 
     double Width::partial_width(const ParticleType ptype1, const ParticleType ptype2, const double ma,
-                                const double mb, const double coupling)
+                                const double mb, const double coupling, const double pole_m)
     {
         double pre = 1 / (16 * M_PI * mh);
         double res = 1;
@@ -180,23 +178,20 @@ namespace DT
             }
             break;
         case quark + quark:
-            if (mh > m1 + m2)
+            if (mh > pole_m + pole_m)
             {
-                res *= 3 * (mh * mh - (m1 + m2) * (m1 + m2));
-            }
-            else
-            {
-                return 0.;
-            }
-            break;
-        case s_quark + s_quark:
-            if (mh > ms_pole + ms_pole)
-            {
-                double a = aS / M_PI;
-                double frac = m1 * m1 / (mh * mh);
-                double beta = sqrt(1 - 4 * frac);
-                double gamlight = pre * (1 - 4 * frac) * coupling * mh * mh * (1 - 4 * frac) *
-                                  (1 + 4 / 3. * a * (Delta_phi(beta) + Delta_phi_mass(m1)) + (35.94 - NF) * a * a);
+                if (pole_m == 0)
+                {
+                    res *= 3 * (mh * mh - (m1 + m2) * (m1 + m2));
+                }
+                else
+                {
+                    double a = aS / M_PI;
+                    double frac = m1 * m1 / (mh * mh);
+                    double beta = sqrt(1 - 4 * frac);
+                    double gamlight = pre * (1 - 4 * frac) * coupling * mh * mh * (1 - 4 * frac) *
+                                      (1 + 4 / 3. * a * (Delta_phi(beta) + Delta_phi_mass(m1)) + (35.94 - 5.) * a * a);
+                }
             }
             else
             {

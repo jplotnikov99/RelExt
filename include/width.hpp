@@ -49,7 +49,7 @@ namespace DT
         double s1_integration(const double l, const double r, double *f, size_t depth = 0);
         double integrate_4body_gauge();
         double partial_width(const ParticleType ptype2, const ParticleType ptype3,
-                             const double ma, const double mb, const double coupling);
+                             const double ma, const double mb, const double coupling, const double pole_m = 0.);
         ~Width(){};
     };
 
