@@ -29,7 +29,7 @@ namespace DT
         const double thetaw = 0.49169738195642276;
         const double g2 = 0.6613384415493881;
         double NF = 5;
-        double aS;
+        double aS = 0.119;
         bool Z = false;
         double m1, m2;
 

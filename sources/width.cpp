@@ -193,9 +193,9 @@ namespace DT
                     double beta_pole = (1 - 4 * frac_pole);
                     double gam_light = pre * beta * beta * coupling * mh * mh *
                                        (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 5.) * a * a);
-                    double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh *
+                    double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh * pole_m * pole_m / (m1 * m1) *
                                        (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
-                    return beta_pole * gam_light + 4 * pole_m * pole_m / (mh * mh) * gam_heavy;
+                    return 3 * (beta_pole * gam_light + 4 * pole_m * pole_m / (mh * mh) * gam_heavy);
                 }
             }
             else
