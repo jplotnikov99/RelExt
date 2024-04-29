@@ -1,8 +1,9 @@
 (* ::Package:: *)
 
-(*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
-directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";
-(*directory = "/home/rodrigo/Downloads/darktree_new/md_cxsm/FR_modfiles"<>"/FA_modfiles";*)
+directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
+(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = "/home/rodrigo/Downloads/darktree_new/md_cpvdm/FR_modfiles"<>"/FA_modfiles";*)
+(*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
 
 (*start FA and FC*)
@@ -42,7 +43,7 @@ particlelist = {M$ClassesDescription[[#,1]], TheMass[M$ClassesDescription[[#,1]]
 Do[
 (*adds antiparticles to particlelist*)
 	If[SelfConjugate/.M$ClassesDescription[[i1,2]][[1]],
-		(*if field is its own antiparticle do nothing*), 
+		(*if field is its own antiparticle do nothing*),
 		 AppendTo[particlelist, {-M$ClassesDescription[[i1,1]], TheMass[M$ClassesDescription[[i1,1]]], 
 		 (*change antiparticle name by capitalizing particle name, unless particle name is already capitalized*)
 		 If[UpperCaseQ[ToString[TheLabel[M$ClassesDescription[[i1,1]]]]], ToLowerCase[ToString[TheLabel[M$ClassesDescription[[i1,1]]]]], ToUpperCase[ToString[TheLabel[M$ClassesDescription[[i1,1]]]]]]}]
@@ -71,6 +72,11 @@ For[i=1, i<= Length[prtlist],i++,
 getWidthsandDSMasses[]
 
 
+GSlist = {};
+For[i=1,i<=Length[particlelist],i++, If[ToString[particlelist[[i,3]]] =="Gch"||ToString[particlelist[[i,3]]]=="GP"||ToString[particlelist[[i,3]]]=="Gp" || ToString[particlelist[[i,3]]]== "G0", AppendTo[GSlist, particlelist[[i,1]]]]];
+GSlist;
+
+
 (*create list with dark sector particles; labels of dark sector particles must have a tilde at the start in the FA mod files*)
 dslist={};
 For[i = 1, i <= Length[particlelist], i++, 
@@ -93,9 +99,10 @@ AppendTo[alldiags, Feynmangraph];
 
 (*exclude goldstone and ds particles from final states*)
 Do[
-alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> S[2]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> S[2]]&];
-alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> S[3]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> S[3]]&];
-alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> -S[3]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> -S[3]]&];
+alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> GSlist[[1]]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> GSlist[[1]]]&];
+alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> -GSlist[[1]]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> -GSlist[[1]]]&];
+alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> GSlist[[2]]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> GSlist[[2]]]&];
+alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> -GSlist[[2]]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> -GSlist[[2]]]&];
 Table[ alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> dslist[[j]]]&] , {j, Length[dslist]}]; 
 Table[ alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> dslist[[j]]]&] , {j, Length[dslist]}];
 , {i, Length[alldiags]}]
@@ -149,7 +156,7 @@ Block[{numerator,denominator,coefficient={},mandels={},temp1,temp2},
 				AppendTo[tokens,numerator[[it]]];
 				temp1*=(numerator[[it]]/.tokensubs);
 				Break[],
-				If[FreeQ[numerator[[it,jt]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__]}],
+				If[FreeQ[numerator[[it,jt]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__],SUNDelta[__,__]}],
 					AppendTo[tokens,numerator[[it,jt]]];
 					temp1*=(numerator[[it,jt]]/.tokensubs),
 					temp2*=numerator[[it,jt]];
@@ -417,12 +424,18 @@ calcAmp2s[];
 relevantWsfields = {};
 relevantWidth = {};
 Do[
-	If[relevantWs[[i]]==(particlelist[[j,2]]/.subrule) && StringPart[ToString[particlelist[[j,1]]],1]!="-" && StringPart[ToString[particlelist[[j,1]]],1]!="U" && ToString[particlelist[[j,1]]]!="S[2]" && ToString[particlelist[[j,1]]]!="S[3]" && ToString[particlelist[[j,1]]]!="V[2]" && ToString[particlelist[[j,1]]]!="V[3]",
+	If[relevantWs[[i]]==(particlelist[[j,2]]/.subrule) && StringPart[ToString[particlelist[[j,1]]],1]!="-" && StringPart[ToString[particlelist[[j,1]]],1]!="U" && ToString[particlelist[[j,1]]]!=ToString[GSlist[[1]]] && ToString[particlelist[[j,1]]]!=ToString[GSlist[[2]]] && ToString[particlelist[[j,1]]]!="V[2]" && ToString[particlelist[[j,1]]]!="V[3]",
 		AppendTo[relevantWsfields, particlelist[[j,1]]];
-		AppendTo[relevantWidth, relevantWs[[i+1]]]; 
+		AppendTo[relevantWidth, relevantWs[[i+1]]];
 	]
 , {i, Length[relevantWs]}, {j, Length[particlelist]}
 ]
+relevantWsfields = Complement[relevantWsfields,GSlist];
+relevantWsfields = Complement[relevantWsfields,dslist];
+relevantWidth;
+
+
+(* Hier DarkSectorParticle auch excludieren!*)
 
 
 (*list with every 1 to 2 tree-level decay*)
@@ -440,9 +453,10 @@ alldiagsDecay;
 
 (*exclude goldstone from final states*)
 Do[
-alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[2] -> S[2]]&]; alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[3] -> S[2]]&];
-alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[2] -> S[3]]&]; alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[3] -> S[3]]&];
-alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[2] -> -S[3]]&]; alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[3] -> -S[3]]&];
+alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[2] -> GSlist[[1]]]&]; alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[3] -> GSlist[[1]]]&];
+alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[2] -> -GSlist[[1]]]&]; alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[3] -> -GSlist[[1]]]&];
+alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[2] -> GSlist[[2]]]&]; alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[3] -> GSlist[[2]]]&];
+alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[2] -> -GSlist[[2]]]&]; alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[3] -> -GSlist[[2]]]&];
 , {i, Length[alldiagsDecay]}]
 
 
@@ -829,9 +843,12 @@ Do[
 
 Do[
 Write[sfile, "\t\tADDCHANNEL(",ToString[processname[[i]]],", ",ToString[processname[[i]]],"fl, "
-,StringReplace[ToString[ReplaceAll[mi[[i]],subrule]],"0"->"ZERO"],", ",StringReplace[ToString[ReplaceAll[mj[[i]],subrule]],"0"->"ZERO"],", "
-,StringReplace[ToString[ReplaceAll[mk[[i]],subrule]],"0"->"ZERO"],", ",StringReplace[ToString[ReplaceAll[ml[[i]],subrule]],"0"->"ZERO"],")"];
+,If[StringLength[ToString[ReplaceAll[mi[[i]],subrule]]]==1,StringReplace[ToString[ReplaceAll[mi[[i]],subrule]],"0"->"ZERO"],ToString[ReplaceAll[mi[[i]],subrule]]],
+", ",If[StringLength[ToString[ReplaceAll[mj[[i]],subrule]]]==1,StringReplace[ToString[ReplaceAll[mj[[i]],subrule]],"0"->"ZERO"],ToString[ReplaceAll[mj[[i]],subrule]]],", "
+,If[StringLength[ToString[ReplaceAll[mk[[i]],subrule]]]==1,StringReplace[ToString[ReplaceAll[mk[[i]],subrule]],"0"->"ZERO"],ToString[ReplaceAll[mk[[i]],subrule]]],
+", ",If[StringLength[ToString[ReplaceAll[ml[[i]],subrule]]]==1,StringReplace[ToString[ReplaceAll[ml[[i]],subrule]],"0"->"ZERO"],ToString[ReplaceAll[ml[[i]],subrule]]],")"];
 ,{i,Length[processname]}]
+
 
 Do[
 	Write[sfile, "\t\tdenstructures.push_back(&", StringReplace[ToString[relevantWs[[i]]],{"FeynCalc`"->""}] ,");"];
@@ -1024,8 +1041,21 @@ Do[
 			Write[sfile, "\telse{ return 0; }\n"];
 			Write[sfile, "}"]
 		,{j,Length[inifuncDecays[i]]}];
+		
+		Write[sfile, "double DT::ww" , ToString[possibleiniDecays[[i]]] , "(){"];
+		allcontr="( ";
+		Do[
+			If[j!=Length[inifuncDecays[i]],
+				allcontr=StringJoin[allcontr,"w",ToString[inifuncDecays[i][[j,1]]],"() + "],
+				allcontr=StringJoin[allcontr,"w",ToString[inifuncDecays[i][[j,1]]],"() );"]
+			]
+		,{j,Length[inifuncDecays[i]]}];
+		Write[sfile, "\treturn ", allcontr];
+		Write[sfile, "}"];
+		Close[sfile];
 	];
-	(*if decaying particle is a scalar:*)
+	
+	(*(*if decaying particle is a scalar:*)
 	If[ inifuncDecays[i][[1,8]] == 0,
 		Do[
 			subsDecays=Replace[inifuncDecays[i][[j,9,1]],defer,All];
@@ -1053,5 +1083,49 @@ Do[
 	,{j,Length[inifuncDecays[i]]}];
 	Write[sfile, "\treturn ", allcontr];
 	Write[sfile, "}"];
-	Close[sfile];	
+	Close[sfile];*)
+	
+	(*if decaying particle is a scalar:*)
+	If[ inifuncDecays[i][[1,8]] == 0,
+		Write[sfile, "double DT::ww" , ToString[possibleiniDecays[[i]]] , "(){"];
+		Write[sfile, "\tdouble width = 0;"];
+		Write[sfile, "\tstd::unique_ptr<Width> w = std::make_unique<Width>(", inifuncDecays[i][[1,2]],");"];
+		m2vect="( { ";
+		m3vect="( { ";
+		type1vect="( { ";
+		type2vect="( { ";
+		coupling2vect="( {";
+		Do[
+			subsDecays=Replace[inifuncDecays[i][[j,9,1]],defer,All];
+			subsDecays=ToString[ToString[CForm[subsDecays],StandardForm]];
+			subsDecays=StringReplace[subsDecays,{"Sqrt"-> "sqrt","Defer"->" ","Cos("->"cos( ","Sin"->"sin", "Tan"->"tan", "Power"->"pow"}];
+			symfac="";
+			If[inifuncDecays[i][[j,6]]===inifuncDecays[i][[j,7]],symfac="0.5*"];	
+			(*initialization of m2, m3, type1, type2, couplings2 vectors*)
+			If[j!=Length[inifuncDecays[i]],
+				m2vect=StringJoin[m2vect, ToString[inifuncDecays[i][[j,3]]], ", "];
+				m3vect=StringJoin[m3vect, ToString[inifuncDecays[i][[j,4]]], ", "];
+				type1vect=StringJoin[type1vect, inifuncDecays[i][[j,10,1]], ", "];
+				type2vect=StringJoin[type2vect, inifuncDecays[i][[j,10,2]], ", "];
+				coupling2vect=StringJoin[coupling2vect, symfac, subsDecays, ", "];
+			,
+				m2vect=StringJoin[m2vect, ToString[inifuncDecays[i][[j,3]]], " } );"];
+				m3vect=StringJoin[m3vect, ToString[inifuncDecays[i][[j,4]]], " } );"];
+				type1vect=StringJoin[type1vect, inifuncDecays[i][[j,10,1]], " } );"];
+				type2vect=StringJoin[type2vect, inifuncDecays[i][[j,10,2]], " } );"];
+				coupling2vect=StringJoin[coupling2vect, symfac, subsDecays, " } );"];
+			];	
+		,{j,Length[inifuncDecays[i]]}];
+		Write[sfile, "\tstd::vector<double> m2", m2vect];
+		Write[sfile, "\tstd::vector<double> m3", m3vect];
+		Write[sfile, "\tstd::vector<ParticleType> type1", type1vect];
+		Write[sfile, "\tstd::vector<ParticleType> type2", type2vect];
+		Write[sfile, "\tstd::vector<double> coupling2", coupling2vect];
+		Write[sfile, "\tfor(int i = 0; i < m2.size(); i++) {"];
+		Write[sfile, "\t\twidth = width + w->partial_width(type1[i], type2[i], m2[i], m3[i], coupling2[i]);"];
+		Write[sfile, "\t}"];
+		Write[sfile, "\treturn width;"];
+		Write[sfile, "}"];
+		Close[sfile];
+	];
 ,{i,Length[possibleiniDecays]}]
