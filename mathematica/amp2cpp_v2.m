@@ -2,7 +2,7 @@
 
 directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
 (*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
-(*directory = "/home/rodrigo/Downloads/darktree_new/md_cpvdm/FR_modfiles"<>"/FA_modfiles";*)
+(*directory = "/home/rodrigo/Downloads/darktree_new/md_cxsm/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
 
@@ -50,6 +50,8 @@ Do[
 	],
 {i1, Length[M$ClassesDescription]}
 ];
+
+particlelist
 (*1st column: FAs fields*)
 (*2nd column: masses of fields*)
 (*3rd column: name of fields*)
@@ -432,7 +434,6 @@ Do[
 ]
 relevantWsfields = Complement[relevantWsfields,GSlist];
 relevantWsfields = Complement[relevantWsfields,dslist];
-relevantWidth;
 
 
 (* Hier DarkSectorParticle auch excludieren!*)
@@ -582,8 +583,7 @@ SMP -> False, Contract -> True, DropSumOver -> True]/.gcsub/.subrule//DiracSubst
 k = If[!SelfConjugate[finallistDecays[[i,2]]], -finallistDecays[[i,2]], finallistDecays[[i,2]]];
 l = If[!SelfConjugate[finallistDecays[[i,3]]], -finallistDecays[[i,3]], finallistDecays[[i,3]]];
 ];
-If[Length[ampDecays] == 0,
-	,
+If[Length[ampDecays] == 0,,
 	AppendTo[decayslist, ampDecays];
 	AppendTo[foutlistDecays, {finallistDecays[[i,1]], k, l}];
 ];
