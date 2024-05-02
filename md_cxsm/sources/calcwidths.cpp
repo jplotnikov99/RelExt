@@ -13,13 +13,11 @@ namespace DT{
 		scale = MH;
 		Run->calc_quark_masses(scale, quark_masses, aS);
 		load_parameters();
-		WH = wwH();
+		WH = wwH(aS);
 		scale = MS1;
 		Run->calc_quark_masses(scale, quark_masses, aS);
 		load_parameters();
-		WS1 = wwS1();
-		std::cout << WS1 << "\t" << WH << std::endl;
-		exit(0);
+		WS1 = wwS1(aS);
 		scale = 2*MDM;
 		Run->calc_quark_masses(scale, quark_masses, aS);
 	}

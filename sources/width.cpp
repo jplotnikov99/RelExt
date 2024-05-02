@@ -145,7 +145,7 @@ namespace DT
     }
 
     double Width::partial_width(const ParticleType ptype1, const ParticleType ptype2, const double ma,
-                                const double mb, const double coupling, const double pole_m)
+                                const double mb, const double coupling)
     {
         double pre = 1 / (16 * M_PI * mh);
         double res = 1;
@@ -177,30 +177,86 @@ namespace DT
                 return 0.;
             }
             break;
-        case quark + quark:
-            if (mh > pole_m + pole_m)
+        case s_quark + s_quark:
+            if (mh > ms_pole + ms_pole)
             {
-                if (pole_m == m1)
-                {
-                    res *= 3 * (mh * mh - (m1 + m2) * (m1 + m2));
-                }
-                else
-                {
-                    double a = aS / M_PI;
-                    double frac = m1 * m1 / (mh * mh);
-                    double frac_pole = pole_m * pole_m / (mh * mh);
-                    double beta = (1 - 4 * frac);
-                    double beta_pole = (1 - 4 * frac_pole);
-                    double gam_light = pre * beta * beta * coupling * mh * mh *
-                                       (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 5.) * a * a);
-                    double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh * pole_m * pole_m / (m1 * m1) *
-                                       (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
-                    return 3 * (beta_pole * gam_light + 4 * pole_m * pole_m / (mh * mh) * gam_heavy);
-                }
+                double a = aS / M_PI;
+                double frac = m1 * m1 / (mh * mh);
+                double frac_pole = ms_pole * ms_pole / (mh * mh);
+                double beta = (1 - 4 * frac);
+                double beta_pole = (1 - 4 * frac_pole);
+                double gam_light = pre * beta * beta * coupling * mh * mh *
+                                   (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 3.) * a * a);
+                double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh * ms_pole * ms_pole / (m1 * m1) *
+                                   (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
+                return 3 * (beta_pole * gam_light + 4 * ms_pole * ms_pole / (mh * mh) * gam_heavy);
             }
             else
             {
                 return 0.;
+            }
+            break;
+        case c_quark + c_quark:
+            if (mh > mc_pole + mc_pole)
+            {
+                double a = aS / M_PI;
+                double frac = m1 * m1 / (mh * mh);
+                double frac_pole = mc_pole * mc_pole / (mh * mh);
+                double beta = (1 - 4 * frac);
+                double beta_pole = (1 - 4 * frac_pole);
+                double gam_light = pre * beta * beta * coupling * mh * mh *
+                                   (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 4.) * a * a);
+                double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh * mc_pole * mc_pole / (m1 * m1) *
+                                   (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
+                return 3 * (beta_pole * gam_light + 4 * mc_pole * mc_pole / (mh * mh) * gam_heavy);
+            }
+            else
+            {
+                return 0.;
+            }
+            break;
+        case b_quark + b_quark:
+            if (mh > mb_pole + mb_pole)
+            {
+                double a = aS / M_PI;
+                double frac = m1 * m1 / (mh * mh);
+                double frac_pole = mb_pole * mb_pole / (mh * mh);
+                double beta = (1 - 4 * frac);
+                double beta_pole = (1 - 4 * frac_pole);
+                double gam_light = pre * beta * beta * coupling * mh * mh *
+                                   (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 5.) * a * a);
+                double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh * mb_pole * mb_pole / (m1 * m1) *
+                                   (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
+                return 3 * (beta_pole * gam_light + 4 * mb_pole * mb_pole / (mh * mh) * gam_heavy);
+            }
+            else
+            {
+                return 0.;
+            }
+            break;
+        case t_quark + t_quark:
+            if (mh > mt_pole + mt_pole)
+            {
+                double a = aS / M_PI;
+                double frac = m1 * m1 / (mh * mh);
+                double frac_pole = mt_pole * mt_pole / (mh * mh);
+                double beta = (1 - 4 * frac);
+                double beta_pole = (1 - 4 * frac_pole);
+                double gam_light = pre * beta * beta * coupling * mh * mh *
+                                   (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 6.) * a * a);
+                double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh * mt_pole * mt_pole / (m1 * m1) *
+                                   (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
+                return 3 * (beta_pole * gam_light + 4 * mt_pole * mt_pole / (mh * mh) * gam_heavy);
+            }
+            else
+            {
+                return 0.;
+            }
+            break;
+        case quark + quark:
+            if (mh > m1 + m2)
+            {
+                res *= 3 * (mh * mh - (m1 + m2) * (m1 + m2));
             }
             break;
         case z_boson + z_boson:

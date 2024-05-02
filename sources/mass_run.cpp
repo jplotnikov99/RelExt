@@ -354,10 +354,10 @@ namespace DT
     void Mrun::calc_quark_masses(const double q, double *masses[], double &aS)
     {
         aS = alphaS(q);
-        *masses[0] = RunM(q, 3, 0) * delQCD(3, aS);
-        *masses[1] = RunM(q, 4, 0) * delQCD(4, aS);
-        *masses[2] = RunM(q, 5, 1) * delQCD(5, aS);
-        *masses[3] = RunM(q, 6, 1) * delQCD(6, aS);
+        *masses[0] = RunM(q, 3, 0);
+        *masses[1] = RunM(q, 4, 0);
+        *masses[2] = RunM(q, 5, 1);
+        *masses[3] = RunM(q, 6, 1);
     }
 
 } // namespace DT

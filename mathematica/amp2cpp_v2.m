@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
-directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
+directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";
 (*directory = "/home/rodrigo/Downloads/darktree_new/md_cxsm/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
@@ -38,20 +38,31 @@ SetOptions[Polarization, Transversality->True];
 (*****************)
 
 
+GSlist = FR$GoldstoneList;
+GSlist;
+
+
 (*create list with particle identifiers, masses and names according to FA mod files*)
 particlelist = {M$ClassesDescription[[#,1]], TheMass[M$ClassesDescription[[#,1]]], ToString[TheLabel[M$ClassesDescription[[#,1]]]]}& /@Range[Length[M$ClassesDescription]];
 Do[
 (*adds antiparticles to particlelist*)
 	If[SelfConjugate/.M$ClassesDescription[[i1,2]][[1]],
-		(*if field is its own antiparticle do nothing*),
+		Continue[],
 		 AppendTo[particlelist, {-M$ClassesDescription[[i1,1]], TheMass[M$ClassesDescription[[i1,1]]], 
 		 (*change antiparticle name by capitalizing particle name, unless particle name is already capitalized*)
 		 If[UpperCaseQ[ToString[TheLabel[M$ClassesDescription[[i1,1]]]]], ToLowerCase[ToString[TheLabel[M$ClassesDescription[[i1,1]]]]], ToUpperCase[ToString[TheLabel[M$ClassesDescription[[i1,1]]]]]]}]
 	],
 {i1, Length[M$ClassesDescription]}
 ];
-
-particlelist
+prttemp={};
+Do[
+	If[StringContainsQ[ToString[particlelist[[i1,1]]],"U"] || MemberQ[GSlist,particlelist[[i1,1]]] || MemberQ[GSlist,-particlelist[[i1,1]]],
+		Continue[],
+		AppendTo[prttemp,particlelist[[i1]]]	
+	]
+,{i1,Length[particlelist]}]
+particlelist = prttemp;
+Clear[prttemp];
 (*1st column: FAs fields*)
 (*2nd column: masses of fields*)
 (*3rd column: name of fields*)
@@ -61,22 +72,34 @@ particlelist
 getWidthsandDSMasses[]:=
 Block[{prtfile,prtlist},
 prtfile = Import[directory<>"FR_modfiles/CH_modfiles/prtcls1.mdl", "Table", "FieldSeparators"->"|"];
-prtlist = Map[StringDelete[StringReplace[ToString[#], "%"->""], WhitespaceCharacter]&, prtfile, {-1}][[4;;, {2,6,7}]];
+prtlist = Map[StringDelete[StringReplace[ToString[#], "%"->""], WhitespaceCharacter]&, prtfile, {-1}][[4;;, {2,6,7,4}]];
 chmass = Select[prtlist, StringTake[#[[1]], 1] == "~" &][[All, 2]];
 widths = {};
 For[i=1, i<= Length[prtlist],i++,
+	AppendTo[particlelist[[i]],prtlist[[i,4]]];
     If[prtlist[[i,3]]!="0",
         AppendTo[widths,ToExpression[prtlist[[i,2]]]]; 
         AppendTo[widths,ToExpression[StringReplace[prtlist[[i,3]],"!"->""]]]
     ]
 ];
+Do[
+	AppendTo[particlelist[[i1]],0];
+,{i1,Length[prtlist]+1,Length[particlelist]}]
 ]
-getWidthsandDSMasses[]
+getWidthsandDSMasses[];
 
 
-GSlist = {};
-For[i=1,i<=Length[particlelist],i++, If[ToString[particlelist[[i,3]]] =="Gch"||ToString[particlelist[[i,3]]]=="GP"||ToString[particlelist[[i,3]]]=="Gp" || ToString[particlelist[[i,3]]]== "G0", AppendTo[GSlist, particlelist[[i,1]]]]];
-GSlist;
+IDtoPDG[ID_]:=
+Block[{NID},
+	NID=ID/.-x_:>x;
+	NID=NID/.F[x_,{y_}]:>F[x];
+	Return[particlelist[[Position[particlelist,NID][[1,1]],4]]];
+]
+
+PDGtoID[PDG_]:=
+Block[{},
+	Return[particlelist[[Position[particlelist[[All,4]],PDG][[1,1]],1]]];
+]
 
 
 (*create list with dark sector particles; labels of dark sector particles must have a tilde at the start in the FA mod files*)
@@ -105,7 +128,7 @@ alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> GSlist[[1]]]&]
 alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> -GSlist[[1]]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> -GSlist[[1]]]&];
 alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> GSlist[[2]]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> GSlist[[2]]]&];
 alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> -GSlist[[2]]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> -GSlist[[2]]]&];
-Table[ alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> dslist[[j]]]&] , {j, Length[dslist]}]; 
+Table[ alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> dslist[[j]]]&] , {j, Length[dslist]}];
 Table[ alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> dslist[[j]]]&] , {j, Length[dslist]}];
 , {i, Length[alldiags]}]
 
@@ -426,7 +449,9 @@ calcAmp2s[];
 relevantWsfields = {};
 relevantWidth = {};
 Do[
-	If[relevantWs[[i]]==(particlelist[[j,2]]/.subrule) && StringPart[ToString[particlelist[[j,1]]],1]!="-" && StringPart[ToString[particlelist[[j,1]]],1]!="U" && ToString[particlelist[[j,1]]]!=ToString[GSlist[[1]]] && ToString[particlelist[[j,1]]]!=ToString[GSlist[[2]]] && ToString[particlelist[[j,1]]]!="V[2]" && ToString[particlelist[[j,1]]]!="V[3]",
+	If[relevantWs[[i]]==(particlelist[[j,2]]/.subrule) && StringPart[ToString[particlelist[[j,1]]],1]!="-" && StringPart[ToString[particlelist[[j,1]]],1]!="U" 
+	&& ToString[particlelist[[j,1]]]!=ToString[GSlist[[1]]] && ToString[particlelist[[j,1]]]!=ToString[GSlist[[2]]] && IDtoPDG[particlelist[[j,1]]]!="23" && 
+	IDtoPDG[particlelist[[j,1]]]!="24",
 		AppendTo[relevantWsfields, particlelist[[j,1]]];
 		AppendTo[relevantWidth, relevantWs[[i+1]]];
 	]
@@ -526,14 +551,23 @@ Block[{numerator,denominator,coefficient={},temp1,temp2},
 
 (*function to determine type of particle appearing in the decay final states*)
 determineType[sts_, ind_]:=
-Block[{q1},
+Block[{q1, PDG, i1},
 		i1 = ind;
 		q1=StringPart[ToString[sts[[i1]]/.-x_:>x],1];
+		PDG = IDtoPDG[sts[[i1]]];
 		Which[
-			ToString[sts[[i1]]]==="V[2]",
+			PDG === "23",
 				q1 = "z_boson",
-			ToString[sts[[i1]]/.-x_:>x]==="V[3]",
+			PDG === "24",
 				q1 = "w_boson",
+			PDG === "3",
+				q1 = "s_quark",
+			PDG === "4",
+				q1 = "c_quark",
+			PDG === "5",
+				q1 = "b_quark",
+			PDG === "6",
+				q1 = "t_quark",
 			q1==="V",
 				If[PossibleZeroQ[TheMass[sts[[i1]]]],
 					q1 = "massless_vector_boson",
@@ -583,7 +617,8 @@ SMP -> False, Contract -> True, DropSumOver -> True]/.gcsub/.subrule//DiracSubst
 k = If[!SelfConjugate[finallistDecays[[i,2]]], -finallistDecays[[i,2]], finallistDecays[[i,2]]];
 l = If[!SelfConjugate[finallistDecays[[i,3]]], -finallistDecays[[i,3]], finallistDecays[[i,3]]];
 ];
-If[Length[ampDecays] == 0,,
+If[Length[ampDecays] == 0,
+	Continue[],
 	AppendTo[decayslist, ampDecays];
 	AppendTo[foutlistDecays, {finallistDecays[[i,1]], k, l}];
 ];
@@ -781,7 +816,7 @@ Do[
 ,{i,Length[processnameDecays]}];
 
 Do[
-	Write[sfile, "\tdouble ww" , ToString[possibleiniDecays[[i]]] , "();"];
+	Write[sfile, "\tdouble ww" , ToString[possibleiniDecays[[i]]] , "(const double QCDaS);"];
 ,{i,Length[possibleiniDecays]}];
 
 Write[sfile, "}"];
@@ -875,7 +910,7 @@ Close[sfile];
 
 
 (*MS, MC, MB, MT*)
-runMasses = {TheMass[F[11]], TheMass[F[8]], TheMass[F[12]], TheMass[F[9]]}/.subrule;
+runMasses = {TheMass[PDGtoID["3"]], TheMass[PDGtoID["4"]], TheMass[PDGtoID["5"]], TheMass[PDGtoID["6"]]}/.subrule;
 (*loadparameters file*)
 sfile=OpenWrite[directory<>"sources/loadparameters.cpp",FormatType->StandardForm, TotalWidth->Infinity, PageWidth->Infinity];
 Write[sfile, mathlabel];
@@ -885,8 +920,6 @@ Write[sfile, "#include \"../model.hpp\""]
 Write[sfile, "namespace DT{"]
 
 Write[sfile, "\tvoid Model::load_parameters(){"]
-
-
 Write[sfile, "\t\tFAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;"];
 If[ContainsAll[external[[All,1]], {"yms", "ymb", "ymt", "ymc"}],
 	Write[sfile, "\t\tyms = ", ToString[runMasses[[1]]], ";"];
@@ -921,7 +954,7 @@ Do[
 	Write[sfile, "\t\tscale = ", ToString[inifuncDecays[j][[1,2]]], ";"];
 	Write[sfile, "\t\tRun->calc_quark_masses(scale, quark_masses, aS);"];
 	Write[sfile, "\t\tload_parameters();"];
-	Write[sfile, "\t\t", relevantWidth[[j]], " = ww", ToString[possibleiniDecays[[j]]] , "();"];
+	Write[sfile, "\t\t", relevantWidth[[j]], " = ww", ToString[possibleiniDecays[[j]]] , "(aS);"];
 ,{j,Length[possibleiniDecays]}]
 
 (*running masses for DM annihilation*)
@@ -1042,7 +1075,7 @@ Do[
 			Write[sfile, "}"]
 		,{j,Length[inifuncDecays[i]]}];
 		
-		Write[sfile, "double DT::ww" , ToString[possibleiniDecays[[i]]] , "(){"];
+		Write[sfile, "double DT::ww" , ToString[possibleiniDecays[[i]]] , "(const double QCDaS){"];
 		allcontr="( ";
 		Do[
 			If[j!=Length[inifuncDecays[i]],
@@ -1087,9 +1120,10 @@ Do[
 	
 	(*if decaying particle is a scalar:*)
 	If[ inifuncDecays[i][[1,8]] == 0,
-		Write[sfile, "double DT::ww" , ToString[possibleiniDecays[[i]]] , "(){"];
+		Write[sfile, "double DT::ww" , ToString[possibleiniDecays[[i]]] , "(const double QCDaS){"];
 		Write[sfile, "\tdouble width = 0;"];
 		Write[sfile, "\tstd::unique_ptr<Width> w = std::make_unique<Width>(", inifuncDecays[i][[1,2]],");"];
+		Write[sfile, "\tw->set_alphaS(QCDaS);"];
 		m2vect="( { ";
 		m3vect="( { ";
 		type1vect="( { ";

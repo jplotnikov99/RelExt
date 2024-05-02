@@ -151,6 +151,7 @@ namespace DT{
 	extern double token37;
 	extern double token38;
 	extern double token39;
+	extern double token40;
 	extern double EL;
 	extern double ee;
 	extern double gs;
@@ -216,6 +217,6 @@ namespace DT{
 	double wS1Dd();
 	double wS1Ss();
 	double wS1Bb();
-	double wwH();
-	double wwS1();
+	double wwH(const double QCDaS);
+	double wwS1(const double QCDaS);
 }
