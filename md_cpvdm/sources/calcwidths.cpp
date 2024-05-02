@@ -13,7 +13,7 @@ namespace DT{
 		scale = mHsm;
 		Run->calc_quark_masses(scale, quark_masses, aS);
 		load_parameters();
-		WHsm = wwh();
+		WHsm = wwh(aS);
 		scale = 2*MDM;
 		Run->calc_quark_masses(scale, quark_masses, aS);
 	}

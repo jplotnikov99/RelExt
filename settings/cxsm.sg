@@ -3,7 +3,7 @@
 ######## Standard settings ########
 
 InputFile           |micro_cxsm.csv
-OutputFile          |cxsm_dopr5.csv
+OutputFile          |cxsm_width.csv
 StartPoint          |1
 EndPoint            |
 SavedParameters     |MA1, svev, alpha

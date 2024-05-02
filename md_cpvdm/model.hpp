@@ -519,5 +519,5 @@ namespace DT{
 	double whDd();
 	double whSs();
 	double whBb();
-	double wwh();
+	double wwh(const double QCDaS);
 }

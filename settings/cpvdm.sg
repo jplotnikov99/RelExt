@@ -3,9 +3,9 @@
 ######## Standard settings ########
 
 InputFile           |CPVDMTest.csv
-OutputFile          |cpvdm_rk4.csv
+OutputFile          |cpvdm_width.csv
 StartPoint          |1
-EndPoint            |10
+EndPoint            |
 SavedParameters     |mH1, mH2
 ThermalBath         |
 ConsideredChannels  |

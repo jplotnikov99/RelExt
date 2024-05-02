@@ -266,14 +266,16 @@ namespace DT
             }
             else if (heaviDecays(mh, m1, 0))
             {
+                // times two of the literature formula since we multiply the coupling by 0.5
                 double sw2 = pow(sin(thetaw), 2);
-                return 3 * mh / (512 * M_PI * M_PI * M_PI * m1 * m1) * g2 * g2 * R_T(m1 * m1 / (mh * mh)) /
+                return 6 * mh / (512 * M_PI * M_PI * M_PI * m1 * m1) * g2 * g2 * R_T(m1 * m1 / (mh * mh)) /
                        pow(cos(thetaw), 2) * (7 / 12. - 10 / 9. * sw2 + 40 / 27. * sw2 * sw2) * coupling;
             }
             else
             {
+                // times two of the literature fromula since we multiply the coupling by 0.5
                 Z = true;
-                return mh * mh * mh / (128. * M_PI * M_PI * M_PI * m1 * m1) *
+                return mh * mh * mh / (64. * M_PI * M_PI * M_PI * m1 * m1) *
                        wz * wz * coupling * integrate_4body_gauge();
             }
             break;
