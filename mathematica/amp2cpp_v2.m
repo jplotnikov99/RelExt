@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
-(*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
-directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";
+directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
+(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
 (*directory = "/home/rodrigo/Downloads/darktree_new/md_cxsm/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
@@ -515,8 +515,8 @@ finallistDecays = Delete[diagsgroupedDecay[[All, 1]], remelemDecays];
 breakdownAmpDecays[proccess_, amp_]:=
 Block[{numerator,denominator,coefficient={},temp1,temp2},
 	numerator = Table[FullSimplify[Numerator[amp[[it]]]],{it,Length[amp]}];
+	denominator=Denominator[amp[[1]]];
 	
-	denominator =Table[Denominator[amp[[it]]],{it,Length[amp]}];
 	Do[
 		temp1 = 1;
 		temp2 = 1;
@@ -532,19 +532,8 @@ Block[{numerator,denominator,coefficient={},temp1,temp2},
 		,{jt,Length[numerator[[it]]]}];
 		AppendTo[coefficient, temp1];
 	,{it,Length[numerator]}];
-	Do[
-		If[Length[denominator[[it]]]==0,
-			If[FreeQ[denominator[[it]],Alternatives @@ {s,t,u}],
-				coefficient[[it]]/=denominator[[it]]
-			];
-		];
-		Do[
-			
-				If[FreeQ[denominator[[it,jt]],Alternatives @@ {s,t,u}],
-					coefficient[[it]]/=(denominator[[it,jt]])
-				];
-		,{jt,Length[denominator[[it]]]}]
-	,{it,Length[denominator]}];
+	coefficient[[1]]=coefficient[[1]]/denominator;
+	
 	AppendTo[coefficientlist,coefficient];
 ]
 
@@ -639,6 +628,9 @@ calcAmpsDecays[];
 massListDecays
 coefficientlist;
 couplings*)
+
+
+coefficientlist
 
 
 (*computation of the widths for all the 1to2 processes from the previous list*)
@@ -1178,3 +1170,9 @@ Do[
 		Close[sfile];
 	];
 ,{i,Length[possibleiniDecays]}]
+
+
+inifuncDecays[1]
+
+
+coefficientlist

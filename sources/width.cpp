@@ -170,7 +170,7 @@ namespace DT
         case lepton + lepton:
             if (mh > m1 + m2)
             {
-                res *= (mh * mh - (m1 + m2) * (m1 + m2));
+                res *= 2 * (mh * mh - (m1 + m2) * (m1 + m2));
             }
             else
             {
@@ -189,7 +189,7 @@ namespace DT
                                    (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 3.) * a * a);
                 double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh * ms_pole * ms_pole / (m1 * m1) *
                                    (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
-                return 3 * (beta_pole * gam_light + 4 * ms_pole * ms_pole / (mh * mh) * gam_heavy);
+                return 6 * (beta_pole * gam_light + 4 * ms_pole * ms_pole / (mh * mh) * gam_heavy);
             }
             else
             {
@@ -208,7 +208,7 @@ namespace DT
                                    (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 4.) * a * a);
                 double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh * mc_pole * mc_pole / (m1 * m1) *
                                    (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
-                return 3 * (beta_pole * gam_light + 4 * mc_pole * mc_pole / (mh * mh) * gam_heavy);
+                return 6 * (beta_pole * gam_light + 4 * mc_pole * mc_pole / (mh * mh) * gam_heavy);
             }
             else
             {
@@ -227,7 +227,7 @@ namespace DT
                                    (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 5.) * a * a);
                 double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh * mb_pole * mb_pole / (m1 * m1) *
                                    (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
-                return 3 * (beta_pole * gam_light + 4 * mb_pole * mb_pole / (mh * mh) * gam_heavy);
+                return 6 * (beta_pole * gam_light + 4 * mb_pole * mb_pole / (mh * mh) * gam_heavy);
             }
             else
             {
@@ -246,7 +246,7 @@ namespace DT
                                    (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 6.) * a * a);
                 double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh * mt_pole * mt_pole / (m1 * m1) *
                                    (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
-                return 3 * (beta_pole * gam_light + 4 * mt_pole * mt_pole / (mh * mh) * gam_heavy);
+                return 6 * (beta_pole * gam_light + 4 * mt_pole * mt_pole / (mh * mh) * gam_heavy);
             }
             else
             {
@@ -256,7 +256,7 @@ namespace DT
         case quark + quark:
             if (mh > m1 + m2)
             {
-                res *= 3 * (mh * mh - (m1 + m2) * (m1 + m2));
+                res *= 6 * (mh * mh - (m1 + m2) * (m1 + m2));
             }
             break;
         case z_boson + z_boson:
@@ -307,11 +307,10 @@ namespace DT
             }
             else
             {
-                std::cout << coupling << "\n";
                 const double AQ = 3 / 2. * tau * (1 + (1 - tau) * pow(asin(1 / sqrt(tau)), 2));
                 AQ2 = AQ * AQ;
             }
-            return 2 * mh / (18 * M_PI * M_PI * M_PI) * (aS * aS) / tau * AQ2 * coupling * mt_pole * mt_pole / (m1 * m1);
+            return 4 * mh / (18 * M_PI * M_PI * M_PI) * (aS * aS) / tau * AQ2 * coupling * mt_pole * mt_pole / (m1 * m1);
         }
         break;
 
