@@ -295,6 +295,25 @@ namespace DT
                        ww * ww * coupling * integrate_4body_gauge();
             }
             break;
+        case gluon + gluon:
+        {
+            const double tau = 4 * mt_pole * mt_pole / (mh * mh);
+            double AQ2;
+            if (tau < 1)
+            {
+                const double logt = log((2 * sqrt(1 - tau) - tau + 2) / tau);
+                const double var = (tau - 1);
+                AQ2 = 9 / 64. * tau * tau * (pow(M_PI * M_PI * var - 4, 2) + var * logt * logt * (2 * M_PI * M_PI * var + 8 + var * logt * logt));
+            }
+            else
+            {
+                std::cout << coupling << "\n";
+                const double AQ = 3 / 2. * tau * (1 + (1 - tau) * pow(asin(1 / sqrt(tau)), 2));
+                AQ2 = AQ * AQ;
+            }
+            return 2 * mh / (18 * M_PI * M_PI * M_PI) * (aS * aS) / tau * AQ2 * coupling * mt_pole * mt_pole / (m1 * m1);
+        }
+        break;
 
         default:
             break;

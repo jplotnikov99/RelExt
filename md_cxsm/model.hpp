@@ -151,7 +151,6 @@ namespace DT{
 	extern double token37;
 	extern double token38;
 	extern double token39;
-	extern double token40;
 	extern double EL;
 	extern double ee;
 	extern double gs;

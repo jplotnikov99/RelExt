@@ -16,7 +16,8 @@ namespace DT
         s_quark = -4,
         c_quark = -8,
         b_quark = -16,
-        t_quark = -32
+        t_quark = -32,
+        gluon = -64
     };
 
     class Width

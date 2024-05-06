@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
-directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
+directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";
 (*directory = "/home/rodrigo/Downloads/darktree_new/md_cxsm/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
@@ -550,11 +550,13 @@ Block[{numerator,denominator,coefficient={},temp1,temp2},
 
 
 (*function to determine type of particle appearing in the decay final states*)
+gluonExistence = False;
 determineType[sts_, ind_]:=
 Block[{q1, PDG, i1},
 		i1 = ind;
 		q1=StringPart[ToString[sts[[i1]]/.-x_:>x],1];
 		PDG = IDtoPDG[sts[[i1]]];
+		If[PDG === "21", gluonExistence=True];
 		Which[
 			PDG === "23",
 				q1 = "z_boson",
@@ -774,6 +776,19 @@ Do[
 		AppendTo[inifuncDecays[pos],{processnameDecays[[i]],TheMass[foutlistDecays[[i,1]]],TheMass[foutlistDecays[[i,2]]],TheMass[foutlistDecays[[i,3]]],templist2Decays[[i,1]],templist2Decays[[i,2]],templist2Decays[[i,3]],finalDecaysWidth[[i]], couplings[[i]], particleType[[i]] }/.subrule]
 	]
 ,{i,Length[processnameDecays]}]
+
+
+Do[
+	If[SelfConjugate[inifuncDecays[i1][[1,5]]]&&inifuncDecays[i1][[1,8]]==0,
+		Do[
+			If[inifuncDecays[i1][[j1,10,1]]=="t_quark"&&inifuncDecays[i1][[j1,10,2]]=="t_quark",
+				AppendTo[inifuncDecays[i1],{StringJoin[ToString[possibleiniDecays[[i1]]],"GG"],
+						TheMass[inifuncDecays[i1][[1,5]]]/.subrule,TheMass[inifuncDecays[i1][[j1,6]]]/.subrule,TheMass[inifuncDecays[i1][[j1,7]]]/.subrule,inifuncDecays[i1][[1,5]],PDGtoID["21"],PDGtoID["21"],0,
+						inifuncDecays[i1][[j1,9]],{"gluon","gluon"}}]
+			]
+		,{j1,Length[inifuncDecays[i1]]}]
+	]
+,{i1,Length[possibleiniDecays]}];
 
 
 (*declarations file*)

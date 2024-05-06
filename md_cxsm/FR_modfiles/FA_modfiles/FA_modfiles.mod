@@ -480,9 +480,9 @@ C[ S[2] , S[2] , S[1] , S[4] ] == {{((I/2)*Cos[alpha]*Sin[alpha]*((FCGV["MH"]^2 
 
 C[ S[3] , -S[3] , S[1] , S[4] ] == {{((I/2)*Cos[alpha]*Sin[alpha]*((FCGV["MH"]^2 + MS1^2)*svev + (FCGV["MH"]^2 - MS1^2)*svev*Cos[2*alpha] - (FCGV["MH"]^2 - MS1^2)*vev*Sin[2*alpha]))/(svev*vev^2), 0}},
 
-C[ S[1] , S[4] , S[4] ] == {{-1/2*((I/2)*FCGV["MH"]^2*svev*Cos[alpha] + I*MS1^2*svev*Cos[alpha] - (I/2)*FCGV["MH"]^2*svev*Cos[alpha]^3 - I*MS1^2*svev*Cos[alpha]^3 + (I/2)*FCGV["MH"]^2*vev*Sin[alpha] + I*MS1^2*vev*Sin[alpha] + ((3*I)/2)*FCGV["MH"]^2*vev*Cos[alpha]^2*Sin[alpha] + (3*I)*MS1^2*vev*Cos[alpha]^2*Sin[alpha] + ((3*I)/2)*FCGV["MH"]^2*svev*Cos[alpha]*Sin[alpha]^2 + (3*I)*MS1^2*svev*Cos[alpha]*Sin[alpha]^2 - (I/2)*FCGV["MH"]^2*vev*Sin[alpha]^3 - I*MS1^2*vev*Sin[alpha]^3)/(svev*vev), 0}},
+C[ S[1] , S[4] , S[4] ] == {{((-I)*(FCGV["MH"]^2 + 2*MS1^2)*Cos[alpha]*Sin[alpha]*(vev*Cos[alpha] + svev*Sin[alpha]))/(svev*vev), 0}},
 
-C[ S[1] , S[1] , S[4] ] == {{((-I)*FCGV["MH"]^2*vev*Cos[alpha] - (I/2)*MS1^2*vev*Cos[alpha] + I*FCGV["MH"]^2*vev*Cos[alpha]^3 + (I/2)*MS1^2*vev*Cos[alpha]^3 + I*FCGV["MH"]^2*svev*Sin[alpha] + (I/2)*MS1^2*svev*Sin[alpha] + (3*I)*FCGV["MH"]^2*svev*Cos[alpha]^2*Sin[alpha] + ((3*I)/2)*MS1^2*svev*Cos[alpha]^2*Sin[alpha] - (3*I)*FCGV["MH"]^2*vev*Cos[alpha]*Sin[alpha]^2 - ((3*I)/2)*MS1^2*vev*Cos[alpha]*Sin[alpha]^2 - I*FCGV["MH"]^2*svev*Sin[alpha]^3 - (I/2)*MS1^2*svev*Sin[alpha]^3)/(2*svev*vev), 0}},
+C[ S[1] , S[1] , S[4] ] == {{(I*(2*FCGV["MH"]^2 + MS1^2)*Cos[alpha]*Sin[alpha]*(svev*Cos[alpha] - vev*Sin[alpha]))/(svev*vev), 0}},
 
 C[ S[1] , S[4] , S[4] , S[4] ] == {{(((3*I)/8)*(vev*Cos[alpha] + svev*Sin[alpha])*(-((FCGV["MH"]^2 + 3*MS1^2)*vev*Cos[alpha]) + (FCGV["MH"]^2 - MS1^2)*vev*Cos[3*alpha] + 2*svev*(FCGV["MH"]^2 + MS1^2 + (FCGV["MH"]^2 - MS1^2)*Cos[2*alpha])*Sin[alpha])*Sin[2*alpha])/(svev^2*vev^2), 0}},
 
