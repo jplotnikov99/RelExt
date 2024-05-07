@@ -83,7 +83,11 @@ if [ -n "$load" ]; then
       fr_full_dir=$(readlink -f "$fr_dir")
       
       math -script mathematica/FR_to_CH_FA.m $2 $3 $4 $fr_full_dir
-      math -script mathematica/amp2cpp_v2.m $fr_full_dir
+      if [ -f "$fr_full_dir/passed.txt" ]
+      then
+        rm "$fr_full_dir/passed.txt"
+        math -script mathematica/amp2cpp_v2.m $fr_full_dir
+      fi
       exit 0
       ;;
     *)	
