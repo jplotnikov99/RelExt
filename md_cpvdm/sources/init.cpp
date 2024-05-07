@@ -7,51 +7,6 @@
 namespace DT{
 	void Model::init()
 	{
-		MZ = 91.1876;
-		aEWM1 = 0.00775795;
-		Gf = 0.0000116637;
-		aS = 0.1172;
-		mHsm = 125.09;
-		mHc = 200.;
-		alph1 = -0.1;
-		alph2 = -0.1;
-		alph3 = 0.1;
-		mH1 = 100.;
-		mH2 = 200.;
-		m22sq = 100;
-		mssq = 100;
-		L2 = 0.1;
-		L6 = 0.1;
-		L8 = 0.1;
-		MC = 1.2;
-		MB = 4.23;
-		MT = 172.5;
-		GG = 1.21358;
-		Mnue = 0.;
-		Mnum = 0.;
-		Mnut = 0.;
-		Me = 0.;
-		MM = 0.1057;
-		MTA = 1.777;
-		MU = 0.;
-		MD = 0.;
-		MS = 0.;
-		WT = 2.;
-		WZ = 2.4952;
-		WW = 2.085;
-		WHsm = 1.;
-		WH1 = 0.;
-		WH2 = 1.;
-		WH3 = 1.;
-		WHc = 1.;
-		E = 2.71828;
-		Pi = 3.14159;
-		double EL = 0.312233;
-		double ee = 0.312233;
-		double gs = 1.21358;
-		double G = 1.21358;
-		double FAGS = 1.21358;
-
 		particles["H1"]=&mH1;
 		particles["H2"]=&mH2;
 		particles["H3"]=&mH3;

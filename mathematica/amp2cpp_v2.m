@@ -840,8 +840,13 @@ Write[sfile, "#include <cmath>\n"]
 
 Write[sfile, "namespace DT{"];
 Do[
-	Write[sfile, "\tdouble", " ", external[[i,1]] ,";"]
+	Write[sfile, "\tdouble ", external[[i,1]] ," = ", external[[i,2]],";"]
 ,{i,Length[external]}]
+Write[sfile, "\tdouble EL = 0.312233;"];
+Write[sfile, "\tdouble ee = 0.312233;"];
+Write[sfile, "\tdouble gs = 1.21358;"];
+Write[sfile, "\tdouble G = 1.21358;"];
+Write[sfile, "\tdouble FAGS = 1.21358;\n"];
 Do[
 	Write[sfile, "\tdouble", " ", internal[[i,1]] ,";"]
 ,{i,Length[internal]}]
@@ -849,11 +854,7 @@ Do[
 Do[
 	Write[sfile, "\tdouble", " ", ToString[tokenreverse[[i,1]]] , ";"]
 ,{i,Length[tokenreverse]}];
-Write[sfile, "\tdouble EL;"];
-Write[sfile, "\tdouble ee;"];
-Write[sfile, "\tdouble gs;"];
-Write[sfile, "\tdouble G;"];
-Write[sfile, "\tdouble FAGS;\n"];
+
 Write[sfile, "}"];
 Close[sfile];
 
@@ -865,14 +866,7 @@ Write[sfile, "#include \"../model.hpp\"\n"]
 Write[sfile, "namespace DT{"];
 Write[sfile,"\tvoid Model::init()"];
 Write[sfile,"\t{"];
-Do[
-	Write[sfile, "\t\t", external[[i,1]] ," = ", external[[i,2]],";"]
-,{i,Length[external]}]
-Write[sfile, "\t\tdouble EL = 0.312233;"];
-Write[sfile, "\t\tdouble ee = 0.312233;"];
-Write[sfile, "\t\tdouble gs = 1.21358;"];
-Write[sfile, "\t\tdouble G = 1.21358;"];
-Write[sfile, "\t\tdouble FAGS = 1.21358;\n"];
+
 Do[
 	Write[sfile, "\t\tparticles[\"",ToString[dsnames[[i]]],"\"]=&",ToString[dsmass[[i]]],";"]
 ,{i,Length[dsmass]}]
