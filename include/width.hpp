@@ -43,6 +43,8 @@ namespace DT
         double A(const double x);
         double Delta_phi(const double x);
         double Delta_phi_mass(const double m);
+        double gam_light(const double m, const double NF);
+        double gam_heavy(const double m, const double m_pole);
         double gamma0_gauge_bosons(const double s1, const double s2);
         void s2_evaluations(const double l, const double r, const double s1, double *f);
         double s2_integration(const double l, const double r, const double s1,

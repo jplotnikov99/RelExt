@@ -1164,9 +1164,3 @@ Do[
 		Close[sfile];
 	];
 ,{i,Length[possibleiniDecays]}]
-
-
-inifuncDecays[1]
-
-
-coefficientlist

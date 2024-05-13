@@ -26,19 +26,35 @@ namespace DT
     {
         double frac = (1 - x) / (1 + x);
         return (1 + x * x) * (4 * Li2(frac) + 2 * Li2(-frac) - log(1 / frac) * (3 * log(2 / (1 + x)) + 2 * log(x))) -
-               3 * x * log(4 / (1 - x * x)) - 4 * x * log(x);
+               3 * x * log(4 / (1. - x * x)) - 4. * x * log(x);
     }
 
     double Width::Delta_phi(const double x)
     {
         double x2 = x * x;
-        return A(x) / x + (3 + 34 * x2 - 13 * x2 * x2) * log((1 + x) / (1 - x)) / (16 * x * x2) + 21 / 8 - 3 / (8 * x2);
+        return A(x) / x + (3 + 34 * x2 - 13 * x2 * x2) * log((1 + x) / (1 - x)) / (16 * x * x2) + 21. / 8. - 3. / (8. * x2);
     }
 
     double Width::Delta_phi_mass(const double m)
     {
         double frac = m * m / (mh * mh);
         return 2 * (1 + 3 / 4. * log(1 / frac)) * (1 - 10 * frac) / (1 - 4 * frac);
+    }
+
+    double Width::gam_light(const double m, const double NF)
+    {
+        double a = aS / M_PI;
+        double beta = (1 - 4 * m * m / (mh * mh));
+        return beta * sqrt(beta) * mh * mh *
+               (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m)) + (35.9399611978 - 1.35865070894 * NF) * a * a);
+    }
+
+    double Width::gam_heavy(const double m, const double m_pole)
+    {
+        double a = aS / M_PI;
+        double beta = 1 - 4 * m_pole * m_pole / (mh * mh);
+        return beta * sqrt(beta) * mh * mh * m_pole * m_pole / (m1 * m1) *
+               (1 + 4 / 3. * a * Delta_phi(sqrt(beta)));
     }
 
     double Width::R_T(const double x)
@@ -180,16 +196,10 @@ namespace DT
         case s_quark + s_quark:
             if (mh > ms_pole + ms_pole)
             {
-                double a = aS / M_PI;
-                double frac = m1 * m1 / (mh * mh);
-                double frac_pole = ms_pole * ms_pole / (mh * mh);
-                double beta = (1 - 4 * frac);
-                double beta_pole = (1 - 4 * frac_pole);
-                double gam_light = pre * beta * beta * coupling * mh * mh *
-                                   (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 3.) * a * a);
-                double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh * ms_pole * ms_pole / (m1 * m1) *
-                                   (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
-                return 6 * (beta_pole * gam_light + 4 * ms_pole * ms_pole / (mh * mh) * gam_heavy);
+                double beta_pole = (1 - 4 * ms_pole * ms_pole / (mh * mh));
+                double gamL = pre * coupling * gam_light(m1, 3.);
+                double gamH = pre  * coupling * gam_heavy(m1, ms_pole);
+                return 6 * (beta_pole * gamL + 4 * ms_pole * ms_pole / (mh * mh) * gamH);
             }
             else
             {
@@ -199,16 +209,10 @@ namespace DT
         case c_quark + c_quark:
             if (mh > mc_pole + mc_pole)
             {
-                double a = aS / M_PI;
-                double frac = m1 * m1 / (mh * mh);
-                double frac_pole = mc_pole * mc_pole / (mh * mh);
-                double beta = (1 - 4 * frac);
-                double beta_pole = (1 - 4 * frac_pole);
-                double gam_light = pre * beta * beta * coupling * mh * mh *
-                                   (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 4.) * a * a);
-                double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh * mc_pole * mc_pole / (m1 * m1) *
-                                   (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
-                return 6 * (beta_pole * gam_light + 4 * mc_pole * mc_pole / (mh * mh) * gam_heavy);
+                double beta_pole = (1 - 4 * mc_pole * mc_pole / (mh * mh));
+                double gamL = pre * coupling * gam_light(m1, 4.);
+                double gamH = pre  * coupling * gam_heavy(m1, mc_pole);
+                return 6 * (beta_pole * gamL + 4 * mc_pole * mc_pole / (mh * mh) * gamH);
             }
             else
             {
@@ -218,16 +222,10 @@ namespace DT
         case b_quark + b_quark:
             if (mh > mb_pole + mb_pole)
             {
-                double a = aS / M_PI;
-                double frac = m1 * m1 / (mh * mh);
-                double frac_pole = mb_pole * mb_pole / (mh * mh);
-                double beta = (1 - 4 * frac);
-                double beta_pole = (1 - 4 * frac_pole);
-                double gam_light = pre * beta * beta * coupling * mh * mh *
-                                   (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 5.) * a * a);
-                double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh * mb_pole * mb_pole / (m1 * m1) *
-                                   (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
-                return 6 * (beta_pole * gam_light + 4 * mb_pole * mb_pole / (mh * mh) * gam_heavy);
+                double beta_pole = (1 - 4 * mb_pole * mb_pole / (mh * mh));
+                double gamL = pre * coupling * gam_light(m1, 5.);
+                double gamH = pre  * coupling * gam_heavy(m1, mb_pole);
+                return 6 * (beta_pole * gamL + 4 * mb_pole * mb_pole / (mh * mh) * gamH);
             }
             else
             {
@@ -237,16 +235,10 @@ namespace DT
         case t_quark + t_quark:
             if (mh > mt_pole + mt_pole)
             {
-                double a = aS / M_PI;
-                double frac = m1 * m1 / (mh * mh);
-                double frac_pole = mt_pole * mt_pole / (mh * mh);
-                double beta = (1 - 4 * frac);
-                double beta_pole = (1 - 4 * frac_pole);
-                double gam_light = pre * beta * beta * coupling * mh * mh *
-                                   (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m1)) + (35.94 - 6.) * a * a);
-                double gam_heavy = pre * beta_pole * beta_pole * coupling * mh * mh * mt_pole * mt_pole / (m1 * m1) *
-                                   (1 + 4 / 3. * a * Delta_phi(sqrt(beta_pole)));
-                return 6 * (beta_pole * gam_light + 4 * mt_pole * mt_pole / (mh * mh) * gam_heavy);
+                double beta_pole = (1 - 4 * mt_pole * mt_pole / (mh * mh));
+                double gamL = pre * coupling * gam_light(m1, 6.);
+                double gamH = pre  * coupling * gam_heavy(m1, mt_pole);
+                return 6 * (beta_pole * gamL + 4 * mt_pole * mt_pole / (mh * mh) * gamH);
             }
             else
             {
@@ -317,7 +309,7 @@ namespace DT
         default:
             break;
         }
-        res = res * sqrt(kaellen(1, m1 * m1 / (mh * mh), m2 * m2 / (mh * mh))) / (16 * M_PI * mh) * coupling;
+        res = res * pre * sqrt(kaellen(1, m1 * m1 / (mh * mh), m2 * m2 / (mh * mh))) * coupling;
 
         return res;
     }
