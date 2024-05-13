@@ -1,0 +1,41 @@
+Dark Doublet Phase (N2HDM)
+ Parameters
+  Name         | Value       |> Comment                                                                <|
+aEWM1          |0.00775795190|EW coupling constant at the Z pole                                        |
+Gf             |0.0000116637 |Fermi constant                                                            |
+MMZ            |91.1876      |Z pole mass                                                               |
+MMW            |79.947       |W pole mass                                                               |
+MMC            |1.2          |c mass at mc, MSbar                                                       |
+MMB            |4.23         |b mass at mb, MSbar                                                       |
+MMT            |175          |t pole mass                                                               |
+aS             |0.1172       |Strong coupling constant at the Z pole.                                   |
+QS             |100.         |QCD scale for running quark masses in CalcHEP                             |
+aDM            |0.5          |Dark sector CP-even mixing angle                                          |
+mmH1           |100          |Dark scalar H1 mass                                                       |
+mmH2           |100          |Dark scalar H2 mass                                                       |
+mmH3           |70000        |Dark scalar H3 mass                                                       |
+mmA0           |120000       |Pseudoscalar mass                                                         |
+mmHch          |200000       |Charged scalar mass                                                       |
+m11            |0.5          |Phi1 doublet mass parameter                                               |
+lam1           |0.5          |Phi1 doublet quartic self-coupling                                        |
+lam7           |0.5          |lambda7                                                                   |
+GG             |1.21358091448|Strong coupling constant   This value will be ignored and calculated from |
+Mnue           |0.           |Mass of ve.                                                               |
+Mnum           |0.           |Mass of vm.                                                               |
+Mnut           |0.           |Mass of vt.                                                               |
+Me             |0.           |Mass of e.                                                                |
+MM             |0.1057       |Mass of m.                                                                |
+MTA            |1.777        |Mass of ta.                                                               |
+MU             |0.           |Mass of u.                                                                |
+MD             |0.           |Mass of d.                                                                |
+MS             |0.1          |Mass of s.                                                                |
+%WT            |2.           |Width of t.                                                               |
+%WZ            |2.4952       |Width of Z.                                                               |
+%WW            |2.085        |Width of W.                                                               |
+%WH1           |1.           |Width of H1.                                                              |
+%WH2           |0.           |Width of H2.                                                              |
+%WH3           |0.           |Width of H3.                                                              |
+%WA0           |1.           |Width of A0.                                                              |
+%WHch          |1.           |Width of Hch.                                                             |
+E              |2.71828182845|The base of the natural logarithm.                                        |
+Pi             |3.14159265358|The circumference of a circle divided by the diameter.                    |

@@ -1,0 +1,74 @@
+%*slhaFound    |1+access("vars1.lha", 0)                                                                                       %Check whether LHA file is present.
+%*rdSLHA       |if(slhaFound,slhaRead("vars1.lha", 0),-1)                                                                      %Read LHA file.
+%aEWM1         |if(slhaFound,if(slhaValExists("FRBlock",1,1),slhaVal("FRBlock",0,1,1),aEWM1Def),aEWM1Def)                      %EW coupling constant at the Z pole                
+%Gf            |if(slhaFound,if(slhaValExists("FRBlock",1,2),slhaVal("FRBlock",0,1,2),GfDef),GfDef)                            %Fermi constant                                    
+%MMZ           |if(slhaFound,if(slhaValExists("FRBlock",1,3),slhaVal("FRBlock",0,1,3),MMZDef),MMZDef)                          %Z pole mass                                       
+%MMW           |if(slhaFound,if(slhaValExists("FRBlock",1,4),slhaVal("FRBlock",0,1,4),MMWDef),MMWDef)                          %W pole mass                                       
+%MMC           |if(slhaFound,if(slhaValExists("FRBlock",1,5),slhaVal("FRBlock",0,1,5),MMCDef),MMCDef)                          %c mass at mc, MSbar                               
+%MMB           |if(slhaFound,if(slhaValExists("FRBlock",1,6),slhaVal("FRBlock",0,1,6),MMBDef),MMBDef)                          %b mass at mb, MSbar                               
+%MMT           |if(slhaFound,if(slhaValExists("FRBlock",1,7),slhaVal("FRBlock",0,1,7),MMTDef),MMTDef)                          %t pole mass                                       
+%aS            |if(slhaFound,if(slhaValExists("FRBlock",1,8),slhaVal("FRBlock",0,1,8),aSDef),aSDef)                            %Strong coupling constant at the Z pole.           
+%QS            |if(slhaFound,if(slhaValExists("FRBlock",1,9),slhaVal("FRBlock",0,1,9),QSDef),QSDef)                            %QCD scale for running quark masses in CalcHEP     
+%aDM           |if(slhaFound,if(slhaValExists("FRBlock",1,10),slhaVal("FRBlock",0,1,10),aDMDef),aDMDef)                        %Dark sector CP-even mixing angle                  
+%mmH1          |if(slhaFound,if(slhaValExists("FRBlock",1,11),slhaVal("FRBlock",0,1,11),mmH1Def),mmH1Def)                      %Dark scalar H1 mass                               
+%mmH2          |if(slhaFound,if(slhaValExists("FRBlock",1,12),slhaVal("FRBlock",0,1,12),mmH2Def),mmH2Def)                      %Dark scalar H2 mass                               
+%mmH3          |if(slhaFound,if(slhaValExists("FRBlock",1,13),slhaVal("FRBlock",0,1,13),mmH3Def),mmH3Def)                      %Dark scalar H3 mass                               
+%mmA0          |if(slhaFound,if(slhaValExists("FRBlock",1,14),slhaVal("FRBlock",0,1,14),mmA0Def),mmA0Def)                      %Pseudoscalar mass                                 
+%mmHch         |if(slhaFound,if(slhaValExists("FRBlock",1,15),slhaVal("FRBlock",0,1,15),mmHchDef),mmHchDef)                    %Charged scalar mass                               
+%m11           |if(slhaFound,if(slhaValExists("FRBlock",1,16),slhaVal("FRBlock",0,1,16),m11Def),m11Def)                        %Phi1 doublet mass parameter                       
+%lam1          |if(slhaFound,if(slhaValExists("FRBlock",1,17),slhaVal("FRBlock",0,1,17),lam1Def),lam1Def)                      %Phi1 doublet quartic self-coupling                
+%lam7          |if(slhaFound,if(slhaValExists("FRBlock",1,18),slhaVal("FRBlock",0,1,18),lam7Def),lam7Def)                      %lambda7                                           
+%Mnue          |if(slhaFound,if(slhaValExists("MASS",1,12),slhaVal("MASS",0,1,12),MnueDef),MnueDef)                            %Mass of ve.                                       
+%Mnum          |if(slhaFound,if(slhaValExists("MASS",1,14),slhaVal("MASS",0,1,14),MnumDef),MnumDef)                            %Mass of vm.                                       
+%Mnut          |if(slhaFound,if(slhaValExists("MASS",1,16),slhaVal("MASS",0,1,16),MnutDef),MnutDef)                            %Mass of vt.                                       
+%Me            |if(slhaFound,if(slhaValExists("MASS",1,11),slhaVal("MASS",0,1,11),MeDef),MeDef)                                %Mass of e.                                        
+%MM            |if(slhaFound,if(slhaValExists("MASS",1,13),slhaVal("MASS",0,1,13),MMDef),MMDef)                                %Mass of m.                                        
+%MTA           |if(slhaFound,if(slhaValExists("MASS",1,15),slhaVal("MASS",0,1,15),MTADef),MTADef)                              %Mass of ta.                                       
+%MU            |if(slhaFound,if(slhaValExists("MASS",1,2),slhaVal("MASS",0,1,2),MUDef),MUDef)                                  %Mass of u.                                        
+%MD            |if(slhaFound,if(slhaValExists("MASS",1,1),slhaVal("MASS",0,1,1),MDDef),MDDef)                                  %Mass of d.                                        
+%MS            |if(slhaFound,if(slhaValExists("MASS",1,3),slhaVal("MASS",0,1,3),MSDef),MSDef)                                  %Mass of s.                                        
+%WT            |if(slhaFound,if(1+slhaDecayExists(6),slhaWidth(6),WTDef),WTDef)                                                %Width of t.                                       
+%WZ            |if(slhaFound,if(1+slhaDecayExists(23),slhaWidth(23),WZDef),WZDef)                                              %Width of Z.                                       
+%WW            |if(slhaFound,if(1+slhaDecayExists(24),slhaWidth(24),WWDef),WWDef)                                              %Width of W.                                       
+%WH1           |if(slhaFound,if(1+slhaDecayExists(25),slhaWidth(25),WH1Def),WH1Def)                                            %Width of H1.                                      
+%WH2           |if(slhaFound,if(1+slhaDecayExists(9000006),slhaWidth(9000006),WH2Def),WH2Def)                                  %Width of H2.                                      
+%WH3           |if(slhaFound,if(1+slhaDecayExists(9000007),slhaWidth(9000007),WH3Def),WH3Def)                                  %Width of H3.                                      
+%WA0           |if(slhaFound,if(1+slhaDecayExists(36),slhaWidth(36),WA0Def),WA0Def)                                            %Width of A0.                                      
+%WHch          |if(slhaFound,if(1+slhaDecayExists(37),slhaWidth(37),WHchDef),WHchDef)                                          %Width of Hch.                                     
+MZ             |MMZ                                                                                                            % Z mass                                            
+MW             |MMW                                                                                                            % W mass                                            
+MC             |MMC                                                                                                            % c mass                                            
+MB             |MMB                                                                                                            % b mass                                            
+MT             |MMT                                                                                                            % t mass                                            
+EE             |2*pow(aEWM1,0.5)*pow(Pi,0.5)                                                                                   % Electron charge - Photon coupling to electrons    
+g1             |EE*pow(CW,-1)                                                                                                  % U(1)_Y coupling constant                          
+g2             |EE*pow(SW,-1)                                                                                                  % SU(2) coupling constant                           
+CW             |Rule(CW,pow(CW2,0.5))                                                                                          % Cosine of the weak angle                          
+SW             |Rule(SW,pow(SW2,0.5))                                                                                          % Sine of the weak angle                            
+SW2            |Rule(SW2,1-CW2)                                                                                                % Squared Sin of the weak angle                     
+CW2            |Rule(CW2,pow(MW,2)*pow(MZ,-2))                                                                                 % Squared cosine of the weak angle                  
+v              |0.8408964152537146*pow(Gf,-0.5)                                                                                % SM VEV                                            
+CKM1x1         |0.97428                                                                                                        % CKM-Matrix ( CKM1x1 )                             
+CKM1x2         |0.2253                                                                                                         % CKM-Matrix ( CKM1x2 )                             
+CKM1x3         |0.00347                                                                                                        % CKM-Matrix ( CKM1x3 )                             
+CKM2x1         |0.2252                                                                                                         % CKM-Matrix ( CKM2x1 )                             
+CKM2x2         |0.97345                                                                                                        % CKM-Matrix ( CKM2x2 )                             
+CKM2x3         |0.041                                                                                                          % CKM-Matrix ( CKM2x3 )                             
+CKM3x1         |0.00862                                                                                                        % CKM-Matrix ( CKM3x1 )                             
+CKM3x2         |0.0403                                                                                                         % CKM-Matrix ( CKM3x2 )                             
+CKM3x3         |0.999152                                                                                                       % CKM-Matrix ( CKM3x3 )                             
+MH1            |mmH1                                                                                                           % Dark scalar H1 mass internal                      
+MH2            |mmH2                                                                                                           % Dark scalar H2 mass internal                      
+MH3            |mmH3                                                                                                           % Dark scalar H3 mass internal                      
+MA0            |mmA0                                                                                                           % Pseudoscalar mass internal                        
+MHch           |mmHch                                                                                                          % Charged scalar mass internal                      
+m22            |pow(2,-0.5)*pow(-(lam2*pow(v,2))-lam8*pow(vs,2),0.5)                                                           % Phi2 doublet mass parameter                       
+ms             |pow(2,-0.5)*pow(-(lam8*pow(v,2))-lam6*pow(vs,2),0.5)                                                           % Singlet mass parameter                            
+lam2           |pow(v,-2)*(pow(MH1,2)*pow(cos(aDM),2)+pow(MH2,2)*pow(sin(aDM),2))                                              % Phi2 doublet quartic self-coupling                
+lam3           |pow(v,-2)*(2*(-pow(m11,2)+pow(MHch,2))-lam7*pow(vs,2))                                                         % lambda 3                                          
+lam4           |(pow(MA0,2)+pow(MH3,2)-2*pow(MHch,2))*pow(v,-2)                                                                % lambda 4                                          
+lam5           |(-pow(MA0,2)+pow(MH3,2))*pow(v,-2)                                                                             % lambda 5                                          
+lam6           |pow(vs,-2)*(pow(MH2,2)*pow(cos(aDM),2)+pow(MH1,2)*pow(sin(aDM),2))                                             % PhiS quartic self-coupling                        
+lam8           |cos(aDM)*(pow(MH1,2)-pow(MH2,2))*pow(v,-1)*pow(vs,-1)*sin(aDM)                                                 % PhiS quartic self-coupling                        
+GH             |-0.08333333333333333*(pow(G,2)*pow(Pi,-2)*pow(v,-1)*sert((pow(mmH1,2)*pow(MMT,-2))/4.))                        % GH                                                
+vs             |0.5                                                                                                            % Singlet VEV                                       

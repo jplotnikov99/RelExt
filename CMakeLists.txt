@@ -39,3 +39,11 @@ target_link_libraries(cpvdm PRIVATE sources cpvdm_sources cpvdm_amp2s)
 #target_link_libraries(trsm PRIVATE sources trsm_sources trsm_amp2s)
  
  
+ 
+add_executable(DDP md_DDP/main.cpp)
+add_subdirectory(md_DDP/sources)
+target_include_directories(DDP_amp2s PRIVATE ${include_dir})
+target_include_directories(DDP_sources PRIVATE ${include_dir})
+target_include_directories(DDP PRIVATE ${include_dir})
+target_include_directories(sources PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/md_DDP/include)
+target_link_libraries(DDP PRIVATE sources DDP_sources DDP_amp2s)

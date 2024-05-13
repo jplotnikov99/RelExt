@@ -1,9 +1,9 @@
 (* ::Package:: *)
 
 FRpath = ToString[$CommandLine[[4]]](*"/home/johann/Documents/feynrules-current"*);
-ModelName = ToString[$CommandLine[[5]]](*"CPVDM.fr"*);
+ModelName = ToString[$CommandLine[[5]]](*"DDP.fr"*);
 lagname = ToExpression[$CommandLine[[6]]];
-MDpath = ToString[$CommandLine[[7]]](*"/home/johann/Documents/Projects/DM/darktree_new/md_cpvdm/FR_modfiles"*);
+MDpath = ToString[$CommandLine[[7]]](*"/home/johann/Documents/Projects/DM/darktree_new/md_DDP/FR_modfiles"*);
 
 $FeynRulesPath=FRpath;
 SetDirectory[$FeynRulesPath];
@@ -41,13 +41,13 @@ SMNames={"d-Quark","u-Quark","s-Quark","c-Quark","b-Quark","t-Quark",
 
 
 checkParameters[]:=
-Block[{current={},external={},internal={},type,val},
+Block[{current={},external={},internal={},definitions={},type,val},
 	Do[
 		type = ParameterType/.M$Parameters[[iii,2]];
 		current={M$Parameters[[iii,1]],Value}/.M$Parameters[[iii,2]];
 		If[current[[2]]===Value,
 			current = Definitions/.M$Parameters[[iii,2]];
-			AppendTo[internal,{current[[1,1]],current[[1,2]]}],
+			AppendTo[definitions,Rule[current[[1,1]],current[[1,2]]]],
 			Which[
 			type === External,
 				If[!NumericQ[current[[2]]],
@@ -60,7 +60,7 @@ Block[{current={},external={},internal={},type,val},
 				AppendTo[internal,Flatten[current]],
 			True,
 				Print["Please define the ParameterType of ",M$Parameters[[iii,1]]," either as external or internal."]
-				Quit[];
+				(*Quit[];*)
 			];
 		]
 	,{iii,Length[M$Parameters]}];
@@ -74,7 +74,6 @@ Block[{current={},external={},internal={},type,val},
 				AppendTo[external,Rule[current[[1]],current[[2]]]]
 			],
 		Length[current]>2,
-			Print[current];
 			Do[
 				If[current[[jjj,2]]===Internal,
 					Continue[],
@@ -83,25 +82,25 @@ Block[{current={},external={},internal={},type,val},
 			,{jjj,2,Length[current]}]
 		]
 	,{iii,Length[M$ClassesDescription]}];
-	Print[external];
-	Print[internal];
+	(*Print[external];
+	Print[internal];*)
 	Do[
 		If[Length[internal[[iii]]]>2,
-			val = internal[[iii,jjj,2]]/.external;
+			val = internal[[iii,jjj,2]]/.definitions/.external;
 			If[NumericQ[val],
 				AppendTo[external,Rule[internal[[iii,jjj,1]],val]],
 				Print["The Internal parameter: ",internal[[iii,jjj,1]]," has a non numeric value of: ",val," after inserting all external and previous parameters."];
 				Print["Please order the internal parameters in the model.fr files such that they only use previously declared internal parameters or external parameters."];
-				(*Quit[];*)
+				Quit[];
 			]
 			,
-			val = internal[[iii,jjj]]/.external;
+			val = internal[[iii,jjj]]/.definitions/.external;
 			If[NumericQ[val],
 				AppendTo[external,Rule[internal[[iii,1]],val]],
-				Print[FullForm[val]];
+				(*Print[FullForm[val]];*)
 				Print["The Internal parameter: ",internal[[iii,1]]," has a non numeric value of: " ,val," after inserting all external and previous parameters."];
 				Print["Please order the internal parameters in the model.fr files such that they only use previously declared internal parameters or external parameters."];
-				(*Quit[];*)
+				Quit[];
 			]
 		];
 	,{iii,Length[internal]},{jjj,2,Length[internal[[iii]]]}];

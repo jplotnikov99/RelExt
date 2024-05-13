@@ -1,0 +1,173 @@
+(*********************)
+(*** SCALAR FIELDS ***)
+(*********************)
+
+M$ScalarFields = {
+
+(*----------------------------------*)
+(*** Standard model scalar fields ***)
+(*----------------------------------*)
+
+S[1] == {
+	ClassName        -> H1,
+	SelfConjugate    -> True,
+	Indices          -> {},
+	Mass             -> {MH1, Internal},
+	Width            -> {WH1, 1.},
+	ParticleName     -> "H1",
+	PDG				 -> 25,
+	PropagatorLabel  -> "H1",
+	PropagatorType   -> ScalarDash,
+	PropagatorArrow  -> None},
+
+S[2] == {
+	ClassName        -> H2,
+	SelfConjugate    -> True,
+	Indices          -> {},
+	Mass             -> {MH2, Internal},
+	Width            -> {WH2, 0.},
+	ParticleName     -> "~H2",
+	PropagatorLabel  -> "H2",
+	PropagatorType   -> ScalarDash,
+	PropagatorArrow  -> None},
+
+S[3] == {
+	ClassName        -> H3,
+	SelfConjugate    -> True,
+	Indices          -> {},
+	Mass             -> {MH3, Internal},
+	Width            -> {WH3, 0.},
+	ParticleName     -> "~H3",
+	PropagatorLabel  -> "H3",
+	PropagatorType   -> ScalarDash,
+	PropagatorArrow  -> None},
+
+(* neutral Goldstone *)
+S[4] == {
+        ClassName -> G0,
+	SelfConjugate -> True,
+	Mass -> {MZ, Internal},
+	Width -> WG0,
+	PropagatorLabel -> "G0",
+	PropagatorType -> D,
+	PropagatorArrow -> None,
+	ParticleName ->"G0",
+	PDG -> 250,
+	FullName -> "G0",
+	Goldstone -> Z },
+
+(* charged Goldstones *)
+S[5] == {
+	ClassName -> Gch,
+	SelfConjugate -> False,
+	Mass -> {MW, Internal},
+	Width -> WGp,
+	PropagatorLabel -> "Gch",
+	PropagatorType -> D,
+	PropagatorArrow -> None,
+	ParticleName ->"G+",
+	AntiParticleName ->"G-",
+	PDG -> 251,
+	FullName -> "Gch",
+	TeXClassName -> "Gch",
+	TeXParticleName -> "G^+",
+	TeXAntiParticleName -> "G^-",
+	Goldstone -> W,
+	QuantumNumbers -> {Q -> 1}},
+
+
+(*-----------------------*)
+(*** IDM scalar fields ***)
+(*-----------------------*)
+
+(* NB: Tildes in the ParticleName's, to comply to the CalcHEP notation *)
+
+(* Neutral pseudoscalar *)
+S[6] == {
+	ClassName        -> A0,
+	SelfConjugate    -> True,
+	Indices          -> {},
+	Mass             -> {MA0, Internal},
+	Width            -> {WA0, 1.},
+	ParticleName     -> "~A0",
+	PDG              -> 36,
+	PropagatorLabel  -> "A0",
+	PropagatorType   -> ScalarDash,
+	PropagatorArrow  -> None},
+
+(* Charged scalar *)
+S[7] == {
+	ClassName        -> Hch,
+	SelfConjugate    -> False,
+	Indices          -> {},
+	QuantumNumbers   -> {Q -> 1},
+	Mass             -> {MHch, Internal},
+	Width            -> {WHch, 1.},
+	ParticleName     -> "~H+",
+	AntiParticleName -> "~H-",
+	PDG              -> 37,
+	PropagatorLabel  -> "Hch",
+	PropagatorType   -> ScalarDash,
+	PropagatorArrow  -> Forward},
+
+(* Gauge Eigenstates and relation to mass eigenstates *)
+
+S[8] == {
+	ClassName -> rho1,
+	Unphysical -> True,
+	SelfConjugate -> True,
+	Indices -> {},
+	Mass -> 0,
+	Definitions -> {rho1 -> H3}},
+
+S[9] == {
+	ClassName -> rho2,
+	Unphysical -> True,
+	SelfConjugate -> True,
+	Indices -> {},
+	Mass -> 0,
+	Definitions -> {rho2 -> H1 Cos[aDM] - H2 Sin[aDM]}},
+
+S[10] == {
+	ClassName -> rhoS,
+	Unphysical -> True,
+	SelfConjugate -> True,
+	Indices -> {},
+	Mass -> 0,
+	Definitions -> {rhoS -> H2 Cos[aDM] + H1 Sin[aDM]}},
+
+S[11] == {
+	ClassName -> eta1,
+	Unphysical -> True,
+	SelfConjugate -> True,
+	Indices -> {},
+	Mass -> 0,
+	Definitions -> {eta1 -> -A0}},
+
+S[12] == {
+	ClassName -> eta2,
+	Unphysical -> True,
+	SelfConjugate -> True,
+	Indices -> {},
+	Mass -> 0,
+	Definitions -> {eta2 -> G0}},
+
+S[13] == {
+	ClassName -> Phi1ch,
+	Unphysical -> True,
+	SelfConjugate -> False,
+	Indices -> {},
+	QuantumNumbers -> {Q -> 1},
+	Mass -> 0,
+	Definitions -> {Phi1ch -> -Hch}},
+
+S[14] == {
+	ClassName -> Phi2ch,
+	Unphysical -> True,
+	SelfConjugate -> False,
+	Indices -> {},
+	QuantumNumbers -> {Q -> 1},
+	Mass -> 0,
+	Definitions -> {Phi2ch -> Gch}}
+
+};
