@@ -2,10 +2,12 @@
 
 ######## Standard settings ########
 
-InputFile           |
-OutputFile          |
+InputFile           |micro_cxsm.csv
+OutputFile          |test.csv
+StartPoint          |1
+EndPoint            |1
 SavedParameters     |
-ThermalBath         |
+ThermalBath         |Psi
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |

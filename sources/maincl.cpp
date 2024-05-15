@@ -118,7 +118,8 @@ namespace DT
         }
         else
         {
-            bath_procs = mod->get_all_channels();
+            if (bath_procs.size() == 0)
+                bath_procs = mod->get_all_channels();
             if (neglected_particles.size() != 0)
             {
                 vstring temp;
