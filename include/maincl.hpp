@@ -57,6 +57,8 @@ namespace DT
         // checks if the thermal bath particles and the input channels match
         void check_procs(const vstring &ch_str);
 
+        void ChangeThermalBath(const vstring &ch_str);
+
         void CalcXsec(const vstring &args);
 
         void CalcTac(const vstring &args);

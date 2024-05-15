@@ -7,7 +7,6 @@ OutputFile          |cxsm_width.csv
 StartPoint          |1
 EndPoint            |
 SavedParameters     |MA1, svev, alpha
-ThermalBath         |
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |

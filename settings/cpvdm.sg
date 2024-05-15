@@ -5,9 +5,8 @@
 InputFile           |CPVDMTest.csv
 OutputFile          |cpvdm_width.csv
 StartPoint          |1
-EndPoint            |
+EndPoint            |2
 SavedParameters     |mH1, mH2
-ThermalBath         |
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |

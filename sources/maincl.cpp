@@ -14,6 +14,8 @@ namespace DT
         { this->FindParameter(a); };
         operations_map["SaveData"] = [this](const vstring a)
         { this->save_data(); };
+        operations_map["ChangeThermalBath"] = [this](const vstring a)
+        { this->ChangeThermalBath(a); };
 
         load_setting(std::string(argv[1]));
         rdr = std::make_unique<DataReader>(input_file, 1);
@@ -51,7 +53,6 @@ namespace DT
         output_file = sgr->get_name_of("OutputFile");
         start_point = (size_t)sgr->get_val_of("StartPoint");
         end_point = (size_t)sgr->get_val_of("EndPoint") + 1;
-        bath_particles = sgr->get_slist_of("ThermalBath");
         considered_procs = sgr->get_slist_of("ConsideredChannels");
         subtracted_procs = sgr->get_slist_of("SubtractChannels");
         neglected_particles = sgr->get_slist_of("NeglectParticles");
@@ -143,6 +144,21 @@ namespace DT
             }
         }
         relops->set_bath_procs(bath_procs);
+    }
+
+    void Main::ChangeThermalBath(const vstring &args)
+    {
+        check_arguments_number(false, 1, args.size(), __func__);
+
+        bath_particles.clear();
+        bath_procs.clear();
+        for (size_t i = 1; i < args.size(); i++)
+        {
+            bath_particles.push_back(args.at(i));
+        }
+
+        def_thermal_bath();
+        set_channels();
     }
 
     void Main::CalcXsec(const vstring &args)
