@@ -9,7 +9,7 @@ namespace DT
         operations_map["CalcTac"] = [this](const vstring a)
         { this->CalcTac(a); };
         operations_map["CalcRelic"] = [this](const vstring a)
-        { this->CalcRelic(); };
+        { this->CalcRelic(a); };
         operations_map["FindParameter"] = [this](const vstring a)
         { this->FindParameter(a); };
         operations_map["SaveData"] = [this](const vstring a)
@@ -57,7 +57,6 @@ namespace DT
         neglected_particles = sgr->get_slist_of("NeglectParticles");
         saved_pars = sgr->get_slist_of("SavedParameters");
         beps_eps = log(sgr->get_val_of("BepsEps"));
-        mechanism = (size_t)sgr->get_val_of("ProductionMechanism");
         channel_contrib = sgr->get_val_of("ChannelContributions");
 
         // Advanced setting
@@ -238,10 +237,12 @@ namespace DT
         }
     }
 
-    void Main::CalcRelic()
+    void Main::CalcRelic(const vstring &args)
     {
-        check_arguments_number(true, 0, 1, __func__);
+        check_arguments_number(true, 1, args.size(), __func__);
+        check_if_number(args.at(1), __func__);
 
+        size_t mechanism = std::stoi(args.at(1));
         relops->set_mechanism(mechanism);
         omega = relops->CalcRelic();
         std::cout << "Omega full:\n"
@@ -250,13 +251,15 @@ namespace DT
 
     void Main::FindParameter(const vstring &args)
     {
-        check_arguments_number(true, 3, args.size(), (std::string) __func__);
+        check_arguments_number(true, 4, args.size(), (std::string) __func__);
         check_if_number(args.at(2), __func__);
         check_if_number(args.at(3), __func__);
+        check_if_number(args.at(4), __func__);
 
+        size_t mechanism = std::stoi(args.at(2));
         relops->set_mechanism(mechanism);
-        relops->set_omega_target(std::stod(args.at(2)));
-        relops->set_omega_err(std::stod(args.at(3)));
+        relops->set_omega_target(std::stod(args.at(3)));
+        relops->set_omega_err(std::stod(args.at(4)));
         relops->find_pars(args.at(1));
 
         omega = relops->get_last_relic();

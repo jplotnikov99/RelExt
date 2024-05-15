@@ -38,8 +38,6 @@ target_include_directories(trsm PRIVATE ${include_dir})
 target_include_directories(sources PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/md_trsm/include)
 target_link_libraries(trsm PRIVATE sources trsm_sources trsm_amp2s)
  
- 
- 
 #add_executable(DDP md_DDP/main.cpp)
 #add_subdirectory(md_DDP/sources)
 #target_include_directories(DDP_amp2s PRIVATE ${include_dir})

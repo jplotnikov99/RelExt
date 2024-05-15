@@ -15,7 +15,6 @@ namespace DT
     class Main
     {
     private:
-        size_t mechanism = 10;
         ResError omega;
         std::string input_file;
         std::string output_file;
@@ -62,7 +61,7 @@ namespace DT
 
         void CalcTac(const vstring &args);
 
-        void CalcRelic();
+        void CalcRelic(const vstring &args);
 
         // finds the parameter values for which the needed relic density is reached within a certain limit
         void FindParameter(const vstring &args);
