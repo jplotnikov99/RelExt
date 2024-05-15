@@ -159,6 +159,11 @@ namespace DT
 
         def_thermal_bath();
         set_channels();
+        
+        mod->assigndm();
+        mod->calc_widths_and_scale();
+        mod->load_parameters();
+        mod->load_tokens();
     }
 
     void Main::CalcXsec(const vstring &args)

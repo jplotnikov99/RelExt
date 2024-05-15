@@ -16,6 +16,7 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
+ChangeThermalBath   |Psi
 CalcRelic           |0 
 SaveData            |
 
