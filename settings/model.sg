@@ -4,19 +4,20 @@
 
 InputFile           |
 OutputFile          |
+StartPoint          |1
+EndPoint            |
 SavedParameters     |
 ThermalBath         |
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |
 BepsEps             |1e-6
-ProductionMechanism |0
 ChannelContributions|1
 
 ######## Operations on scan ########
 START
 
-CalcRelic 
+CalcRelic           |0
 SaveData            |
 
 END
