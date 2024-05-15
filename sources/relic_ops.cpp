@@ -38,6 +38,7 @@ namespace DT
     {
         bs->sort_inimasses(bath_procs);
         double x, xtoday;
+        bool appr;
         ResError y{0., 0.};
 
         switch (mechanism)
@@ -47,11 +48,13 @@ namespace DT
             y.res = 1.1 * bs->yeq(x);
             xinitial = x;
             xtoday = xtoday_FO;
+            appr = true;
             break;
         case 1:
             x = x_reheating;
             y.res = 0;
             xtoday = xtoday_FI;
+            appr = false;
             break;
 
         default:
@@ -59,7 +62,7 @@ namespace DT
             exit(1);
             break;
         }
-        y = bs->calc_yield(xtoday, x, y);
+        y = bs->calc_yield(xtoday, x, y, appr);
         // bs->adap_rk4(xtoday, x, y);
         omega = 2.742e8 * mod->MDM * y;
 

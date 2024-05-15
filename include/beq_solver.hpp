@@ -14,6 +14,7 @@ namespace DT
     private:
         std::shared_ptr<Model> mod;
         std::unique_ptr<Beqs> beq;
+        bool FOapprox = true;
         bool reject = false;
         double errold = 1e-4;
 
@@ -44,7 +45,7 @@ namespace DT
         ResError icoll(const double xf, const double x0);
 
         // Solution for freeze-out approximation
-        ResError calc_yield(const double &xtoday, double &x, ResError &y);
+        ResError calc_yield(const double &xtoday, double &x, ResError &y, const bool appr = true);
 
         ~BeqSolver(){};
     };

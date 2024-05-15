@@ -163,7 +163,7 @@ namespace DT
             dopr5(x, y, h);
             beq->reset_tac_state(true);
         }
-        else if (y.res > 10. * beq->yeq(x))
+        else if ((y.res > 10. * beq->yeq(x)) && FOapprox)
         {
             y.err += errest;
         }
@@ -221,10 +221,13 @@ namespace DT
         return adap_simpson38(xf, x0, f, est);
     }
 
-    ResError BeqSolver::calc_yield(const double &xtoday, double &x, ResError &y)
+    ResError BeqSolver::calc_yield(const double &xtoday, double &x, ResError &y, const bool appr)
     {
+        FOapprox = appr;
         ResError yf, y0;
         adap_dopr5(xtoday, x, y);
+        if(!appr)
+            return y;
         yf = y;
 
         y0 = 1 / yf - icoll(x, xtoday);

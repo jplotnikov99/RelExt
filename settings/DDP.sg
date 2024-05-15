@@ -17,7 +17,9 @@ ChannelContributions|1
 START
 
 ChangeThermalBath   |Psi
-CalcRelic           |0 
+CalcRelic           |1
+ChangeThermalBath   |Chi
+CalcRelic           |1
 SaveData            |
 
 END

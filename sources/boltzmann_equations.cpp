@@ -100,8 +100,7 @@ namespace DT
             break;
 
         case 1:
-            mod->assign_bath_masses({"Chi"});
-            res = res + 0;
+            res = pre(x) * tac->tac(x) * (pow(yeq(x), 2) - y * y);
             break;
 
         default:
