@@ -77,10 +77,12 @@ namespace DT
 
     vstring Model::find_thermal_procs(const vstring &prtcls)
     {
+        bool existance = false;
         vstring res = {};
         size_t found;
         for (auto it : prtcls)
         {
+            existance = false;
             for (auto jt : channelnames)
             {
                 found = jt.find(it);
@@ -90,10 +92,16 @@ namespace DT
                     {
                         if (jt.find(kt, found + 1) != std::string::npos)
                         {
+                            existance = true;
                             res.push_back(jt);
                         }
                     }
                 }
+            }
+            if(!existance){
+                std::cout << "Error in " << __func__ << ": The particle " << it 
+                << " either does not exist or contribute to the relic density calculation.\n";
+                exit(1);
             }
         }
         return res;

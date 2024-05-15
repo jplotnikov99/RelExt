@@ -7,7 +7,6 @@ OutputFile          |
 StartPoint          |1
 EndPoint            |
 SavedParameters     |
-ThermalBath         |
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |

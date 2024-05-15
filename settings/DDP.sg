@@ -7,12 +7,10 @@ OutputFile          |test.csv
 StartPoint          |1
 EndPoint            |1
 SavedParameters     |
-ThermalBath         |Psi
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |
 BepsEps             |1e-6
-ProductionMechanism |0
 ChannelContributions|1
 
 ######## Operations on scan ########

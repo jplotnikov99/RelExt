@@ -57,10 +57,16 @@ namespace DT
         // checks if the thermal bath particles and the input channels match
         void check_procs(const vstring &ch_str);
 
+        // args are: particle names of DS particles included in the thermal bath
+        void ChangeThermalBath(const vstring &ch_str);
+
+        // args are: min sqrt(s), max sqrt(s), number of points, channel names
         void CalcXsec(const vstring &args);
 
+        // args are: min x, max x, number of points, channel names
         void CalcTac(const vstring &args);
 
+        // args are: mechanism type
         void CalcRelic(const vstring &args);
 
         // finds the parameter values for which the needed relic density is reached within a certain limit
