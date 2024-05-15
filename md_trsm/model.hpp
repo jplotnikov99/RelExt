@@ -50,6 +50,12 @@ namespace DT{
 	extern double WPsi;
 	extern double E;
 	extern double Pi;
+	extern double aEW;
+	extern double MW;
+	extern double sw2;
+	extern double EE;
+	extern double cw;
+	extern double sw;
 	extern double vev;
 	extern double lam;
 	extern double muH;
@@ -58,12 +64,6 @@ namespace DT{
 	extern double m22sq;
 	extern double m33sq;
 	extern double m23sq;
-	extern double aEW;
-	extern double MW;
-	extern double sw2;
-	extern double EE;
-	extern double cw;
-	extern double sw;
 	extern double gw;
 	extern double g1;
 	extern double ye;
@@ -169,7 +169,6 @@ namespace DT{
 	extern double token36;
 	extern double token37;
 	extern double token38;
-	extern double token39;
 	extern double EL;
 	extern double ee;
 	extern double gs;
@@ -280,5 +279,5 @@ namespace DT{
 	double wHDd();
 	double wHSs();
 	double wHBb();
-	double wwH();
+	double wwH(const double QCDaS);
 }

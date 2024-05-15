@@ -7,7 +7,48 @@
 (*-------------------------*)
 
 M$IntPrm = {
+  aEW == {
+    ParameterType    -> Internal,
+    Value            -> 1/aEWM1,
+    InteractionOrder -> {QED,2},
+    TeX              -> Subscript[\[Alpha], EW],
+    Description      -> "Electroweak coupling contant"
+  },
 
+  MW == { 
+    ParameterType -> Internal, 
+    Value         -> Sqrt[MZ^2/2+Sqrt[MZ^4/4-Pi/Sqrt[2]*aEW/Gf*MZ^2]], 
+    TeX           -> Subscript[M,W], 
+    Description   -> "W mass"
+  },
+
+  sw2 == { 
+    ParameterType -> Internal, 
+    Value         -> 1-(MW/MZ)^2, 
+    Description   -> "Squared Sin of the Weinberg angle"
+  },
+
+  ee == { 
+    ParameterType    -> Internal, 
+    Value            -> Sqrt[4 Pi aEW], 
+    InteractionOrder -> {QED,1}, 
+    TeX              -> e,  
+    Description      -> "Electric coupling constant"
+  },
+
+  cw == { 
+    ParameterType -> Internal, 
+    Value         -> Sqrt[1-sw2], 
+    TeX           -> Subscript[c,w], 
+    Description   -> "Cosine of the Weinberg angle"
+  },
+
+  sw == { 
+    ParameterType -> Internal, 
+    Value         -> Sqrt[sw2], 
+    TeX           -> Subscript[s,w], 
+    Description   -> "Sine of the Weinberg angle"
+  },
 vev == {
     ParameterType    -> Internal,
     Value            -> 2*MW*sw/ee, 
@@ -73,48 +114,7 @@ vev == {
 
   (* Back to SM Parameters *)
 
-  aEW == {
-    ParameterType    -> Internal,
-    Value            -> 1/aEWM1,
-    InteractionOrder -> {QED,2},
-    TeX              -> Subscript[\[Alpha], EW],
-    Description      -> "Electroweak coupling contant"
-  },
 
-  MW == { 
-    ParameterType -> Internal, 
-    Value         -> Sqrt[MZ^2/2+Sqrt[MZ^4/4-Pi/Sqrt[2]*aEW/Gf*MZ^2]], 
-    TeX           -> Subscript[M,W], 
-    Description   -> "W mass"
-  },
-
-  sw2 == { 
-    ParameterType -> Internal, 
-    Value         -> 1-(MW/MZ)^2, 
-    Description   -> "Squared Sin of the Weinberg angle"
-  },
-
-  ee == { 
-    ParameterType    -> Internal, 
-    Value            -> Sqrt[4 Pi aEW], 
-    InteractionOrder -> {QED,1}, 
-    TeX              -> e,  
-    Description      -> "Electric coupling constant"
-  },
-
-  cw == { 
-    ParameterType -> Internal, 
-    Value         -> Sqrt[1-sw2], 
-    TeX           -> Subscript[c,w], 
-    Description   -> "Cosine of the Weinberg angle"
-  },
-
-  sw == { 
-    ParameterType -> Internal, 
-    Value         -> Sqrt[sw2], 
-    TeX           -> Subscript[s,w], 
-    Description   -> "Sine of the Weinberg angle"
-  },
 
   gw == { 
     ParameterType    -> Internal, 

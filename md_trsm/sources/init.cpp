@@ -7,56 +7,6 @@
 namespace DT{
 	void Model::init()
 	{
-		aEWM1 = 127.9;
-		Gf = 0.0000116637;
-		aS = 0.1184;
-		ymdo = 0.00504;
-		ymup = 0.00255;
-		yms = 0.101;
-		ymc = 1.27;
-		ymb = 4.7;
-		ymt = 172;
-		yme = 0.000511;
-		ymm = 0.10566;
-		ymtau = 1.777;
-		cabi = 0.227736;
-		mMChi = 1;
-		mMPsi = 2;
-		alpha = 0.785398;
-		lam2 = 1;
-		lam3 = 1;
-		lam12 = 1;
-		lam13 = 1;
-		lam23 = 1;
-		lam123 = 1;
-		lam223 = 1;
-		lam332 = 1;
-		GG = 1.21978;
-		Me = 0.000511;
-		MMU = 0.10566;
-		MTA = 1.777;
-		MU = 0.00255;
-		MC = 1.27;
-		MT = 172;
-		MD = 0.00504;
-		MS = 0.101;
-		MB = 4.7;
-		MZ = 91.1876;
-		MH = 125;
-		WT = 1.50834;
-		WZ = 2.4952;
-		WW = 2.085;
-		WH = 0.00407;
-		WChi = 0.;
-		WPsi = 0.;
-		E = 2.71828;
-		Pi = 3.14159;
-		double EL = 0.312233;
-		double ee = 0.312233;
-		double gs = 1.21358;
-		double G = 1.21358;
-		double FAGS = 1.21358;
-
 		particles["Chi"]=&MChi;
 		particles["Psi"]=&MPsi;
 		dsmasses.push_back(&MChi);

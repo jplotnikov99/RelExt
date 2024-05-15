@@ -44,6 +44,12 @@ TRSM
 %WH            |if(slhaFound,if(1+slhaDecayExists(25),slhaWidth(25),WHDef),WHDef)                                              %Width of H.                                       
 %WChi          |if(slhaFound,if(1+slhaDecayExists(350),slhaWidth(350),WChiDef),WChiDef)                                        %Width of Chi.                                     
 %WPsi          |if(slhaFound,if(1+slhaDecayExists(360),slhaWidth(360),WPsiDef),WPsiDef)                                        %Width of Psi.                                     
+aEW            |pow(aEWM1,-1)                                                                                                  % Electroweak coupling contant                      
+MW             |pow(pow(MZ,2)/2.+pow(-(aEW*Pi*pow(2,-0.5)*pow(Gf,-1)*pow(MZ,2))+pow(MZ,4)/4.,0.5),0.5)                         % W mass                                            
+sw2            |1-pow(MW,2)*pow(MZ,-2)                                                                                         % Squared Sin of the Weinberg angle                 
+EE             |2*pow(aEW,0.5)*pow(Pi,0.5)                                                                                     % Electric coupling constant                        
+cw             |pow(1-sw2,0.5)                                                                                                 % Cosine of the Weinberg angle                      
+sw             |pow(sw2,0.5)                                                                                                   % Sine of the Weinberg angle                        
 vev            |2*MW*sw*pow(EE,-1)                                                                                             % Higgs vacuum expectation value                    
 lam            |(pow(MH,2)*pow(vev,-2))/2.                                                                                     % Higgs quartic coupling                            
 muH            |pow(lam*pow(vev,2),0.5)                                                                                        % Coefficient of the quadratic piece of the Higgs po
@@ -52,12 +58,6 @@ MPsi           |mMPsi                                                           
 m22sq          |(pow(MChi,2)+cos(2*alpha)*(pow(MChi,2)-pow(MPsi,2))+pow(MPsi,2)-lam12*pow(vev,2))/2.                           % m22 parameter squared                             
 m33sq          |(pow(MChi,2)+pow(MPsi,2)+cos(2*alpha)*(-pow(MChi,2)+pow(MPsi,2))-lam13*pow(vev,2))/2.                          % m33 parameter squared                             
 m23sq          |(-(lam123*pow(vev,2))+(2*(m22sq-m33sq)+(lam12-lam13)*pow(vev,2))*tan(2*alpha))/2.                              % m23 parameter squared                             
-aEW            |pow(aEWM1,-1)                                                                                                  % Electroweak coupling contant                      
-MW             |pow(pow(MZ,2)/2.+pow(-(aEW*Pi*pow(2,-0.5)*pow(Gf,-1)*pow(MZ,2))+pow(MZ,4)/4.,0.5),0.5)                         % W mass                                            
-sw2            |1-pow(MW,2)*pow(MZ,-2)                                                                                         % Squared Sin of the Weinberg angle                 
-EE             |2*pow(aEW,0.5)*pow(Pi,0.5)                                                                                     % Electric coupling constant                        
-cw             |pow(1-sw2,0.5)                                                                                                 % Cosine of the Weinberg angle                      
-sw             |pow(sw2,0.5)                                                                                                   % Sine of the Weinberg angle                        
 gw             |EE*pow(sw,-1)                                                                                                  % Weak coupling constant at the Z pole              
 g1             |EE*pow(cw,-1)                                                                                                  % U(1)Y coupling constant at the Z pole             
 ye             |yme*pow(2,0.5)*pow(vev,-1)                                                                                     % Lepton Yukawa couplings ( ye )                    

@@ -3,126 +3,20 @@
 
 #include "../../model.hpp"
 #include "utils.hpp"
+#include "width.hpp"
+#include <memory>
 
-double DT::wHHH(){
-	if(heaviDecays(MH,MH,MH)){
-		return 0.5*(-9*sqrt(3)*MH* (lam*lam)* (vev*vev))/(4.*Pi*sqrt(- (MH*MH*MH*MH)));
+double DT::wwH(const double QCDaS){
+	double width = 0;
+	std::unique_ptr<Width> w = std::make_unique<Width>(MH);
+	w->set_alphaS(QCDaS);
+	std::vector<double> m2( { MH, MChi, MChi, MPsi, 0, MZ, MW, 0, Me, MMU, MTA, MU, MC, MT, MD, MS, MB, MT } );
+	std::vector<double> m3( { MH, MChi, MPsi, MPsi, 0, MZ, MW, 0, Me, MMU, MTA, MU, MC, MT, MD, MS, MB, MT } );
+	std::vector<ParticleType> type1( { scalar, scalar, scalar, scalar, massless_vector_boson, z_boson, w_boson, massless_vector_boson, lepton, lepton, lepton, quark, c_quark, t_quark, quark, s_quark, b_quark, gluon } );
+	std::vector<ParticleType> type2( { scalar, scalar, scalar, scalar, massless_vector_boson, z_boson, w_boson, massless_vector_boson, lepton, lepton, lepton, quark, c_quark, t_quark, quark, s_quark, b_quark, gluon } );
+	std::vector<double> coupling2( {0.5*36* (lam*lam)* (vev*vev), 0.5* (vev*vev)* ((lam12* (cos( alpha)*cos( alpha)) + lam123*cos( alpha)*sin(alpha) + lam13* (sin(alpha)*sin(alpha)))*(lam12* (cos( alpha)*cos( alpha)) + lam123*cos( alpha)*sin(alpha) + lam13* (sin(alpha)*sin(alpha)))), ( (vev*vev)* ((lam123*cos( 2*alpha) + (-lam12 + lam13)*sin(2*alpha))*(lam123*cos( 2*alpha) + (-lam12 + lam13)*sin(2*alpha))))/4., 0.5* (vev*vev)* ((lam13* (cos( alpha)*cos( alpha)) - lam123*cos( alpha)*sin(alpha) + lam12* (sin(alpha)*sin(alpha)))*(lam13* (cos( alpha)*cos( alpha)) - lam123*cos( alpha)*sin(alpha) + lam12* (sin(alpha)*sin(alpha)))), 0.5* (AH*AH), 0.5*( (EL*EL*EL*EL)* (vev*vev)* (( (cw*cw) +  (sw*sw))*( (cw*cw) +  (sw*sw))*( (cw*cw) +  (sw*sw))*( (cw*cw) +  (sw*sw))))/(4.* (cw*cw*cw*cw)* (sw*sw*sw*sw)), ( (EL*EL*EL*EL)* (vev*vev))/(4.* (sw*sw*sw*sw)), 0.5* (GH*GH),  (ye*ye)/2.,  (ym*ym)/2.,  (ytau*ytau)/2.,  (yup*yup)/2.,  (yc*yc)/2.,  (yt*yt)/2.,  (ydo*ydo)/2.,  (ys*ys)/2.,  (yb*yb)/2., 0.5* (yt*yt)/2. } );
+	for(int i = 0; i < m2.size(); i++) {
+		width = width + w->partial_width(type1[i], type2[i], m2[i], m3[i], coupling2[i]);
 	}
-	else{ return 0; }
-
-}
-double DT::wHChiChi(){
-	if(heaviDecays(MH,MChi,MChi)){
-		return 0.5*(sqrt(-4* (MChi*MChi)* (MH*MH) +  (MH*MH*MH*MH))* (vev*vev)* ((lam12 + lam13 + (lam12 - lam13)*cos( 2*alpha) + lam123*sin(2*alpha))*(lam12 + lam13 + (lam12 - lam13)*cos( 2*alpha) + lam123*sin(2*alpha))))/(64.*Pi* (MH*MH*MH));
-	}
-	else{ return 0; }
-
-}
-double DT::wHChiPsi(){
-	if(heaviDecays(MH,MChi,MPsi)){
-		return (sqrt((MChi + MH - MPsi)*(-MChi + MH + MPsi)*( (MH*MH) -  ((MChi + MPsi)*(MChi + MPsi))))* ((lam123*vev*cos( 2*alpha) + (-lam12 + lam13)*vev*sin(2*alpha))*(lam123*vev*cos( 2*alpha) + (-lam12 + lam13)*vev*sin(2*alpha))))/(64.*Pi* (MH*MH*MH));
-	}
-	else{ return 0; }
-
-}
-double DT::wHPsiPsi(){
-	if(heaviDecays(MH,MPsi,MPsi)){
-		return 0.5*(sqrt( (MH*MH*MH*MH) - 4* (MH*MH)* (MPsi*MPsi))* (vev*vev)* ((lam12 + lam13 + (-lam12 + lam13)*cos( 2*alpha) - lam123*sin(2*alpha))*(lam12 + lam13 + (-lam12 + lam13)*cos( 2*alpha) - lam123*sin(2*alpha))))/(64.*Pi* (MH*MH*MH));
-	}
-	else{ return 0; }
-
-}
-double DT::wHAA(){
-	if(heaviDecays(MH,0,0)){
-		return 0.5*(MH* (AH*AH)*sqrt( (MH*MH*MH*MH)))/(16.*Pi);
-	}
-	else{ return 0; }
-
-}
-double DT::wHZZ(){
-	if(heaviDecays(MH,MZ,MZ)){
-		return 0.5*( (EL*EL*EL*EL)*sqrt( (MH*MH*MH*MH) - 4* (MH*MH)* (MZ*MZ))*( (MH*MH*MH*MH) - 4* (MH*MH)* (MZ*MZ) + 12* (MZ*MZ*MZ*MZ))* (vev*vev)* (( (cw*cw) +  (sw*sw))*( (cw*cw) +  (sw*sw))*( (cw*cw) +  (sw*sw))*( (cw*cw) +  (sw*sw))))/(256.*Pi* (cw*cw*cw*cw)* (MH*MH*MH)* (MZ*MZ*MZ*MZ)* (sw*sw*sw*sw));
-	}
-	else{ return 0; }
-
-}
-double DT::wHwW(){
-	if(heaviDecays(MH,MW,MW)){
-		return ( (EL*EL*EL*EL)*sqrt( (MH*MH*MH*MH) - 4* (MH*MH)* (MW*MW))*( (MH*MH*MH*MH) - 4* (MH*MH)* (MW*MW) + 12* (MW*MW*MW*MW))* (vev*vev))/(256.*Pi* (MH*MH*MH)* (MW*MW*MW*MW)* (sw*sw*sw*sw));
-	}
-	else{ return 0; }
-
-}
-double DT::wHGG(){
-	if(heaviDecays(MH,0,0)){
-		return 0.5*(MH* (GH*GH)*sqrt( (MH*MH*MH*MH)))/(2.*Pi);
-	}
-	else{ return 0; }
-
-}
-double DT::wHEe(){
-	if(heaviDecays(MH,Me,Me)){
-		return ((-4* (Me*Me) +  (MH*MH))*sqrt(-4* (Me*Me)* (MH*MH) +  (MH*MH*MH*MH))* (ye*ye))/(16.*Pi* (MH*MH*MH));
-	}
-	else{ return 0; }
-
-}
-double DT::wHMUmu(){
-	if(heaviDecays(MH,MMU,MMU)){
-		return (( (MH*MH) - 4* (MMU*MMU))*sqrt( (MH*MH*MH*MH) - 4* (MH*MH)* (MMU*MMU))* (ym*ym))/(16.*Pi* (MH*MH*MH));
-	}
-	else{ return 0; }
-
-}
-double DT::wHTAta(){
-	if(heaviDecays(MH,MTA,MTA)){
-		return (( (MH*MH) - 4* (MTA*MTA))*sqrt( (MH*MH*MH*MH) - 4* (MH*MH)* (MTA*MTA))* (ytau*ytau))/(16.*Pi* (MH*MH*MH));
-	}
-	else{ return 0; }
-
-}
-double DT::wHUu(){
-	if(heaviDecays(MH,MU,MU)){
-		return (3*( (MH*MH) - 4* (MU*MU))*sqrt( (MH*MH*MH*MH) - 4* (MH*MH)* (MU*MU))* (yup*yup))/(16.*Pi* (MH*MH*MH));
-	}
-	else{ return 0; }
-
-}
-double DT::wHCc(){
-	if(heaviDecays(MH,MC,MC)){
-		return (3*(-4* (MC*MC) +  (MH*MH))*sqrt(-4* (MC*MC)* (MH*MH) +  (MH*MH*MH*MH))* (yc*yc))/(16.*Pi* (MH*MH*MH));
-	}
-	else{ return 0; }
-
-}
-double DT::wHTt(){
-	if(heaviDecays(MH,MT,MT)){
-		return (3*( (MH*MH) - 4* (MT*MT))*sqrt( (MH*MH*MH*MH) - 4* (MH*MH)* (MT*MT))* (yt*yt))/(16.*Pi* (MH*MH*MH));
-	}
-	else{ return 0; }
-
-}
-double DT::wHDd(){
-	if(heaviDecays(MH,MD,MD)){
-		return (3*(-4* (MD*MD) +  (MH*MH))*sqrt(-4* (MD*MD)* (MH*MH) +  (MH*MH*MH*MH))* (ydo*ydo))/(16.*Pi* (MH*MH*MH));
-	}
-	else{ return 0; }
-
-}
-double DT::wHSs(){
-	if(heaviDecays(MH,MS,MS)){
-		return (3*( (MH*MH) - 4* (MS*MS))*sqrt( (MH*MH*MH*MH) - 4* (MH*MH)* (MS*MS))* (ys*ys))/(16.*Pi* (MH*MH*MH));
-	}
-	else{ return 0; }
-
-}
-double DT::wHBb(){
-	if(heaviDecays(MH,MB,MB)){
-		return (3*(-4* (MB*MB) +  (MH*MH))*sqrt(-4* (MB*MB)* (MH*MH) +  (MH*MH*MH*MH))* (yb*yb))/(16.*Pi* (MH*MH*MH));
-	}
-	else{ return 0; }
-
-}
-double DT::wwH(){
-	return ( wHHH() + wHChiChi() + wHChiPsi() + wHPsiPsi() + wHAA() + wHZZ() + wHwW() + wHGG() + wHEe() + wHMUmu() + wHTAta() + wHUu() + wHCc() + wHTt() + wHDd() + wHSs() + wHBb() );
+	return width;
 }

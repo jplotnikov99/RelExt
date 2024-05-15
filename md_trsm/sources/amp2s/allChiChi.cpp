@@ -18,32 +18,32 @@ double DT::ChiChiwW(const double &cos_t, const double &s){
 	return ((-4*s* (MW*MW) + 12* (MW*MW*MW*MW) +  (s*s))* (token14*token14)* (token4*token4)* (token5*token5))/(4.* (MW*MW*MW*MW)* (token16*token16)* (token18*token18)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::ChiChiGG(const double &cos_t, const double &s){
-	return (4* (s*s)* (token13*token13)* (token19*token19)* (token20*token20)* (token21*token21)* (token22*token22))/( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
+	return (32* (s*s)* (token13*token13)* (token19*token19)* (token20*token20)* (token21*token21))/( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH)));
 }
 double DT::ChiChiEe(const double &cos_t, const double &s){
-	return (2*(s - 4* (Me*Me))* (token13*token13)* (token23*token23)* (token5*token5)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
+	return (2*(s - 4* (Me*Me))* (token13*token13)* (token22*token22)* (token5*token5)* (token6*token6))/( (token23*token23)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::ChiChiMUmu(const double &cos_t, const double &s){
-	return (2*(s - 4* (MMU*MMU))* (token13*token13)* (token25*token25)* (token5*token5)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
+	return (2*(s - 4* (MMU*MMU))* (token13*token13)* (token24*token24)* (token5*token5)* (token6*token6))/( (token23*token23)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::ChiChiTAta(const double &cos_t, const double &s){
-	return (2*(s - 4* (MTA*MTA))* (token13*token13)* (token26*token26)* (token5*token5)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
+	return (2*(s - 4* (MTA*MTA))* (token13*token13)* (token25*token25)* (token5*token5)* (token6*token6))/( (token23*token23)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::ChiChiUu(const double &cos_t, const double &s){
-	return (6*(s - 4* (MU*MU))* (token13*token13)* (token27*token27)* (token5*token5)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
+	return (6*(s - 4* (MU*MU))* (token13*token13)* (token26*token26)* (token5*token5)* (token6*token6))/( (token23*token23)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::ChiChiCc(const double &cos_t, const double &s){
-	return (6*(s - 4* (MC*MC))* (token13*token13)* (token28*token28)* (token5*token5)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
+	return (6*(s - 4* (MC*MC))* (token13*token13)* (token27*token27)* (token5*token5)* (token6*token6))/( (token23*token23)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::ChiChiTt(const double &cos_t, const double &s){
-	return (6*(s - 4* (MT*MT))* (token13*token13)* (token29*token29)* (token5*token5)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
+	return (6*(s - 4* (MT*MT))* (token13*token13)* (token28*token28)* (token5*token5)* (token6*token6))/( (token23*token23)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::ChiChiDd(const double &cos_t, const double &s){
-	return (6*(s - 4* (MD*MD))* (token13*token13)* (token30*token30)* (token5*token5)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
+	return (6*(s - 4* (MD*MD))* (token13*token13)* (token29*token29)* (token5*token5)* (token6*token6))/( (token23*token23)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::ChiChiSs(const double &cos_t, const double &s){
-	return (6*(s - 4* (MS*MS))* (token13*token13)* (token31*token31)* (token5*token5)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
+	return (6*(s - 4* (MS*MS))* (token13*token13)* (token30*token30)* (token5*token5)* (token6*token6))/( (token23*token23)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }
 double DT::ChiChiBb(const double &cos_t, const double &s){
-	return (6*(s - 4* (MB*MB))* (token13*token13)* (token32*token32)* (token5*token5)* (token6*token6))/( (token24*token24)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
+	return (6*(s - 4* (MB*MB))* (token13*token13)* (token31*token31)* (token5*token5)* (token6*token6))/( (token23*token23)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));
 }

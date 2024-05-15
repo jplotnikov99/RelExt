@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
-directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
+directory = "/home/johann/Documents/Projects/DM/darktree_new/md_trsm/FR_modfiles" <> "/FA_modfiles";
 (*directory = "/home/rodrigo/Downloads/darktree_new/md_cxsm/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
@@ -524,7 +524,7 @@ Block[{numerator,denominator,coefficient={},temp1,temp2},
 			If[And[Length[placeholder*numerator[[it]]]===2,Length[numerator[[it]]]>=2],
 				temp1*=(numerator[[it]]);
 				Break[],
-				If[FreeQ[numerator[[it,jt]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__]}],
+				If[FreeQ[numerator[[it,jt]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__],SUNDelta[__,__]}],
 					temp1*=(numerator[[it,jt]]),
 					temp2*=numerator[[it,jt]];
 				];
@@ -532,8 +532,8 @@ Block[{numerator,denominator,coefficient={},temp1,temp2},
 		,{jt,Length[numerator[[it]]]}];
 		AppendTo[coefficient, temp1];
 	,{it,Length[numerator]}];
-	coefficient[[1]]=coefficient[[1]]/denominator;
 	
+	coefficient[[1]]=coefficient[[1]]/denominator;
 	AppendTo[coefficientlist,coefficient];
 ]
 
@@ -621,6 +621,9 @@ If[Length[ampDecays] == 0,
 
 ,{i,1,Length[finallistDecays]}]
 ]
+
+
+decayslist[[5,1]]//FullSimplify
 
 
 calcAmpsDecays[];
