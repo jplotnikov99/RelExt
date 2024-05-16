@@ -6,7 +6,7 @@ InputFile           |micro_cxsm.csv
 OutputFile          |test.csv
 StartPoint          |1
 EndPoint            |1
-SavedParameters     |
+SavedParameters     |lam12, lam13
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |
@@ -16,7 +16,10 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
+ChangeThermalBath   |Psi
 CalcRelic           |0
+ChangeThermalBath   |Chi
+FindParameter       |lam12, 1, 0.12, 0.001
 SaveData            |
 
 END
