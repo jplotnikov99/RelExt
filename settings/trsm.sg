@@ -2,10 +2,10 @@
 
 ######## Standard settings ########
 
-InputFile           |micro_cxsm.csv
+InputFile           |
 OutputFile          |test.csv
 StartPoint          |1
-EndPoint            |1
+EndPoint            |2
 SavedParameters     |lam12, lam13
 ConsideredChannels  |
 SubtractChannels    |

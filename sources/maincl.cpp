@@ -4,6 +4,8 @@ namespace DT
 {
     Main::Main(int argc, char **argv)
     {
+        operations_map["ChangeThermalBath"] = [this](const vstring a)
+        { this->ChangeThermalBath(a); };
         operations_map["CalcXsec"] = [this](const vstring a)
         { this->CalcXsec(a); };
         operations_map["CalcTac"] = [this](const vstring a)
@@ -14,32 +16,32 @@ namespace DT
         { this->FindParameter(a); };
         operations_map["SaveData"] = [this](const vstring a)
         { this->save_data(); };
-        operations_map["ChangeThermalBath"] = [this](const vstring a)
-        { this->ChangeThermalBath(a); };
 
         load_setting(std::string(argv[1]));
-        rdr = std::make_unique<DataReader>(input_file, 1);
 
         mod = std::make_shared<Model>();
         mod->init();
         mod->load_parameter_map();
         relops = std::make_unique<RelicOps>(mod);
 
-        size_t N_par_points = rdr->datalines();
-        if (start_point < 1)
+        if (input_file != "")
         {
-            std::cout << "StartPoint is out of range and was set to 1.\n";
-            start_point = 1;
+            rdr = std::make_unique<DataReader>(input_file, 1);
+            size_t N_par_points = rdr->datalines();
+            if (start_point < 1)
+            {
+                std::cout << "StartPoint is out of range and was set to 1.\n";
+                start_point = 1;
+            }
+            if ((end_point - 1) == 0)
+                end_point = N_par_points;
+            if (end_point > N_par_points)
+            {
+                std::cout << "EndPoint is out of range and is set to" << N_par_points - 1 << ".\n";
+                end_point = N_par_points;
+            }
+            rdr->scanpars = rdr->assignHeaders(mod->parmap);
         }
-        if ((end_point - 1) == 0)
-            end_point = N_par_points;
-        if (end_point > N_par_points)
-        {
-            std::cout << "EndPoint is out of range and is set to" << N_par_points - 1 << ".\n";
-            end_point = N_par_points;
-        }
-
-        rdr->scanpars = rdr->assignHeaders(mod->parmap);
 
         def_thermal_bath();
         set_channels();
@@ -72,7 +74,10 @@ namespace DT
     void Main::load_parameters(const size_t i)
     {
         std::cout << "Parameter point: " << i << std::endl;
-        rdr->read_parameter(i);
+        if (input_file != "")
+        {
+            rdr->read_parameter(i);
+        }
         mod->load_parameters();
         mod->assigndm();
         mod->calc_widths_and_scale();
@@ -159,7 +164,7 @@ namespace DT
 
         def_thermal_bath();
         set_channels();
-        
+
         mod->assigndm();
         mod->calc_widths_and_scale();
         mod->load_parameters();
@@ -265,7 +270,7 @@ namespace DT
 
         size_t mechanism = std::stoi(args.at(1));
         relops->set_mechanism(mechanism);
-        omega = relops->CalcRelic();
+        omega = omega + relops->CalcRelic();
         std::cout << "Omega full:\n"
                   << omega << "\n\n";
     }
@@ -283,7 +288,7 @@ namespace DT
         relops->set_omega_err(std::stod(args.at(4)));
         relops->find_pars(args.at(1));
 
-        omega = relops->get_last_relic();
+        omega = omega + relops->get_last_relic();
         std::cout << "Omega full:\n"
                   << omega << "\n\n";
     }
@@ -329,6 +334,7 @@ namespace DT
 
     void Main::do_user_operations()
     {
+        omega = {0.,0.};
         for (auto it : user_operations)
         {
             operations_map[it.at(0)](it);
