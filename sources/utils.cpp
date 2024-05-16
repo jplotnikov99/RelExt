@@ -77,19 +77,6 @@ namespace DT
       }
    }
 
-   void check_if_number(const std::string &arg, const std::string &func)
-   {
-      try
-      {
-         double val = std::stod(arg);
-      }
-      catch (const std::invalid_argument &)
-      {
-         std::cout << "Error in " << func << ": " << arg << " is not a number.\n";
-         exit(1);
-      }
-   }
-
    double linint(const double x, const double x1, const double x2, const double y1, const double y2)
    {
       return ((y2 - y1) / (x2 - x1)) * (x - x1) + y1;

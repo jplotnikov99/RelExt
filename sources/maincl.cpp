@@ -4,6 +4,18 @@ namespace DT
 {
     Main::Main(int argc, char **argv)
     {
+        operations_map["ChangeParameter"] = [this](const vstring a)
+        { this->ChangeParameter(a); };
+        operations_map["Def"] = [this](const vstring a)
+        { this->Def(a); };
+        operations_map["Add"] = [this](const vstring a)
+        { this->Add(a); };
+        operations_map["Sub"] = [this](const vstring a)
+        { this->Sub(a); };
+        operations_map["Mult"] = [this](const vstring a)
+        { this->Mult(a); };
+        operations_map["Div"] = [this](const vstring a)
+        { this->Div(a); };
         operations_map["ChangeThermalBath"] = [this](const vstring a)
         { this->ChangeThermalBath(a); };
         operations_map["CalcXsec"] = [this](const vstring a)
@@ -151,6 +163,121 @@ namespace DT
         relops->set_bath_procs(bath_procs);
     }
 
+    bool Main::check_var_existence(const std::string &var, const std::string &operation)
+    {
+        if (variable_map.find(var) == variable_map.end())
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool Main::check_if_number(const std::string &arg, const std::string &func)
+    {
+        if (check_var_existence(arg, __func__))
+        {
+            return false;
+        }
+        else
+        {
+            try
+            {
+                double val = std::stod(arg);
+            }
+            catch (const std::invalid_argument &)
+            {
+                std::cout << "Error in " << func << ": " << arg << " is not a number.\n";
+                exit(1);
+            }
+            return true;
+        }
+    }
+
+    void Main::Def(const vstring &args)
+    {
+        if (first_run)
+        {
+            check_arguments_number(true, 2, args.size(), __func__);
+            if (check_if_number(args.at(2), __func__))
+            {
+                variable_map[args.at(1)] = {std::stod(args.at(2)), 0.};
+            }
+            else
+            {
+                variable_map[args.at(1)] = variable_map[args.at(2)];
+            }
+        }
+    }
+
+    void Main::Add(const vstring &args)
+    {
+        check_arguments_number(true, 2, args.size(), __func__);
+        check_var_existence(args.at(1), __func__);
+        if (check_if_number(args.at(2), __func__))
+        {
+            variable_map.at(args.at(1)).res += std::stod(args.at(2));
+        }
+        else
+        {
+            variable_map.at(args.at(1)).res += variable_map.at(args.at(2)).res;
+        }
+    }
+
+    void Main::Sub(const vstring &args)
+    {
+        check_arguments_number(true, 2, args.size(), __func__);
+        check_var_existence(args.at(1), __func__);
+        if (check_if_number(args.at(2), __func__))
+        {
+            variable_map.at(args.at(1)).res -= std::stod(args.at(2));
+        }
+        else
+        {
+            variable_map.at(args.at(1)).res -= variable_map.at(args.at(2)).res;
+        }
+    }
+
+    void Main::Mult(const vstring &args)
+    {
+        check_arguments_number(true, 2, args.size(), __func__);
+        check_var_existence(args.at(1), __func__);
+        if (check_if_number(args.at(2), __func__))
+        {
+            variable_map.at(args.at(1)).res *= std::stod(args.at(2));
+        }
+        else
+        {
+            variable_map.at(args.at(1)).res *= variable_map.at(args.at(2)).res;
+        }
+    }
+
+    void Main::Div(const vstring &args)
+    {
+        check_arguments_number(true, 2, args.size(), __func__);
+        check_var_existence(args.at(1), __func__);
+        if (check_if_number(args.at(2), __func__))
+        {
+            variable_map.at(args.at(1)).res /= std::stod(args.at(2));
+        }
+        else
+        {
+            variable_map.at(args.at(1)).res /= variable_map.at(args.at(2)).res;
+        }
+    }
+
+    void Main::ChangeParameter(const vstring &args)
+    {
+        check_arguments_number(true, 2, args.size(), __func__);
+        if (check_if_number(args.at(2), __func__))
+        {
+            mod->change_parameter(args.at(1), std::stod(args.at(2)));
+        }
+        else
+        {
+            mod->change_parameter(args.at(1), variable_map.at(args.at(2)).res);
+        }
+    }
+
     void Main::ChangeThermalBath(const vstring &args)
     {
         check_arguments_number(false, 1, args.size(), __func__);
@@ -265,19 +392,24 @@ namespace DT
 
     void Main::CalcRelic(const vstring &args)
     {
-        check_arguments_number(true, 1, args.size(), __func__);
+        check_arguments_number(false, 1, args.size(), __func__);
         check_if_number(args.at(1), __func__);
 
         size_t mechanism = std::stoi(args.at(1));
         relops->set_mechanism(mechanism);
-        omega = omega + relops->CalcRelic();
+        omega = relops->CalcRelic();
         std::cout << "Omega full:\n"
                   << omega << "\n\n";
+        if (args.size() > 2)
+        {
+            check_var_existence(args.at(2), __func__);
+            variable_map.at(args.at(2)) = omega;
+        }
     }
 
     void Main::FindParameter(const vstring &args)
     {
-        check_arguments_number(true, 4, args.size(), (std::string) __func__);
+        check_arguments_number(false, 4, args.size(), (std::string) __func__);
         check_if_number(args.at(2), __func__);
         check_if_number(args.at(3), __func__);
         check_if_number(args.at(4), __func__);
@@ -288,9 +420,15 @@ namespace DT
         relops->set_omega_err(std::stod(args.at(4)));
         relops->find_pars(args.at(1));
 
-        omega = omega + relops->get_last_relic();
+        omega = relops->get_last_relic();
         std::cout << "Omega full:\n"
                   << omega << "\n\n";
+
+        if (args.size() > 5)
+        {
+            check_var_existence(args.at(5), __func__);
+            variable_map.at(args.at(5)) = omega;
+        }
     }
 
     void Main::save_data()
@@ -298,12 +436,11 @@ namespace DT
 
         std::string filesave = "../dataOutput/" + output_file;
 
-        if (first_save)
+        if (first_run)
         {
             std::ofstream reset;
             reset.open(filesave, std::ofstream::out | std::ofstream::trunc);
             reset.close();
-            first_save = false;
         }
 
         std::ofstream outfile(filesave, std::ios::out | std::ios::app);
@@ -334,10 +471,22 @@ namespace DT
 
     void Main::do_user_operations()
     {
-        omega = {0.,0.};
+        omega = {0., 0.};
+        if (first_run)
+        {
+            for (auto it : user_operations)
+            {
+                if (operations_map.find(it.at(0)) == operations_map.end())
+                {
+                    std::cout << it.at(0) << " is not a valid operation.\n";
+                    exit(0);
+                }
+            }
+        }
         for (auto it : user_operations)
         {
             operations_map[it.at(0)](it);
         }
+        first_run = false;
     }
 } // namespace DT

@@ -24,10 +24,11 @@ namespace DT
         vstring subtracted_procs = {};
         vstring neglected_particles = {};
         vstring saved_pars = {};
-        bool first_save = true;
+        bool first_run = true;
         double channel_contrib = 1.;
         vstring strong_channels = {};
         std::unordered_map<std::string, std::function<void(const vstring)>> operations_map;
+        std::unordered_map<std::string, ResError> variable_map;
         std::vector<vstring> user_operations;
         std::unique_ptr<DataReader> rdr;
         std::shared_ptr<Model> mod;
@@ -57,8 +58,30 @@ namespace DT
         // checks if the thermal bath particles and the input channels match
         void check_procs(const vstring &ch_str);
 
+        bool check_var_existence(const std::string &var, const std::string &operation);
+
+        bool check_if_number(const std::string &arg, const std::string &func);
+
+        // args are: variable name, value
+        void Def(const vstring &args);
+
+        // args are: variable name, value (can be variable or number)
+        void Add(const vstring &args);
+
+        // args are: variable name, value (can be variable or number)
+        void Sub(const vstring &args);
+
+        // args are: variable name, value (can be variable or number)
+        void Mult(const vstring &args);
+        
+        // args are: variable name, value (can be variable or number)
+        void Div(const vstring &args);
+
+        // args are: model parameter, variable name
+        void ChangeParameter(const vstring &args);
+
         // args are: particle names of DS particles included in the thermal bath
-        void ChangeThermalBath(const vstring &ch_str);
+        void ChangeThermalBath(const vstring &args);
 
         // args are: min sqrt(s), max sqrt(s), number of points, channel names
         void CalcXsec(const vstring &args);

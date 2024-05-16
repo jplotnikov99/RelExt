@@ -5,7 +5,7 @@
 InputFile           |
 OutputFile          |test.csv
 StartPoint          |1
-EndPoint            |2
+EndPoint            |1
 SavedParameters     |lam12, lam13
 ConsideredChannels  |
 SubtractChannels    |
@@ -16,6 +16,9 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
+Def                 |var1, 2
+Mult                |var1, var2
+ChangeParameter     |lam13, var1
 ChangeThermalBath   |Psi
 CalcRelic           |0
 ChangeThermalBath   |Chi

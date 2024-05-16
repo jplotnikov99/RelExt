@@ -92,7 +92,15 @@ namespace DT
 		rmv_spaces(line);
 		if (line.size() == 0)
 			line = "0";
-		check_if_number((std::string) line, name);
+		try
+		{
+			double val = std::stod((std::string)line);
+		}
+		catch (const std::invalid_argument &)
+		{
+			std::cout << "Error in " << name << ": " << (std::string)line << " is not a number.\n";
+			exit(1);
+		}
 
 		return std::stod(line);
 	}

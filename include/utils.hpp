@@ -37,8 +37,6 @@ namespace DT
 
 	void check_arguments_number(const bool exact, const size_t needs, const size_t has, const std::string &func);
 
-	void check_if_number(const std::string &arg, const std::string &func);
-
 	double linint(const double x, const double x1, const double x2, const double y1, const double y2);
 
 	double simpson_est(const double l, const double r, double *f);

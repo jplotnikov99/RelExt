@@ -5,7 +5,7 @@
 InputFile           |CPVDMTest.csv
 OutputFile          |cpvdm_width.csv
 StartPoint          |1
-EndPoint            |2
+EndPoint            |
 SavedParameters     |mH1, mH2
 ConsideredChannels  |
 SubtractChannels    |
