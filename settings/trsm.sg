@@ -17,13 +17,16 @@ ChannelContributions|1
 START
 
 Def                 |var1, 2
-Mult                |var1, var2
+Def                 |omFO, 0
+Def                 |omgoal, 0.12
 ChangeParameter     |lam13, var1
 ChangeThermalBath   |Psi
-CalcRelic           |0
+CalcRelic           |0, omFO
+Sub                 |omgoal, omFO
 ChangeThermalBath   |Chi
-FindParameter       |lam12, 1, 0.12, 0.001
-SaveData            |
+FindParameter       |lam12, 1, omgoal, 0.001
+SaveData            |var1
+Mult                |var1, 1.1
 
 END
 ######## Advanced settings ########

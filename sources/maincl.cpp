@@ -27,7 +27,7 @@ namespace DT
         operations_map["FindParameter"] = [this](const vstring a)
         { this->FindParameter(a); };
         operations_map["SaveData"] = [this](const vstring a)
-        { this->save_data(); };
+        { this->SaveData(a); };
 
         load_setting(std::string(argv[1]));
 
@@ -163,33 +163,39 @@ namespace DT
         relops->set_bath_procs(bath_procs);
     }
 
-    bool Main::check_var_existence(const std::string &var, const std::string &operation)
+    bool Main::check_var_existence(const std::string &var, const std::string func)
     {
         if (variable_map.find(var) == variable_map.end())
         {
+            if (func != "")
+            {
+                std::cout << "Error in " << func << ": " << var << " is not defined.\n";
+                exit(1);
+            }
             return false;
         }
         return true;
     }
 
-    bool Main::check_if_number(const std::string &arg, const std::string &func)
+    double Main::get_number(const std::string &arg, const std::string &func)
     {
-        if (check_var_existence(arg, __func__))
+        if (check_var_existence(arg))
         {
-            return false;
+            return variable_map[arg].res;
         }
         else
         {
+            double val;
             try
             {
-                double val = std::stod(arg);
+                val = std::stod(arg);
             }
             catch (const std::invalid_argument &)
             {
                 std::cout << "Error in " << func << ": " << arg << " is not a number.\n";
                 exit(1);
             }
-            return true;
+            return val;
         }
     }
 
@@ -198,14 +204,8 @@ namespace DT
         if (first_run)
         {
             check_arguments_number(true, 2, args.size(), __func__);
-            if (check_if_number(args.at(2), __func__))
-            {
-                variable_map[args.at(1)] = {std::stod(args.at(2)), 0.};
-            }
-            else
-            {
-                variable_map[args.at(1)] = variable_map[args.at(2)];
-            }
+            double a = get_number(args.at(2), __func__);
+            variable_map[args.at(1)] = {a, 0.};
         }
     }
 
@@ -213,69 +213,39 @@ namespace DT
     {
         check_arguments_number(true, 2, args.size(), __func__);
         check_var_existence(args.at(1), __func__);
-        if (check_if_number(args.at(2), __func__))
-        {
-            variable_map.at(args.at(1)).res += std::stod(args.at(2));
-        }
-        else
-        {
-            variable_map.at(args.at(1)).res += variable_map.at(args.at(2)).res;
-        }
+        double a = get_number(args.at(2), __func__);
+        variable_map.at(args.at(1)).res += a;
     }
 
     void Main::Sub(const vstring &args)
     {
         check_arguments_number(true, 2, args.size(), __func__);
         check_var_existence(args.at(1), __func__);
-        if (check_if_number(args.at(2), __func__))
-        {
-            variable_map.at(args.at(1)).res -= std::stod(args.at(2));
-        }
-        else
-        {
-            variable_map.at(args.at(1)).res -= variable_map.at(args.at(2)).res;
-        }
+        double a = get_number(args.at(2), __func__);
+        variable_map.at(args.at(1)).res -= a;
     }
 
     void Main::Mult(const vstring &args)
     {
         check_arguments_number(true, 2, args.size(), __func__);
         check_var_existence(args.at(1), __func__);
-        if (check_if_number(args.at(2), __func__))
-        {
-            variable_map.at(args.at(1)).res *= std::stod(args.at(2));
-        }
-        else
-        {
-            variable_map.at(args.at(1)).res *= variable_map.at(args.at(2)).res;
-        }
+        double a = get_number(args.at(2), __func__);
+        variable_map.at(args.at(1)).res *= a;
     }
 
     void Main::Div(const vstring &args)
     {
         check_arguments_number(true, 2, args.size(), __func__);
         check_var_existence(args.at(1), __func__);
-        if (check_if_number(args.at(2), __func__))
-        {
-            variable_map.at(args.at(1)).res /= std::stod(args.at(2));
-        }
-        else
-        {
-            variable_map.at(args.at(1)).res /= variable_map.at(args.at(2)).res;
-        }
+        double a = get_number(args.at(2), __func__);
+        variable_map.at(args.at(1)).res /= a;
     }
 
     void Main::ChangeParameter(const vstring &args)
     {
         check_arguments_number(true, 2, args.size(), __func__);
-        if (check_if_number(args.at(2), __func__))
-        {
-            mod->change_parameter(args.at(1), std::stod(args.at(2)));
-        }
-        else
-        {
-            mod->change_parameter(args.at(1), variable_map.at(args.at(2)).res);
-        }
+        double a = get_number(args.at(2), __func__);
+        mod->change_parameter(args.at(1), a);
     }
 
     void Main::ChangeThermalBath(const vstring &args)
@@ -301,10 +271,7 @@ namespace DT
     void Main::CalcXsec(const vstring &args)
     {
         check_arguments_number(false, 4, args.size(), __func__);
-        check_if_number(args.at(1), __func__);
-        check_if_number(args.at(2), __func__);
-        check_if_number(args.at(3), __func__);
-
+        
         if (start_point != (end_point - 1))
         {
             std::cout << "CalcXsec can only be called for one point, not a range. "
@@ -315,8 +282,8 @@ namespace DT
         std::unique_ptr<Tac> tac = std::make_unique<Tac>(mod);
         std::unique_ptr<DataReader> xsr = std::make_unique<DataReader>(output_file, 2);
 
-        double min_sqs = std::stod(args.at(1));
-        double max_sqs = std::stod(args.at(2));
+        double min_sqs = get_number(args.at(1), __func__);
+        double max_sqs = get_number(args.at(2), __func__);
         ASSERT((min_sqs < 0) || (max_sqs < 0), "Boundaries in " << __func__ << "can not have negative values.")
         if (min_sqs > max_sqs)
         {
@@ -325,7 +292,7 @@ namespace DT
             min_sqs = max_sqs;
         }
 
-        size_t points = std::stoi(args.at(3));
+        size_t points = get_number(args.at(3), __func__);
         vstring channel;
         for (size_t i = 4; i < args.size(); i++)
         {
@@ -348,9 +315,6 @@ namespace DT
     void Main::CalcTac(const vstring &args)
     {
         check_arguments_number(false, 4, args.size(), __func__);
-        check_if_number(args.at(1), __func__);
-        check_if_number(args.at(2), __func__);
-        check_if_number(args.at(3), __func__);
 
         if (start_point != (end_point - 1))
         {
@@ -362,8 +326,8 @@ namespace DT
         std::unique_ptr<Tac> tac = std::make_unique<Tac>(mod);
         std::unique_ptr<DataReader> tar = std::make_unique<DataReader>(output_file, 2);
 
-        double min_x = std::stod(args.at(1));
-        double max_x = std::stod(args.at(2));
+        double min_x = get_number(args.at(1), __func__);
+        double max_x = get_number(args.at(2), __func__);
         ASSERT((min_x < 0) || (max_x < 0), "Boundaries in " << __func__ << "can not have negative values.")
         if (min_x > max_x)
         {
@@ -372,7 +336,8 @@ namespace DT
             min_x = max_x;
         }
 
-        size_t points = std::stoi(args.at(3));
+        size_t points = get_number(args.at(3), __func__);
+
         vstring channel;
         for (size_t i = 4; i < args.size(); i++)
         {
@@ -393,16 +358,15 @@ namespace DT
     void Main::CalcRelic(const vstring &args)
     {
         check_arguments_number(false, 1, args.size(), __func__);
-        check_if_number(args.at(1), __func__);
-
-        size_t mechanism = std::stoi(args.at(1));
+        
+        size_t mechanism = get_number(args.at(1), __func__);
         relops->set_mechanism(mechanism);
         omega = relops->CalcRelic();
         std::cout << "Omega full:\n"
                   << omega << "\n\n";
         if (args.size() > 2)
         {
-            check_var_existence(args.at(2), __func__);
+            check_var_existence(args.at(2));
             variable_map.at(args.at(2)) = omega;
         }
     }
@@ -410,14 +374,13 @@ namespace DT
     void Main::FindParameter(const vstring &args)
     {
         check_arguments_number(false, 4, args.size(), (std::string) __func__);
-        check_if_number(args.at(2), __func__);
-        check_if_number(args.at(3), __func__);
-        check_if_number(args.at(4), __func__);
+        size_t mechanism = get_number(args.at(2), __func__);
+        double om_target = get_number(args.at(3), __func__);
+        double om_err = get_number(args.at(4), __func__);
 
-        size_t mechanism = std::stoi(args.at(2));
         relops->set_mechanism(mechanism);
-        relops->set_omega_target(std::stod(args.at(3)));
-        relops->set_omega_err(std::stod(args.at(4)));
+        relops->set_omega_target(om_target);
+        relops->set_omega_err(om_err);
         relops->find_pars(args.at(1));
 
         omega = relops->get_last_relic();
@@ -431,7 +394,7 @@ namespace DT
         }
     }
 
-    void Main::save_data()
+    void Main::SaveData(const vstring &args)
     {
 
         std::string filesave = "../dataOutput/" + output_file;
@@ -451,9 +414,14 @@ namespace DT
         {
             outfile << "Omega\tOmega_err";
 
-            for (int k = 0; k < saved_pars.size(); k++)
+            for (auto it : saved_pars)
             {
-                outfile << "\t" << saved_pars.at(k);
+                outfile << "\t" << it;
+            }
+            for (size_t i = 1; i < args.size(); i++)
+            {
+                get_number(args.at(i), __func__);
+                outfile << "\t" << args.at(i);
             }
             outfile << "\n";
         }
@@ -463,6 +431,10 @@ namespace DT
         for (auto it : saved_pars)
         {
             outfile << "\t" << mod->get_parameter_val(it);
+        }
+        for (size_t i = 1; i < args.size(); i++)
+        {
+            outfile << "\t" << variable_map.at(args.at(i)).res;
         }
         outfile << "\n";
 

@@ -58,9 +58,9 @@ namespace DT
         // checks if the thermal bath particles and the input channels match
         void check_procs(const vstring &ch_str);
 
-        bool check_var_existence(const std::string &var, const std::string &operation);
+        bool check_var_existence(const std::string &var, const std::string func = "");
 
-        bool check_if_number(const std::string &arg, const std::string &func);
+        double get_number(const std::string &arg, const std::string &func);
 
         // args are: variable name, value
         void Def(const vstring &args);
@@ -96,7 +96,7 @@ namespace DT
         void FindParameter(const vstring &args);
 
         // saves the scanned data
-        void save_data();
+        void SaveData(const vstring &args);
 
         void do_user_operations();
 
