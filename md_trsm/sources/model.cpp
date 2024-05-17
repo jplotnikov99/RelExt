@@ -17,13 +17,13 @@ namespace DT{
 	double ymm = 0.10566;
 	double ymtau = 1.777;
 	double cabi = 0.227736;
-	double mMChi = 700;
-	double mMPsi = 1000;
+	double mMChi = 10000;
+	double mMPsi = 700;
 	double alpha = 0.785398;
 	double lam2 = 0.;
 	double lam3 = 0.;
 	double lam12 = 2.4e-10;
-	double lam13 = 2.4;
+	double lam13 = 0.01;
 	double lam23 = 0.;
 	double lam123 = 0.;
 	double lam223 = 0.;
