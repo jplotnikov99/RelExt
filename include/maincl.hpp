@@ -92,7 +92,7 @@ namespace DT
         // args are: mechanism type
         void CalcRelic(const vstring &args);
 
-        // finds the parameter values for which the needed relic density is reached within a certain limit
+        // args are: name of parameter, mechanism, relic target, relic error, variable to save into 
         void FindParameter(const vstring &args);
 
         // saves the scanned data

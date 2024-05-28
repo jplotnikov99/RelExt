@@ -198,6 +198,17 @@ namespace DT
         }
     }
 
+    void Tac::check_boundaries()
+    {
+        for(size_t i = 0; i < boundaries.size() - 1; i++)
+        {
+            if(boundaries.at(i) < boundaries.at(i+1))
+            {
+                boundaries.at(i+1) = boundaries.at(i);
+            }
+        }
+    }
+
     void Tac::set_boundaries(const double &x)
     {
         double peak_xf;
@@ -219,6 +230,7 @@ namespace DT
             }
         }
         i_sort_boundaries();
+        check_boundaries();
     }
 
     ResError Tac::simpson38_peak(const double l, const double r, const double &x)

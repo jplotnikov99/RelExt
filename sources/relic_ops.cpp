@@ -48,7 +48,7 @@ namespace DT
             y.res = 1.1 * bs->yeq(x);
             xinitial = x;
             xtoday = xtoday_FO;
-            appr = true;
+            appr = false;
             break;
         case 1:
             x = x_reheating;
@@ -178,11 +178,15 @@ namespace DT
         double res = {};
         double om1 = omega_old;
         double om2;
+        size_t max_it = 200;
+        size_t current_it= 0;
         do
         {
             om2 = om1;
             om1 = get_next_omega(par, om1);
-        } while ((fabs(om2 / om1 - 1) > 0.001) && (searchmode == descent));
+            current_it++;
+            
+        } while ((fabs(om2 / om1 - 1) > 0.001) && (searchmode == descent) && (current_it < max_it));
         if (searchmode == descent)
         {
             searchmode = stop;
@@ -202,6 +206,7 @@ namespace DT
             xmid = rtb + dx;
             mod->change_parameter(par, xmid);
             bi_y2 = CalcRelic().res - omega_target;
+
             if (bi_y2 <= 0.)
                 rtb = xmid;
             if (fabs(bi_y2) < omega_err)

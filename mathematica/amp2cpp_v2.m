@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 (*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
-directory = "/home/johann/Documents/Projects/DM/darktree_new/md_trsm/FR_modfiles" <> "/FA_modfiles";
+directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";
 (*directory = "/home/rodrigo/Downloads/darktree_new/md_cxsm/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
@@ -621,9 +621,6 @@ If[Length[ampDecays] == 0,
 
 ,{i,1,Length[finallistDecays]}]
 ]
-
-
-decayslist[[5,1]]//FullSimplify
 
 
 calcAmpsDecays[];

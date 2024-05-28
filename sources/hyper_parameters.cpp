@@ -20,7 +20,7 @@ namespace DT
     double rk4_eps = 1e-6;
     size_t secant_maxiter = 100;
 
-    double vanguard_step_size = 0.5;
+    double vanguard_step_size = 0.1;
     double descent_learning_rate = 0.1;
     size_t max_N_bisections = 50;
 }

@@ -58,6 +58,9 @@ namespace DT
         // sorts the boundaries triplets in descending order
         void i_sort_boundaries();
 
+        // checks if the boundaries are in descending order
+        void check_boundaries();
+
         // sets all the relevant peak boundaries (sorted) and the number of relevant peaks dl
         void set_boundaries(const double &x);
 

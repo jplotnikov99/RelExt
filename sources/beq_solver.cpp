@@ -224,14 +224,18 @@ namespace DT
     ResError BeqSolver::calc_yield(const double &xtoday, double &x, ResError &y, const bool appr)
     {
         FOapprox = appr;
-        ResError yf, y0;
+        ResError y0;
         adap_dopr5(xtoday, x, y);
-        if(!appr)
-            return y;
-        yf = y;
-
-        y0 = 1 / yf - icoll(x, xtoday);
+        if (appr)
+        {
+            y0 = 1 / y - icoll(x, xtoday);
+            y0 = 1 / y0;
+        }
+        else
+        {
+            y0 = y;
+        }
         beq->reset_tac_state(true);
-        return 1 / y0;
+        return y0;
     }
 } // namespace DT

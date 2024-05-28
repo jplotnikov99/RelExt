@@ -15,10 +15,11 @@ namespace DT
     void Model::change_parameter(const std::string par, const double newval)
     {
         *parmap[par] = newval;
+        load_parameters();
         assigndm();
+        calc_widths_and_scale();
         load_parameters();
         load_tokens();
-        //assigndm();
     }
 
     vstring Model::get_all_channels()
