@@ -142,9 +142,12 @@ namespace DT
                 rdr->read_parameter(i);
             else if (mode == "2")
             {
+                double a, b;
                 for (auto it : generator_list)
                 {
-                    *mod->parmap[it.at(0)] = generate_random(std::stod(it.at(1)), std::stod(it.at(2)));
+                    a = get_number(it.at(1), __func__);
+                    b = get_number(it.at(2), __func__);
+                    *mod->parmap[it.at(0)] = generate_random(a, b);
                 }
             }
         }

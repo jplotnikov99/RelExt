@@ -6,8 +6,8 @@ Mode                |2
 InputFile           |test.dat
 OutputFile          |cxsm_width.csv
 StartPoint          |1
-EndPoint            |1000
-SavedParameters     |MA1, svev, alpha
+EndPoint            |10
+SavedParameters     |MA1, MS1, svev, alpha
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |
