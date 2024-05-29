@@ -4,8 +4,8 @@ namespace DT
 {
     Main::Main(int argc, char **argv)
     {
-        operations_map["ChangeParameter"] = [this](const vstring a)
-        { this->ChangeParameter(a); };
+        operations_map["Set"] = [this](const vstring a)
+        { this->Set(a); };
         operations_map["Def"] = [this](const vstring a)
         { this->Def(a); };
         operations_map["Add"] = [this](const vstring a)
@@ -39,20 +39,26 @@ namespace DT
         if (input_file != "")
         {
             rdr = std::make_unique<DataReader>(input_file, 1);
-            size_t N_par_points = rdr->datalines();
             if (start_point < 1)
             {
                 std::cout << "StartPoint is out of range and was set to 1.\n";
                 start_point = 1;
             }
-            if ((end_point - 1) == 0)
-                end_point = N_par_points;
-            if (end_point > N_par_points)
+            if (mode == "read" || mode == "1")
             {
-                std::cout << "EndPoint is out of range and is set to" << N_par_points - 1 << ".\n";
-                end_point = N_par_points;
+                mode = "1";
+                load_read_file();
             }
-            rdr->scanpars = rdr->assignHeaders(mod->parmap);
+            else if (mode == "generate" || mode == "2")
+            {
+                mode = "2";
+                load_generation_file();
+            }
+            else if (true)
+            {
+                std::cout << "The mode " << mode << " does not exist.\n";
+                exit(1);
+            }
         }
 
         def_thermal_bath();
@@ -63,6 +69,7 @@ namespace DT
     {
         std::unique_ptr<DataReader> sgr = std::make_unique<DataReader>(sg_file, 0);
         // Standard settings
+        mode = sgr->get_name_of("Mode");
         input_file = sgr->get_name_of("InputFile");
         output_file = sgr->get_name_of("OutputFile");
         start_point = (size_t)sgr->get_val_of("StartPoint");
@@ -83,12 +90,63 @@ namespace DT
         user_operations = sgr->get_operation_slist();
     }
 
+    void Main::load_read_file()
+    {
+        size_t N_par_points = rdr->datalines();
+
+        if ((end_point - 1) < 0)
+            end_point = N_par_points;
+        if (end_point < start_point)
+        {
+            std::cout << "StartPoint is larger than EndPoint\n";
+            exit(1);
+        }
+        if (end_point > N_par_points)
+        {
+            std::cout << "EndPoint is out of range and is set to" << N_par_points - 1 << ".\n";
+            end_point = N_par_points;
+        }
+        rdr->scanpars = rdr->assignHeaders(mod->parmap);
+    }
+
+    void Main::load_generation_file()
+    {
+        if ((end_point - 1) < 1)
+        {
+            std::cout << "StartPoint and/or EndPoint cannot be smaller than 1.\n";
+            exit(1);
+        }
+        if (end_point < start_point)
+        {
+            std::cout << "StartPoint is larger than EndPoint\n";
+            exit(1);
+        }
+        generator_list = rdr->get_generation_slist();
+        for (auto it : generator_list)
+        {
+            if (!mod->check_par_existence(it.at(0)))
+            {
+                std::cout << "Error in InputFile: " << it.at(0) << " is not a valid external parameter.\n";
+                exit(1);
+            }
+        }
+        srand((unsigned)time(NULL));
+    }
+
     void Main::load_parameters(const size_t i)
     {
         std::cout << "Parameter point: " << i << std::endl;
         if (input_file != "")
         {
-            rdr->read_parameter(i);
+            if (mode == "1")
+                rdr->read_parameter(i);
+            else if (mode == "2")
+            {
+                for (auto it : generator_list)
+                {
+                    *mod->parmap[it.at(0)] = generate_random(std::stod(it.at(1)), std::stod(it.at(2)));
+                }
+            }
         }
         mod->load_parameters();
         mod->assigndm();
@@ -163,23 +221,32 @@ namespace DT
         relops->set_bath_procs(bath_procs);
     }
 
-    bool Main::check_var_existence(const std::string &var, const std::string func)
+    int Main::check_var_existence(const std::string &var, const std::string func)
     {
         if (variable_map.find(var) == variable_map.end())
         {
-            if (func != "")
+            if (!mod->check_par_existence(var))
             {
-                std::cout << "Error in " << func << ": " << var << " is not defined.\n";
-                exit(1);
+                if (func != "")
+                {
+                    std::cout << "Error in " << func << ": " << var << " is not defined.\n";
+                    exit(1);
+                }
+                return 0;
             }
-            return false;
+            return 1;
         }
-        return true;
+        return 2;
     }
 
     double Main::get_number(const std::string &arg, const std::string &func)
     {
-        if (check_var_existence(arg))
+        int var_type = check_var_existence(arg);
+        if (var_type == 1)
+        {
+            return mod->get_parameter_val(arg);
+        }
+        else if (var_type == 2)
         {
             return variable_map[arg].res;
         }
@@ -192,7 +259,8 @@ namespace DT
             }
             catch (const std::invalid_argument &)
             {
-                std::cout << "Error in " << func << ": " << arg << " is not a number.\n";
+                std::cout << "Error in " << func << ": " << arg
+                          << " is neither a declared variable, nor a number.\n";
                 exit(1);
             }
             return val;
@@ -212,40 +280,84 @@ namespace DT
     void Main::Add(const vstring &args)
     {
         check_arguments_number(true, 2, args.size(), __func__);
-        check_var_existence(args.at(1), __func__);
+        int type = check_var_existence(args.at(1), __func__);
         double a = get_number(args.at(2), __func__);
-        variable_map.at(args.at(1)).res += a;
+        if (type == 1)
+        {
+            double b = mod->get_parameter_val(args.at(1));
+            b += a;
+            mod->change_parameter(args.at(1), b);
+        }
+        else
+        {
+            variable_map.at(args.at(1)).res += a;
+        }
     }
 
     void Main::Sub(const vstring &args)
     {
         check_arguments_number(true, 2, args.size(), __func__);
-        check_var_existence(args.at(1), __func__);
+        int type = check_var_existence(args.at(1), __func__);
         double a = get_number(args.at(2), __func__);
-        variable_map.at(args.at(1)).res -= a;
+        if (type == 1)
+        {
+            double b = mod->get_parameter_val(args.at(1));
+            b -= a;
+            mod->change_parameter(args.at(1), b);
+        }
+        else
+        {
+            variable_map.at(args.at(1)).res -= a;
+        }
     }
 
     void Main::Mult(const vstring &args)
     {
         check_arguments_number(true, 2, args.size(), __func__);
-        check_var_existence(args.at(1), __func__);
+        int type = check_var_existence(args.at(1), __func__);
         double a = get_number(args.at(2), __func__);
-        variable_map.at(args.at(1)).res *= a;
+        if (type == 1)
+        {
+            double b = mod->get_parameter_val(args.at(1));
+            b *= a;
+            mod->change_parameter(args.at(1), b);
+        }
+        else
+        {
+            variable_map.at(args.at(1)).res *= a;
+        }
     }
 
     void Main::Div(const vstring &args)
     {
         check_arguments_number(true, 2, args.size(), __func__);
-        check_var_existence(args.at(1), __func__);
+        int type = check_var_existence(args.at(1), __func__);
         double a = get_number(args.at(2), __func__);
-        variable_map.at(args.at(1)).res /= a;
+        if (type == 1)
+        {
+            double b = mod->get_parameter_val(args.at(1));
+            b /= a;
+            mod->change_parameter(args.at(1), b);
+        }
+        else
+        {
+            variable_map.at(args.at(1)).res /= a;
+        }
     }
 
-    void Main::ChangeParameter(const vstring &args)
+    void Main::Set(const vstring &args)
     {
         check_arguments_number(true, 2, args.size(), __func__);
+        int type = check_var_existence(args.at(1), __func__);
         double a = get_number(args.at(2), __func__);
-        mod->change_parameter(args.at(1), a);
+        if (type == 1)
+        {
+            mod->change_parameter(args.at(1), a);
+        }
+        else
+        {
+            variable_map.at(args.at(1)).res = a;
+        }
     }
 
     void Main::ChangeThermalBath(const vstring &args)
@@ -271,7 +383,7 @@ namespace DT
     void Main::CalcXsec(const vstring &args)
     {
         check_arguments_number(false, 4, args.size(), __func__);
-        
+
         if (start_point != (end_point - 1))
         {
             std::cout << "CalcXsec can only be called for one point, not a range. "
@@ -358,7 +470,7 @@ namespace DT
     void Main::CalcRelic(const vstring &args)
     {
         check_arguments_number(false, 1, args.size(), __func__);
-        
+
         size_t mechanism = get_number(args.at(1), __func__);
         relops->set_mechanism(mechanism);
         omega = relops->CalcRelic();
@@ -366,7 +478,7 @@ namespace DT
                   << omega << "\n\n";
         if (args.size() > 2)
         {
-            check_var_existence(args.at(2));
+            check_var_existence(args.at(2), __func__);
             variable_map.at(args.at(2)) = omega;
         }
     }

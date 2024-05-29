@@ -2,10 +2,11 @@
 
 ######## Standard settings ########
 
-InputFile           |micro_cxsm.csv
+Mode                |2
+InputFile           |test.dat
 OutputFile          |cxsm_width.csv
 StartPoint          |1
-EndPoint            |
+EndPoint            |1000
 SavedParameters     |MA1, svev, alpha
 ConsideredChannels  |
 SubtractChannels    |

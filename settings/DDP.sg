@@ -2,6 +2,7 @@
 
 ######## Standard settings ########
 
+Mode                |1
 InputFile           |micro_cxsm.csv
 OutputFile          |test.csv
 StartPoint          |1

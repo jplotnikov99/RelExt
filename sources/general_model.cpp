@@ -7,6 +7,13 @@ namespace DT
     {
     }
 
+    bool Model::check_par_existence(const std::string par)
+    {
+        if(parmap.find(par) == parmap.end())
+            return false;
+        return true;
+    }
+
     double Model::get_parameter_val(const std::string par)
     {
         return (*parmap[par]);
@@ -36,7 +43,7 @@ namespace DT
     {
         return N_initial_states;
     }
-    
+
     void Model::get_channel_masses(double &m1, double &m2, double &m3, double &m4, const std::string &channel)
     {
         m1 = *mass1s.at(channel);
@@ -99,9 +106,10 @@ namespace DT
                     }
                 }
             }
-            if(!existance){
-                std::cout << "Error in " << __func__ << ": The particle " << it 
-                << " either does not exist or contribute to the relic density calculation.\n";
+            if (!existance)
+            {
+                std::cout << "Error in " << __func__ << ": The particle " << it
+                          << " either does not exist or contribute to the relic density calculation.\n";
                 exit(1);
             }
         }
@@ -158,7 +166,7 @@ namespace DT
 
     ResError Model::eval(const double cos_t, const double s)
     {
-        ResError res = {0.,0.};
+        ResError res = {0., 0.};
         for (auto it : cur_channel)
         {
             res.res += it(cos_t, s);

@@ -16,6 +16,7 @@ namespace DT
     {
     private:
         ResError omega;
+        std::string mode;
         std::string input_file;
         std::string output_file;
         vstring bath_particles = {};
@@ -26,10 +27,10 @@ namespace DT
         vstring saved_pars = {};
         bool first_run = true;
         double channel_contrib = 1.;
-        vstring strong_channels = {};
         std::unordered_map<std::string, std::function<void(const vstring)>> operations_map;
         std::unordered_map<std::string, ResError> variable_map;
         std::vector<vstring> user_operations;
+        std::vector<vstring> generator_list;
         std::unique_ptr<DataReader> rdr;
         std::shared_ptr<Model> mod;
         std::unique_ptr<RelicOps> relops;
@@ -37,9 +38,13 @@ namespace DT
     public:
         Main(int argc, char **argv);
 
-        size_t start_point = 1, end_point = 0;
+        int start_point = 1, end_point = 0;
 
         void load_setting(const std::string sg_file);
+
+        void load_read_file();
+
+        void load_generation_file();
 
         void load_user_operations();
 
@@ -58,7 +63,7 @@ namespace DT
         // checks if the thermal bath particles and the input channels match
         void check_procs(const vstring &ch_str);
 
-        bool check_var_existence(const std::string &var, const std::string func = "");
+        int check_var_existence(const std::string &var, const std::string func = "");
 
         double get_number(const std::string &arg, const std::string &func);
 
@@ -77,8 +82,8 @@ namespace DT
         // args are: variable name, value (can be variable or number)
         void Div(const vstring &args);
 
-        // args are: model parameter, variable name
-        void ChangeParameter(const vstring &args);
+        // args are: variable name, value (can be variable or number) 
+        void Set(const vstring &args);
 
         // args are: particle names of DS particles included in the thermal bath
         void ChangeThermalBath(const vstring &args);

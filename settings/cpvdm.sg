@@ -2,6 +2,7 @@
 
 ######## Standard settings ########
 
+Mode                |1
 InputFile           |CPVDMTest.csv
 OutputFile          |cpvdm_width.csv
 StartPoint          |1

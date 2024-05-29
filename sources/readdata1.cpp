@@ -128,11 +128,24 @@ namespace DT
 		return line_to_strings(line, ',');
 	}
 
+	vstring DataReader::get_full_line(const std::string line)
+	{
+		vstring res = {};
+		std::string hold;
+		res = line_to_strings(line, '|');
+		if (res.size() != 1)
+		{
+			hold = res.at(0);
+			res = line_to_strings(res.at(1), ',');
+			res.insert(res.begin(), hold);
+		}
+		return res;
+	}
+
 	std::vector<vstring> DataReader::get_operation_slist()
 	{
 		std::vector<vstring> res = {};
 		vstring temp;
-		std::string hold;
 		std::string line;
 		line = get_line_at("START");
 		while (getline(datafile, line))
@@ -144,14 +157,7 @@ namespace DT
 			rmv_spaces(line);
 			if (line != "")
 			{
-				temp.clear();
-				temp = line_to_strings(line, '|');
-				if (temp.size() != 1)
-				{
-					hold = temp.at(0);
-					temp = line_to_strings(temp.at(1), ',');
-					temp.insert(temp.begin(), hold);
-				}
+				temp = get_full_line(line);
 				res.push_back(temp);
 			}
 		}
@@ -196,14 +202,14 @@ namespace DT
 			{
 				if (it->first == headers.at(i))
 				{
-					// std::cout << it->first << "\n";
 					datapars.push_back(it->second);
 					dataindices.push_back(i);
 					break;
 				}
 				++it;
 			}
-			// if(it == pars.end()) std::cout << "This parameter is not a valid input parameter of the model: " << headers.at(i) << "\n";
+			if (it == pars.end())
+				std::cout << "This parameter is not a valid input parameter of the model: " << headers.at(i) << "\n";
 		}
 		return datapars;
 	}
@@ -246,6 +252,24 @@ namespace DT
 				break;
 			}
 		}
+	}
+
+	std::vector<vstring> DataReader::get_generation_slist()
+	{
+		std::vector<vstring> res = {};
+		std::string line;
+		vstring temp;
+
+		while (getline(datafile, line))
+		{
+			rmv_spaces(line);
+			if (line != "")
+			{
+				temp = get_full_line(line);
+				res.push_back(temp);
+			}
+		}
+		return res;
 	}
 
 	void DataReader::save_data(std::vector<std::string> yourheader, std::vector<double> yourlist)
