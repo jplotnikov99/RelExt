@@ -13,6 +13,7 @@ namespace DT
 {
 
 	typedef std::vector<std::string> vstring;
+	typedef std::vector<vstring> vvstring;
 
 	// Heavi-side function and flux factor for the amp2sflux
 

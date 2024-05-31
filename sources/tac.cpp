@@ -154,6 +154,8 @@ namespace DT
 
     double Tac::peak_relevance(const double &peakpos)
     {
+        if (peakpos == (m1 + m2))
+            return -1.;
         return -(beps_eps - 4.6051701859880) * mod->MDM / (peakpos - m1 - m2);
     }
 
@@ -200,11 +202,11 @@ namespace DT
 
     void Tac::check_boundaries()
     {
-        for(size_t i = 0; i < boundaries.size() - 1; i++)
+        for (size_t i = 0; i < boundaries.size() - 1; i++)
         {
-            if(boundaries.at(i) < boundaries.at(i+1))
+            if (boundaries.at(i) < boundaries.at(i + 1))
             {
-                boundaries.at(i+1) = boundaries.at(i);
+                boundaries.at(i + 1) = boundaries.at(i);
             }
         }
     }
@@ -326,7 +328,8 @@ namespace DT
         }
         else
         {
-            estimate += kronrod_61(0, 1e-3, x);
+            estimate += kronrod_61(0, 1e-10, x);
+            estimate += kronrod_61(1e-10, 1e-3, x);
             estimate += kronrod_61(1e-3, 1, x);
         }
     }
@@ -344,7 +347,8 @@ namespace DT
         }
         else
         {
-            res = res + adap_gauss_kronrod(0, 1e-3, x, estimate);
+            res = res + adap_gauss_kronrod(0, 1e-10, x, estimate);
+            res = res + adap_gauss_kronrod(1e-10, 1e-3, x, estimate);
             res = res + adap_gauss_kronrod(1e-3, 1, x, estimate);
         }
     }

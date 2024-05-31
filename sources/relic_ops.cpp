@@ -29,6 +29,12 @@ namespace DT
         omega_err = err;
     }
 
+    void RelicOps::set_par_bounds(const double a, const double b)
+    {
+        par_bounds[0] = a;
+        par_bounds[1] = b;
+    }
+
     ResError RelicOps::get_last_relic()
     {
         return omega;
@@ -139,6 +145,10 @@ namespace DT
 
         step = get_next_step(par1, par2, om1, om2, omega_target);
         par1 += step;
+        if (par1 < par_bounds[0])
+            par1 = par_bounds[0];
+        if (par1 > par_bounds[1])
+            par1 = par_bounds[1];
         mod->change_parameter(par, par1);
         om1 = CalcRelic().res - omega_target;
         check_sign_flip(step, om1, par1);
@@ -179,13 +189,13 @@ namespace DT
         double om1 = omega_old;
         double om2;
         size_t max_it = 200;
-        size_t current_it= 0;
+        size_t current_it = 0;
         do
         {
             om2 = om1;
             om1 = get_next_omega(par, om1);
             current_it++;
-            
+
         } while ((fabs(om2 / om1 - 1) > 0.001) && (searchmode == descent) && (current_it < max_it));
         if (searchmode == descent)
         {
@@ -222,7 +232,7 @@ namespace DT
         return res;
     }
 
-    double RelicOps::find_pars(const std::string &par)
+    double RelicOps::find_par(const std::string &par)
     {
         first_step = true;
         searchmode = vanguard;

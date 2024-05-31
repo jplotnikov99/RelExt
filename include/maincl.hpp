@@ -16,7 +16,7 @@ namespace DT
     {
     private:
         ResError omega;
-        std::string mode;
+        size_t mode;
         std::string input_file;
         std::string output_file;
         vstring bath_particles = {};
@@ -29,8 +29,8 @@ namespace DT
         double channel_contrib = 1.;
         std::unordered_map<std::string, std::function<void(const vstring)>> operations_map;
         std::unordered_map<std::string, ResError> variable_map;
-        std::vector<vstring> user_operations;
-        std::vector<vstring> generator_list;
+        vvstring user_operations;
+        vvstring generator_list;
         std::unique_ptr<DataReader> rdr;
         std::shared_ptr<Model> mod;
         std::unique_ptr<RelicOps> relops;
@@ -42,9 +42,13 @@ namespace DT
 
         void load_setting(const std::string sg_file);
 
-        void load_read_file();
+        void check_start_end_points();
+
+        void load_par_file();
 
         void load_generation_file();
+
+        void load_read_file();
 
         void load_user_operations();
 
@@ -65,7 +69,7 @@ namespace DT
 
         int check_var_existence(const std::string &var, const std::string func = "");
 
-        double get_number(const std::string &arg, const std::string &func);
+        double get_number(const std::string &arg, const std::string &func = "");
 
         // args are: variable name, value
         void Def(const vstring &args);
@@ -78,11 +82,11 @@ namespace DT
 
         // args are: variable name, value (can be variable or number)
         void Mult(const vstring &args);
-        
+
         // args are: variable name, value (can be variable or number)
         void Div(const vstring &args);
 
-        // args are: variable name, value (can be variable or number) 
+        // args are: variable name, value (can be variable or number)
         void Set(const vstring &args);
 
         // args are: particle names of DS particles included in the thermal bath
@@ -97,7 +101,7 @@ namespace DT
         // args are: mechanism type
         void CalcRelic(const vstring &args);
 
-        // args are: name of parameter, mechanism, relic target, relic error, variable to save into 
+        // args are: name of parameter, mechanism, relic target, relic error, variable to save into
         void FindParameter(const vstring &args);
 
         // saves the scanned data

@@ -3,11 +3,11 @@
 ######## Standard settings ########
 
 Mode                |1
-InputFile           |CPVDMTest.csv
-OutputFile          |cpvdm_width.csv
+InputFile           |examples/cpvdm_example1.dat
+OutputFile          |cpvdm_scan.csv
 StartPoint          |1
-EndPoint            |
-SavedParameters     |mH1, mH2
+EndPoint            |1
+SavedParameters     |mH1, mH2, mHc
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |

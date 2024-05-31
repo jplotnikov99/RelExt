@@ -44,20 +44,24 @@ namespace DT
                 std::cout << "StartPoint is out of range and was set to 1.\n";
                 start_point = 1;
             }
-            if (mode == "read" || mode == "1")
+            switch (mode)
             {
-                mode = "1";
-                load_read_file();
-            }
-            else if (mode == "generate" || mode == "2")
-            {
-                mode = "2";
+            case 1:
+                check_start_end_points();
                 load_generation_file();
-            }
-            else if (true)
-            {
+                break;
+            case 2:
+                check_start_end_points();
+                load_generation_file();
+                break;
+            case 3:
+                load_read_file();
+                break;
+
+            default:
                 std::cout << "The mode " << mode << " does not exist.\n";
                 exit(1);
+                break;
             }
         }
 
@@ -69,7 +73,7 @@ namespace DT
     {
         std::unique_ptr<DataReader> sgr = std::make_unique<DataReader>(sg_file, 0);
         // Standard settings
-        mode = sgr->get_name_of("Mode");
+        mode = (size_t)sgr->get_val_of("Mode");
         input_file = sgr->get_name_of("InputFile");
         output_file = sgr->get_name_of("OutputFile");
         start_point = (size_t)sgr->get_val_of("StartPoint");
@@ -90,6 +94,39 @@ namespace DT
         user_operations = sgr->get_operation_slist();
     }
 
+    void Main::check_start_end_points()
+    {
+        if ((end_point - 1) < 1)
+        {
+            std::cout << "StartPoint and/or EndPoint cannot be smaller than 1.\n";
+            exit(1);
+        }
+        if (end_point < start_point)
+        {
+            std::cout << "StartPoint is larger than EndPoint\n";
+            exit(1);
+        }
+    }
+
+    void Main::load_par_file()
+    {
+        generator_list = rdr->get_generation_slist();
+    }
+
+    void Main::load_generation_file()
+    {
+        generator_list = rdr->get_generation_slist();
+        for (auto it : generator_list)
+        {
+            if (!mod->check_par_existence(it.at(0)))
+            {
+                std::cout << "Error in InputFile: " << it.at(0) << " is not a valid external parameter.\n";
+                exit(1);
+            }
+        }
+        srand((unsigned)time(NULL));
+    }
+
     void Main::load_read_file()
     {
         size_t N_par_points = rdr->datalines();
@@ -108,40 +145,21 @@ namespace DT
         }
         rdr->scanpars = rdr->assignHeaders(mod->parmap);
     }
-
-    void Main::load_generation_file()
-    {
-        if ((end_point - 1) < 1)
-        {
-            std::cout << "StartPoint and/or EndPoint cannot be smaller than 1.\n";
-            exit(1);
-        }
-        if (end_point < start_point)
-        {
-            std::cout << "StartPoint is larger than EndPoint\n";
-            exit(1);
-        }
-        generator_list = rdr->get_generation_slist();
-        for (auto it : generator_list)
-        {
-            if (!mod->check_par_existence(it.at(0)))
-            {
-                std::cout << "Error in InputFile: " << it.at(0) << " is not a valid external parameter.\n";
-                exit(1);
-            }
-        }
-        srand((unsigned)time(NULL));
-    }
-
     void Main::load_parameters(const size_t i)
     {
         std::cout << "Parameter point: " << i << std::endl;
         if (input_file != "")
         {
-            if (mode == "1")
-                rdr->read_parameter(i);
-            else if (mode == "2")
+            switch (mode)
             {
+            case 1:
+                if(first_run)
+                for(auto it : generator_list)
+                {
+                    *mod->parmap[it.at(0)] = get_number(it.at(1));
+                }
+                break;
+            case 2:
                 double a, b;
                 for (auto it : generator_list)
                 {
@@ -149,6 +167,12 @@ namespace DT
                     b = get_number(it.at(2), __func__);
                     *mod->parmap[it.at(0)] = generate_random(a, b);
                 }
+                break;
+            case 3:
+                rdr->read_parameter(i);
+                break;
+            default:
+                break;
             }
         }
         mod->load_parameters();
@@ -496,7 +520,26 @@ namespace DT
         relops->set_mechanism(mechanism);
         relops->set_omega_target(om_target);
         relops->set_omega_err(om_err);
-        relops->find_pars(args.at(1));
+        for (auto it : generator_list)
+        {
+            if (it.at(0) == args.at(1))
+            {
+                double a, b;
+                if (mode == 1)
+                {
+                    a = get_number(it.at(2));
+                    b = get_number(it.at(3));
+                }
+                else
+                {
+                    a = get_number(it.at(1));
+                    b = get_number(it.at(2));
+                }
+                relops->set_par_bounds(a, b);
+                break;
+            }
+        }
+        relops->find_par(args.at(1));
 
         omega = relops->get_last_relic();
         std::cout << "Omega full:\n"
@@ -566,7 +609,7 @@ namespace DT
                 if (operations_map.find(it.at(0)) == operations_map.end())
                 {
                     std::cout << it.at(0) << " is not a valid operation.\n";
-                    exit(0);
+                    exit(1);
                 }
             }
         }
