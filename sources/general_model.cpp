@@ -9,7 +9,7 @@ namespace DT
 
     bool Model::check_par_existence(const std::string par)
     {
-        if(parmap.find(par) == parmap.end())
+        if (parmap.find(par) == parmap.end())
             return false;
         return true;
     }
@@ -88,6 +88,8 @@ namespace DT
         bool existance = false;
         vstring res = {};
         size_t found;
+        if (prtcls.size() == 0)
+            return get_all_channels();
         for (auto it : prtcls)
         {
             existance = false;

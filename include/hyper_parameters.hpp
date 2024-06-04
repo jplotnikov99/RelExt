@@ -27,6 +27,7 @@ namespace DT
     extern double vanguard_step_size;
     extern double descent_learning_rate;
     extern size_t max_N_bisections;
+    extern double random_walk_rate;
 
     static const double kronx_15[15] =
         {

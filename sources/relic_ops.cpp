@@ -35,6 +35,11 @@ namespace DT
         par_bounds[1] = b;
     }
 
+    void RelicOps::set_par_bounds(const std::string par, const double a, const double b)
+    {
+        pars_bounds[par] = std::make_pair(a, b);
+    }
+
     ResError RelicOps::get_last_relic()
     {
         return omega;
@@ -171,7 +176,7 @@ namespace DT
             om1 = get_next_omega(par, om1);
             if (om2 == om1)
             {
-                std::cout << par << " does not change the relic density.\n";
+                std::cout << par << " has either reached a boundary or does not change the relic density.\n";
                 break;
             }
         }
@@ -261,4 +266,27 @@ namespace DT
 
         return res;
     }
+
+    double RelicOps::random_walk()
+    {
+        std::string par;
+        double val, b1, b2;
+        int sign;
+        for (auto it : pars_bounds)
+        {
+            par = it.first;
+            val = mod->get_parameter_val(par);
+            b1 = it.second.first;
+            b2 = it.second.second;
+            sign = generate_random(0, 2);
+            sign = (sign == 0) ? 1 : -1;
+            val = val * (1 + (double)sign * random_walk_rate);
+            if (val < b1)
+                val = b1;
+            if (val > b2)
+                val = b2;
+        }
+        exit(1);
+    }
+
 } // namespace DT

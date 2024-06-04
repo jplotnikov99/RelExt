@@ -6,7 +6,7 @@ Mode                |1
 InputFile           |examples/cxsm_example1.dat
 OutputFile          |cxsm_scan.csv
 StartPoint          |1
-EndPoint            |300
+EndPoint            |1
 SavedParameters     |MA1, MS1, svev, alpha
 ConsideredChannels  |
 SubtractChannels    |
@@ -17,9 +17,8 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
-FindParameter       |svev, 0, 0.12, 0.001
+CalcRelic           |0
 SaveData            |
-Add                 |MA1, 1
 
 END
 ######## Advanced settings ########

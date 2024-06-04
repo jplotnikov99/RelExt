@@ -104,6 +104,9 @@ namespace DT
         // args are: name of parameter, mechanism, relic target, relic error, variable to save into
         void FindParameter(const vstring &args);
 
+        // args are: mechanism, relic target, relic error, parameters
+        void RandomWalk(const vstring &args);
+
         // saves the scanned data
         void SaveData(const vstring &args);
 

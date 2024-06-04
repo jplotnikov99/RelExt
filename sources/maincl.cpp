@@ -26,6 +26,8 @@ namespace DT
         { this->CalcRelic(a); };
         operations_map["FindParameter"] = [this](const vstring a)
         { this->FindParameter(a); };
+        operations_map["RandomWalk"] = [this](const vstring a)
+        { this->RandomWalk(a); };
         operations_map["SaveData"] = [this](const vstring a)
         { this->SaveData(a); };
 
@@ -39,11 +41,7 @@ namespace DT
         if (input_file != "")
         {
             rdr = std::make_unique<DataReader>(input_file, 1);
-            if (start_point < 1)
-            {
-                std::cout << "StartPoint is out of range and was set to 1.\n";
-                start_point = 1;
-            }
+            ASSERT(start_point >= 1, "StartPoint must be 1 or larger")
             switch (mode)
             {
             case 1:
@@ -96,16 +94,8 @@ namespace DT
 
     void Main::check_start_end_points()
     {
-        if ((end_point - 1) < 1)
-        {
-            std::cout << "StartPoint and/or EndPoint cannot be smaller than 1.\n";
-            exit(1);
-        }
-        if (end_point < start_point)
-        {
-            std::cout << "StartPoint is larger than EndPoint\n";
-            exit(1);
-        }
+        ASSERT((end_point - 1) >= 1, "StartPoint and/or EndPoint cannot be smaller than 1")
+        ASSERT((end_point - 1) >= start_point, "StartPoint cannot be larger than EndPoint")
     }
 
     void Main::load_par_file()
@@ -118,11 +108,18 @@ namespace DT
         generator_list = rdr->get_generation_slist();
         for (auto it : generator_list)
         {
-            if (!mod->check_par_existence(it.at(0)))
+            if (mode == 1)
             {
-                std::cout << "Error in InputFile: " << it.at(0) << " is not a valid external parameter.\n";
-                exit(1);
+                ASSERT(it.size() == 4,
+                       "Error in InputFile: " << it.at(0) << " is missing a boundary/initial value")
             }
+            else
+            {
+                ASSERT(it.size() == 3,
+                       "Error in InputFile: " << it.at(0) << " is missing an initial value")
+            }
+            ASSERT(mod->check_par_existence(it.at(0)),
+                   "Error in InputFile: " << it.at(0) << " is not a valid external parameter")
         }
         srand((unsigned)time(NULL));
     }
@@ -131,13 +128,9 @@ namespace DT
     {
         size_t N_par_points = rdr->datalines();
 
-        if ((end_point - 1) < 0)
+        if ((end_point - 1) <= 0)
             end_point = N_par_points;
-        if (end_point < start_point)
-        {
-            std::cout << "StartPoint is larger than EndPoint\n";
-            exit(1);
-        }
+        ASSERT((end_point - 1) >= start_point, "StartPoint cannot be larger than EndPoint")
         if (end_point > N_par_points)
         {
             std::cout << "EndPoint is out of range and is set to" << N_par_points - 1 << ".\n";
@@ -153,11 +146,11 @@ namespace DT
             switch (mode)
             {
             case 1:
-                if(first_run)
-                for(auto it : generator_list)
-                {
-                    *mod->parmap[it.at(0)] = get_number(it.at(1));
-                }
+                if (first_run)
+                    for (auto it : generator_list)
+                    {
+                        *mod->parmap[it.at(0)] = get_number(it.at(3), __func__);
+                    }
                 break;
             case 2:
                 double a, b;
@@ -184,66 +177,56 @@ namespace DT
 
     void Main::def_thermal_bath()
     {
-        if (bath_particles.size() != 0)
-        {
-            bath_procs = mod->find_thermal_procs(bath_particles);
-        }
+        bath_procs = mod->find_thermal_procs(bath_particles);
         mod->assign_bath_masses(bath_particles);
     }
 
     void Main::check_procs(const vstring &ch_str)
     {
-        size_t found;
+        bool found;
         for (auto it : ch_str)
         {
+            found = false;
             for (auto jt : bath_procs)
             {
-                found = it.find(jt);
-                if (found == std::string::npos)
+                if (it == jt)
                 {
-                    std::cout << "The channel " << it << " does not exist in this thermal bath.\n";
-                    exit(1);
+                    found = true;
+                    break;
                 }
             }
+            ASSERT(found == true, "The channel " << it << " does not exist in this thermal bath");
         }
     }
 
     void Main::set_channels()
     {
-        if (considered_procs.size() != 0)
+        if (neglected_particles.size() != 0)
         {
-            if (bath_particles.size() != 0)
+            vstring temp;
+            for (auto it : neglected_particles)
             {
-                check_procs(considered_procs);
+                temp = mod->find_channels_by_particle(it);
+                append_to_vstring(subtracted_procs, temp);
             }
-            bath_procs = considered_procs;
         }
-        else
+        if (subtracted_procs.size() != 0)
         {
-            if (bath_procs.size() == 0)
-                bath_procs = mod->get_all_channels();
-            if (neglected_particles.size() != 0)
+            for (auto it : subtracted_procs)
             {
-                vstring temp;
-                for (auto it : neglected_particles)
+                for (size_t i = 0; i < bath_procs.size(); i++)
                 {
-                    temp = mod->find_channels_by_particle(it);
-                    append_to_vstring(subtracted_procs, temp);
-                }
-            }
-            if (subtracted_procs.size() != 0)
-            {
-                for (auto it : subtracted_procs)
-                {
-                    for (size_t i = 0; i < bath_procs.size(); i++)
+                    if (it == bath_procs.at(i))
                     {
-                        if (it == bath_procs.at(i))
-                        {
-                            bath_procs.erase(bath_procs.begin() + i);
-                        }
+                        bath_procs.erase(bath_procs.begin() + i);
                     }
                 }
             }
+        }
+        if (considered_procs.size() != 0)
+        {
+            check_procs(considered_procs);
+            bath_procs = considered_procs;
         }
         relops->set_bath_procs(bath_procs);
     }
@@ -254,11 +237,7 @@ namespace DT
         {
             if (!mod->check_par_existence(var))
             {
-                if (func != "")
-                {
-                    std::cout << "Error in " << func << ": " << var << " is not defined.\n";
-                    exit(1);
-                }
+                ASSERT(func == "", "Error in " << func << ": " << var << " is not defined");
                 return 0;
             }
             return 1;
@@ -410,20 +389,16 @@ namespace DT
     void Main::CalcXsec(const vstring &args)
     {
         check_arguments_number(false, 4, args.size(), __func__);
-
-        if (start_point != (end_point - 1))
-        {
-            std::cout << "CalcXsec can only be called for one point, not a range. "
-                      << "Please choose the same StartPoint and EndPoint.\n";
-            exit(1);
-        }
+        ASSERT(start_point == (end_point - 1),
+               "CalcXsec can only be called for one point, not a range. "
+                   << "Please choose the same StartPoint and EndPoint")
 
         std::unique_ptr<Tac> tac = std::make_unique<Tac>(mod);
         std::unique_ptr<DataReader> xsr = std::make_unique<DataReader>(output_file, 2);
 
         double min_sqs = get_number(args.at(1), __func__);
         double max_sqs = get_number(args.at(2), __func__);
-        ASSERT((min_sqs < 0) || (max_sqs < 0), "Boundaries in " << __func__ << "can not have negative values.")
+        ASSERT((min_sqs > 0) && (max_sqs > 0), "Boundaries in " << __func__ << "can not have negative values.")
         if (min_sqs > max_sqs)
         {
             double temp = max_sqs;
@@ -454,20 +429,16 @@ namespace DT
     void Main::CalcTac(const vstring &args)
     {
         check_arguments_number(false, 4, args.size(), __func__);
-
-        if (start_point != (end_point - 1))
-        {
-            std::cout << "CalcTac can only be called for one point, not a range. "
-                      << "Please choose the same StartPoint and EndPoint.\n";
-            exit(1);
-        }
+        ASSERT(start_point == (end_point - 1),
+               "CalcTac can only be called for one point, not a range. "
+                   << "Please choose the same StartPoint and EndPoint")
 
         std::unique_ptr<Tac> tac = std::make_unique<Tac>(mod);
         std::unique_ptr<DataReader> tar = std::make_unique<DataReader>(output_file, 2);
 
         double min_x = get_number(args.at(1), __func__);
         double max_x = get_number(args.at(2), __func__);
-        ASSERT((min_x < 0) || (max_x < 0), "Boundaries in " << __func__ << "can not have negative values.")
+        ASSERT((min_x > 0) && (max_x > 0), "Boundaries in " << __func__ << "can not have negative values.")
         if (min_x > max_x)
         {
             double temp = max_x;
@@ -513,6 +484,7 @@ namespace DT
     void Main::FindParameter(const vstring &args)
     {
         check_arguments_number(false, 4, args.size(), (std::string) __func__);
+        check_var_existence(args.at(1), __func__);
         size_t mechanism = get_number(args.at(2), __func__);
         double om_target = get_number(args.at(3), __func__);
         double om_err = get_number(args.at(4), __func__);
@@ -524,17 +496,8 @@ namespace DT
         {
             if (it.at(0) == args.at(1))
             {
-                double a, b;
-                if (mode == 1)
-                {
-                    a = get_number(it.at(2));
-                    b = get_number(it.at(3));
-                }
-                else
-                {
-                    a = get_number(it.at(1));
-                    b = get_number(it.at(2));
-                }
+                double a = get_number(it.at(1));
+                double b = get_number(it.at(2));
                 relops->set_par_bounds(a, b);
                 break;
             }
@@ -550,6 +513,38 @@ namespace DT
             check_var_existence(args.at(5), __func__);
             variable_map.at(args.at(5)) = omega;
         }
+    }
+
+    void Main::RandomWalk(const vstring &args)
+    {
+        check_arguments_number(false, 4, args.size(), (std::string) __func__);
+        size_t mechanism = get_number(args.at(1), __func__);
+        double om_target = get_number(args.at(2), __func__);
+        double om_err = get_number(args.at(3), __func__);
+
+        std::unordered_map<std::string, double[2]> region;
+        for (size_t i = 4; i < args.size(); i++)
+        {
+            double found = false;
+            for (auto it : generator_list)
+            {
+                if (args.at(i) == it.at(0))
+                {
+                    found = true;
+                    double a = get_number(it.at(1), __func__);
+                    double b = get_number(it.at(2), __func__);
+                    relops->set_par_bounds(it.at(0), a, b);
+                    break;
+                }
+            }
+            ASSERT(found,
+                   "Error in " << __func__ << ": " << args.at(i) << " is not defined in the InputFile")
+        }
+        relops->set_mechanism(mechanism);
+        relops->set_omega_target(om_target);
+        relops->set_omega_err(om_err);
+
+        relops->random_walk();
     }
 
     void Main::SaveData(const vstring &args)

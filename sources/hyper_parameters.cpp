@@ -23,4 +23,5 @@ namespace DT
     double vanguard_step_size = 0.1;
     double descent_learning_rate = 0.1;
     size_t max_N_bisections = 50;
+    double random_walk_rate = 0.05;
 }
