@@ -7,6 +7,15 @@ namespace DT
     {
     }
 
+    void Model::load_everything()
+    {
+        load_parameters();
+        assigndm();
+        calc_widths_and_scale();
+        load_parameters();
+        load_tokens();
+    }
+
     bool Model::check_par_existence(const std::string par)
     {
         if (parmap.find(par) == parmap.end())
@@ -19,14 +28,17 @@ namespace DT
         return (*parmap[par]);
     }
 
-    void Model::change_parameter(const std::string par, const double newval)
+    void Model::change_parameter(const std::string par, const double newval, const bool load)
     {
         *parmap[par] = newval;
-        load_parameters();
-        assigndm();
-        calc_widths_and_scale();
-        load_parameters();
-        load_tokens();
+        if (load)
+        {
+            load_parameters();
+            assigndm();
+            calc_widths_and_scale();
+            load_parameters();
+            load_tokens();
+        }
     }
 
     vstring Model::get_all_channels()

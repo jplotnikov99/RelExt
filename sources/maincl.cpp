@@ -115,8 +115,8 @@ namespace DT
             }
             else
             {
-                ASSERT(it.size() == 3,
-                       "Error in InputFile: " << it.at(0) << " is missing an initial value")
+                ASSERT(it.size() >= 3,
+                       "Error in InputFile: " << it.at(0) << " is missing a boundary value")
             }
             ASSERT(mod->check_par_existence(it.at(0)),
                    "Error in InputFile: " << it.at(0) << " is not a valid external parameter")
@@ -168,11 +168,7 @@ namespace DT
                 break;
             }
         }
-        mod->load_parameters();
-        mod->assigndm();
-        mod->calc_widths_and_scale();
-        mod->load_parameters();
-        mod->load_tokens();
+        mod->load_everything();
     }
 
     void Main::def_thermal_bath()
@@ -502,9 +498,7 @@ namespace DT
                 break;
             }
         }
-        relops->find_par(args.at(1));
-
-        omega = relops->get_last_relic();
+        omega = relops->find_par(args.at(1));
         std::cout << "Omega full:\n"
                   << omega << "\n\n";
 
@@ -544,7 +538,9 @@ namespace DT
         relops->set_omega_target(om_target);
         relops->set_omega_err(om_err);
 
-        relops->random_walk();
+        omega = relops->random_walk();
+        std::cout << "Omega full:\n"
+                  << omega << "\n\n";
     }
 
     void Main::SaveData(const vstring &args)

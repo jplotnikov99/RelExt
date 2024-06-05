@@ -66,10 +66,11 @@ namespace DT
         void load_parameters();
         void load_parameter_map();
         void load_tokens();
+        void load_everything();
 
         bool check_par_existence(const std::string par);
         double get_parameter_val(const std::string par);
-        void change_parameter(const std::string par, const double newval);
+        void change_parameter(const std::string par, const double newval, const bool load = true);
         size_t get_N_all_channels();
         vstring get_all_channels();
         size_t get_N_initial_states();

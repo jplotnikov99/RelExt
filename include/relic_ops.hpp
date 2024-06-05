@@ -24,7 +24,7 @@ namespace DT
         size_t mechanism;
         double xinitial;
         double par_bounds[2] = {-1e100, 1e100};
-        std::unordered_map<std::string, std::pair<double, double>> pars_bounds; 
+        std::map<std::string, std::pair<double, double>> pars_bounds; 
         ResError omega;
         bool first_step = true;
         SearchMode searchmode = vanguard;
@@ -60,15 +60,17 @@ namespace DT
 
         double get_next_omega(const std::string &par, const double om);
 
-        double vanguard_search(const std::string &par);
+        void vanguard_search(const std::string &par);
 
-        double descent_search(const std::string &par);
+        void descent_search(const std::string &par);
 
-        double bisect_search(const std::string &par);
+        void bisect_search(const std::string &par);
 
-        double find_par(const std::string &par);
+        ResError find_par(const std::string &par);
 
-        double random_walk();
+        double random_step(const std::string &par);
+
+        ResError random_walk();
 
         ~RelicOps(){};
     };

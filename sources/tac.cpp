@@ -129,7 +129,14 @@ namespace DT
         }
         else
         {
-            num += Tinv * std::cyl_bessel_k(1, sqs * Tinv);
+            if (sqs * Tinv > 10)
+            {
+                num += Tinv * polK1(sqs * Tinv) * exp(-sqs * Tinv);
+            }
+            else
+            {
+                num += Tinv * std::cyl_bessel_k(1, sqs * Tinv);
+            }
             for (auto it : mod->bath_masses)
             {
                 mtemp = *it;
