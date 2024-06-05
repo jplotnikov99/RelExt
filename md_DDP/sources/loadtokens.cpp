@@ -1,0 +1,109 @@
+///////////////////CODE GENERATED VIA MATHEMATICA///////////////////
+
+
+#include "general_model.hpp"
+#include "../model.hpp"
+
+namespace DT{
+	void Model::load_tokens(){
+		token1 = ((2*pow(m11,2) - 2*pow(MH3,2) + lam7*pow(vs,2))*pow(cos(aDM),2))/pow(v,2) - lam7*pow(sin(aDM),2);
+		token2 = 3;
+		token3 = pow(MH1,2);
+		token4 = (2*pow(m11,2) - 2*pow(MH3,2) + lam7*pow(vs,2))*cos(aDM) - lam7*v*vs*sin(aDM);
+		token5 = vs*pow(cos(aDM),3) + v*pow(sin(aDM),3);
+		token6 = 2*pow(MH1,2) + pow(MH2,2);
+		token7 = cos(aDM);
+		token8 = sin(aDM);
+		token9 = vs*cos(aDM) - v*sin(aDM);
+		token10 = 2*(m11 - MH3)*(m11 + MH3)*sin(aDM) + lam7*vs*(v*cos(aDM) + vs*sin(aDM));
+		token11 = -1;
+		token12 = pow((2*pow(m11,2) - 2*pow(MH3,2) + lam7*pow(vs,2))*cos(aDM) - lam7*v*vs*sin(aDM),2);
+		token13 = 1;
+		token14 = pow(v,2);
+		token15 = vs;
+		token16 = 2*pow(m11,2) - 2*pow(MH3,2) + lam7*(pow(v,2) + pow(vs,2));
+		token17 = pow(MH1,2) + 2*pow(MH2,2);
+		token18 = v*cos(aDM) + vs*sin(aDM);
+		token19 = -(lam7*pow(cos(aDM),2)) + ((2*pow(m11,2) - 2*pow(MH3,2) + lam7*pow(vs,2))*pow(sin(aDM),2))/pow(v,2);
+		token20 = -3;
+		token21 = pow(MH2,2);
+		token22 = v*pow(cos(aDM),3) - vs*pow(sin(aDM),3);
+		token23 = pow(2*(m11 - MH3)*(m11 + MH3)*sin(aDM) + lam7*vs*(v*cos(aDM) + vs*sin(aDM)),2);
+		token24 = pow(EL,2);
+		token25 = pow(pow(CW,2) + pow(SW,2),2);
+		token26 = 2;
+		token27 = pow(CW,2);
+		token28 = pow(SW,2);
+		token29 = 0.5;
+		token30 = 1/SW;
+		token31 = SW;
+		token32 = Me;
+		token33 = MM;
+		token34 = MTA;
+		token35 = MU;
+		token36 = MC;
+		token37 = MT;
+		token38 = MD;
+		token39 = MS;
+		token40 = MB;
+		token41 = EL;
+		token42 = MA0 - MH3;
+		token43 = MA0 + MH3;
+		token44 = pow(CW,2) + pow(SW,2);
+		token45 = pow(EL,3);
+		token46 = pow(pow(CW,2) + pow(SW,2),3);
+		token47 = v;
+		token48 = (2*pow(m11,2) - 2*pow(MA0,2) + lam7*pow(vs,2))*cos(aDM) - lam7*v*vs*sin(aDM);
+		token49 = CW;
+		token50 = 4;
+		token51 = pow(CW,3);
+		token52 = pow(SW,3);
+		token53 = 2*(m11 - MA0)*(m11 + MA0)*sin(aDM) + lam7*vs*(v*cos(aDM) + vs*sin(aDM));
+		token54 = 1/v;
+		token55 = 1/CW;
+		token56 = -pow(MH3,2) + pow(MHch,2);
+		token57 = -0.5;
+		token58 = (2*pow(m11,2) - 2*pow(MHch,2) + lam7*pow(vs,2))*cos(aDM) - lam7*v*vs*sin(aDM);
+		token59 = MH3 - MHch;
+		token60 = MH3 + MHch;
+		token61 = 2*(m11 - MHch)*(m11 + MHch)*sin(aDM) + lam7*vs*(v*cos(aDM) + vs*sin(aDM));
+		token62 = pow(SW,-2);
+		token63 = CW - SW;
+		token64 = CW + SW;
+		token65 = 1/sqrt(2);
+		token66 = 0.25;
+		token67 = CKM1x1;
+		token68 = CKM1x2;
+		token69 = CKM1x3;
+		token70 = CKM2x1;
+		token71 = CKM2x2;
+		token72 = CKM2x3;
+		token73 = CKM3x1;
+		token74 = CKM3x2;
+		token75 = CKM3x3;
+		token76 = ((2*pow(m11,2) - 2*pow(MA0,2) + lam7*pow(vs,2))*pow(cos(aDM),2))/pow(v,2) - lam7*pow(sin(aDM),2);
+		token77 = pow((2*pow(m11,2) - 2*pow(MA0,2) + lam7*pow(vs,2))*cos(aDM) - lam7*v*vs*sin(aDM),2);
+		token78 = 2*pow(m11,2) - 2*pow(MA0,2) + lam7*(pow(v,2) + pow(vs,2));
+		token79 = -(lam7*pow(cos(aDM),2)) + ((2*pow(m11,2) - 2*pow(MA0,2) + lam7*pow(vs,2))*pow(sin(aDM),2))/pow(v,2);
+		token80 = pow(2*(m11 - MA0)*(m11 + MA0)*sin(aDM) + lam7*vs*(v*cos(aDM) + vs*sin(aDM)),2);
+		token81 = -pow(MA0,2) + pow(MHch,2);
+		token82 = MA0 - MHch;
+		token83 = MA0 + MHch;
+		token84 = sqrt(2);
+		token85 = ((2*pow(m11,2) - 2*pow(MHch,2) + lam7*pow(vs,2))*pow(cos(aDM),2))/pow(v,2) - lam7*pow(sin(aDM),2);
+		token86 = pow((2*pow(m11,2) - 2*pow(MHch,2) + lam7*pow(vs,2))*cos(aDM) - lam7*v*vs*sin(aDM),2);
+		token87 = 2*pow(m11,2) - 2*pow(MHch,2) + lam7*(pow(v,2) + pow(vs,2));
+		token88 = -(lam7*pow(cos(aDM),2)) + ((2*pow(m11,2) - 2*pow(MHch,2) + lam7*pow(vs,2))*pow(sin(aDM),2))/pow(v,2);
+		token89 = pow(2*(m11 - MHch)*(m11 + MHch)*sin(aDM) + lam7*vs*(v*cos(aDM) + vs*sin(aDM)),2);
+		token90 = -2;
+		token91 = pow(pow(CW,2) - pow(SW,2),2);
+		token92 = pow(CW,-2);
+		token93 = -pow(CW,2) + pow(SW,2);
+		token94 = 0.125;
+		token95 = pow(CW,4) - pow(SW,4);
+		token96 = 0.6666666666666666;
+		token97 = 0.041666666666666664;
+		token98 = 0.3333333333333333;
+		token99 = -0.041666666666666664;
+	}
+}

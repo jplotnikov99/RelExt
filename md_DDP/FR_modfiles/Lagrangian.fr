@@ -189,9 +189,9 @@ serp[x_] := 1 + x/3 + x^2 * 8/45 + x^3 * 4/35;
 
 (* We just want the CP-even operator, since we only have the SM Higgs. We also neglect photons. *)
 
-LHGF := -1/4 GH FS[G, mu, nu, b] FS[G, mu, nu, b] H1; 
+(*LHGF := -1/4 GH FS[G, mu, nu, b] FS[G, mu, nu, b] H1*) 
 
-LHGF := 0 (* Only applies to tree level *)
+LHGF := 0 (*Only applies to tree level *) 
 
 
 (*------------------*)
