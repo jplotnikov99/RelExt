@@ -88,6 +88,13 @@ double DT::HchHCHwWfl(const double &cos_t, const double &s){
 	 else{ return 0; }
 
 }
+double DT::HchHCHGGfl(const double &cos_t, const double &s){
+	 if(heavi(s,0,0)){
+		 return 0.5*2*flux(s, MHch,MHch,0,0)*HchHCHGG(cos_t, s);
+	 }
+	 else{ return 0; }
+
+}
 double DT::HchHCHVEvefl(const double &cos_t, const double &s){
 	 if(heavi(s,Mnue,Mnue)){
 		 return 2*flux(s, MHch,MHch,Mnue,Mnue)*HchHCHVEve(cos_t, s);

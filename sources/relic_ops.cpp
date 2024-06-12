@@ -208,7 +208,7 @@ namespace DT
     {
         double dx, xmid, rtb;
         rtb = bi_y1 < 0. ? (dx = bi_x2 - bi_x1, bi_x1) : (dx = bi_x1 - bi_x2, bi_x2);
-        for (size_t i = 0; i < max_N_bisections; i++)
+        for (size_t i = 0; i < (size_t)max_N_bisections; i++)
         {
             dx *= 0.5;
             xmid = rtb + dx;

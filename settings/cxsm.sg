@@ -4,7 +4,7 @@
 
 Mode                |3
 InputFile           |micro_cxsm.csv
-OutputFile          |cxsm_scan.csv
+OutputFile          |cxsm_comp.csv
 StartPoint          |1
 EndPoint            |
 SavedParameters     |MA1, MS1, svev, alpha
@@ -23,7 +23,14 @@ SaveData            |
 END
 ######## Advanced settings ########
 
+xTodayFO            |1e6
+xTodayFI            |100
+xReheating          |1e-4
 ThetaIntEps         |1e-6
 PeakIntEps          |1e-6
 sIntEps             |1e-6
-rk4Eps              |1e-6
+DoPrEps             |1e-6
+VanguardStep        |0.5
+DescentRate         |0.1
+MaxBisections       |50
+RandomWalkRate      |0.01

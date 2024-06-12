@@ -116,7 +116,17 @@ G[+1][s1 S[j1], s2 U[j2], s3 U[j3]].{1},
 	 (* SVV *)
 
 AnalyticalCoupling[s1 S[j1, mom1], s2 V[j2, mom2, {li2}], s3 V[j3, mom3, {li3}] ] ==
-G[+1][s1 S[j1], s2 V[j2], s3 V[j3]].{FAMetricTensor[li2 ,li3 ]},
+G[+1][s1 S[j1], s2 V[j2], s3 V[j3]].{FAFourVector[mom2, li3]FAFourVector[mom3, li2], FAMetricTensor[li2 ,li3 ]FAScalarProduct[mom2,mom3], FAMetricTensor[li2 ,li3 ]},
+
+	 (* SVVV *)
+
+AnalyticalCoupling[s1 S[j1, mom1], s2 V[j2, mom2, {li2}], s3 V[j3, mom3, {li3}], s4 V[j4, mom4, {li4}] ] ==
+G[+1][s1 S[j1], s2 V[j2], s3 V[j3], s4 V[j4]].{FAFourVector[mom2, li4]FAMetricTensor[li2 ,li3 ], FAFourVector[mom3, li4]FAMetricTensor[li2 ,li3 ], FAFourVector[mom2, li3]FAMetricTensor[li2 ,li4 ], FAFourVector[mom4, li3]FAMetricTensor[li2 ,li4 ], FAFourVector[mom3, li2]FAMetricTensor[li3 ,li4 ], FAFourVector[mom4, li2]FAMetricTensor[li3 ,li4 ]},
+
+	 (* SVVVV *)
+
+AnalyticalCoupling[s1 S[j1, mom1], s2 V[j2, mom2, {li2}], s3 V[j3, mom3, {li3}], s4 V[j4, mom4, {li4}], s5 V[j5, mom5, {li5}] ] ==
+G[+1][s1 S[j1], s2 V[j2], s3 V[j3], s4 V[j4], s5 V[j5]].{FAMetricTensor[li2 ,li5 ]FAMetricTensor[li3 ,li4 ], FAMetricTensor[li2 ,li4 ]FAMetricTensor[li3 ,li5 ], FAMetricTensor[li2 ,li3 ]FAMetricTensor[li4 ,li5 ]},
 
 	 (* UUV *)
 

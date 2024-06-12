@@ -39,7 +39,7 @@ namespace DT
         I2 = h / 2 * (f1[0] + 3 * f1[1] + 3 * f1[2] + f1[3]);
         I3 = I1 + I2;
 
-        if (fabs(I.res - I3.res) < simpson_eps * fabs(est))
+        if (fabs(I.res - I3.res) < theta_eps * fabs(est))
         {
             I3.err = fabs(I.res - I3.res);
             return I3;
@@ -254,7 +254,7 @@ namespace DT
         double m = (l + r) / 2;
         ResError I1 = simpson38_peak(l, m, x), I2 = simpson38_peak(m, r, x);
         ResError I = I1 + I2;
-        if ((fabs(I.res / ans.res - 1) < trapezoidal_eps) || (depth == 20))
+        if ((fabs(I.res / ans.res - 1) < peak_eps) || (depth == 20))
         {
             I.err += fabs(I.res - ans.res);
             return I;

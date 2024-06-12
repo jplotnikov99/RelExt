@@ -83,11 +83,18 @@ namespace DT
         beps_eps = log(sgr->get_val_of("BepsEps"));
         channel_contrib = sgr->get_val_of("ChannelContributions");
 
-        // Advanced setting
-        simpson_eps = sgr->get_val_of("ThetaIntEps");
-        trapezoidal_eps = sgr->get_val_of("PeakIntEps");
+        // Advanced settings
+        xtoday_FO = sgr->get_val_of("xTodayFO");
+        xtoday_FI = sgr->get_val_of("xTodayFI");
+        x_reheating = sgr->get_val_of("xReheating");
+        vanguard_step_size = sgr->get_val_of("VanguardStep");
+        descent_learning_rate = sgr->get_val_of("DescentRate");
+        max_N_bisections = sgr->get_val_of("MaxBisections");
+        random_walk_rate = sgr->get_val_of("RandomWalkRate");
+        theta_eps = sgr->get_val_of("ThetaIntEps");
+        peak_eps = sgr->get_val_of("PeakIntEps");
         gauss_kronrod_eps = sgr->get_val_of("sIntEps");
-        rk4_eps = sgr->get_val_of("rk4Eps");
+        dopr_eps = sgr->get_val_of("DoPrEps");
 
         user_operations = sgr->get_operation_slist();
     }

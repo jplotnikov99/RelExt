@@ -39,6 +39,13 @@ double DT::H3H3wWfl(const double &cos_t, const double &s){
 	 else{ return 0; }
 
 }
+double DT::H3H3GGfl(const double &cos_t, const double &s){
+	 if(heavi(s,0,0)){
+		 return 0.5*flux(s, MH3,MH3,0,0)*H3H3GG(cos_t, s);
+	 }
+	 else{ return 0; }
+
+}
 double DT::H3H3Eefl(const double &cos_t, const double &s){
 	 if(heavi(s,Me,Me)){
 		 return flux(s, MH3,MH3,Me,Me)*H3H3Ee(cos_t, s);

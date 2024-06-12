@@ -191,6 +191,7 @@ namespace DT{
 	double H3H3H2H2(const double &cos_t, const double &s);
 	double H3H3ZZ(const double &cos_t, const double &s);
 	double H3H3wW(const double &cos_t, const double &s);
+	double H3H3GG(const double &cos_t, const double &s);
 	double H3H3Ee(const double &cos_t, const double &s);
 	double H3H3Mm(const double &cos_t, const double &s);
 	double H3H3TAta(const double &cos_t, const double &s);
@@ -236,6 +237,7 @@ namespace DT{
 	double A0A0H2H2(const double &cos_t, const double &s);
 	double A0A0ZZ(const double &cos_t, const double &s);
 	double A0A0wW(const double &cos_t, const double &s);
+	double A0A0GG(const double &cos_t, const double &s);
 	double A0A0Ee(const double &cos_t, const double &s);
 	double A0A0Mm(const double &cos_t, const double &s);
 	double A0A0TAta(const double &cos_t, const double &s);
@@ -273,6 +275,7 @@ namespace DT{
 	double HchHCHAZ(const double &cos_t, const double &s);
 	double HchHCHZZ(const double &cos_t, const double &s);
 	double HchHCHwW(const double &cos_t, const double &s);
+	double HchHCHGG(const double &cos_t, const double &s);
 	double HchHCHVEve(const double &cos_t, const double &s);
 	double HchHCHVMvm(const double &cos_t, const double &s);
 	double HchHCHVTvt(const double &cos_t, const double &s);
@@ -290,6 +293,7 @@ namespace DT{
 	double H3H3H2H2fl(const double &cos_t, const double &s);
 	double H3H3ZZfl(const double &cos_t, const double &s);
 	double H3H3wWfl(const double &cos_t, const double &s);
+	double H3H3GGfl(const double &cos_t, const double &s);
 	double H3H3Eefl(const double &cos_t, const double &s);
 	double H3H3Mmfl(const double &cos_t, const double &s);
 	double H3H3TAtafl(const double &cos_t, const double &s);
@@ -335,6 +339,7 @@ namespace DT{
 	double A0A0H2H2fl(const double &cos_t, const double &s);
 	double A0A0ZZfl(const double &cos_t, const double &s);
 	double A0A0wWfl(const double &cos_t, const double &s);
+	double A0A0GGfl(const double &cos_t, const double &s);
 	double A0A0Eefl(const double &cos_t, const double &s);
 	double A0A0Mmfl(const double &cos_t, const double &s);
 	double A0A0TAtafl(const double &cos_t, const double &s);
@@ -372,6 +377,7 @@ namespace DT{
 	double HchHCHAZfl(const double &cos_t, const double &s);
 	double HchHCHZZfl(const double &cos_t, const double &s);
 	double HchHCHwWfl(const double &cos_t, const double &s);
+	double HchHCHGGfl(const double &cos_t, const double &s);
 	double HchHCHVEvefl(const double &cos_t, const double &s);
 	double HchHCHVMvmfl(const double &cos_t, const double &s);
 	double HchHCHVTvtfl(const double &cos_t, const double &s);
@@ -398,6 +404,7 @@ namespace DT{
 	double wH1HCHHch();
 	double wH1ZZ();
 	double wH1wW();
+	double wH1GG();
 	double wH1Ee();
 	double wH1Mm();
 	double wH1TAta();

@@ -144,7 +144,7 @@ namespace DT
         double xsave = x;
         ResError ysave = y;
         double errest = fabs(dopr5(x, y, h));
-        double err = errest / std::max(ysave.res, y.res) / rk4_eps;
+        double err = errest / std::max(ysave.res, y.res) / dopr_eps;
         h = controller(h, err);
         if (x + h == x)
         {
@@ -161,7 +161,6 @@ namespace DT
         {
             h = xtoday - x;
             dopr5(x, y, h);
-            beq->reset_tac_state(true);
         }
         else if ((y.res > 10. * beq->yeq(x)) && FOapprox)
         {
@@ -174,7 +173,6 @@ namespace DT
         }
     }
 
-    size_t nn = 0;
     ResError BeqSolver::adap_simpson38(const double l, const double r, ResError *y, const double &est)
     {
         ResError I1, I2, I3, y1[4];
