@@ -5,9 +5,9 @@
 Mode                |3
 InputFile           |ddp.csv
 OutputFile          |our_ddp.csv
-StartPoint          |1
-EndPoint            |
-SavedParameters     |mmH3
+StartPoint          |3064
+EndPoint            |3064
+SavedParameters     |mmH3, WH1, WH2
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |

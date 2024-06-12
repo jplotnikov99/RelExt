@@ -324,7 +324,7 @@ namespace DT
         if (N_relevant_peaks > 0)
         {
             res = res + integrate_peaks(x);
-            estimate = res.res;
+            estimate += res.res;
 
             for (size_t i = 1; i < N_relevant_peaks; i++)
             {
