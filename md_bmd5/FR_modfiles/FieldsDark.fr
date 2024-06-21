@@ -1,0 +1,111 @@
+M$FieldsDark = {
+
+  
+  (*fermionic Chi doublet*)
+  F[21] == {
+	ClassName      -> chiM,
+	SelfConjugate  -> False,
+	QuantumNumbers -> {Q -> -1},
+	Mass           -> {MchiM, Internal},
+	Width          -> {WchiM, 1},
+	ParticleName -> "~chi-",
+	AntiParticleName -> "~chi+",
+	PDG -> 1500,
+	PropagatorType -> Straight,
+	PropagatorArrow -> Forward,
+	PropgatorLabel  -> "ChiM"
+	},
+  F[22] == {
+	ClassName       -> chi0,
+	SelfConjugate   -> False,
+	QuantumNumbers -> {Q -> 0},
+	Mass            -> {Mchi0, Internal},
+	Width           -> {Wchi0, 1},
+	PropagatorLabel -> "chi0",
+	PropagatorType  -> Straight,
+	PropagatorArrow -> None,
+	PDG             -> 1501,
+	ParticleName    -> "~chi0",
+	AntiParticleName -> "~CHI0"
+	},
+
+	  F[23] == { 
+	  ClassName      -> Chi, 
+	  Unphysical     -> True, 
+	  Indices        -> {Index[SU2D]},
+	  FlavorIndex    -> SU2D,
+	  SelfConjugate  -> False,
+	  QuantumNumbers -> { Y -> -1/2 },
+	  Definitions    -> { Chi[sp1_,1] :> chi0[sp1], 
+	                      Chi[sp1_,2] :> chiM[sp1]  }
+	  },
+
+
+
+
+
+
+  (*scalar neutral singlet*)
+  S[21] == {
+	ClassName       -> S0,
+	SelfConjugate   -> True,
+	Mass            -> {MS0, 350},
+	Width           -> {WS0, 1},
+	PropagatorLabel -> "S0",
+	PropagatorType  -> ScalarDash,
+	PropagatorArrow -> None,
+	PDG             -> 350,
+	ParticleName    -> "~S0"
+	},
+  S[22] == {
+	ClassName       -> A0,
+	SelfConjugate   -> True,
+	Mass            -> {MA0, 360},
+	Width           -> {WA0, 1},
+	PropagatorLabel -> "A0",
+	PropagatorType  -> ScalarDash,
+	PropagatorArrow -> None,
+	PDG             -> 351,
+	ParticleName    -> "~A0"
+	},
+
+	  S[23] == {
+		ClassName       -> PhiL,
+		SelfConjugate   -> False,
+		Unphysical      -> True,
+		Definitions     -> { PhiL -> ( S0 + I A0 ) / Sqrt[2] } 
+		},
+	
+	
+	
+	
+	
+	
+  (*scalar colored singlet*)
+  S[24] == {
+	ClassName        -> pQ,
+	SelfConjugate    -> False,
+	Indices          -> {Index[Colour]},
+	QuantumNumbers   -> { Q -> 2/3 },
+	Mass             -> {MphiQ, 1000},
+	Width            -> {WphiQ, 1},
+	PropagatorLabel  -> "phiQ",
+	PropagatorType   -> ScalarDash,
+	PropagatorArrow  -> None,
+	PDG              -> 1510,
+	ParticleName     -> "~phiQ",
+	AntiParticleName -> "~PHIQ"
+	},
+	
+      S[25] == {
+	    ClassName        -> PhiQ,
+	    SelfConjugate    -> False,
+	    Unphysical       -> True,
+	    Indices          -> {Index[Colour]},
+	    QuantumNumbers   -> { Y -> 2/3 },
+	    Definitions      -> { PhiQ -> pQ }
+	    }
+
+
+};
+    

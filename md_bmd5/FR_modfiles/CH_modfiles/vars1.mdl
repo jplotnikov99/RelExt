@@ -1,0 +1,57 @@
+bdm5_lamhs
+ Parameters
+  Name         | Value       |> Comment                                                                <|
+aEWM1          |127.9        |Inverse of the EW coupling constant at the Z pole                         |
+Gf             |0.0000116637 |Fermi constant                                                            |
+aS             |0.1184       |Strong coupling constant at the Z pole                                    |
+ymdo           |0.00504      |Down Yukawa mass                                                          |
+ymup           |0.00255      |Up Yukawa mass                                                            |
+yms            |0.101        |Strange Yukawa mass                                                       |
+ymc            |1.27         |Charm Yukawa mass                                                         |
+ymb            |4.7          |Bottom Yukawa mass                                                        |
+ymt            |172          |Top Yukawa mass                                                           |
+yme            |0.000511     |Electron Yukawa mass                                                      |
+ymm            |0.10566      |Muon Yukawa mass                                                          |
+ymtau          |1.777        |Tau Yukawa mass                                                           |
+s12            |0.2229       |Parameter of C-K-M matrix (PDG2002)                                       |
+s23            |0.0412       |Parameter of C-K-M matrix (PDG2002)                                       |
+s13            |0.0036       |Parameter of C-K-M matrix (PDG2002)                                       |
+Mchi           |360          |Chi mass                                                                  |
+lamHS          |0.01         |Direct Detection parameter                                                |
+lamPQ          |0.1          |PhiQ self-coupling                                                        |
+lamPL          |0.1          |PhiL self-coupling                                                        |
+lamPLprime     |0.1          |PhiL self-coupling 2                                                      |
+lamHPQ         |0.0001       |Higgs-PhiQ coupling                                                       |
+lamHPL         |0.1          |Higgs-PhiL coupling                                                       |
+lamPQPL        |0.001        |PhiQ-PhiL coupling                                                        |
+lamPQPLprime   |0.001        |PhiQ-PhiL coupling 2                                                      |
+ymsD           |-0.15        |Strange Yukawa Dark coupling                                              |
+ymbD           |0.6          |Bottom Yukawa Dark coupling                                               |
+ymmD           |1.4          |Muon Yukawa Dark coupling                                                 |
+GG             |1.21977796370|Strong coupling constant at the Z pole   This value will be ignored and ca|
+MZ             |91.1876      |Mass of G0.                                                               |
+Me             |0.000511     |Mass of e.                                                                |
+MMU            |0.10566      |Mass of mu.                                                               |
+MTA            |1.777        |Mass of ta.                                                               |
+MU             |0.00255      |Mass of u.                                                                |
+MC             |1.27         |Mass of c.                                                                |
+MT             |172          |Mass of t.                                                                |
+MD             |0.00504      |Mass of d.                                                                |
+MS             |0.101        |Mass of s.                                                                |
+MB             |4.7          |Mass of b.                                                                |
+MH             |125          |Mass of H.                                                                |
+MS0            |350          |Mass of S0.                                                               |
+MA0            |360          |Mass of A0.                                                               |
+MphiQ          |1000         |Mass of pQ.                                                               |
+%WZ            |2.4952       |Width of G0.                                                              |
+%WW            |2.085        |Width of GP.                                                              |
+%WT            |1.50833649   |Width of t.                                                               |
+%WH            |0.00407      |Width of H.                                                               |
+%WchiM         |1            |Width of chiM.                                                            |
+%Wchi0         |1            |Width of chi0.                                                            |
+%WS0           |1            |Width of S0.                                                              |
+%WA0           |1            |Width of A0.                                                              |
+%WphiQ         |1            |Width of pQ.                                                              |
+E              |2.71828182845|The base of the natural logarithm.                                        |
+Pi             |3.14159265358|The circumference of a circle divided by the diameter.                    |
+Mox118x0       |100000       |Mass of Auxiliary 118x0.                                                  |

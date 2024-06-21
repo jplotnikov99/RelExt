@@ -1,0 +1,28 @@
+########  Setting file for the bmd5 model ########
+
+######## Standard settings ########
+
+InputFile           |
+OutputFile          |
+StartPoint          |1
+EndPoint            |
+SavedParameters     |
+ConsideredChannels  |
+SubtractChannels    |
+NeglectParticles    |
+BepsEps             |1e-6
+ChannelContributions|1
+
+######## Operations on scan ########
+START
+
+CalcRelic           |0
+SaveData            |
+
+END
+######## Advanced settings ########
+
+ThetaIntEps         |1e-6
+PeakIntEps          |1e-6
+sIntEps             |1e-6
+rk4Eps              |1e-6
