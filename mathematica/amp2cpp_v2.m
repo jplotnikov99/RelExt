@@ -30,7 +30,7 @@ Print[directory]
 mathlabel= "///////////////////CODE GENERATED VIA MATHEMATICA///////////////////\n\n";
 subrule = {FCGV[x_]:>ToExpression[x]};
 gcsub=M$FACouplings;
-SetOptions[Polarization, Transversality->True];
+(*SetOptions[Polarization, Transversality->True];*)
 
 
 (*****************)
@@ -665,7 +665,7 @@ If[Length[ampDecays] == 0,
 ]
 
 
-calcAmpsDecays[]
+calcAmpsDecays[];
 (*particleType
 massListDecays
 coefficientlist;
