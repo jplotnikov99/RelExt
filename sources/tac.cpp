@@ -39,7 +39,7 @@ namespace DT
         I2 = h / 2 * (f1[0] + 3 * f1[1] + 3 * f1[2] + f1[3]);
         I3 = I1 + I2;
 
-        if (fabs(I.res - I3.res) < simpson_eps * fabs(est))
+        if (fabs(I.res - I3.res) < theta_eps * fabs(est))
         {
             I3.err = fabs(I.res - I3.res);
             return I3;
@@ -129,7 +129,14 @@ namespace DT
         }
         else
         {
-            num += Tinv * std::cyl_bessel_k(1, sqs * Tinv);
+            if (sqs * Tinv > 10)
+            {
+                num += Tinv * polK1(sqs * Tinv) * exp(-sqs * Tinv);
+            }
+            else
+            {
+                num += Tinv * std::cyl_bessel_k(1, sqs * Tinv);
+            }
             for (auto it : mod->bath_masses)
             {
                 mtemp = *it;
@@ -154,6 +161,8 @@ namespace DT
 
     double Tac::peak_relevance(const double &peakpos)
     {
+        if (peakpos == (m1 + m2))
+            return -1.;
         return -(beps_eps - 4.6051701859880) * mod->MDM / (peakpos - m1 - m2);
     }
 
@@ -198,6 +207,17 @@ namespace DT
         }
     }
 
+    void Tac::check_boundaries()
+    {
+        for (size_t i = 0; i < boundaries.size() - 1; i++)
+        {
+            if (boundaries.at(i) < boundaries.at(i + 1))
+            {
+                boundaries.at(i + 1) = boundaries.at(i);
+            }
+        }
+    }
+
     void Tac::set_boundaries(const double &x)
     {
         double peak_xf;
@@ -219,6 +239,7 @@ namespace DT
             }
         }
         i_sort_boundaries();
+        check_boundaries();
     }
 
     ResError Tac::simpson38_peak(const double l, const double r, const double &x)
@@ -233,7 +254,7 @@ namespace DT
         double m = (l + r) / 2;
         ResError I1 = simpson38_peak(l, m, x), I2 = simpson38_peak(m, r, x);
         ResError I = I1 + I2;
-        if ((fabs(I.res / ans.res - 1) < trapezoidal_eps) || (depth == 20))
+        if ((fabs(I.res / ans.res - 1) < peak_eps) || (depth == 20))
         {
             I.err += fabs(I.res - ans.res);
             return I;
@@ -303,7 +324,7 @@ namespace DT
         if (N_relevant_peaks > 0)
         {
             res = res + integrate_peaks(x);
-            estimate = res.res;
+            estimate += res.res;
 
             for (size_t i = 1; i < N_relevant_peaks; i++)
             {
@@ -314,7 +335,8 @@ namespace DT
         }
         else
         {
-            estimate += kronrod_61(0, 1e-3, x);
+            estimate += kronrod_61(0, 1e-10, x);
+            estimate += kronrod_61(1e-10, 1e-3, x);
             estimate += kronrod_61(1e-3, 1, x);
         }
     }
@@ -332,7 +354,8 @@ namespace DT
         }
         else
         {
-            res = res + adap_gauss_kronrod(0, 1e-3, x, estimate);
+            res = res + adap_gauss_kronrod(0, 1e-10, x, estimate);
+            res = res + adap_gauss_kronrod(1e-10, 1e-3, x, estimate);
             res = res + adap_gauss_kronrod(1e-3, 1, x, estimate);
         }
     }

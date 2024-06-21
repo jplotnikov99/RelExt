@@ -23,6 +23,8 @@ namespace DT
         vstring bath_procs;
         size_t mechanism;
         double xinitial;
+        double par_bounds[2] = {-1e100, 1e100};
+        std::map<std::string, std::pair<double, double>> pars_bounds; 
         ResError omega;
         bool first_step = true;
         SearchMode searchmode = vanguard;
@@ -43,6 +45,10 @@ namespace DT
 
         void set_omega_err(const double err);
 
+        void set_par_bounds(const double a, const double b);
+
+        void set_par_bounds(const std::string par, const double a, const double b);
+
         ResError get_last_relic();
 
         // calculates the relic density for a specific mechanism
@@ -54,13 +60,17 @@ namespace DT
 
         double get_next_omega(const std::string &par, const double om);
 
-        double vanguard_search(const std::string &par);
+        void vanguard_search(const std::string &par);
 
-        double descent_search(const std::string &par);
+        void descent_search(const std::string &par);
 
-        double bisect_search(const std::string &par);
+        void bisect_search(const std::string &par);
 
-        double find_pars(const std::string &par);
+        ResError find_par(const std::string &par);
+
+        double random_step(const std::string &par);
+
+        ResError random_walk();
 
         ~RelicOps(){};
     };

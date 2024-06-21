@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
+#include <map>
+
 namespace DT
 {
     // SM parameters
@@ -9,9 +11,9 @@ namespace DT
     extern double mt_pole;
 
     // TAC parameters
-    extern double simpson_eps;
+    extern double theta_eps;
     extern double beps_eps;
-    extern double trapezoidal_eps;
+    extern double peak_eps;
     extern double gauss_kronrod_eps;
 
     // Beq solver parameters
@@ -19,14 +21,15 @@ namespace DT
     extern double xtoday_FI;
     extern double x_reheating;
     extern double secant_eps;
-    extern size_t secant_maxiter;
-    extern double rk4_eps;
+    extern double secant_maxiter;
+    extern double dopr_eps;
     extern double rk4_y_factor;
 
     // parameter search parameters
     extern double vanguard_step_size;
     extern double descent_learning_rate;
-    extern size_t max_N_bisections;
+    extern double max_N_bisections;
+    extern double random_walk_rate;
 
     static const double kronx_15[15] =
         {

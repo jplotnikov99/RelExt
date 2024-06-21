@@ -5,6 +5,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <random>
 #include "hyper_parameters.hpp"
 #include "result_error_pair.hpp"
 
@@ -12,6 +13,7 @@ namespace DT
 {
 
 	typedef std::vector<std::string> vstring;
+	typedef std::vector<vstring> vvstring;
 
 	// Heavi-side function and flux factor for the amp2sflux
 
@@ -40,5 +42,7 @@ namespace DT
 	double linint(const double x, const double x1, const double x2, const double y1, const double y2);
 
 	double simpson_est(const double l, const double r, double *f);
+
+	double generate_random(const double a, const double b);
 
 }

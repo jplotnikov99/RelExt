@@ -29,6 +29,17 @@ namespace DT
         omega_err = err;
     }
 
+    void RelicOps::set_par_bounds(const double a, const double b)
+    {
+        par_bounds[0] = a;
+        par_bounds[1] = b;
+    }
+
+    void RelicOps::set_par_bounds(const std::string par, const double a, const double b)
+    {
+        pars_bounds[par] = std::make_pair(a, b);
+    }
+
     ResError RelicOps::get_last_relic()
     {
         return omega;
@@ -48,7 +59,7 @@ namespace DT
             y.res = 1.1 * bs->yeq(x);
             xinitial = x;
             xtoday = xtoday_FO;
-            appr = true;
+            appr = false;
             break;
         case 1:
             x = x_reheating;
@@ -139,6 +150,10 @@ namespace DT
 
         step = get_next_step(par1, par2, om1, om2, omega_target);
         par1 += step;
+        if (par1 < par_bounds[0])
+            par1 = par_bounds[0];
+        if (par1 > par_bounds[1])
+            par1 = par_bounds[1];
         mod->change_parameter(par, par1);
         om1 = CalcRelic().res - omega_target;
         check_sign_flip(step, om1, par1);
@@ -148,9 +163,8 @@ namespace DT
         return om1;
     }
 
-    double RelicOps::vanguard_search(const std::string &par)
+    void RelicOps::vanguard_search(const std::string &par)
     {
-        double res = {};
         double om1, om2;
         om1 = CalcRelic().res - omega_target;
         omega_old = om1;
@@ -161,89 +175,143 @@ namespace DT
             om1 = get_next_omega(par, om1);
             if (om2 == om1)
             {
-                std::cout << par << " does not change the relic density.\n";
+                std::cout << par << " has either reached a boundary or does not change the relic density.\n";
                 break;
             }
         }
         if (searchmode == vanguard)
         {
             searchmode = stop;
-            res = mod->get_parameter_val(par);
         }
-        return res;
     }
 
-    double RelicOps::descent_search(const std::string &par)
+    void RelicOps::descent_search(const std::string &par)
     {
-        double res = {};
         double om1 = omega_old;
         double om2;
+        size_t max_it = 200;
+        size_t current_it = 0;
         do
         {
             om2 = om1;
             om1 = get_next_omega(par, om1);
-        } while ((fabs(om2 / om1 - 1) > 0.001) && (searchmode == descent));
+            current_it++;
+
+        } while ((fabs(om2 / om1 - 1) > 0.001) && (searchmode == descent) && (current_it < max_it));
         if (searchmode == descent)
         {
             searchmode = stop;
-            res = mod->get_parameter_val(par);
         }
-        return res;
     }
 
-    double RelicOps::bisect_search(const std::string &par)
+    void RelicOps::bisect_search(const std::string &par)
     {
-        double res;
         double dx, xmid, rtb;
         rtb = bi_y1 < 0. ? (dx = bi_x2 - bi_x1, bi_x1) : (dx = bi_x1 - bi_x2, bi_x2);
-        for (size_t i = 0; i < max_N_bisections; i++)
+        for (size_t i = 0; i < (size_t)max_N_bisections; i++)
         {
             dx *= 0.5;
             xmid = rtb + dx;
             mod->change_parameter(par, xmid);
             bi_y2 = CalcRelic().res - omega_target;
+
             if (bi_y2 <= 0.)
                 rtb = xmid;
             if (fabs(bi_y2) < omega_err)
             {
                 searchmode = stop;
-                res = rtb;
-                return res;
+                return;
             }
         }
         searchmode = stop;
         std::cout << "Bisection limit reached.\n";
-        res = rtb;
-        return res;
     }
 
-    double RelicOps::find_pars(const std::string &par)
+    ResError RelicOps::find_par(const std::string &par)
     {
         first_step = true;
         searchmode = vanguard;
-        double res;
 
         while (searchmode != stop)
         {
             switch (searchmode)
             {
             case vanguard:
-                res = vanguard_search(par);
+                vanguard_search(par);
                 break;
 
             case descent:
-                res = descent_search(par);
+                descent_search(par);
                 break;
 
             case bisect:
-                res = bisect_search(par);
+                bisect_search(par);
                 break;
 
             default:
                 break;
             }
         }
-
-        return res;
+        return get_last_relic();
     }
+
+    double RelicOps::random_step(const std::string &par)
+    {
+        int sign;
+        double rate;
+        double val = mod->get_parameter_val(par);
+        double b1 = pars_bounds[par].first;
+        double b2 = pars_bounds[par].second;
+        sign = generate_random(0, 2);
+        sign = (sign == 0) ? 1 : -1;
+        rate = generate_random(0, random_walk_rate);
+        val = val * (1 + (double)sign * rate);
+        if (val < b1)
+            val = b1;
+        if (val > b2)
+            val = b2;
+        return val;
+    }
+
+    ResError RelicOps::random_walk()
+    {
+        const size_t max_steps = 1000;
+        size_t cur_steps = 0;
+        double val;
+        double om1, om2;
+        double saved_vals[pars_bounds.size()];
+        size_t i = 0;
+        om1 = CalcRelic().res - omega_target;
+        omega_old = om1;
+        do
+        {
+            i *= 0;
+            om2 = om1;
+            for (auto it : pars_bounds)
+            {
+                saved_vals[i] = mod->get_parameter_val(it.first);
+                val = random_step(it.first);
+                mod->change_parameter(it.first, val, false);
+                i++;
+            }
+            mod->load_everything();
+            om1 = CalcRelic().res - omega_target;
+            if (fabs(om1) > fabs(om2))
+            {
+                i *= 0;
+                for (auto it : pars_bounds)
+                {
+                    mod->change_parameter(it.first, saved_vals[i]);
+                    i++;
+                }
+                om1 = om2;
+            }
+            if((cur_steps % 100) == 0)
+                std::cout << cur_steps << "\n";
+            cur_steps++;
+        } while (fabs(om1) > omega_err && (cur_steps < max_steps));
+        std::cout << "Steps taken: " << cur_steps << std::endl;
+        return get_last_relic();
+    }
+
 } // namespace DT

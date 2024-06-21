@@ -1,5 +1,5 @@
 #include "utils.hpp"
-#include <result_error_pair.hpp>
+
 namespace DT
 {
 
@@ -85,6 +85,13 @@ namespace DT
    double simpson_est(const double l, const double r, double *f)
    {
       return (r - l) / 24 * (f[0] + f[9] + 3 * (f[1] + f[2] + f[4] + f[5] + f[7] + f[8]) + 2 * (f[3] * f[6]));
+   }
+
+   double generate_random(const double a, const double b)
+   {
+      double random = rand();
+      random /= (double)RAND_MAX;
+      return a + (b - a) * random;
    }
 
 } // namespace DT

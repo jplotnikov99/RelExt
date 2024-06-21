@@ -58,31 +58,33 @@ ee == {
 	InteractionOrder -> {QED, 1},
 	Description      -> "Electron charge - Photon coupling to electrons"},
 
+
 CW2 == {
 	TeX              -> Subsuperscript[c, w,2],
 	ParameterType    -> Internal,
 	ComplexParameter -> False,
-	Value      -> (MW/MZ)^2,
+	Value      -> { (MW/MZ)^2},
 	Description      -> "Squared cosine of the weak angle"},
+
+
 SW2 == {
 	TeX              -> Subsuperscript[s, w,2],
 	ParameterType    -> Internal,
 	ComplexParameter -> False,
-	Value      -> 1-CW2,
+	Value      -> { 1-CW2},
 	Description      -> "Squared Sin of the weak angle"},
 CW == {
 	TeX              -> Subscript[c, w],
 	ParameterType    -> Internal,
 	ComplexParameter -> False,
-	Value      ->  Sqrt[CW2],
+	Value      -> {Sqrt[CW2]},
 	Description      -> "Cosine of the weak angle"},
 SW == {
 	TeX              -> Subscript[s, w],
 	ParameterType    -> Internal,
 	ComplexParameter -> False,
-	Value      -> Sqrt[SW2],
+	Value      -> { Sqrt[SW2]},
 	Description      -> "Sine of the weak angle"},
-
 
 g1 == {
 	TeX              -> Subscript[g, 1],
@@ -90,14 +92,13 @@ g1 == {
 	ComplexParameter -> False,
 	Definitions      -> {g1 -> ee/CW},
 	Description      -> "U(1)_Y coupling constant"},
+
 g2 == {
 	TeX              -> Subscript[g, 2],
 	ParameterType    -> Internal,
 	ComplexParameter -> False,
 	Definitions      -> {g2 -> ee/SW},
 	Description      -> "SU(2) coupling constant"},
-
-
 
 v == {
 	ParameterType -> Internal,
@@ -202,19 +203,6 @@ MHch == {
 	Value		 -> mmHch,
 	Description      -> "Charged scalar mass internal"},
 
-m22 == {
-	TeX              -> Subscript[m, 22],
-	ParameterType    -> Internal,
-	ComplexParameter -> False,
-	Definitions      -> {m22 -> Sqrt[1/2 (-v^2 lam2 - vs^2 lam8)]},
-	Description      -> "Phi2 doublet mass parameter"},
-
-ms == {
-	TeX              -> Subscript[m, s],
-	ParameterType    -> Internal,
-	ComplexParameter -> False,
-	Definitions      -> {ms -> Sqrt[1/2 (-vs^2 lam6 - v^2 lam8)]},
-	Description      -> "Singlet mass parameter"},
 
 lam2 == {
 	TeX              -> Subscript[\[Lambda], 2],
@@ -263,6 +251,19 @@ lam8 == {
 	ComplexParameter -> False,
 	Definitions      -> {lam8 -> ((MH1^2 - MH2^2) Cos[aDM] Sin[aDM])/(v vs)},
 	Description      -> "PhiS quartic self-coupling"},
+m22 == {
+	TeX              -> Subscript[m, 22],
+	ParameterType    -> Internal,
+	ComplexParameter -> False,
+	Definitions      -> {m22 -> Sqrt[1/2 (-v^2 lam2 - vs^2 lam8)]},
+	Description      -> "Phi2 doublet mass parameter"},
+
+ms == {
+	TeX              -> Subscript[m, s],
+	ParameterType    -> Internal,
+	ComplexParameter -> False,
+	Definitions      -> {ms -> Sqrt[1/2 (-vs^2 lam6 - v^2 lam8)]},
+	Description      -> "Singlet mass parameter"},
 
 
 (*** Gluon fusion loop coefficient ***)

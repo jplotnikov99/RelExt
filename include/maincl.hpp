@@ -16,6 +16,7 @@ namespace DT
     {
     private:
         ResError omega;
+        size_t mode;
         std::string input_file;
         std::string output_file;
         vstring bath_particles = {};
@@ -26,10 +27,10 @@ namespace DT
         vstring saved_pars = {};
         bool first_run = true;
         double channel_contrib = 1.;
-        vstring strong_channels = {};
         std::unordered_map<std::string, std::function<void(const vstring)>> operations_map;
         std::unordered_map<std::string, ResError> variable_map;
-        std::vector<vstring> user_operations;
+        vvstring user_operations;
+        vvstring generator_list;
         std::unique_ptr<DataReader> rdr;
         std::shared_ptr<Model> mod;
         std::unique_ptr<RelicOps> relops;
@@ -37,9 +38,17 @@ namespace DT
     public:
         Main(int argc, char **argv);
 
-        size_t start_point = 1, end_point = 0;
+        int start_point = 1, end_point = 0;
 
         void load_setting(const std::string sg_file);
+
+        void check_start_end_points();
+
+        void load_par_file();
+
+        void load_generation_file();
+
+        void load_read_file();
 
         void load_user_operations();
 
@@ -58,9 +67,9 @@ namespace DT
         // checks if the thermal bath particles and the input channels match
         void check_procs(const vstring &ch_str);
 
-        bool check_var_existence(const std::string &var, const std::string func = "");
+        int check_var_existence(const std::string &var, const std::string func = "");
 
-        double get_number(const std::string &arg, const std::string &func);
+        double get_number(const std::string &arg, const std::string &func = "");
 
         // args are: variable name, value
         void Def(const vstring &args);
@@ -73,12 +82,12 @@ namespace DT
 
         // args are: variable name, value (can be variable or number)
         void Mult(const vstring &args);
-        
+
         // args are: variable name, value (can be variable or number)
         void Div(const vstring &args);
 
-        // args are: model parameter, variable name
-        void ChangeParameter(const vstring &args);
+        // args are: variable name, value (can be variable or number)
+        void Set(const vstring &args);
 
         // args are: particle names of DS particles included in the thermal bath
         void ChangeThermalBath(const vstring &args);
@@ -92,8 +101,11 @@ namespace DT
         // args are: mechanism type
         void CalcRelic(const vstring &args);
 
-        // finds the parameter values for which the needed relic density is reached within a certain limit
+        // args are: name of parameter, mechanism, relic target, relic error, variable to save into
         void FindParameter(const vstring &args);
+
+        // args are: mechanism, relic target, relic error, parameters
+        void RandomWalk(const vstring &args);
 
         // saves the scanned data
         void SaveData(const vstring &args);

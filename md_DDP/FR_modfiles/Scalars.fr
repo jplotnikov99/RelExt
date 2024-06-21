@@ -15,8 +15,8 @@ S[1] == {
 	Mass             -> {MH1, Internal},
 	Width            -> {WH1, 1.},
 	ParticleName     -> "H1",
-	PDG				 -> 25,
 	PropagatorLabel  -> "H1",
+	PDG -> 25,
 	PropagatorType   -> ScalarDash,
 	PropagatorArrow  -> None},
 
@@ -26,7 +26,7 @@ S[2] == {
 	Indices          -> {},
 	Mass             -> {MH2, Internal},
 	Width            -> {WH2, 0.},
-	ParticleName     -> "~H2",
+	ParticleName     -> "H2",
 	PropagatorLabel  -> "H2",
 	PropagatorType   -> ScalarDash,
 	PropagatorArrow  -> None},

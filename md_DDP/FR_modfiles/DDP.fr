@@ -20,7 +20,7 @@ M$Information = {Authors -> {"Andreas Goudelis, Bjoern Herrmann, Oscal Stal"},
 	        };
 
 (*** Choose Feynman or Unitary gauge ***)
-FeynmanGauge = False;
+FeynmanGauge = True;
 
 (*** Index definitions ***)
 IndexRange[ Index[Generation] ] = Range[3]
