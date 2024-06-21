@@ -6,17 +6,17 @@
 double DT::A0pQVMu(const double &cos_t, const double &s){
 	double t = (s* (MphiQ*MphiQ) +  (MA0*MA0)*(s -  (MU*MU)) + s* (MU*MU) +  (MphiQ*MphiQ)* (MU*MU) + cos_t*s*sqrt(( (MA0*MA0*MA0*MA0) - 2* (MA0*MA0)*(s +  (MphiQ*MphiQ)) +  (( (MphiQ*MphiQ) - s)*( (MphiQ*MphiQ) - s)))/s)*sqrt( (( (MU*MU) - s)*( (MU*MU) - s))/s) -  (s*s))/(2.*s);
 	double u = -s - t + MA0*MA0 + MphiQ*MphiQ + 0*0 + MU*MU;
-	return (2*(t*u - (s + t + u)* (MphiQ*MphiQ) +  (MphiQ*MphiQ*MphiQ*MphiQ) + (s + u)* (MU*MU) -  (MU*MU*MU*MU))* (token21*token21)* (token32*token32)* (token6*token6))/ (( (Mchi0*Mchi0) - t)*( (Mchi0*Mchi0) - t));
+	return (2*(t*u - (s + t + u)* (MphiQ*MphiQ) +  (MphiQ*MphiQ*MphiQ*MphiQ) + (s + u)* (MU*MU) -  (MU*MU*MU*MU))* (token21*token21)* (token33*token33)* (token6*token6))/ (( (Mchi0*Mchi0) - t)*( (Mchi0*Mchi0) - t));
 }
 double DT::A0pQVMc(const double &cos_t, const double &s){
 	double t = ( (MA0*MA0)*(s -  (MC*MC)) + s* (MC*MC) + s* (MphiQ*MphiQ) +  (MC*MC)* (MphiQ*MphiQ) + cos_t*s*sqrt( (( (MC*MC) - s)*( (MC*MC) - s))/s)*sqrt(( (MA0*MA0*MA0*MA0) - 2* (MA0*MA0)*(s +  (MphiQ*MphiQ)) +  (( (MphiQ*MphiQ) - s)*( (MphiQ*MphiQ) - s)))/s) -  (s*s))/(2.*s);
 	double u = -s - t + MA0*MA0 + MphiQ*MphiQ + 0*0 + MC*MC;
-	return (2*(t*u + (s + u)* (MC*MC) -  (MC*MC*MC*MC) - (s + t + u)* (MphiQ*MphiQ) +  (MphiQ*MphiQ*MphiQ*MphiQ))* (token21*token21)* (token35*token35)* (token6*token6))/ (( (Mchi0*Mchi0) - t)*( (Mchi0*Mchi0) - t));
+	return (2*(t*u + (s + u)* (MC*MC) -  (MC*MC*MC*MC) - (s + t + u)* (MphiQ*MphiQ) +  (MphiQ*MphiQ*MphiQ*MphiQ))* (token21*token21)* (token36*token36)* (token6*token6))/ (( (Mchi0*Mchi0) - t)*( (Mchi0*Mchi0) - t));
 }
 double DT::A0pQVMt(const double &cos_t, const double &s){
 	double t = (s* (MphiQ*MphiQ) +  (MA0*MA0)*(s -  (MT*MT)) + s* (MT*MT) +  (MphiQ*MphiQ)* (MT*MT) + cos_t*s*sqrt(( (MA0*MA0*MA0*MA0) - 2* (MA0*MA0)*(s +  (MphiQ*MphiQ)) +  (( (MphiQ*MphiQ) - s)*( (MphiQ*MphiQ) - s)))/s)*sqrt( (( (MT*MT) - s)*( (MT*MT) - s))/s) -  (s*s))/(2.*s);
 	double u = -s - t + MA0*MA0 + MphiQ*MphiQ + 0*0 + MT*MT;
-	return (2*(t*u - (s + t + u)* (MphiQ*MphiQ) +  (MphiQ*MphiQ*MphiQ*MphiQ) + (s + u)* (MT*MT) -  (MT*MT*MT*MT))* (token21*token21)* (token38*token38)* (token6*token6))/ (( (Mchi0*Mchi0) - t)*( (Mchi0*Mchi0) - t));
+	return (2*(t*u - (s + t + u)* (MphiQ*MphiQ) +  (MphiQ*MphiQ*MphiQ*MphiQ) + (s + u)* (MT*MT) -  (MT*MT*MT*MT))* (token21*token21)* (token39*token39)* (token6*token6))/ (( (Mchi0*Mchi0) - t)*( (Mchi0*Mchi0) - t));
 }
 double DT::A0pQMUs(const double &cos_t, const double &s){
 	double t = (s* (MMU*MMU) + s* (MphiQ*MphiQ) -  (MMU*MMU)* (MphiQ*MphiQ) +  (MA0*MA0)*(s +  (MMU*MMU) -  (MS*MS)) + s* (MS*MS) +  (MphiQ*MphiQ)* (MS*MS) + cos_t*s*sqrt(( (MA0*MA0*MA0*MA0) - 2* (MA0*MA0)*(s +  (MphiQ*MphiQ)) +  (( (MphiQ*MphiQ) - s)*( (MphiQ*MphiQ) - s)))/s)*sqrt(( (MMU*MMU*MMU*MMU) - 2* (MMU*MMU)*(s +  (MS*MS)) +  (( (MS*MS) - s)*( (MS*MS) - s)))/s) -  (s*s))/(2.*s);
