@@ -25,7 +25,7 @@ END
 ######## Advanced settings ########
 
 xTodayFO            |1e6
-xTodayFi            |100
+xTodayFI            |100
 xReheating          |1e-4
 ThetaIntEps         |1e-6
 PeakIntEps          |1e-6

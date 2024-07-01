@@ -183,5 +183,4 @@ namespace DT{
 	double token96;
 	double token97;
 	double token98;
-	double token99;
 }

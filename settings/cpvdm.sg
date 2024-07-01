@@ -4,13 +4,13 @@
 
 Mode                |3
 InputFile           |CPVDMTest.csv
-OutputFile          |cpvdm_scan.csv
+OutputFile          |throw.csv
 StartPoint          |7396
 EndPoint            |7396
 SavedParameters     |mH1, mH2, mHc
 ConsideredChannels  |
 SubtractChannels    |
-NeglectParticles    |
+NeglectParticles    |u,d,e,mu
 BepsEps             |1e-6
 ChannelContributions|1
 

@@ -179,7 +179,6 @@ namespace DT{
 	extern double token96;
 	extern double token97;
 	extern double token98;
-	extern double token99;
 	extern double EL;
 	extern double ee;
 	extern double gs;

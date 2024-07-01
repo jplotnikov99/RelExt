@@ -4,7 +4,7 @@
 
 Mode                |1
 InputFile           |
-OutputFile          |lamFIFO_FI_10000.csv
+OutputFile          |lamFIFO_F0_10000.csv
 StartPoint          |1
 EndPoint            |300
 SavedParameters     |lam12, lam13
@@ -17,19 +17,16 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
-Def                 |l13, 0.211
 Def                 |omFO, 0
 Def                 |omgoal, 0.12
-Mult                |omgoal, 0
-Add                 |omgoal, 0.12
-ChangeParameter     |lam13, l13
+Set                 |omgoal, 0.12
 ChangeThermalBath   |Psi
 CalcRelic           |0, omFO
 Sub                 |omgoal, omFO
 ChangeThermalBath   |Chi
 FindParameter       |lam12, 1, omgoal, 0.0005, omgoal
 SaveData            |omFO, omgoal
-Mult                |l13, 1.01
+Mult                |lam13, 1.01
 
 END
 ######## Advanced settings ########
