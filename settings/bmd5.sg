@@ -7,7 +7,7 @@ InputFile           |bmd5_scan.dat
 OutputFile          |bmd5_output.csv
 StartPoint          |1
 EndPoint            |10
-SavedParameters     |MS0, MA0, MChi, lamHPL, lamHS, ymmD
+SavedParameters     |MS0, MA0, Mchi, lamHPL, lamHS, ymmD
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |
