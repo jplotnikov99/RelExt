@@ -588,7 +588,6 @@ namespace DT
         {
             outfile << "\t" << mod->get_parameter_val(it);
         }
-        std::cout << "test\n";
         for (size_t i = 1; i < args.size(); i++)
         {
             outfile << "\t" << variable_map.at(args.at(i)).res;

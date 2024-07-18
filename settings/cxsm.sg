@@ -4,9 +4,9 @@
 
 Mode                |3
 InputFile           |micro_cxsm.csv
-OutputFile          |our_hh.csv
-StartPoint          |7684
-EndPoint            |7684
+OutputFile          |our_cxsm.csv
+StartPoint          |1
+EndPoint            |1000
 SavedParameters     |MA1, MS1, svev, alpha
 ConsideredChannels  |
 SubtractChannels    |
@@ -17,7 +17,8 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
-CalcXsec            |325, 10000, 100000, A1A1HH
+CalcRelic           |0
+SaveData            |
 
 END
 ######## Advanced settings ########

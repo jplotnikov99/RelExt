@@ -11,7 +11,7 @@ namespace DT
     {
         load_parameters();
         assigndm();
-        calc_widths_and_scale();
+        //calc_widths_and_scale();
         load_parameters();
         load_tokens();
     }

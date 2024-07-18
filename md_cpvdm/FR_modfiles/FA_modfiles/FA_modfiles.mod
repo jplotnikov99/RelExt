@@ -498,9 +498,9 @@ C[ S[2] , S[3] , S[4] , -S[7] ] == {{(L5*(RR1x1 - I*RR1x2) - L4*(RR1x1 + I*RR1x2
 
 C[ S[3] , S[1] , S[4] , -S[7] ] == {{((-I)*L4*RR1x1 - I*L5*RR1x1 + L4*RR1x2 - L5*RR1x2)/2, 0}},
 
-C[ -S[3] , S[4] , S[7] ] == {{(-1/2*I)*(2*RR1x3*(I*Timag + Treal) + L4*(RR1x1 - I*RR1x2)*v + L5*(RR1x1 + I*RR1x2)*v), 0}},
+C[ -S[3] , S[4] , S[7] ] == {{RR1x3*(Timag - I*Treal) + (((-I)*L4*RR1x1 - I*L5*RR1x1 - L4*RR1x2 + L5*RR1x2)*v)/2, 0}},
 
-C[ S[3] , S[4] , -S[7] ] == {{(-1/2*I)*(2*RR1x3*((-I)*Timag + Treal) + L5*(RR1x1 - I*RR1x2)*v + L4*(RR1x1 + I*RR1x2)*v), 0}},
+C[ S[3] , S[4] , -S[7] ] == {{-(RR1x3*(Timag + I*Treal)) + (((-I)*L4*RR1x1 - I*L5*RR1x1 + L4*RR1x2 - L5*RR1x2)*v)/2, 0}},
 
 C[ S[4] , S[4] , S[7] , -S[7] ] == {{(-I)*(L2*(RR1x1^2 + RR1x2^2) + L8*RR1x3^2), 0}},
 
@@ -526,9 +526,9 @@ C[ S[2] , S[3] , S[5] , -S[7] ] == {{(L5*(RR2x1 - I*RR2x2) - L4*(RR2x1 + I*RR2x2
 
 C[ S[3] , S[1] , S[5] , -S[7] ] == {{((-I)*L4*RR2x1 - I*L5*RR2x1 + L4*RR2x2 - L5*RR2x2)/2, 0}},
 
-C[ -S[3] , S[5] , S[7] ] == {{(-1/2*I)*(2*RR2x3*(I*Timag + Treal) + L4*(RR2x1 - I*RR2x2)*v + L5*(RR2x1 + I*RR2x2)*v), 0}},
+C[ -S[3] , S[5] , S[7] ] == {{RR2x3*(Timag - I*Treal) + (((-I)*L4*RR2x1 - I*L5*RR2x1 - L4*RR2x2 + L5*RR2x2)*v)/2, 0}},
 
-C[ S[3] , S[5] , -S[7] ] == {{(-1/2*I)*(2*RR2x3*((-I)*Timag + Treal) + L5*(RR2x1 - I*RR2x2)*v + L4*(RR2x1 + I*RR2x2)*v), 0}},
+C[ S[3] , S[5] , -S[7] ] == {{-(RR2x3*(Timag + I*Treal)) + (((-I)*L4*RR2x1 - I*L5*RR2x1 + L4*RR2x2 - L5*RR2x2)*v)/2, 0}},
 
 C[ S[4] , S[5] , S[7] , -S[7] ] == {{(-I)*(L2*RR1x1*RR2x1 + L2*RR1x2*RR2x2 + L8*RR1x3*RR2x3), 0}},
 
@@ -568,15 +568,15 @@ C[ S[2] , S[5] , S[5] ] == {{(-2*I)*(RR2x1*RR2x3*Timag + RR2x2*RR2x3*Treal + L5*
 
 C[ S[2] , -S[3] , S[6] , S[7] ] == {{(L4*(RR3x1 - I*RR3x2) - L5*(RR3x1 + I*RR3x2))/2, 0}},
 
-C[ -S[3] , S[1] , S[6] , S[7] ] == {{((-I)*L4*RR3x1 - I*L5*RR3x1 - L4*RR3x2 + L5*RR3x2)/2, 0}},
+C[ -S[3] , S[1] , S[6] , S[7] ] == {{(-1/2*I)*(L4*RR3x1 + L5*RR3x1 - I*L4*RR3x2 + I*L5*RR3x2), 0}},
 
 C[ S[2] , S[3] , S[6] , -S[7] ] == {{(L5*(RR3x1 - I*RR3x2) - L4*(RR3x1 + I*RR3x2))/2, 0}},
 
-C[ S[3] , S[1] , S[6] , -S[7] ] == {{(-1/2*I)*(L4*RR3x1 + L5*RR3x1 + I*L4*RR3x2 - I*L5*RR3x2), 0}},
+C[ S[3] , S[1] , S[6] , -S[7] ] == {{((-I)*L4*RR3x1 - I*L5*RR3x1 + L4*RR3x2 - L5*RR3x2)/2, 0}},
 
-C[ -S[3] , S[6] , S[7] ] == {{(-1/2*I)*(2*RR3x3*(I*Timag + Treal) + L4*(RR3x1 - I*RR3x2)*v + L5*(RR3x1 + I*RR3x2)*v), 0}},
+C[ -S[3] , S[6] , S[7] ] == {{RR3x3*(Timag - I*Treal) + (((-I)*L4*RR3x1 - I*L5*RR3x1 - L4*RR3x2 + L5*RR3x2)*v)/2, 0}},
 
-C[ S[3] , S[6] , -S[7] ] == {{(-1/2*I)*(2*RR3x3*((-I)*Timag + Treal) + L5*(RR3x1 - I*RR3x2)*v + L4*(RR3x1 + I*RR3x2)*v), 0}},
+C[ S[3] , S[6] , -S[7] ] == {{-(RR3x3*(Timag + I*Treal)) + (((-I)*L4*RR3x1 - I*L5*RR3x1 + L4*RR3x2 - L5*RR3x2)*v)/2, 0}},
 
 C[ S[4] , S[6] , S[7] , -S[7] ] == {{(-I)*(L2*RR1x1*RR3x1 + L2*RR1x2*RR3x2 + L8*RR1x3*RR3x3), 0}},
 
