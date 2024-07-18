@@ -1,13 +1,13 @@
-########  Setting file for the DDP model ########
+########  Setting file for the bmd5 model ########
 
 ######## Standard settings ########
 
-Mode                |1
-InputFile           |
-OutputFile          |lamFIFO_F0_10000.csv
+Mode                |2
+InputFile           |bmd5_scan.dat
+OutputFile          |bmd5_output.csv
 StartPoint          |1
-EndPoint            |300
-SavedParameters     |lam12, lam13
+EndPoint            |10
+SavedParameters     |MS0, MA0, Mchi, lamHPL, lamHS, ymmD
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |
@@ -17,16 +17,8 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
-Def                 |omFO, 0
-Def                 |omgoal, 0.12
-Set                 |omgoal, 0.12
-ChangeThermalBath   |Psi
-CalcRelic           |0, omFO
-Sub                 |omgoal, omFO
-ChangeThermalBath   |Chi
-FindParameter       |lam12, 1, omgoal, 0.0005, omgoal
-SaveData            |omFO, omgoal
-Mult                |lam13, 1.01
+CalcRelic           |0
+SaveData            |
 
 END
 ######## Advanced settings ########

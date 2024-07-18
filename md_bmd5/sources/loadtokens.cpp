@@ -1,0 +1,109 @@
+///////////////////CODE GENERATED VIA MATHEMATICA///////////////////
+
+
+#include "general_model.hpp"
+#include "../model.hpp"
+
+namespace DT{
+	void Model::load_tokens(){
+		token1 = 0.25;
+		token2 = pow(ymmD,2);
+		token3 = -0.25;
+		token4 = 2;
+		token5 = ym;
+		token6 = ymmD;
+		token7 = 0.5;
+		token8 = lamHPL + lamHPLprime;
+		token9 = vev;
+		token10 = sqrt(2);
+		token11 = EL;
+		token12 = 0.125;
+		token13 = 1/cw;
+		token14 = 1/sw;
+		token15 = cw - sw;
+		token16 = cw + sw;
+		token17 = cw;
+		token18 = sw;
+		token19 = -0.5;
+		token20 = lamHPL - lamHPLprime;
+		token21 = 1/sqrt(2);
+		token22 = ymsD;
+		token23 = ys;
+		token24 = lamHPQ;
+		token25 = yb;
+		token26 = ymbD;
+		token27 = -0.3333333333333333;
+		token28 = 3;
+		token29 = 0.041666666666666664;
+		token30 = 0.3333333333333333;
+		token31 = CKM1x2;
+		token32 = CKM1x3;
+		token33 = CKM1x3*ymbD + CKM1x2*ymsD;
+		token34 = CKM2x2;
+		token35 = CKM2x3;
+		token36 = CKM2x3*ymbD + CKM2x2*ymsD;
+		token37 = CKM3x2;
+		token38 = CKM3x3;
+		token39 = CKM3x3*ymbD + CKM3x2*ymsD;
+		token40 = FAGS;
+		token41 = -1;
+		token42 = pow(EL,3);
+		token43 = pow(pow(cw,2) + pow(sw,2),2);
+		token44 = 4;
+		token45 = pow(cw,3);
+		token46 = pow(sw,3);
+		token47 = pow(EL,2);
+		token48 = pow(pow(cw,2) - pow(sw,2),2);
+		token49 = pow(cw,2);
+		token50 = pow(sw,2);
+		token51 = pow(sw,-2);
+		token52 = -pow(cw,2) + pow(sw,2);
+		token53 = pow(cw,4) - pow(sw,4);
+		token54 = -2;
+		token55 = -0.08333333333333333;
+		token56 = 0.08333333333333333;
+		token57 = pow(ymsD,2);
+		token58 = pow(ymbD,2);
+		token59 = pow(cw,2) + pow(sw,2);
+		token60 = CKM1x1;
+		token61 = CKM2x1;
+		token62 = CKM3x1;
+		token63 = yup;
+		token64 = yc;
+		token65 = yt;
+		token66 = -0.041666666666666664;
+		token67 = pow(pow(cw,2) + pow(sw,2),3);
+		token68 = pow(CKM1x3*ymbD + CKM1x2*ymsD,2);
+		token69 = pow(CKM2x3*ymbD + CKM2x2*ymsD,2);
+		token70 = pow(CKM3x3*ymbD + CKM3x2*ymsD,2);
+		token71 = -lamHPL - lamHPLprime;
+		token72 = -6;
+		token73 = lamH;
+		token74 = pow(vev,2);
+		token75 = pow(lamHPL + lamHPLprime,2);
+		token76 = 1;
+		token77 = ye;
+		token78 = ytau;
+		token79 = ydo;
+		token80 = -lamHPL + lamHPLprime;
+		token81 = 6;
+		token82 = pow(lamHPL - lamHPLprime,2);
+		token83 = pow(lamHPQ,2);
+		token84 = 0.6666666666666666;
+		token85 = -0.6666666666666666;
+		token86 = 8;
+		token87 = 0.4444444444444444;
+		token88 = 9;
+		token89 = -8;
+		token90 = -0.4444444444444444;
+		token91 = gs;
+		token92 = pow(cw,-2);
+		token93 = -4;
+		token94 = pow(gs,2);
+		token95 = pow(FAGS,2);
+		token96 = -0.16666666666666666;
+		token97 = 0.16666666666666666;
+		token98 = 0.05555555555555555;
+		token99 = 0.2222222222222222;
+	}
+}

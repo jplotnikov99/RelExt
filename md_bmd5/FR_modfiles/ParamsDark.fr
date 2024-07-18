@@ -1,0 +1,216 @@
+M$ParametersDark = {
+
+(* external parameters*)
+
+
+
+(*masses*)
+Mchi == {
+  TeX              -> Subscript[m, \[Chi] ],
+  ParameterType    -> External,
+  ComplexParameter -> False,
+  Value            -> 360,
+  Description      -> "Chi mass"},
+MchiM == {
+  TeX              -> Subscript[m, Subscript[\[Chi],"0"] ],
+  ParameterType    -> Internal,
+  ComplexParameter -> False,
+  Value            -> Mchi,
+  Description      -> "Chi0 mass Internal"},
+Mchi0 == {
+  TeX              -> Subscript[m, Subscript[\[Chi],"-"] ],
+  ParameterType    -> Internal,
+  ComplexParameter -> False,
+  Value            -> Mchi,
+  Description      -> "ChiM mass Internal"},
+
+
+
+
+(*direct detection parameter !!!! add reference to xenon paper*)
+  lamHS == {
+    ParameterType    -> External,
+    BlockName        -> DARKCOUPLINGS,
+    Value            -> 0.01, (*max val = 0.01 from paper*)
+    TeX              -> Subscript[\[Lambda], hS ],
+    Description      -> "Direct Detection parameter"
+  },
+
+
+(* self couplings external params *)
+  lamPQ == {
+    ParameterType    -> External,
+    BlockName        -> DARKCOUPLINGS,
+    Value            -> 0.1,
+    InteractionOrder -> {QED,2},
+    TeX              -> Subscript[\[Lambda], Subscript[ \[CapitalPhi], q ] ],
+    Description      -> "PhiQ self-coupling"
+  },
+  lamPL == {
+    ParameterType    -> External,
+    BlockName        -> DARKCOUPLINGS,
+    Value            -> 0.1,
+    InteractionOrder -> {QED,2},
+    TeX              -> Subscript[\[Lambda], Subscript[ \[CapitalPhi], l ] ],
+    Description      -> "PhiL self-coupling"
+  },
+  lamPLprime == {
+    ParameterType    -> External,
+    BlockName        -> DARKCOUPLINGS,
+    Value            -> 0.1,
+    InteractionOrder -> {QED,2},
+    TeX              -> Subscript[ Superscript[ \[Lambda], \[Prime] ] , Subscript[ \[CapitalPhi], l ] ],
+    Description      -> "PhiL self-coupling 2"
+  },
+  
+  
+
+  
+  
+(* Higgs, PhiQ and PhiL interaction couplings *)
+  lamHPQ == {
+    ParameterType    -> External,
+    BlockName        -> DARKCOUPLINGS,
+    Value            -> 1.0*^-4,
+    InteractionOrder -> {QED,2},
+    TeX              -> Subscript[ \[Lambda],  H Subscript[ \[CapitalPhi], q ]   ],
+    Description      -> "Higgs-PhiQ coupling"
+  },
+  lamHPL == {
+    ParameterType    -> External,
+    BlockName        -> DARKCOUPLINGS,
+    Value            -> 0.1,
+    InteractionOrder -> {QED,2},
+    TeX              -> Subscript[ \[Lambda],  H Subscript[ \[CapitalPhi], l ]   ],
+    Description      -> "Higgs-PhiL coupling"
+  },
+  lamPQPL == {
+    ParameterType    -> External,
+    BlockName        -> DARKCOUPLINGS,
+    Value            -> 1.0*^-3,
+    InteractionOrder -> {QED,2},
+    TeX              -> Subscript[ \[Lambda],  Subscript[ \[CapitalPhi], q ]  Subscript[ \[CapitalPhi], l ]   ],
+    Description      -> "PhiQ-PhiL coupling"
+  },
+(*  lamHPLprime == {
+    ParameterType    -> External,
+    BlockName        -> DARKCOUPLINGS,
+    Value            -> 0.1,
+    InteractionOrder -> {QED,2},
+    TeX              -> Subscript[ Superscript[ \[Lambda], \[Prime] ] ,  H Subscript[ \[CapitalPhi], l ]   ],
+    Description      -> "Higgs-PhiL coupling 2"
+  },*)
+  lamPQPLprime == {
+    ParameterType    -> External,
+    BlockName        -> DARKCOUPLINGS,
+    Value            -> 1.0*^-3,
+    InteractionOrder -> {QED,2},
+    TeX              -> Subscript[ Superscript[ \[Lambda], \[Prime] ] ,  Subscript[ \[CapitalPhi], q ]  Subscript[ \[CapitalPhi], l ]   ],
+    Description      -> "PhiQ-PhiL coupling 2"
+  },
+  
+  
+  
+
+  
+  
+  
+(* internal parameters *)
+  
+  muPQ == { 
+    ParameterType    -> Internal, 
+    Value            -> Sqrt[ MphiQ*MphiQ - lamHPQ*vev*vev/2 ], 
+    InteractionOrder -> {QED,2}, 
+    TeX              -> Subscript[ \[Mu] , Subscript[ \[CapitalPhi], q ] ],
+    Description      -> "PhiQ prior to EWB mass term"  (*!!!!fix these descritpions*)
+  },
+  muPL == { 
+    ParameterType    -> Internal, 
+    Value            -> Sqrt[ ( MS0*MS0 + MA0*MA0 - lamHPL*vev*vev )/2 ], 
+    InteractionOrder -> {QED,2}, 
+    TeX              -> Subscript[ \[Mu] , Subscript[ \[CapitalPhi], l ] ],
+    Description      -> "PhiL prior to EWB mass term"
+  },
+
+  lamHPLprime == {
+    ParameterType    -> Internal,
+    Value            -> lamHS - lamHPL,
+    InteractionOrder -> {QED,2},
+    TeX              -> Subscript[ Superscript[ \[Lambda], \[Prime] ] ,  H Subscript[ \[CapitalPhi], l ]   ],
+    Description      -> "Higgs-PhiL coupling 2"
+  },
+
+  muPLprime == { 
+    ParameterType    -> Internal, 
+    Value            -> Sqrt[ ( MS0*MS0 - MA0*MA0 - lamHPLprime*vev*vev )/2 ], 
+    InteractionOrder -> {QED,2}, 
+    TeX              -> Subscript[ Superscript[ \[Mu], \[Prime] ] , Subscript[ \[CapitalPhi], l ] ],
+    Description      -> "PhiL prior to EWB mass term 2"
+  },
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  ymsD == {
+    ParameterType -> External,
+    BlockName     -> YUKAWADARK,
+    Value         -> -0.15,
+    InteractionOrder -> {QED,2},
+    Description   -> "Strange Yukawa Dark coupling"
+  },
+  ymbD == {
+    ParameterType -> External,
+    BlockName     -> YUKAWADARK,
+    Value         -> 0.6,
+    InteractionOrder -> {QED,2},
+    Description   -> "Bottom Yukawa Dark coupling"
+  },
+  ymmD == {
+    ParameterType -> External,
+    BlockName     -> YUKAWADARK,
+    Value         -> 1.4,
+    InteractionOrder -> {QED,2},
+    Description   -> "Muon Yukawa Dark coupling"
+  },
+
+  
+  
+  ydD == {
+    ParameterType    -> Internal,
+    Indices          -> {Index[Generation]},
+    Definitions      -> {ydD[1] :> 0, ydD[2] :> ymsD, ydD[3] :> ymbD},
+(*    Value            -> {ydD[1] -> 0, ydD[2] -> ymsD, ydD[3] -> ymbD},*)
+    InteractionOrder -> {QED, 1},
+    ParameterName    -> {ydD[1] -> ydoD, ydD[2] -> ysD, ydD[3] -> ybD},
+    TeX              -> ydD,
+    Description      -> "Down-type Yukawa Dark couplings"
+  },
+  ylD == {
+    ParameterType    -> Internal,
+    Indices          -> {Index[Generation]},
+    Definitions      -> { ylD[1] :> 0, ylD[2] :> ymmD, ylD[3] :> 0 },
+(*    Value            -> {ylD[1] -> 0, ylD[2] -> ymmD, ylD[3] -> 0},*)
+    InteractionOrder -> {QED, 1},
+    ParameterName    -> {ylD[1] -> yeD, ydD[2] -> ymD, ydD[3] -> ytauD},
+    TeX              -> ylD,
+    Description      -> "Lepton Yukawa Dark couplings"
+  }
+  
+};
+
+
+
+
+
+
+
+
+
+
+

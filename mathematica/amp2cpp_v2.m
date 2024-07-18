@@ -1,8 +1,8 @@
 (* ::Package:: *)
 
 directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
-(*directory = "/home/rodrigo/Downloads/darktree_new/md_cxsm/FR_modfiles"<>"/FA_modfiles";*)
+(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_trsm/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = "/home/rodrigo/Downloads/darktree_new/md_bmd5/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
 
@@ -137,6 +137,15 @@ Table[ alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> dslist[
 diagsgrouped = Flatten[Table[DiagramGrouping[alldiags[[i]], ({Field[1] /. #1[[1]], Field[2] /. #1[[2]], Field[3] /. #1[[3]], Field[4] /. #1[[4]]} &)], {i,Length[alldiags]}],1];
 diagsgrouped[[All, 1]];
 diagsgrouped[[All, 2]];
+(*remove colored dark particles from final states*)
+remelem = {};
+Do[
+If[
+	ToExpression[StringReplace[ToString[diagsgrouped[[i, 1, 3]]], {", {Col3}"->"", ", {Col4}"->"", ", {Glu3}"->"", ", {Glu4}"->""}]] == dslist[[j]] || 
+	ToExpression[StringReplace[ToString[diagsgrouped[[i, 1, 4]]], {", {Col3}"->"", ", {Col4}"->"", ", {Glu3}"->"", ", {Glu4}"->""}]] == dslist[[j]]
+, AppendTo[remelem, {i}]]
+, {j, 1, Length[dslist]}, {i, 1, Length[diagsgrouped]}];
+diagsgrouped = Delete[diagsgrouped, remelem];
 
 
 (*removes final states which are repeated in the previous list*)
@@ -144,20 +153,43 @@ removeDuplicate[]:=
 Block[{remelem = {}, templist={}},
 (*charge conjugate initial states*)
 Do[
-If[diagsgrouped[[i, 1, {1,2}]] == -diagsgrouped[[j, 1, {1,2}]] || (diagsgrouped[[i, 1, 1]] == -diagsgrouped[[j, 1, 1]] && diagsgrouped[[i, 1, 2]] == diagsgrouped[[j, 1, 2]] && SelfConjugate[diagsgrouped[[i, 1, 2]]]) || (diagsgrouped[[i, 1, 2]] == -diagsgrouped[[j, 1, 2]] && diagsgrouped[[i, 1, 1]] == diagsgrouped[[j, 1, 1]] && SelfConjugate[diagsgrouped[[i, 1, 1]]]) , AppendTo[remelem, {j}]]
+If[
+	diagsgrouped[[i, 1, {1,2}]] == -diagsgrouped[[j, 1, {1,2}]] || 
+	(diagsgrouped[[i, 1, 1]] == -diagsgrouped[[j, 1, 1]] && diagsgrouped[[i, 1, 2]] == diagsgrouped[[j, 1, 2]] && SelfConjugate[diagsgrouped[[i, 1, 2]]]) || 
+	(diagsgrouped[[i, 1, 2]] == -diagsgrouped[[j, 1, 2]] && diagsgrouped[[i, 1, 1]] == diagsgrouped[[j, 1, 1]] && SelfConjugate[diagsgrouped[[i, 1, 1]]]) ||
+	(diagsgrouped[[i, 1, 2]] == diagsgrouped[[j, 1, 1]] && diagsgrouped[[i, 1, 1]] == -diagsgrouped[[j, 1, 2]] && SelfConjugate[diagsgrouped[[i, 1, 2]]]) ||
+	(diagsgrouped[[i, 1, 1]] == diagsgrouped[[j, 1, 2]] && diagsgrouped[[i, 1, 2]] == -diagsgrouped[[j, 1, 1]] && SelfConjugate[diagsgrouped[[i, 1, 1]]]) 
+, AppendTo[remelem, {j}]]
 , {i, 1, Length[diagsgrouped]-1}, {j, i+1, Length[diagsgrouped]}];
-(*particles swaped in the final state for a given initial state*)
+(*(*particles swaped in the final state for a given initial state*)
 Do[
 If[diagsgrouped[[i, 1, 3]] == diagsgrouped[[j, 1, 4]] && diagsgrouped[[i, 1, 4]] == diagsgrouped[[j, 1, 3]] &&(diagsgrouped[[i, 1, {1,2}]] == diagsgrouped[[j, 1, {1,2}]]), AppendTo[remelem, {j}]]
-, {i, 1, Length[diagsgrouped]-1}, {j, i+1, Length[diagsgrouped]}];
+, {i, 1, Length[diagsgrouped]-1}, {j, i+1, Length[diagsgrouped]}];*)
 (*particles swaped in the initial state for a given final state*)
 Do[
 If[diagsgrouped[[i, 1, 1]] == diagsgrouped[[j, 1, 2]] && diagsgrouped[[i, 1, 2]] == diagsgrouped[[j, 1, 1]] &&(diagsgrouped[[i, 1, {3,4}]] == diagsgrouped[[j, 1, {3,4}]]), AppendTo[remelem, {j}]]
 , {i, 1, Length[diagsgrouped]-1}, {j, i+1, Length[diagsgrouped]}];
-(*repeated final states with color*)
-templist = ToExpression[StringReplace[ToString[diagsgrouped[[All, 1]]], {"Col3"->"1", "Col4"->"1"}]];
+(*repeated final states with or without color*)
+templist = ToExpression[StringReplace[ToString[diagsgrouped[[All, 1]]], {", {Col3}"->"", ", {Col4}"->"", ", {Glu3}"->"", ", {Glu4}"->""}]];
 Do[
-If[templist[[i, 3]] == templist[[j, 4]] && templist[[i,  4]] == templist[[j, 3]] &&(templist[[i, {1,2}]] == templist[[j, {1,2}]]), AppendTo[remelem, {j}]]
+If[
+	templist[[i, 3]] == templist[[j, 4]] && templist[[i,  4]] == templist[[j, 3]] &&(templist[[i, {1,2}]] == templist[[j, {1,2}]])
+, AppendTo[remelem, {j}]]
+, {i, 1, Length[templist]-1}, {j, i+1, Length[templist]}];
+
+(*2 charged or notSelfConjugate particles in initial state; for ab ini state, keep a-b, remove b-a*)
+templist = ToExpression[StringReplace[ToString[diagsgrouped[[All, 1]]], {", {Col1}"->"", ", {Col2}"->"", ", {Glu1}"->"", ", {Glu2}"->""}]];
+Do[
+If[ (*(Not[SelfConjugate[diagsgrouped[[i, 1, 1]]]] && Not[SelfConjugate[diagsgrouped[[i, 1, 2]]]]) && 
+	(ToString[diagsgrouped[[i, 1, 1]]] != ToString[diagsgrouped[[i, 1, 2]]]) &&
+	(ToString[diagsgrouped[[i, 1, 1]]] != ToString[-diagsgrouped[[i, 1, 2]]]) &&
+	(diagsgrouped[[i, 1, 2]] == -diagsgrouped[[j, 1, 1]] && diagsgrouped[[i, 1, 1]] == -diagsgrouped[[j, 1, 2]])*)
+	(Not[SelfConjugate[templist[[i, 1]]]] && Not[SelfConjugate[templist[[i, 2]]]]) && 
+	(ToString[templist[[i, 1]]] != ToString[templist[[i, 2]]]) &&
+	(ToString[templist[[i, 1]]] != ToString[-templist[[i, 2]]]) &&
+	(templist[[i, 2]] == -templist[[j, 1]] && templist[[i, 1]] == -templist[[j, 2]]) 
+, AppendTo[remelem, {j}]]
+(*, {i, 1, Length[diagsgrouped]-1}, {j, i+1, Length[diagsgrouped]}];*)
 , {i, 1, Length[templist]-1}, {j, i+1, Length[templist]}];
 
 remelem = DeleteDuplicates[remelem];
@@ -181,7 +213,10 @@ Block[{numerator,denominator,coefficient={},mandels={},temp1,temp2},
 				AppendTo[tokens,numerator[[it]]];
 				temp1*=(numerator[[it]]/.tokensubs);
 				Break[],
-				If[FreeQ[numerator[[it,jt]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__],SUNDelta[__,__]}],
+				
+				(*If[FreeQ[numerator[[it,jt]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__],SUNDelta[__,__]}],*)
+				If[FreeQ[numerator[[it,jt]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__],SUNDelta[__,__]
+				   , SUNTF[__,__,__], SUNFIndex[__], SUNIndex[__], List[__], SUNF[__,__,__]}], 
 					AppendTo[tokens,numerator[[it,jt]]];
 					temp1*=(numerator[[it,jt]]/.tokensubs),
 					temp2*=numerator[[it,jt]];
@@ -379,8 +414,12 @@ Return[full]
 
 
 (*list with all 2to2 fout process names*)
-templist2 = Table[{foutlist[[i,1]], foutlist[[i,2]], ToExpression[StringReplace[ToString[foutlist[[i,3]]], {", {Col3}"->"", ", {Glu3}"->""}]],
-ToExpression[StringReplace[ToString[foutlist[[i,4]]], {", {Col4}"->"", ", {Glu4}"->""}]]}, {i, Length[foutlist]}];
+templist2 = Table[{
+ToExpression[StringReplace[ToString[foutlist[[i,1]]], {", {Col1}"->"", ", {Glu1}"->""}]],
+ToExpression[StringReplace[ToString[foutlist[[i,2]]], {", {Col2}"->"", ", {Glu2}"->""}]],
+ToExpression[StringReplace[ToString[foutlist[[i,3]]], {", {Col3}"->"", ", {Glu3}"->""}]],
+ToExpression[StringReplace[ToString[foutlist[[i,4]]], {", {Col4}"->"", ", {Glu4}"->""}]]}
+, {i, Length[foutlist]}];
 processname = Table[
 Select[particlelist, #[[1]]== templist2[[i, 1]]&][[1,3]]<>
 Select[particlelist, #[[1]]== templist2[[i, 2]]&][[1,3]]<>
@@ -451,7 +490,7 @@ relevantWidth = {};
 Do[
 	If[relevantWs[[i]]==(particlelist[[j,2]]/.subrule) && StringPart[ToString[particlelist[[j,1]]],1]!="-" && StringPart[ToString[particlelist[[j,1]]],1]!="U" 
 	&& ToString[particlelist[[j,1]]]!=ToString[GSlist[[1]]] && ToString[particlelist[[j,1]]]!=ToString[GSlist[[2]]] && IDtoPDG[particlelist[[j,1]]]!="23" && 
-	IDtoPDG[particlelist[[j,1]]]!="24",
+	IDtoPDG[particlelist[[j,1]]]!="24" && IDtoPDG[particlelist[[j,1]]]!="6",
 		AppendTo[relevantWsfields, particlelist[[j,1]]];
 		AppendTo[relevantWidth, relevantWs[[i+1]]];
 	]
@@ -495,15 +534,16 @@ diagsgroupedDecay[[All, 2]];
 (*removes final states which are repeated in the previous list*)
 remelemDecays = {};
 
-(*particles swaped in the final state for a given initial state*)
+(*(*particles swaped in the final state for a given initial state*)
 Do[
 If[(diagsgroupedDecay[[i, 1, 2]] == diagsgroupedDecay[[j, 1, 3]] && diagsgroupedDecay[[i, 1, 3]] == diagsgroupedDecay[[j, 1, 2]]) && (diagsgroupedDecay[[i, 1, 1]] == diagsgroupedDecay[[j, 1, 1]]), 
 AppendTo[remelemDecays, {j}]]
-, {i, 1, Length[diagsgroupedDecay]-1}, {j, i+1, Length[diagsgroupedDecay]}]
-(*repeated final states with color*)
-templist = ToExpression[StringReplace[ToString[diagsgroupedDecay[[All, 1]]], {"Col2"->"1", "Col3"->"1"}]];
+, {i, 1, Length[diagsgroupedDecay]-1}, {j, i+1, Length[diagsgroupedDecay]}]*)
+(*repeated final states with or without color*)
+templist = ToExpression[StringReplace[ToString[diagsgroupedDecay[[All, 1]]], {", {Col2}"->"", ", {Col3}"->"", ", {Glu2}"->"", ", {Glu3}"->""}]];
 Do[
-If[templist[[i, 2]] == templist[[j, 3]] && templist[[i,  3]] == templist[[j, 2]] && (diagsgroupedDecay[[i, 1, 1]] == diagsgroupedDecay[[j, 1, 1]]), AppendTo[remelemDecays, {j}]]
+If[templist[[i, 2]] == templist[[j, 3]] && templist[[i,  3]] == templist[[j, 2]] && (templist[[i, 1]] == templist[[j, 1]]), 
+AppendTo[remelemDecays, {j}]]
 , {i, 1, Length[templist]-1}, {j, i+1, Length[templist]}]
 
 DeleteDuplicates[remelemDecays];
@@ -524,7 +564,9 @@ Block[{numerator,denominator,coefficient={},temp1,temp2},
 			If[And[Length[placeholder*numerator[[it]]]===2,Length[numerator[[it]]]>=2],
 				temp1*=(numerator[[it]]);
 				Break[],
-				If[FreeQ[numerator[[it,jt]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__],SUNDelta[__,__]}],
+				(*If[FreeQ[numerator[[it,jt]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__],SUNDelta[__,__]}],*)
+				If[FreeQ[numerator[[it,jt]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__],SUNDelta[__,__]
+				   , SUNTF[__,__,__], SUNFIndex[__], SUNIndex[__], List[__], SUNF[__,__,__]}],
 					temp1*=(numerator[[it,jt]]),
 					temp2*=numerator[[it,jt]];
 				];
@@ -628,9 +670,6 @@ calcAmpsDecays[];
 massListDecays
 coefficientlist;
 couplings*)
-
-
-coefficientlist
 
 
 (*computation of the widths for all the 1to2 processes from the previous list*)
@@ -739,9 +778,12 @@ internal = Delete[tempinternal, removeElem];
 prtclsfile = Import[directory<>"FR_modfiles/CH_modfiles/prtcls1.mdl", "Table", "FieldSeparators"->"|"];
 neutraldsmasses = {};
 Do[
-	If[( (StringContainsQ[ToString[prtclsfile[[i, 1]]], "~"] || StringContainsQ[ToString[prtclsfile[[i, 2]]], "~"]) && prtclsfile[[i, 2]]==prtclsfile[[i, 3]] && prtclsfile[[i, 8]] == 1),
+	If[ (StringContainsQ[ToString[prtclsfile[[i, 1]]], "~"] || StringContainsQ[ToString[prtclsfile[[i, 2]]], "~"]) && 
+	(*prtclsfile[[i, 2]]==prtclsfile[[i, 3]] &&*) prtclsfile[[i, 8]] == 1 && prtclsfile[[i, 9]] == 0 && 
+	prtclsfile[[i, 4]] != 12 && prtclsfile[[i, 4]] != 14 && prtclsfile[[i, 4]] != 16 ,
 	AppendTo[neutraldsmasses, StringDelete[ToString[prtclsfile[[i, 6]]], WhitespaceCharacter]]]
-, {i, 4, Length[prtclsfile]}]
+(*, {i, 4, Length[prtclsfile]}]*)
+, {i, 3, Length[prtclsfile]}]
 neutraldsmasses;
 
 
@@ -975,7 +1017,7 @@ Write[sfile, "namespace DT{"]
 Write[sfile, "\tvoid Model::load_tokens(){"]
 
 Do[
-	toksub=StringReplace[ToString[CForm[tokenreverse[[i,2]]]],{"Power"->"pow","Cos"->"cos","Sin"->"sin","Conjugate"->"", "Sqrt"-> "sqrt", "Defer"-> " ", "FeynCalc_MT"->"MT", "FeynCalc`"->""}];
+	toksub=StringReplace[ToString[CForm[tokenreverse[[i,2]]]],{"Power"->"pow","Cos"->"cos","Sin"->"sin","Conjugate"->"", "Sqrt"-> "sqrt", "Defer"-> " ", "FeynCalc_MT"->"MT", "FeynCalc`"->"", "SMP(\"g_s\")"->"gs"}];
 	Write[sfile, "\t\t", ToString[tokenreverse[[i,1]]] ," = ", toksub,";"],{i,Length[tokenreverse]}]
 	
 Write[sfile, "\t}"];
@@ -997,14 +1039,17 @@ Do[
 	Write[sfile, "#include \"../../model.hpp\"\n"];
 	Do[
 		subsamp2=Replace[inifunc[i][[j,10]]/.subrule,defer,All];
+		
 		bool=!FreeQ[subsamp2,t];
+		boolu=!FreeQ[subsamp2,u];
+		
 		subsamp2=ToString[ToString[CForm[subsamp2],StandardForm]];
 		subsamp2=StringReplace[subsamp2,{"Sqrt"-> "sqrt","Defer"->" ","Cos("->"cos( ","Sin"->"sin", "Tan"->"tan"}];
 		tsub="";
 		
 		Write[sfile, "double DT::" , ToString[inifunc[i][[j,1]]] , "(const double &cos_t, const double &s){"];
 		
-		If[bool,
+		If[bool || boolu,
 			tsub=Replace[ttoct[inifunc[i][[j,2]],inifunc[i][[j,3]],inifunc[i][[j,4]],inifunc[i][[j,5]]]/.subrule,defer,All];
 			tsub=ToString[ToString[CForm[tsub],StandardForm]];
 			tsub=StringReplace[tsub,{"Sqrt"-> "sqrt","Defer"->" ","cost"->"cos_t"}];
