@@ -11,7 +11,6 @@ SavedParameters     |mH1, mH2, mHc
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |
-BepsEps             |1e-6
 ChannelContributions|1
 
 ######## Operations on scan ########
@@ -23,6 +22,7 @@ SaveData            |
 END
 ######## Advanced settings ########
 
+BepsEps             |1e-6
 xTodayFO            |1e6
 xTodayFI            |100
 xReheating          |1e-4

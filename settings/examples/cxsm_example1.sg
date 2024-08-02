@@ -11,7 +11,6 @@ SavedParameters     |MA1, MS1, svev, alpha
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |
-BepsEps             |1e-6
 ChannelContributions|1
 
 ######## Operations on scan ########
@@ -24,6 +23,7 @@ Add                 |MA1, 1
 END
 ######## Advanced settings ########
 
+BepsEps             |1e-6
 xTodayFO            |1e6
 xTodayFI            |100
 xReheating          |1e-4

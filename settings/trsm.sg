@@ -11,7 +11,6 @@ SavedParameters     |lam12, lam13
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |
-BepsEps             |1e-6
 ChannelContributions|1
 
 ######## Operations on scan ########
@@ -31,6 +30,7 @@ Mult                |lam13, 1.01
 END
 ######## Advanced settings ########
 
+BepsEps             |1e-6
 xTodayFO            |1e6
 xTodayFI            |100
 xReheating          |1e-4

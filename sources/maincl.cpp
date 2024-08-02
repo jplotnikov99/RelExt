@@ -80,10 +80,10 @@ namespace DT
         subtracted_procs = sgr->get_slist_of("SubtractChannels");
         neglected_particles = sgr->get_slist_of("NeglectParticles");
         saved_pars = sgr->get_slist_of("SavedParameters");
-        beps_eps = log(sgr->get_val_of("BepsEps"));
         channel_contrib = sgr->get_val_of("ChannelContributions");
 
         // Advanced settings
+        beps_eps = log(sgr->get_val_of("BepsEps"));
         xtoday_FO = sgr->get_val_of("xTodayFO");
         xtoday_FI = sgr->get_val_of("xTodayFI");
         x_reheating = sgr->get_val_of("xReheating");
