@@ -9,7 +9,7 @@ StartPoint          |1
 EndPoint            |300
 SavedParameters     |MA1, MS1, svev, alpha
 ConsideredChannels  |
-SubtractChannels    |
+SubtractChannels    |A1A1uU
 NeglectParticles    |
 ChannelContributions|1
 
