@@ -92,7 +92,7 @@ void Main::load_setting(const std::string sg_file) {
 void Main::check_start_end_points() {
     ASSERT((end_point - 1) >= 1,
            "StartPoint and/or EndPoint cannot be smaller than 1")
-    ASSERT((end_point - 1) >= start_point,
+    ASSERT(end_point - 1 >= start_point,
            "StartPoint cannot be larger than EndPoint")
 }
 
@@ -188,6 +188,9 @@ void Main::set_channels() {
     }
     if (subtracted_procs.size() != 0) {
         for (auto it : subtracted_procs) {
+            ASSERT(mod->check_channel_existence(it),
+                   "Error in SubtractChannels: " << it
+                                                 << " is not a valid channel.")
             for (size_t i = 0; i < bath_procs.size(); i++) {
                 if (it == bath_procs.at(i)) {
                     bath_procs.erase(bath_procs.begin() + i);
@@ -206,7 +209,7 @@ int Main::check_var_existence(const std::string &var, const std::string func) {
     if (variable_map.find(var) == variable_map.end()) {
         if (!mod->check_par_existence(var)) {
             ASSERT(func == "",
-                   "Error in " << func << ": " << var << " is not defined");
+                   "Error in " << func << ": " << var << " is not defined")
             return 0;
         }
         return 1;
@@ -238,6 +241,17 @@ void Main::Def(const vstring &args) {
         check_arguments_number(true, 2, args.size(), __func__);
         double a = get_number(args.at(2), __func__);
         variable_map[args.at(1)] = {a, 0.};
+    }
+}
+
+void Main::Set(const vstring &args) {
+    check_arguments_number(true, 2, args.size(), __func__);
+    int type = check_var_existence(args.at(1), __func__);
+    double a = get_number(args.at(2), __func__);
+    if (type == 1) {
+        mod->change_parameter(args.at(1), a);
+    } else {
+        variable_map.at(args.at(1)).res = a;
     }
 }
 
@@ -290,17 +304,6 @@ void Main::Div(const vstring &args) {
         mod->change_parameter(args.at(1), b);
     } else {
         variable_map.at(args.at(1)).res /= a;
-    }
-}
-
-void Main::Set(const vstring &args) {
-    check_arguments_number(true, 2, args.size(), __func__);
-    int type = check_var_existence(args.at(1), __func__);
-    double a = get_number(args.at(2), __func__);
-    if (type == 1) {
-        mod->change_parameter(args.at(1), a);
-    } else {
-        variable_map.at(args.at(1)).res = a;
     }
 }
 
@@ -360,7 +363,7 @@ void Main::CalcXsec(const vstring &args) {
 }
 
 void Main::CalcTac(const vstring &args) {
-    check_arguments_number(false, 4, args.size(), __func__);
+    check_arguments_number(false, 3, args.size(), __func__);
     ASSERT(start_point == (end_point - 1),
            "CalcTac can only be called for one point, not a range. "
                << "Please choose the same StartPoint and EndPoint")
@@ -385,6 +388,8 @@ void Main::CalcTac(const vstring &args) {
     for (size_t i = 4; i < args.size(); i++) {
         channel.push_back(args.at(i));
     }
+
+    if (args.size() == 4) channel = mod->get_all_channels();
 
     double step = (max_x - min_x) / ((double)points);
     ResError res;

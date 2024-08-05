@@ -72,6 +72,7 @@ class Model {
                           const bool load = true);
     size_t get_N_all_channels();
     vstring get_all_channels();
+    bool check_channel_existence(const std::string &channel);
     size_t get_N_initial_states();
     void get_channel_masses(double &m1, double &m2, double &m3, double &m4,
                             const std::string &channel);

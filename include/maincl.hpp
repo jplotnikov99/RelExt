@@ -76,6 +76,9 @@ class Main {
     void Def(const vstring &args);
 
     // args are: variable name, value (can be variable or number)
+    void Set(const vstring &args);
+
+    // args are: variable name, value (can be variable or number)
     void Add(const vstring &args);
 
     // args are: variable name, value (can be variable or number)
@@ -86,9 +89,6 @@ class Main {
 
     // args are: variable name, value (can be variable or number)
     void Div(const vstring &args);
-
-    // args are: variable name, value (can be variable or number)
-    void Set(const vstring &args);
 
     // args are: particle names of DS particles included in the thermal bath
     void ChangeThermalBath(const vstring &args);

@@ -39,6 +39,13 @@ size_t Model::get_N_all_channels() {
     return channelnames.size() - N_initial_states;
 }
 
+bool Model::check_channel_existence(const std::string &channel) {
+    for (auto it : channelnames) {
+        if(it == channel){return true;}
+    }
+    return false;
+}
+
 size_t Model::get_N_initial_states() { return N_initial_states; }
 
 void Model::get_channel_masses(double &m1, double &m2, double &m3, double &m4,
