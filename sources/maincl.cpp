@@ -487,6 +487,9 @@ void Main::SaveData(const vstring &args) {
         outfile << "Omega\tOmega_err";
 
         for (auto it : saved_pars) {
+            ASSERT(mod->check_par_existence(it),
+                   "Error in SaveData: "
+                       << it << " is not a valid parameter of the model")
             outfile << "\t" << it;
         }
         for (size_t i = 1; i < args.size(); i++) {
