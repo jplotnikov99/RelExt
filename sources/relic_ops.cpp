@@ -30,7 +30,6 @@ void RelicOps::set_par_bounds(const std::string par, const double a,
 ResError RelicOps::get_last_relic() { return omega; }
 
 ResError RelicOps::CalcRelic() {
-    mod->load_everything();
     if (!bs->sort_inimasses(bath_procs)) {
         bs->reset_tac_state(true);
         return {0., 0.};
@@ -270,6 +269,7 @@ ResError RelicOps::random_walk() {
                 i++;
             }
         }
+        mod->load_everything();
         om1 = CalcRelic().res;
         if (fabs(om1 - omega_target) >= fabs(om2 - omega_target) || om1 == 0.) {
             i *= 0;
@@ -289,6 +289,7 @@ ResError RelicOps::random_walk() {
         cur_steps++;
     } while (fabs(om1 - omega_target) > omega_err && (cur_steps < max_steps));
     std::cout << "Steps taken: " << cur_steps << std::endl;
+    mod->load_everything();
     return CalcRelic();
 }
 

@@ -6,7 +6,7 @@ Mode                |3
 InputFile           |micro_cxsm.csv
 OutputFile          |our_cxsm.csv
 StartPoint          |1
-EndPoint            |1000
+EndPoint            |
 SavedParameters     |MA1, MS1, svev, alpha
 ConsideredChannels  |
 SubtractChannels    |

@@ -98,6 +98,7 @@ void Main::check_start_end_points() {
 
 void Main::load_generation_file() {
     generator_list = rdr->get_generation_slist();
+    ASSERT(generator_list.size() != 0, "Error in Inputfile: It is empty")
     for (auto it : generator_list) {
         if (mode == 1) {
             ASSERT(it.size() == 4,
@@ -117,15 +118,19 @@ void Main::load_generation_file() {
 
 void Main::load_read_file() {
     size_t N_par_points = rdr->datalines();
+    ASSERT(
+        N_par_points > 1,
+        "It appears. Your InputFile is either empty or not correctly formatted")
 
     if ((end_point - 1) <= 0) end_point = N_par_points;
-    ASSERT((end_point - 1) >= start_point,
-           "StartPoint cannot be larger than EndPoint")
     if (end_point > N_par_points) {
         std::cout << "EndPoint is out of range and is set to"
                   << N_par_points - 1 << ".\n";
         end_point = N_par_points;
     }
+    ASSERT((end_point - 1) >= start_point,
+           "StartPoint cannot be larger than EndPoint")
+
     rdr->scanpars = rdr->assignHeaders(mod->parmap);
 }
 void Main::load_parameters(const size_t i) {
@@ -451,22 +456,24 @@ void Main::RandomWalk(const vstring &args) {
             double b = get_number(it.at(2), __func__);
             relops->set_par_bounds(it.at(0), a, b);
         }
-    }
-
-    for (size_t i = 4; i < args.size(); i++) {
-        double found = false;
-        for (auto it : generator_list) {
-            if (args.at(i) == it.at(0)) {
-                found = true;
-                double a = get_number(it.at(1), __func__);
-                double b = get_number(it.at(2), __func__);
-                relops->set_par_bounds(it.at(0), a, b);
-                break;
+    } else {
+        for (size_t i = 4; i < args.size(); i++) {
+            double found = false;
+            for (auto it : generator_list) {
+                if (args.at(i) == it.at(0)) {
+                    found = true;
+                    double a = get_number(it.at(1), __func__);
+                    double b = get_number(it.at(2), __func__);
+                    relops->set_par_bounds(it.at(0), a, b);
+                    break;
+                }
+                ASSERT(!found, "Error in "
+                                   << __func__ << ": " << args.at(i)
+                                   << " is not defined in the InputFile")
             }
         }
-        ASSERT(found, "Error in " << __func__ << ": " << args.at(i)
-                                  << " is not defined in the InputFile")
     }
+
     relops->set_mechanism(mechanism);
     relops->set_omega_target(om_target);
     relops->set_omega_err(om_err);
