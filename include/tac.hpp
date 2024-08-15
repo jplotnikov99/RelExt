@@ -29,7 +29,7 @@ class Tac {
     Tac(std::shared_ptr<Model> model);
 
     // sorts different channels by their total initial state masses
-    void sort_inimasses(const vstring &ch_str = {});
+    bool sort_inimasses(const vstring &ch_str = {});
 
     ResError eval(const double cos_t, const double s);
 

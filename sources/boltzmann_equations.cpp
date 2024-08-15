@@ -11,8 +11,8 @@ void Beqs::set_mechanism(const size_t &m) { mech = m; }
 
 void Beqs::reset_tac_state(const bool full) { tac->clear_state(full); }
 
-void Beqs::sort_inimasses(const vstring &ch_str) {
-    tac->sort_inimasses(ch_str);
+bool Beqs::sort_inimasses(const vstring &ch_str) {
+    return tac->sort_inimasses(ch_str);
 }
 
 double Beqs::pre(const double &x) {

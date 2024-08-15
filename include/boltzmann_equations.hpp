@@ -25,7 +25,7 @@ class Beqs {
     void reset_tac_state(const bool full);
 
     // sorts different channels by their total initial state masses
-    void sort_inimasses(const vstring &ch_str = {});
+    bool sort_inimasses(const vstring &ch_str = {});
 
     // prefactor of the boltzmann equation
     double pre(const double &x);

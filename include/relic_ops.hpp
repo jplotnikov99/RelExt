@@ -65,6 +65,8 @@ class RelicOps {
 
     double random_step(const std::string &par);
 
+    void same_step(const std::string &par, const double step);
+
     ResError random_walk();
 
     ~RelicOps() {};

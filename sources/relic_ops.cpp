@@ -30,7 +30,11 @@ void RelicOps::set_par_bounds(const std::string par, const double a,
 ResError RelicOps::get_last_relic() { return omega; }
 
 ResError RelicOps::CalcRelic() {
-    bs->sort_inimasses(bath_procs);
+    mod->load_everything();
+    if (!bs->sort_inimasses(bath_procs)) {
+        bs->reset_tac_state(true);
+        return {0., 0.};
+    }
     double x, xtoday;
     bool appr;
     ResError y{0., 0.};
@@ -57,7 +61,7 @@ ResError RelicOps::CalcRelic() {
             break;
     }
     y = bs->calc_yield(xtoday, x, y, appr);
-    // bs->adap_rk4(xtoday, x, y);
+    bs->reset_tac_state(true);
     omega = 2.742e8 * mod->MDM * y;
 
     return omega;
@@ -220,48 +224,72 @@ double RelicOps::random_step(const std::string &par) {
     double val = mod->get_parameter_val(par);
     double b1 = pars_bounds[par].first;
     double b2 = pars_bounds[par].second;
-    sign = generate_random(0, 2);
+    sign = (int)generate_random(0, 2);
     sign = (sign == 0) ? 1 : -1;
     rate = generate_random(0, random_walk_rate);
     val = val * (1 + (double)sign * rate);
-    if (val < b1) val = b1;
-    if (val > b2) val = b2;
-    return val;
+    if (val < b1) val = b1 * (1 - 0.01);
+    if (val > b2) val = b2 * (1 - 0.01);
+    mod->change_parameter(par, val, false);
+    return (double)sign * rate;
+}
+
+void RelicOps::same_step(const std::string &par, const double step) {
+    double val = mod->get_parameter_val(par);
+    double b1 = pars_bounds[par].first;
+    double b2 = pars_bounds[par].second;
+    val = val * (1 + step);
+    if (val < b1) val = b1 * (1 - 0.01);
+    if (val > b2) val = b2 * (1 - 0.01);
+    mod->change_parameter(par, val, false);
 }
 
 ResError RelicOps::random_walk() {
-    const size_t max_steps = 1000;
+    const size_t max_steps = 400;
     size_t cur_steps = 0;
-    double val;
+    bool is_step_good = false;
     double om1, om2;
     double saved_vals[pars_bounds.size()];
+    double current_step[pars_bounds.size()];
     size_t i = 0;
-    om1 = CalcRelic().res - omega_target;
-    omega_old = om1;
+    om1 = CalcRelic().res;
+    if (om1 == 0.) return {0., 0.};
     do {
         i *= 0;
         om2 = om1;
-        for (auto it : pars_bounds) {
-            saved_vals[i] = mod->get_parameter_val(it.first);
-            val = random_step(it.first);
-            mod->change_parameter(it.first, val, false);
-            i++;
-        }
-        mod->load_everything();
-        om1 = CalcRelic().res - omega_target;
-        if (fabs(om1) > fabs(om2)) {
-            i *= 0;
+        if (is_step_good) {
             for (auto it : pars_bounds) {
-                mod->change_parameter(it.first, saved_vals[i]);
+                saved_vals[i] = mod->get_parameter_val(it.first);
+                same_step(it.first, current_step[i]);
                 i++;
             }
-            om1 = om2;
+        } else {
+            for (auto it : pars_bounds) {
+                saved_vals[i] = mod->get_parameter_val(it.first);
+                current_step[i] = random_step(it.first);
+                i++;
+            }
         }
-        if ((cur_steps % 100) == 0) std::cout << cur_steps << "\n";
+        om1 = CalcRelic().res;
+        if (fabs(om1 - omega_target) >= fabs(om2 - omega_target) || om1 == 0.) {
+            i *= 0;
+            for (auto it : pars_bounds) {
+                mod->change_parameter(it.first, saved_vals[i], false);
+                i++;
+            }
+            is_step_good = false;
+            om1 = om2;
+        } else {
+            is_step_good = true;
+        }
+        if ((cur_steps % 100) == 0) {
+            std::cout << "Current Step: " << cur_steps << " Omega: " << om1
+                      << "\n";
+        }
         cur_steps++;
-    } while (fabs(om1) > omega_err && (cur_steps < max_steps));
+    } while (fabs(om1 - omega_target) > omega_err && (cur_steps < max_steps));
     std::cout << "Steps taken: " << cur_steps << std::endl;
-    return get_last_relic();
+    return CalcRelic();
 }
 
 }  // namespace DT

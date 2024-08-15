@@ -10,11 +10,15 @@ Tac::Tac(std::shared_ptr<Model> model) {
     }
 }
 
-void Tac::sort_inimasses(const vstring &ch_str) {
+bool Tac::sort_inimasses(const vstring &ch_str) {
+    bool res = true;
     for (auto it : ch_str) {
-        mod->assign_masses(m1, m2, it);
+        mod->set_channel(m1, m2, {it});
+        if (std::isnan(mod->eval(0.5, (m1 + m2) * (m1 + m2) * 2).res))
+            res = false;
         inimap[m1 + m2].push_back(it);
     }
+    return res;
 }
 
 ResError Tac::simpson38_adap_cos_t(const double l, const double r,

@@ -1,23 +1,25 @@
-########  Setting file for the CxSM model ########
+########  Setting file for the CPVDM model ########
 
 ######## Standard settings ########
 
-Mode                |3
-InputFile           |micro_cxsm.csv
-OutputFile          |our_cxsm.csv
+Mode                |2
+InputFile           |examples/cpvdm_example1.dat
+OutputFile          |our_cpvdm.csv
 StartPoint          |1
-EndPoint            |1000
-SavedParameters     |MA1, MS1, svev, alpha
+EndPoint            |300
+SavedParameters     |mH1, mH2, mHc, alph1, alph2, alph3, m22sq, mssq
 ConsideredChannels  |
 SubtractChannels    |
-NeglectParticles    |
+NeglectParticles    |u,d,e,mu
 ChannelContributions|1
 
 ######## Operations on scan ########
 START
 
-CalcRelic           |0
-SaveData            |
+Def                 |omega1, 0
+CalcRelic           |0, omega1
+RandomWalk          |0, 0.12, 0.001
+SaveData            |omega1 
 
 END
 ######## Advanced settings ########
@@ -33,4 +35,4 @@ DoPrEps             |1e-6
 VanguardStep        |0.5
 DescentRate         |0.1
 MaxBisections       |50
-RandomWalkRate      |0.01
+RandomWalkRate      |0.1

@@ -8,8 +8,8 @@ BeqSolver::BeqSolver(std::shared_ptr<Model> model) {
 
 void BeqSolver::set_mechanism(const size_t &mech) { beq->set_mechanism(mech); }
 
-void BeqSolver::sort_inimasses(const vstring &ch_str) {
-    beq->sort_inimasses(ch_str);
+bool BeqSolver::sort_inimasses(const vstring &ch_str) {
+    return beq->sort_inimasses(ch_str);
 }
 
 double BeqSolver::yeq(const double &x) { return beq->yeq(x); }
@@ -202,7 +202,11 @@ ResError BeqSolver::calc_yield(const double &xtoday, double &x, ResError &y,
     } else {
         y0 = y;
     }
-    beq->reset_tac_state(true);
     return y0;
 }
+
+void BeqSolver::reset_tac_state(const bool full){
+    beq->reset_tac_state(full);
+}
+
 }  // namespace DT

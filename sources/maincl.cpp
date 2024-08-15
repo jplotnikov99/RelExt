@@ -96,8 +96,6 @@ void Main::check_start_end_points() {
            "StartPoint cannot be larger than EndPoint")
 }
 
-void Main::load_par_file() { generator_list = rdr->get_generation_slist(); }
-
 void Main::load_generation_file() {
     generator_list = rdr->get_generation_slist();
     for (auto it : generator_list) {
@@ -442,12 +440,19 @@ void Main::FindParameter(const vstring &args) {
 }
 
 void Main::RandomWalk(const vstring &args) {
-    check_arguments_number(false, 4, args.size(), (std::string) __func__);
+    check_arguments_number(false, 3, args.size(), (std::string) __func__);
     size_t mechanism = get_number(args.at(1), __func__);
     double om_target = get_number(args.at(2), __func__);
     double om_err = get_number(args.at(3), __func__);
 
-    std::unordered_map<std::string, double[2]> region;
+    if (args.size() == 4) {
+        for (auto it : generator_list) {
+            double a = get_number(it.at(1), __func__);
+            double b = get_number(it.at(2), __func__);
+            relops->set_par_bounds(it.at(0), a, b);
+        }
+    }
+
     for (size_t i = 4; i < args.size(); i++) {
         double found = false;
         for (auto it : generator_list) {

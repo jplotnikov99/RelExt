@@ -44,8 +44,6 @@ class Main {
 
     void check_start_end_points();
 
-    void load_par_file();
-
     void load_generation_file();
 
     void load_read_file();
