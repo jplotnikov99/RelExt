@@ -273,8 +273,12 @@ double Width::partial_width(const ParticleType ptype1,
                                   (1 + (1 - tau) * pow(asin(1 / sqrt(tau)), 2));
                 AQ2 = AQ * AQ;
             }
-            return 4 * mh / (18 * M_PI * M_PI * M_PI) * (aS * aS) / tau * AQ2 *
-                   coupling * mt_pole * mt_pole / (m1 * m1);
+            double a = aS / M_PI;
+            double lt = log(mh * mh / (mt_pole * mt_pole));
+            return 2 * mh / (18 * M_PI * M_PI * M_PI) * (aS * aS) / tau * AQ2 *
+                   coupling * mt_pole * mt_pole / (m1 * m1) *
+                   (1 + 18.675 * a + (156.8 + 5.71 * lt) * a * a +
+                    (521.415 + 122.443 * lt + 10.955 * lt * lt) * a * a * a);
         } break;
 
         default:

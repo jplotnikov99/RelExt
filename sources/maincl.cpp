@@ -400,7 +400,7 @@ void Main::CalcTac(const vstring &args) {
     tac->sort_inimasses(channel);
     for (double i = min_x; i <= max_x; i += step) {
         res = tac->tac(i);
-        tar->save_data({"x", "tac", "error"}, {i, res.res, res.err});
+        tar->save_data({"x", "tac", "uncertainty"}, {i, res.res, res.err});
     }
 }
 
@@ -496,7 +496,7 @@ void Main::SaveData(const vstring &args) {
     outfile.seekp(0, std::ios::end);
 
     if (outfile.tellp() == 0) {
-        outfile << "Omega\tOmega_err";
+        outfile << "Omega\tOmega_uncer";
 
         for (auto it : saved_pars) {
             ASSERT(mod->check_par_existence(it),
