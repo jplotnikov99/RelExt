@@ -24,7 +24,8 @@ Main::Main(int argc, char **argv) {
     };
     operations_map["SaveData"] = [this](const vstring a) { this->SaveData(a); };
 
-    load_setting(std::string(argv[1]));
+    setting_file = std::string(argv[1]);
+    load_setting();
 
     mod = std::make_shared<Model>();
     mod->init();
@@ -58,8 +59,9 @@ Main::Main(int argc, char **argv) {
     set_channels();
 }
 
-void Main::load_setting(const std::string sg_file) {
-    std::unique_ptr<DataReader> sgr = std::make_unique<DataReader>(sg_file, 0);
+void Main::load_setting() {
+    std::unique_ptr<DataReader> sgr =
+        std::make_unique<DataReader>(setting_file, 0);
     // Standard settings
     mode = (size_t)sgr->get_val_of("Mode");
     input_file = sgr->get_name_of("InputFile");
@@ -77,10 +79,6 @@ void Main::load_setting(const std::string sg_file) {
     xtoday_FO = sgr->get_val_of("xTodayFO");
     xtoday_FI = sgr->get_val_of("xTodayFI");
     x_reheating = sgr->get_val_of("xReheating");
-    vanguard_step_size = sgr->get_val_of("VanguardStep");
-    descent_learning_rate = sgr->get_val_of("DescentRate");
-    max_N_bisections = sgr->get_val_of("MaxBisections");
-    random_walk_rate = sgr->get_val_of("RandomWalkRate");
     theta_eps = sgr->get_val_of("ThetaIntEps");
     peak_eps = sgr->get_val_of("PeakIntEps");
     gauss_kronrod_eps = sgr->get_val_of("sIntEps");
@@ -418,6 +416,13 @@ void Main::CalcRelic(const vstring &args) {
 }
 
 void Main::FindParameter(const vstring &args) {
+    if (first_run) {
+        std::unique_ptr<DataReader> sgr =
+            std::make_unique<DataReader>(setting_file, 0);
+        vanguard_step_size = sgr->get_val_of("VanguardStep");
+        descent_learning_rate = sgr->get_val_of("DescentRate");
+        max_N_bisections = sgr->get_val_of("MaxBisections");
+    }
     check_arguments_number(false, 4, args.size(), (std::string) __func__);
     check_var_existence(args.at(1), __func__);
     size_t mechanism = get_number(args.at(2), __func__);
@@ -445,6 +450,11 @@ void Main::FindParameter(const vstring &args) {
 }
 
 void Main::RandomWalk(const vstring &args) {
+    if (first_run) {
+        std::unique_ptr<DataReader> sgr =
+            std::make_unique<DataReader>(setting_file, 0);
+        random_walk_rate = sgr->get_val_of("RandomWalkRate");
+    }
     check_arguments_number(false, 3, args.size(), (std::string) __func__);
     size_t mechanism = get_number(args.at(1), __func__);
     double om_target = get_number(args.at(2), __func__);

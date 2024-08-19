@@ -18,6 +18,7 @@ class Main {
     size_t mode;
     std::string input_file;
     std::string output_file;
+    std::string setting_file;
     vstring bath_particles = {};
     vstring bath_procs = {};
     vstring considered_procs = {};
@@ -39,8 +40,7 @@ class Main {
     Main(int argc, char **argv);
 
     int start_point = 1, end_point = 0;
-
-    void load_setting(const std::string sg_file);
+    void load_setting();
 
     void check_start_end_points();
 
