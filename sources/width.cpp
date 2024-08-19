@@ -37,13 +37,17 @@ double Width::Delta_phi_mass(const double m) {
 
 double Width::gam_light(const double m, const double NF) {
     double a = aS / M_PI;
-    double beta = (1 - 4 * m * m / (mh * mh));
-    return beta * sqrt(beta) * mh * mh *
-           (1 + 4 / 3. * a * (Delta_phi(sqrt(beta)) + Delta_phi_mass(m)) +
-            (35.9399611978 - 1.35865070894 * NF) * a * a);
+    return mh * mh *
+           (1 + 17 / 3. * a +
+            (35.9399611978 - 1.35865070894 * NF + 1.57 -
+             4. / 3. * log(mh / mt_pole) + 2. / 9. * log(m / mh)) *
+                a * a +
+            (164.14 - 25.77 * NF + 0.259 * NF * NF) * a * a * a +
+            (39.34 - 220.9 * NF + 9.685 * NF * NF - 0.0205 * NF * NF * NF) * a *
+                a * a * a);
 }
 
-double Width::gam_heavy(const double m, const double m_pole) {
+double Width::gam_heavy(const double m_pole) {
     double a = aS / M_PI;
     double beta = 1 - 4 * m_pole * m_pole / (mh * mh);
     return beta * sqrt(beta) * mh * mh * m_pole * m_pole / (m1 * m1) *
@@ -180,7 +184,7 @@ double Width::partial_width(const ParticleType ptype1,
             if (mh > ms_pole + ms_pole) {
                 double beta_pole = (1 - 4 * ms_pole * ms_pole / (mh * mh));
                 double gamL = pre * coupling * gam_light(m1, 3.);
-                double gamH = pre * coupling * gam_heavy(m1, ms_pole);
+                double gamH = pre * coupling * gam_heavy(ms_pole);
                 return 6 * (beta_pole * gamL +
                             4 * ms_pole * ms_pole / (mh * mh) * gamH);
             } else {
@@ -191,7 +195,7 @@ double Width::partial_width(const ParticleType ptype1,
             if (mh > mc_pole + mc_pole) {
                 double beta_pole = (1 - 4 * mc_pole * mc_pole / (mh * mh));
                 double gamL = pre * coupling * gam_light(m1, 4.);
-                double gamH = pre * coupling * gam_heavy(m1, mc_pole);
+                double gamH = pre * coupling * gam_heavy(mc_pole);
                 return 6 * (beta_pole * gamL +
                             4 * mc_pole * mc_pole / (mh * mh) * gamH);
             } else {
@@ -202,7 +206,7 @@ double Width::partial_width(const ParticleType ptype1,
             if (mh > mb_pole + mb_pole) {
                 double beta_pole = (1 - 4 * mb_pole * mb_pole / (mh * mh));
                 double gamL = pre * coupling * gam_light(m1, 5.);
-                double gamH = pre * coupling * gam_heavy(m1, mb_pole);
+                double gamH = pre * coupling * gam_heavy(mb_pole);
                 return 6 * (beta_pole * gamL +
                             4 * mb_pole * mb_pole / (mh * mh) * gamH);
             } else {
@@ -213,7 +217,7 @@ double Width::partial_width(const ParticleType ptype1,
             if (mh > mt_pole + mt_pole) {
                 double beta_pole = (1 - 4 * mt_pole * mt_pole / (mh * mh));
                 double gamL = pre * coupling * gam_light(m1, 6.);
-                double gamH = pre * coupling * gam_heavy(m1, mt_pole);
+                double gamH = pre * coupling * gam_heavy(mt_pole);
                 return 6 * (beta_pole * gamL +
                             4 * mt_pole * mt_pole / (mh * mh) * gamH);
             } else {

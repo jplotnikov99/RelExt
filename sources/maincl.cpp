@@ -2,6 +2,8 @@
 
 namespace DT {
 Main::Main(int argc, char **argv) {
+    srand((unsigned)time(NULL));
+
     operations_map["Set"] = [this](const vstring a) { this->Set(a); };
     operations_map["Def"] = [this](const vstring a) { this->Def(a); };
     operations_map["Add"] = [this](const vstring a) { this->Add(a); };
@@ -111,7 +113,6 @@ void Main::load_generation_file() {
                "Error in InputFile: " << it.at(0)
                                       << " is not a valid external parameter")
     }
-    srand((unsigned)time(NULL));
 }
 
 void Main::load_read_file() {
