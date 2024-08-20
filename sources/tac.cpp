@@ -251,7 +251,8 @@ double Tac::kronrod_61(const double l, const double r, const double &x) {
 }
 
 ResError Tac::adap_gauss_kronrod(const double l, const double r,
-                                 const double &x, const double &est) {
+                                 const double &x, const double &est,
+                                 size_t depth) {
     ResError I1, I2, y[15];
     double h = (r - l) / 2;
     for (int i = 0; i < 15; i++) {
@@ -274,12 +275,13 @@ ResError Tac::adap_gauss_kronrod(const double l, const double r,
               0.381830050505118944950369775488975 * (y[5] + y[9]) +
               0.417959183673469387755102040816327 * y[7]);
     double err = fabs(I1.res - I2.res);
-    if (err < gauss_kronrod_eps * est) {
+    if ((err < gauss_kronrod_eps * est) || (depth > 18)) {
         I1.err += err;
         return I1;
     }
     double m = (2 * l + r) / 3;
-    return adap_gauss_kronrod(l, m, x, est) + adap_gauss_kronrod(m, r, x, est);
+    return adap_gauss_kronrod(l, m, x, est, depth + 1) +
+           adap_gauss_kronrod(m, r, x, est, depth + 1);
 }
 
 ResError Tac::integrate_peaks(const double &x) {

@@ -143,12 +143,20 @@ void Main::load_parameters(const size_t i) {
                     }
                 break;
             case 2:
-                double a, b;
-                for (auto it : generator_list) {
-                    a = get_number(it.at(1), __func__);
-                    b = get_number(it.at(2), __func__);
-                    *mod->parmap[it.at(0)] = generate_random(a, b);
+                if (first_run) {
+                    std::vector<double> lower, upper;
+                    double a, b;
+                    for (auto it : generator_list) {
+                        a = get_number(it.at(1), __func__);
+                        b = get_number(it.at(2), __func__);
+                        lower.push_back(a);
+                        upper.push_back(b);
+                        relops->set_par_bounds(it.at(0), a, b);
+                    }
+                    relops->init_montecarlo(generator_list.size(), 100, lower,
+                                            upper);
                 }
+                relops->generate_new_pars();
                 break;
             case 3:
                 rdr->read_parameter(i);
@@ -462,11 +470,6 @@ void Main::RandomWalk(const vstring &args) {
     double om_err = get_number(args.at(3), __func__);
 
     if (args.size() == 4) {
-        for (auto it : generator_list) {
-            double a = get_number(it.at(1), __func__);
-            double b = get_number(it.at(2), __func__);
-            relops->set_par_bounds(it.at(0), a, b);
-        }
     } else {
         for (size_t i = 4; i < args.size(); i++) {
             double found = false;

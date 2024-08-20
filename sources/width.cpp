@@ -24,10 +24,16 @@ double Width::A(const double x) {
 
 double Width::Delta_phi(const double x) {
     double x2 = x * x;
-    return A(x) / x +
-           (3 + 34 * x2 - 13 * x2 * x2) * log((1 + x) / (1 - x)) /
-               (16 * x * x2) +
-           21. / 8. - 3. / (8. * x2);
+    if (is_pseudo) {
+        return A(x) / x +
+               (19 + 2 * x2 + 3 * x2 * x2) * log((1 + x) / (1 - x)) / (16 * x) +
+               21. / 8. - 3. / (8. * x2);
+    } else {
+        return A(x) / x +
+               (3 + 34 * x2 - 13 * x2 * x2) * log((1 + x) / (1 - x)) /
+                   (16 * x * x2) +
+               21. / 8. - 3. / (8. * x2);
+    }
 }
 
 double Width::Delta_phi_mass(const double m) {
@@ -37,11 +43,13 @@ double Width::Delta_phi_mass(const double m) {
 
 double Width::gam_light(const double m, const double NF) {
     double a = aS / M_PI;
+    double delt = is_pseudo ? 3.83 - 2. * log(mh / mt_pole) +
+                                  4. / 6. * pow(log(m / mh), 2)
+                            : 1.57 - 4. / 3. * log(mh / mt_pole) +
+                                  4. / 9. * pow(log(m / mh), 2);
     return mh * mh *
            (1 + 17 / 3. * a +
-            (35.9399611978 - 1.35865070894 * NF + 1.57 -
-             4. / 3. * log(mh / mt_pole) + 2. / 9. * log(m / mh)) *
-                a * a +
+            (35.9399611978 - 1.35865070894 * NF + delt) * a * a +
             (164.14 - 25.77 * NF + 0.259 * NF * NF) * a * a * a +
             (39.34 - 220.9 * NF + 9.685 * NF * NF - 0.0205 * NF * NF * NF) * a *
                 a * a * a);
@@ -49,8 +57,9 @@ double Width::gam_light(const double m, const double NF) {
 
 double Width::gam_heavy(const double m_pole) {
     double a = aS / M_PI;
+    int p = is_pseudo ? 1 : 3;
     double beta = 1 - 4 * m_pole * m_pole / (mh * mh);
-    return beta * sqrt(beta) * mh * mh * m_pole * m_pole / (m1 * m1) *
+    return pow(sqrt(beta), p) * mh * mh * m_pole * m_pole / (m1 * m1) *
            (1 + 4 / 3. * a * Delta_phi(sqrt(beta)));
 }
 
@@ -175,7 +184,8 @@ double Width::partial_width(const ParticleType ptype1,
             break;
         case lepton + lepton:
             if (mh > m1 + m2) {
-                res *= 2 * (mh * mh - (m1 + m2) * (m1 + m2));
+                res *= is_pseudo ? 2 * mh * mh
+                                : 2 * (mh * mh - (m1 + m2) * (m1 + m2));
             } else {
                 return 0.;
             }
@@ -263,6 +273,7 @@ double Width::partial_width(const ParticleType ptype1,
             }
             break;
         case gluon + gluon: {
+            // TODO: Pseudoscalar case
             const double tau = 4 * mt_pole * mt_pole / (mh * mh);
             double AQ2;
             if (tau < 1) {

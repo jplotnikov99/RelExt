@@ -11,13 +11,7 @@ struct Average {
     double N;
 };
 
-Average operator+(const Average &a, const double b) {
-    Average res;
-    res.val = (a.val * a.N + b) / (a.N + 1);
-    res.N = a.N + 1;
-    return res;
-}
-
+Average operator+(const Average &a, const double b);
 typedef std::vector<double> dvec1;
 typedef std::vector<dvec1> dvec2;
 typedef std::vector<Average> avec1;
@@ -27,13 +21,17 @@ class MC {
    private:
     const size_t N_pars;
     const size_t N_bins;
+    const size_t begin;
+    const size_t best = 10;
+    size_t points = 0;
     dvec1 lbounds;
     dvec1 ubounds;
     avec2 weights;
 
    public:
-    MC(const size_t Np, const size_t Nb, const dvec1 &lower, const dvec1 &upper)
-        : N_pars(Np), N_bins(Nb) {
+    MC(const size_t Np, const size_t Nb, const size_t Bb, const dvec1 &lower,
+       const dvec1 &upper)
+        : N_pars(Np), N_bins(Nb), begin(Bb) {
         lbounds = lower;
         ubounds = upper;
         for (size_t i = 0; i < N_pars; i++) {
@@ -49,8 +47,10 @@ class MC {
 
     void set_weight(const dvec1 &pars, const double x);
 
-    dvec1 new_pars();
+    dvec1 generate_new_pars();
 
+    void print_grid_row(const size_t i);
+    void print_grid();
     ~MC() {};
 };
 }  // namespace DT
