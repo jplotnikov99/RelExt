@@ -1,6 +1,9 @@
 #pragma once
+#include <algorithm>
 #include <cmath>
+#include <fstream>
 #include <iostream>
+#include <sstream>
 #include <vector>
 
 #include "utils.hpp"
@@ -22,11 +25,13 @@ class MC {
     const size_t N_pars;
     const size_t N_bins;
     const size_t begin;
-    const size_t best = 10;
-    size_t points = 0;
+    const size_t N_best = 10;
+    double worst_bin = 2.;
+    std::string worst_bin_ID = "";
+    size_t points = 1;
     dvec1 lbounds;
     dvec1 ubounds;
-    avec2 weights;
+    std::unordered_map<std::string, Average> best_bins;
 
    public:
     MC(const size_t Np, const size_t Nb, const size_t Bb, const dvec1 &lower,
@@ -34,23 +39,21 @@ class MC {
         : N_pars(Np), N_bins(Nb), begin(Bb) {
         lbounds = lower;
         ubounds = upper;
-        for (size_t i = 0; i < N_pars; i++) {
-            weights.push_back({});
-            for (size_t j = 0; j < N_bins; j++) {
-                weights[i].push_back({0., 0.});
-            }
-        }
     };
 
-    // 2*(sigmoid(abs(x)) - 1/2) such that weights are only between 0 and 1
-    double sigmoid(const double x);
+    std::string bins_to_ID(const std::vector<int> &bins);
+
+    std::vector<int> ID_to_bins(const std::string &ID);
+
+    void add_to_best(const std::string &ID, const double x);
 
     void set_weight(const dvec1 &pars, const double x);
 
+    std::string get_random_bin_ID();
+
     dvec1 generate_new_pars();
 
-    void print_grid_row(const size_t i);
-    void print_grid();
+    void print_best();
     ~MC() {};
 };
 }  // namespace DT

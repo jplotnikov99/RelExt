@@ -64,8 +64,8 @@ void DataReader::rmv_spaces(std::string &str) {
 
 vstring DataReader::line_to_strings(const std::string line,
                                     const char delimiter) {
-    std::string temp;
     vstring res;
+    std::string temp;
     std::stringstream ss(line);
 
     while (getline(ss, temp, delimiter)) {

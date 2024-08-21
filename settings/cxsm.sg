@@ -2,15 +2,15 @@
 
 ######## Standard settings ########
 
-Mode                |3
-InputFile           |micro_cxsm.csv
+Mode                |2
+InputFile           |examples/cxsm_example1.dat
 OutputFile          |our_cxsm.csv
 StartPoint          |1
-EndPoint            |
-SavedParameters     |MA1, MS1, svev, alpha
+EndPoint            |10000
+SavedParameters     |MA1, MS1, alpha, svev
 ConsideredChannels  |
 SubtractChannels    |
-NeglectParticles    |
+NeglectParticles    |u,d,e,mu
 ChannelContributions|1
 
 ######## Operations on scan ########

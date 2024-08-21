@@ -79,8 +79,9 @@ ResError RelicOps::CalcRelic() {
     dvec1 par_vals;
     for (size_t i = 0; i < par_names.size(); i++)
         par_vals.push_back(mod->get_parameter_val(par_names[i]));
-
-    Mc->set_weight(par_vals, log(omega.res) - log(0.12));
+    double w =
+        omega.res > 0.12 ? pow(0.12 / omega.res, 2) : pow(omega.res / 0.12, 2);
+    Mc->set_weight(par_vals, w);
 
     return omega;
 }
