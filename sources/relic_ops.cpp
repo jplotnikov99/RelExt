@@ -8,7 +8,8 @@ RelicOps::RelicOps(std::shared_ptr<Model> model) {
 
 void RelicOps::init_montecarlo(const size_t N_pars, const size_t N_bins,
                                const dvec1 &lower, const dvec1 &upper) {
-    Mc = std::make_unique<MC>(N_pars, N_bins, 5000, lower, upper);
+    is_monte = true;
+    Mc = std::make_unique<MC>(N_pars, N_bins, 12000, lower, upper);
 }
 
 void RelicOps::generate_new_pars() {
@@ -76,13 +77,14 @@ ResError RelicOps::CalcRelic() {
     bs->reset_tac_state(true);
     omega = 2.742e8 * mod->MDM * y;
 
-    dvec1 par_vals;
-    for (size_t i = 0; i < par_names.size(); i++)
-        par_vals.push_back(mod->get_parameter_val(par_names[i]));
-    double w =
-        omega.res > 0.12 ? pow(0.12 / omega.res, 2) : pow(omega.res / 0.12, 2);
-    Mc->set_weight(par_vals, w);
-
+    if (is_monte) {
+        dvec1 par_vals;
+        for (size_t i = 0; i < par_names.size(); i++)
+            par_vals.push_back(mod->get_parameter_val(par_names[i]));
+        double w = omega.res > 0.12 ? pow(0.12 / omega.res, 2)
+                                    : pow(omega.res / 0.12, 2);
+        Mc->set_weight(par_vals, w);
+    }
     return omega;
 }
 

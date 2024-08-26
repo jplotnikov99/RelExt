@@ -29,6 +29,7 @@ class RelicOps {
     double bi_x1, bi_x2, bi_y1, bi_y2;
     std::shared_ptr<Model> mod;
     std::unique_ptr<BeqSolver> bs;
+    bool is_monte = false;
     std::unique_ptr<MC> Mc;
 
    public:

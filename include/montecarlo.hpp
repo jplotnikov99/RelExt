@@ -25,7 +25,7 @@ class MC {
     const size_t N_pars;
     const size_t N_bins;
     const size_t begin;
-    const size_t N_best = 10;
+    const size_t N_best = 100;
     double worst_bin = 2.;
     std::string worst_bin_ID = "";
     size_t points = 1;
