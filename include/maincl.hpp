@@ -112,7 +112,7 @@ class Main {
 
     void do_user_operations();
 
-    ~Main() {};
+    ~Main();
 };
 
 }  // namespace DT

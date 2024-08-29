@@ -153,7 +153,7 @@ void Main::load_parameters(const size_t i) {
                         upper.push_back(b);
                         relops->set_par_bounds(it.at(0), a, b);
                     }
-                    relops->init_montecarlo(generator_list.size(), 1000, lower,
+                    relops->init_montecarlo(generator_list.size(), 100, lower,
                                             upper);
                 }
                 relops->generate_new_pars();
@@ -553,4 +553,7 @@ void Main::do_user_operations() {
     }
     first_run = false;
 }
+
+Main::~Main() {}
+
 }  // namespace DT

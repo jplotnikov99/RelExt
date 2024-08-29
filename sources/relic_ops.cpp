@@ -9,7 +9,7 @@ RelicOps::RelicOps(std::shared_ptr<Model> model) {
 void RelicOps::init_montecarlo(const size_t N_pars, const size_t N_bins,
                                const dvec1 &lower, const dvec1 &upper) {
     is_monte = true;
-    Mc = std::make_unique<MC>(N_pars, N_bins, 12000, lower, upper);
+    Mc = std::make_unique<MC>(N_pars, N_bins, lower, upper);
 }
 
 void RelicOps::generate_new_pars() {

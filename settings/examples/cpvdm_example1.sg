@@ -6,7 +6,7 @@ Mode                |2
 InputFile           |examples/cpvdm_example1.dat
 OutputFile          |our_cpvdm.csv
 StartPoint          |1
-EndPoint            |300
+EndPoint            |100000
 SavedParameters     |mH1, mH2, mHc, alph1, alph2, alph3, m22sq, mssq
 ConsideredChannels  |
 SubtractChannels    |
@@ -16,10 +16,8 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
-Def                 |omega1, 0
-CalcRelic           |0, omega1
-RandomWalk          |0, 0.12, 0.001, mH1, mH2
-SaveData            |omega1 
+CalcRelic           |0
+SaveData            | 
 
 END
 ######## Advanced settings ########

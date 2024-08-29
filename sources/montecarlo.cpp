@@ -2,14 +2,20 @@
 
 namespace DT {
 
-Average operator+(const Average &a, const double b) {
-    Average res;
-    res.val = (a.val * a.N + b) / (a.N + 1);
-    res.N = a.N + 1;
+ivec1 MC::get_bins(const dvec1 &pars) {
+    ivec1 res;
+
+    // index = ceil((xi-x0)*Nb/(xf-xi)) - 1
+    for (size_t i = 0; i < N_pars; i++) {
+        res.push_back(ceil((pars.at(i) - lbounds[i]) * (double)N_bins /
+                           (ubounds[i] - lbounds[i])) -
+                      1);
+    }
+
     return res;
 }
 
-std::string MC::bins_to_ID(const std::vector<int> &bins) {
+std::string MC::bins_to_ID(const ivec1 &bins) {
     std::string res = "";
     std::string temp;
     for (size_t i = 0; i < bins.size() - 1; i++) {
@@ -19,8 +25,8 @@ std::string MC::bins_to_ID(const std::vector<int> &bins) {
     return res;
 }
 
-std::vector<int> MC::ID_to_bins(const std::string &ID) {
-    std::vector<int> res;
+ivec1 MC::ID_to_bins(const std::string &ID) {
+    ivec1 res;
     std::string temp;
     std::stringstream ss(ID);
 
@@ -32,73 +38,99 @@ std::vector<int> MC::ID_to_bins(const std::string &ID) {
     return res;
 }
 
-void MC::add_to_best(const std::string &ID, const double x) {
-    best_bins[ID] = best_bins[ID] + x;
-    if (best_bins[ID].val < worst_bin) {
-        worst_bin = best_bins[ID].val;
-        worst_bin_ID = ID;
+int MC::get_bin_distance(const ivec1 &a, const ivec1 &b) {
+    assert(a.size() == b.size());
+    int temp = 0, res = 0;
+    for (size_t i = 0; i < a.size(); i++) {
+        temp = std::abs(a[i] - b[i]);
+        if (temp > res) res = temp;
     }
+    return res;
+}
+
+int MC::get_bin_distance(const std::string &a, const std::string &b) {
+    ivec1 a1 = ID_to_bins(a), b1 = ID_to_bins(b);
+    assert(b1.size() == b1.size());
+    int temp = 0, res = 0;
+    for (size_t i = 0; i < a.size(); i++) {
+        temp = std::abs(a1[i] - b1[i]);
+        if (temp > res) res = temp;
+    }
+    return res;
+}
+
+bool MC::is_excluded(const ivec1 &bins) {
+    bool res;
+    ivec1 current;
+    for (auto it : excluded_bins) {
+        res = false;
+        current = ID_to_bins(it.first);
+        for (size_t i = 0; i < bins.size(); i++) {
+            if (std::abs(bins[i] - current[i]) > it.second) {
+                res = true;
+            }
+        }
+        if (!res) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void MC::set_weight(const dvec1 &pars, const double x) {
-    std::vector<int> bins;
-    std::string ID;
+    ivec1 bins = get_bins(pars);
+    std::string ID = bins_to_ID(bins);
 
-    // index = ceil((xi-x0)*Nb/(xf-xi)) - 1
-    for (size_t i = 0; i < N_pars; i++) {
-        bins.push_back(ceil((pars.at(i) - lbounds[i]) * (double)N_bins /
-                            (ubounds[i] - lbounds[i])) -
-                       1);
-    }
-    ID = bins_to_ID(bins);
-    if (best_bins.size() < N_best) {
-        add_to_best(ID, x);
-    } else if (best_bins.count(ID) != 0) {
-        add_to_best(ID, x);
+    if (best_bins.count(ID) != 0) {
+        best_bins[ID] = (best_bins[ID] > x) ? best_bins[ID] : x;
+    } else if (best_bins.size() < N_best) {
+        best_bins[ID] = x;
+        if (worst_bin > x) {
+            worst_bin = x;
+            worst_bin_ID = ID;
+        }
     } else if (x > worst_bin) {
         best_bins.erase(worst_bin_ID);
-        best_bins[ID] = {x, 1.};
+        best_bins[ID] = x;
         double new_worst = 2.;
         std::string new_worst_ID = "";
         for (auto it : best_bins) {
-            if (it.second.val < new_worst) {
-                new_worst = it.second.val;
+            if (it.second < new_worst) {
+                new_worst = it.second;
                 new_worst_ID = it.first;
             }
         }
         worst_bin = new_worst;
         worst_bin_ID = new_worst_ID;
+    } /* else if (excluded_bins.count(ID) == 0) {
+        double dev = std::abs(0.5 * log10(x));
+        if (dev > 1) {
+            int dis = 4 * dev;
+            excluded_bins[ID] = dis;
+        }
     }
+ */
     points++;
 }
 
 std::string MC::get_random_bin_ID() {
     std::string res;
-    double tot = 0., rand = 0.;
-    avec1 p;
+    dvec1 p;
     vstring IDs;
     for (auto it : best_bins) {
-        tot += it.second.val;
-        p.push_back(it.second);
         IDs.push_back(it.first);
     }
-    for (auto &it : p) it.val /= tot;
-    for (size_t j = 1; j < p.size(); j++) p[j].val += p[j - 1].val;
-    rand = generate_random(0., 1.);
-    for (size_t j = 0; j < p.size(); j++) {
-        if (rand < p[j].val) {
-            res = IDs[j];
-            break;
-        }
-    }
+    int rand = (int)generate_random(0., (double)N_best);
+    res = IDs[rand];
     return res;
 }
 
 dvec1 MC::generate_new_pars() {
     dvec1 res;
-    if (points >= begin) {
+    double rand = generate_random(0., 1.);
+    if ((best_bins.size() == N_best) && (points > 50000)) {
         std::string bin_ID = get_random_bin_ID();
-        std::vector<int> bins = ID_to_bins(bin_ID);
+        ivec1 bins = ID_to_bins(bin_ID);
         for (size_t i = 0; i < lbounds.size(); i++) {
             double dx = (ubounds[i] - lbounds[i]) / (double)N_bins;
             double a =
@@ -107,17 +139,20 @@ dvec1 MC::generate_new_pars() {
             res.push_back(a);
         }
     } else {
-        for (size_t i = 0; i < N_pars; i++) {
-            res.push_back(generate_random(lbounds[i], ubounds[i]));
-        }
+        ivec1 bins;
+        do {
+            res.clear();
+            for (size_t i = 0; i < N_pars; i++) {
+                res.push_back(generate_random(lbounds[i], ubounds[i]));
+            }
+            bins = get_bins(res);
+        } while (is_excluded(bins));
     }
-    if (points == 10000) print_best();
-
     return res;
 }
 
 void MC::print_best() {
     for (auto it : best_bins)
-        std::cout << it.first << "\t" << it.second.val << "\n";
+        std::cout << it.first << "\t" << it.second << "\n";
 }
 }  // namespace DT
