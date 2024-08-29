@@ -79,8 +79,6 @@ void Main::load_setting() {
     // Advanced settings
     beps_eps = log(sgr->get_val_of("BepsEps"));
     xtoday_FO = sgr->get_val_of("xTodayFO");
-    xtoday_FI = sgr->get_val_of("xTodayFI");
-    x_reheating = sgr->get_val_of("xReheating");
     theta_eps = sgr->get_val_of("ThetaIntEps");
     peak_eps = sgr->get_val_of("PeakIntEps");
     gauss_kronrod_eps = sgr->get_val_of("sIntEps");
