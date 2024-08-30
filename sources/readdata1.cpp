@@ -127,7 +127,7 @@ vstring DataReader::get_full_line(const std::string line) {
     return res;
 }
 
-std::vector<vstring> DataReader::get_operation_slist() {
+vvstring DataReader::get_operation_slist() {
     std::vector<vstring> res = {};
     vstring temp;
     std::string line;
@@ -227,17 +227,41 @@ void DataReader::read_parameter(const size_t row) {
     }
 }
 
-std::vector<vstring> DataReader::get_generation_slist() {
-    std::vector<vstring> res = {};
+vvstring DataReader::get_generation_slist() {
+    vvstring res = {};
     std::string line;
     vstring temp;
 
+    getline(datafile, line);
+    if (line.find("--- Bin Info ---") != std::string::npos) {
+        is_binned = true;
+        N_bins = (size_t)get_val_of("Bins");
+        line = get_line_at("--- Parameter Info ---");
+    } else {
+        datafile.clear();
+        datafile.seekg(0);
+    }
+
     while (getline(datafile, line)) {
+        if (line == "--- Best Bins ---") break;
         rmv_spaces(line);
         if (line != "") {
             temp = get_full_line(line);
             res.push_back(temp);
         }
+    }
+    return res;
+}
+
+std::unordered_map<std::string, double> DataReader::get_best_bins() {
+    std::unordered_map<std::string, double> res;
+    vstring temp;
+    std::string line;
+    line = get_line_at("--- Best Bins ---");
+    while (getline(datafile, line)) {
+        rmv_spaces(line);
+        temp = line_to_strings(line, '|');
+        res[temp[0]] = std::stod(temp[1]);
     }
     return res;
 }

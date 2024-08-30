@@ -7,8 +7,8 @@
 #include "beq_solver.hpp"
 #include "general_model.hpp"
 #include "hyper_parameters.hpp"
-#include "result_error_pair.hpp"
 #include "montecarlo.hpp"
+#include "result_error_pair.hpp"
 
 namespace DT {
 enum SearchMode { vanguard, bisect, descent, stop };
@@ -19,8 +19,7 @@ class RelicOps {
     double xinitial;
     double par_bounds[2] = {-1e100, 1e100};
     vstring par_names;
-    std::vector<std::pair<double,double>> bounds;
-    std::map<std::string, std::pair<double, double>> pars_bounds;
+    std::vector<std::pair<double, double>> bounds;
     ResError omega;
     bool first_step = true;
     SearchMode searchmode = vanguard;
@@ -35,7 +34,9 @@ class RelicOps {
    public:
     RelicOps(std::shared_ptr<Model> model);
 
-    void init_montecarlo(const size_t N_pars, const size_t N_bins, const dvec1 &lower, const dvec1 &upper);
+    void init_montecarlo(const size_t N_pars, const dvec1 &lower,
+                         const dvec1 &upper,
+                         std::unordered_map<std::string, double> best = {});
 
     void generate_new_pars();
 
@@ -77,6 +78,8 @@ class RelicOps {
     void same_step(const size_t par_i, const double step);
 
     ResError random_walk();
+
+    void save_best_bins(const std::string &filename);
 
     ~RelicOps() {};
 };

@@ -83,6 +83,12 @@ void Main::load_setting() {
     peak_eps = sgr->get_val_of("PeakIntEps");
     gauss_kronrod_eps = sgr->get_val_of("sIntEps");
     dopr_eps = sgr->get_val_of("DoPrEps");
+    N_bins = (size_t)sgr->get_val_of("Bins");
+    N_best = (size_t)sgr->get_val_of("BestBins");
+    p_random = sgr->get_val_of("Prandom");
+    descent_learning_rate = sgr->get_val_of("DescentRate");
+    max_N_bisections = sgr->get_val_of("MaxBisections");
+    random_walk_rate = sgr->get_val_of("RandomWalkRate");
 
     user_operations = sgr->get_operation_slist();
 }
@@ -151,8 +157,12 @@ void Main::load_parameters(const size_t i) {
                         upper.push_back(b);
                         relops->set_par_bounds(it.at(0), a, b);
                     }
-                    relops->init_montecarlo(generator_list.size(), 100, lower,
-                                            upper);
+                    std::unordered_map<std::string, double> best;
+                    if (rdr->is_binned) {
+                        best = rdr->get_best_bins();
+                    }
+                    relops->init_montecarlo(generator_list.size(), lower,
+                                            upper, best);
                 }
                 relops->generate_new_pars();
                 break;
@@ -552,6 +562,5 @@ void Main::do_user_operations() {
     first_run = false;
 }
 
-Main::~Main() {}
-
+Main::~Main() { relops->save_best_bins(output_file); }
 }  // namespace DT

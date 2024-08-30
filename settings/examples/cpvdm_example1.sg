@@ -3,8 +3,8 @@
 ######## Standard settings ########
 
 Mode                |2
-InputFile           |examples/cpvdm_example1.dat
-OutputFile          |our_cpvdm.csv
+InputFile           |bins_our_cpvdm.dat
+OutputFile          |our_cpvdm_binned.dat
 StartPoint          |1
 EndPoint            |100000
 SavedParameters     |mH1, mH2, mHc, alph1, alph2, alph3, m22sq, mssq
@@ -28,7 +28,10 @@ ThetaIntEps         |1e-6
 PeakIntEps          |1e-6
 sIntEps             |1e-6
 DoPrEps             |1e-6
+Bins                |500
+BestBins            |500
+Prandom             |0
 VanguardStep        |0.5
 DescentRate         |0.1
 MaxBisections       |50
-RandomWalkRate      |0.1
+RandomWalkRate      |0.01

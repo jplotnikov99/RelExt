@@ -6,10 +6,11 @@ RelicOps::RelicOps(std::shared_ptr<Model> model) {
     bs = std::make_unique<BeqSolver>(model);
 }
 
-void RelicOps::init_montecarlo(const size_t N_pars, const size_t N_bins,
-                               const dvec1 &lower, const dvec1 &upper) {
+void RelicOps::init_montecarlo(const size_t N_pars, const dvec1 &lower,
+                               const dvec1 &upper,
+                               std::unordered_map<std::string, double> best) {
     is_monte = true;
-    Mc = std::make_unique<MC>(N_pars, N_bins, lower, upper);
+    Mc = std::make_unique<MC>(N_pars, lower, upper, best);
 }
 
 void RelicOps::generate_new_pars() {
@@ -307,6 +308,10 @@ ResError RelicOps::random_walk() {
     std::cout << "Steps taken: " << cur_steps << std::endl;
     mod->load_everything();
     return CalcRelic();
+}
+
+void RelicOps::save_best_bins(const std::string &filename) {
+    Mc->save_best_bins(par_names, filename);
 }
 
 }  // namespace DT

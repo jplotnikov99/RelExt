@@ -7,6 +7,7 @@
 #include <sstream>
 #include <vector>
 
+#include "hyper_parameters.hpp"
 #include "utils.hpp"
 
 namespace DT {
@@ -18,8 +19,6 @@ typedef std::vector<dvec1> dvec2;
 class MC {
    private:
     const size_t N_pars;
-    const size_t N_bins;
-    const size_t N_best = 500;
     double worst_bin = 2.;
     std::string worst_bin_ID = "";
     size_t points = 1;
@@ -29,8 +28,10 @@ class MC {
     std::map<std::string, int> excluded_bins;
 
    public:
-    MC(const size_t Np, const size_t Nb, const dvec1 &lower, const dvec1 &upper)
-        : N_pars(Np), N_bins(Nb) {
+    MC(const size_t Np, const dvec1 &lower, const dvec1 &upper,
+       std::unordered_map<std::string, double> &best)
+        : N_pars(Np) {
+        best_bins = best;
         lbounds = lower;
         ubounds = upper;
     };
@@ -53,18 +54,10 @@ class MC {
 
     dvec1 generate_new_pars();
 
-    void print_best();
-    ~MC() {
-        std::string filesave = "../dataOutput/binout.txt";
-        std::ofstream outfile(filesave, std::ios::out | std::ios::app);
-        outfile.seekp(0, std::ios::end);
-        for (auto it : best_bins) {
-            ivec1 bins = ID_to_bins(it.first);
-            for (auto jt : bins) {
-                outfile << jt << "\t";
-            }
-            outfile << it.second << "\n";
-        }
-    };
+    void print_best_bins();
+
+    void save_best_bins(const vstring &par_names, const std::string &filename);
+
+    ~MC() {};
 };
 }  // namespace DT

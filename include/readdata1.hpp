@@ -20,6 +20,7 @@ class DataReader {
     std::string filename;
 
    public:
+    bool is_binned = false;
     std::vector<double *> scanpars;
 
     DataReader(const std::string file, const size_t mode);
@@ -31,10 +32,11 @@ class DataReader {
     std::string get_name_of(const std::string name);
     vstring get_slist_of(const std::string name);
     vstring get_full_line(const std::string line);
-    std::vector<vstring> get_operation_slist();
+    vvstring get_operation_slist();
+    std::unordered_map<std::string, double> get_best_bins();
     std::vector<double *> assignHeaders(std::map<std::string, double *> pars);
     void read_parameter(const size_t row);
-    std::vector<vstring> get_generation_slist();
+    vvstring get_generation_slist();
     void save_data(std::vector<std::string> yourheader,
                    std::vector<double> yourlist);
     ~DataReader();

@@ -128,7 +128,7 @@ std::string MC::get_random_bin_ID() {
 dvec1 MC::generate_new_pars() {
     dvec1 res;
     double rand = generate_random(0., 1.);
-    if ((best_bins.size() == N_best) && (points > 50000)) {
+    if ((best_bins.size() == N_best) && (rand > p_random)) {
         std::string bin_ID = get_random_bin_ID();
         ivec1 bins = ID_to_bins(bin_ID);
         for (size_t i = 0; i < lbounds.size(); i++) {
@@ -151,8 +151,26 @@ dvec1 MC::generate_new_pars() {
     return res;
 }
 
-void MC::print_best() {
+void MC::print_best_bins() {
     for (auto it : best_bins)
         std::cout << it.first << "\t" << it.second << "\n";
+}
+
+void MC::save_best_bins(const vstring &par_names, const std::string &filename) {
+    assert(par_names.size() == lbounds.size());
+    std::string filesave = "../dataOutput/bins_" + filename;
+    std::ofstream outfile(filesave);
+    outfile << "--- Bin Info ---\n";
+    outfile << "Bins    |" << N_bins << "\n";
+    outfile << "--- Parameter Info ---\n";
+    for (size_t i = 0; i < par_names.size(); i++) {
+        outfile << par_names[i] << "\t|" << lbounds[i] << "\t,\t" << ubounds[i]
+                << "\n";
+    }
+    outfile << "--- Best Bins ---\n";
+    for (auto it : best_bins) {
+        outfile << it.first << "|";
+        outfile << it.second << "\n";
+    }
 }
 }  // namespace DT
