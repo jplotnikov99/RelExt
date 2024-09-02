@@ -61,17 +61,17 @@ double DT::pQPQGG(const double &cos_t, const double &s){
 double DT::pQPQVEve(const double &cos_t, const double &s){
 	double t = (-s + cos_t*sqrt(s)*sqrt(s - 4* (MphiQ*MphiQ)))/2. +  (MphiQ*MphiQ);
 	double u = -s - t + MphiQ*MphiQ + MphiQ*MphiQ + 0*0 + 0*0;
-	return (-16* (token47*token47)* (token59*token59)* (token92*token92)* (token96*token96)*(4*s* (MphiQ*MphiQ) -  (s*s) +  ((t - u)*(t - u))))/(3.*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
+	return (-12* (token47*token47)* (token59*token59)* (token92*token92)* (token96*token96)*(4*s* (MphiQ*MphiQ) -  (s*s) +  ((t - u)*(t - u))))/( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ)));
 }
 double DT::pQPQVMvm(const double &cos_t, const double &s){
 	double t = (-s + cos_t*sqrt(s)*sqrt(s - 4* (MphiQ*MphiQ)))/2. +  (MphiQ*MphiQ);
 	double u = -s - t + MphiQ*MphiQ + MphiQ*MphiQ + 0*0 + 0*0;
-	return (-16* (token47*token47)* (token59*token59)* (token92*token92)* (token96*token96)*(4*s* (MphiQ*MphiQ) -  (s*s) +  ((t - u)*(t - u))))/(3.*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
+	return (-12* (token47*token47)* (token59*token59)* (token92*token92)* (token96*token96)*(4*s* (MphiQ*MphiQ) -  (s*s) +  ((t - u)*(t - u))))/( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ)));
 }
 double DT::pQPQVTvt(const double &cos_t, const double &s){
 	double t = (-s + cos_t*sqrt(s)*sqrt(s - 4* (MphiQ*MphiQ)))/2. +  (MphiQ*MphiQ);
 	double u = -s - t + MphiQ*MphiQ + MphiQ*MphiQ + 0*0 + 0*0;
-	return (-16* (token47*token47)* (token59*token59)* (token92*token92)* (token96*token96)*(4*s* (MphiQ*MphiQ) -  (s*s) +  ((t - u)*(t - u))))/(3.*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
+	return (-12* (token47*token47)* (token59*token59)* (token92*token92)* (token96*token96)*(4*s* (MphiQ*MphiQ) -  (s*s) +  ((t - u)*(t - u))))/( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ)));
 }
 double DT::pQPQEe(const double &cos_t, const double &s){
 	double t =  (Me*Me) + (-s + cos_t*sqrt(s - 4* (Me*Me))*sqrt(s - 4* (MphiQ*MphiQ)))/2. +  (MphiQ*MphiQ);

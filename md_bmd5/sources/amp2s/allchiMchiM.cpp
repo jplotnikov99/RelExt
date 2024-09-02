@@ -36,17 +36,17 @@ double DT::chiMCHIMwW(const double &cos_t, const double &s){
 double DT::chiMCHIMVEve(const double &cos_t, const double &s){
 	double t = (-s + cos_t*sqrt(s)*sqrt(s - 4* (MchiM*MchiM)))/2. +  (MchiM*MchiM);
 	double u = -s - t + MchiM*MchiM + MchiM*MchiM + 0*0 + 0*0;
-	return (64* (token19*token19)* (token47*token47)* (token53*token53)*(2*(s - t - u)* (MchiM*MchiM) + 2* (MchiM*MchiM*MchiM*MchiM) +  (t*t) +  (u*u)))/(9.* (token44*token44)* (token49*token49)* (token50*token50)*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
+	return (16* (token19*token19)* (token47*token47)* (token53*token53)*(2*(s - t - u)* (MchiM*MchiM) + 2* (MchiM*MchiM*MchiM*MchiM) +  (t*t) +  (u*u)))/( (token44*token44)* (token49*token49)* (token50*token50)*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
 }
 double DT::chiMCHIMVMvm(const double &cos_t, const double &s){
 	double t = (-s + cos_t*sqrt(s)*sqrt(s - 4* (MchiM*MchiM)))/2. +  (MchiM*MchiM);
 	double u = -s - t + MchiM*MchiM + MchiM*MchiM + 0*0 + 0*0;
-	return (64* (token19*token19)* (token47*token47)* (token53*token53)*(2*(s - t - u)* (MchiM*MchiM) + 2* (MchiM*MchiM*MchiM*MchiM) +  (t*t) +  (u*u)))/(9.* (token44*token44)* (token49*token49)* (token50*token50)*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
+	return (16* (token19*token19)* (token47*token47)* (token53*token53)*(2*(s - t - u)* (MchiM*MchiM) + 2* (MchiM*MchiM*MchiM*MchiM) +  (t*t) +  (u*u)))/( (token44*token44)* (token49*token49)* (token50*token50)*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
 }
 double DT::chiMCHIMVTvt(const double &cos_t, const double &s){
 	double t = (-s + cos_t*sqrt(s)*sqrt(s - 4* (MchiM*MchiM)))/2. +  (MchiM*MchiM);
 	double u = -s - t + MchiM*MchiM + MchiM*MchiM + 0*0 + 0*0;
-	return (64* (token19*token19)* (token47*token47)* (token53*token53)*(2*(s - t - u)* (MchiM*MchiM) + 2* (MchiM*MchiM*MchiM*MchiM) +  (t*t) +  (u*u)))/(9.* (token44*token44)* (token49*token49)* (token50*token50)*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
+	return (16* (token19*token19)* (token47*token47)* (token53*token53)*(2*(s - t - u)* (MchiM*MchiM) + 2* (MchiM*MchiM*MchiM*MchiM) +  (t*t) +  (u*u)))/( (token44*token44)* (token49*token49)* (token50*token50)*( (MZ*MZ*MZ*MZ) +  (s*s) +  (MZ*MZ)*(-2*s +  (WZ*WZ))));
 }
 double DT::chiMCHIMEe(const double &cos_t, const double &s){
 	double t =  (MchiM*MchiM) + (-s + cos_t*sqrt(s - 4* (MchiM*MchiM))*sqrt(s - 4* (Me*Me)))/2. +  (Me*Me);

@@ -17,7 +17,7 @@ double DT::S0S0wW(const double &cos_t, const double &s){
 double DT::S0S0VMvm(const double &cos_t, const double &s){
 	double t = (-s + cos_t*sqrt(s)*sqrt(s - 4* (MS0*MS0)))/2. +  (MS0*MS0);
 	double u = -s - t + MS0*MS0 + MS0*MS0 + 0*0 + 0*0;
-	return (-128*(t*u - (s + t + u)* (MS0*MS0) +  (MS0*MS0*MS0*MS0))* (token12*token12)* (token2*token2))/(9.*(-t +  (Mchi0*Mchi0))*(-u +  (Mchi0*Mchi0))) + (64*(t*u - (s + t + u)* (MS0*MS0) +  (MS0*MS0*MS0*MS0))* (token12*token12)* (token2*token2))/(9.* (( (Mchi0*Mchi0) - t)*( (Mchi0*Mchi0) - t))) + (64*(t*u - (s + t + u)* (MS0*MS0) +  (MS0*MS0*MS0*MS0))* (token12*token12)* (token2*token2))/(9.* (( (Mchi0*Mchi0) - u)*( (Mchi0*Mchi0) - u)));
+	return (-32*(t*u - (s + t + u)* (MS0*MS0) +  (MS0*MS0*MS0*MS0))* (token12*token12)* (token2*token2))/((-t +  (Mchi0*Mchi0))*(-u +  (Mchi0*Mchi0))) + (16*(t*u - (s + t + u)* (MS0*MS0) +  (MS0*MS0*MS0*MS0))* (token12*token12)* (token2*token2))/ (( (Mchi0*Mchi0) - t)*( (Mchi0*Mchi0) - t)) + (16*(t*u - (s + t + u)* (MS0*MS0) +  (MS0*MS0*MS0*MS0))* (token12*token12)* (token2*token2))/ (( (Mchi0*Mchi0) - u)*( (Mchi0*Mchi0) - u));
 }
 double DT::S0S0Ee(const double &cos_t, const double &s){
 	return (2*(s - 4* (Me*Me))* (token41*token41)* (token77*token77)* (token8*token8)* (token9*token9))/( (token10*token10)*( (MH*MH*MH*MH) +  (s*s) +  (MH*MH)*(-2*s +  (WH*WH))));

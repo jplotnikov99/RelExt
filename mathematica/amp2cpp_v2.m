@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_DDP/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_bmd5/FR_modfiles" <> "/FA_modfiles";*)
 (*directory = "/home/rodrigo/Downloads/darktree_new/md_bmd5/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
@@ -113,7 +113,7 @@ Block[{fac=1, str, type},
 	type=StringPart[str,1];
 	Which[
 			type==="V",
-			If[PossibleZeroQ[TheMass[str]],
+			If[PossibleZeroQ[TheMass[pID]],
 				fac=fac*2,(* 2 polarizations for massless vector bosons *)
 				fac=fac*3;(* 3 polarizations for massive vector bosons *)
 			],
@@ -393,29 +393,18 @@ determinefac[sts_, Nini_]:=
 Block[{fac=1,q1},
 	Do[
 		q1=StringPart[ToString[sts[[i1]]/.-x_:>x],1];
-		If[i1<=Nini,
-			(*If[StringContainsQ[q1,"Col"],fac=fac*3];*)(* 3 color degrees of freedom *)
-			Which[
-				q1==="V",
-				Continue[];
-				(*If[PossibleZeroQ[TheMass[sts[[i1]]]],
-					fac=fac*2,(* 2 polarizations for massless vector bosons *)
-					fac=fac*3;(* 3 polarizations for massive vector bosons *)
-				]*),
-				q1==="F",
-				fac=fac*3,(* revert 3 from DoPolarizationSums *)
-				(*fac=fac*2,(* spin degrees of freedom *)*)
-				q1==="S",
-				fac=fac*3;(* revert 3 from DoPolarizationSums *)
+		Which[
+			q1==="V",
+			Continue[],
+			q1==="F",
+			If[PossibleZeroQ[TheMass[sts[[i1]]]],
+				fac=fac*2,(* revert 2 from DoPolarizationSums *)
+				fac=fac*3; (* revert 3 from DoPolarizationSums*)
 			],
-			q1=StringPart[q1,1];
-			Which[
-				q1==="V",
-				Continue[],
-				q1==="F",
-				fac=fac*3,(* revert 3 from DoPolarizationSums *)
-				q1==="S",
-				fac=fac*3;(* revert 3 from DoPolarizationSums *)
+			q1==="S",
+			If[PossibleZeroQ[TheMass[sts[[i1]]]],
+				fac=fac*2,(* revert 2 from DoPolarizationSums *)
+				fac=fac*3; (* revert 3 from DoPolarizationSums*)
 			]
 		]
 	,{i1,Length[sts]}];
