@@ -7,8 +7,8 @@ Model::Model() {}
 void Model::load_everything() {
     load_parameters();
     assigndm();
-    calc_widths_and_scale();
-    load_parameters();
+    //calc_widths_and_scale();
+    //load_parameters();
     load_tokens();
 }
 

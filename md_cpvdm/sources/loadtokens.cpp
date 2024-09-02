@@ -63,11 +63,11 @@ namespace DT{
 		token55 = RR1x1*RR3x1 + RR1x2*RR3x2;
 		token56 = -(RR2x2*RR3x1) + RR2x1*RR3x2;
 		token57 = L3;
-		token58 = -0.5;
-		token59 = CW - SW;
-		token60 = CW + SW;
-		token61 = 1/sqrt(2);
-		token62 = sqrt(2);
+		token58 = CW - SW;
+		token59 = CW + SW;
+		token60 = -0.5;
+		token61 = sqrt(2);
+		token62 = 1/sqrt(2);
 		token63 = CKM1x1;
 		token64 = CKM1x2;
 		token65 = CKM1x3;

@@ -17,7 +17,6 @@ namespace DT{
 		parmap["alph3"] = &alph3;
 		parmap["mH1"] = &mH1;
 		parmap["mH2"] = &mH2;
-		parmap["mH3"] = &mH3;
 		parmap["m22sq"] = &m22sq;
 		parmap["mssq"] = &mssq;
 		parmap["L2"] = &L2;

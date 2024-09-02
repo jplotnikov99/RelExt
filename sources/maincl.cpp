@@ -161,8 +161,8 @@ void Main::load_parameters(const size_t i) {
                     if (rdr->is_binned) {
                         best = rdr->get_best_bins();
                     }
-                    relops->init_montecarlo(generator_list.size(), lower,
-                                            upper, best);
+                    relops->init_montecarlo(generator_list.size(), lower, upper,
+                                            best);
                 }
                 relops->generate_new_pars();
                 break;
@@ -562,5 +562,7 @@ void Main::do_user_operations() {
     first_run = false;
 }
 
-Main::~Main() { relops->save_best_bins(output_file); }
+Main::~Main() {
+    if (mode == 2) relops->save_best_bins(output_file);
+}
 }  // namespace DT

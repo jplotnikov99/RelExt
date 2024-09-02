@@ -4,7 +4,7 @@
 
 Mode                |3
 InputFile           |CPVDMTest.csv
-OutputFile          |our_cpvdm2.csv
+OutputFile          |our_cpvdm.csv
 StartPoint          |1
 EndPoint            |
 SavedParameters     |mH1, mH2, mHc
@@ -28,6 +28,9 @@ ThetaIntEps         |1e-6
 PeakIntEps          |1e-6
 sIntEps             |1e-6
 DoPrEps             |1e-6
+Bins                |500
+BestBins            |500
+Prandom             |0
 VanguardStep        |0.5
 DescentRate         |0.1
 MaxBisections       |50

@@ -3,10 +3,10 @@
 ######## Standard settings ########
 
 Mode                |2
-InputFile           |bins_our_cpvdm.dat
-OutputFile          |our_cpvdm_binned.dat
+InputFile           |bins_our_cpvdm_binned.dat
+OutputFile          |our_cpvdm_rwalk2.dat
 StartPoint          |1
-EndPoint            |100000
+EndPoint            |500
 SavedParameters     |mH1, mH2, mHc, alph1, alph2, alph3, m22sq, mssq
 ConsideredChannels  |
 SubtractChannels    |
@@ -16,7 +16,7 @@ ChannelContributions|1
 ######## Operations on scan ########
 START
 
-CalcRelic           |0
+RandomWalk          |0, 0.12, 0.002
 SaveData            | 
 
 END

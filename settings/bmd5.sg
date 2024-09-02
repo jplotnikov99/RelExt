@@ -2,11 +2,11 @@
 
 ######## Standard settings ########
 
-Mode                |2
+Mode                |1
 InputFile           |bmd5_scan.dat
 OutputFile          |bmd5_output.csv
 StartPoint          |1
-EndPoint            |10
+EndPoint            |1
 SavedParameters     |MS0, MA0, Mchi, lamHPL, lamHS, ymmD
 ConsideredChannels  |
 SubtractChannels    |
@@ -28,6 +28,9 @@ ThetaIntEps         |1e-6
 PeakIntEps          |1e-6
 sIntEps             |1e-6
 DoPrEps             |1e-6
+Bins                |500
+BestBins            |500
+Prandom             |0
 VanguardStep        |0.5
 DescentRate         |0.1
 MaxBisections       |50
