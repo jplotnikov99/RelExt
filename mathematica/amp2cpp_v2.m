@@ -102,12 +102,37 @@ Block[{},
 ]
 
 
+(*function to determine the degrees of freedom for a given particle*)
+determineDof[pID_]:=
+Block[{fac=1, str, type},
+	str=ToString[pID/.-x_:>x];
+	If[StringContainsQ[ToString[Indices[pID]],"Col"],fac=fac*3];
+	If[StringContainsQ[ToString[Indices[pID]],"Glu"],fac=fac*8];
+	If[StringContainsQ[ToString[Indices[pID]],"col"],fac=fac*3];
+	If[StringContainsQ[ToString[Indices[pID]],"glu"],fac=fac*8];
+	type=StringPart[str,1];
+	Which[
+			type==="V",
+			If[PossibleZeroQ[TheMass[str]],
+				fac=fac*2,(* 2 polarizations for massless vector bosons *)
+				fac=fac*3;(* 3 polarizations for massive vector bosons *)
+			],
+			type==="F",
+			fac=fac*2,(* spin degrees of freedom *)
+			type==="S",
+			fac=fac*1;(* scalar degrees of freedom*)
+		];
+	Return[fac];
+]
+
+
 (*create list with dark sector particles; labels of dark sector particles must have a tilde at the start in the FA mod files*)
 dslist={};
 For[i = 1, i <= Length[particlelist], i++, 
 	For[j=1, j<=Length[chmass],j++,If[ToString[particlelist[[i,2]]]==chmass[[j]],AppendTo[dslist,particlelist[[i,1]]]]]];
 dsmass=Table[TheMass[dslist[[i]]],{i,Length[dslist]}];(*masses of fields*)
 dsnames = Table[Select[particlelist, #[[1]]== dslist[[i]]&][[1,3]],{i,Length[dslist]}];(*name of fields*)
+dsDof=Table[determineDof[dslist[[i]]],{i,Length[dslist]}];
 
 
 (*list with every 2 to 2 tree-level process with dark sector particles in the initial state, and in the final state any particle*)
@@ -367,19 +392,19 @@ dl = Length[relevantWs]/2*3;
 determinefac[sts_, Nini_]:=
 Block[{fac=1,q1},
 	Do[
-		q1=ToString[sts[[i1]]/.-x_:>x];
+		q1=StringPart[ToString[sts[[i1]]/.-x_:>x],1];
 		If[i1<=Nini,
-			If[StringContainsQ[q1,"Col"],fac=fac*3];(* 3 color degrees of freedom *)
-			q1=StringPart[q1,1];
+			(*If[StringContainsQ[q1,"Col"],fac=fac*3];*)(* 3 color degrees of freedom *)
 			Which[
 				q1==="V",
-				If[PossibleZeroQ[TheMass[sts[[i1]]]],
+				Continue[];
+				(*If[PossibleZeroQ[TheMass[sts[[i1]]]],
 					fac=fac*2,(* 2 polarizations for massless vector bosons *)
 					fac=fac*3;(* 3 polarizations for massive vector bosons *)
-				],
+				]*),
 				q1==="F",
-				fac=fac*3;(* revert 3 from DoPolarizationSums *)
-				fac=fac*2,(* spin degrees of freedom *)
+				fac=fac*3,(* revert 3 from DoPolarizationSums *)
+				(*fac=fac*2,(* spin degrees of freedom *)*)
 				q1==="S",
 				fac=fac*3;(* revert 3 from DoPolarizationSums *)
 			],
@@ -695,22 +720,23 @@ Do[
 	
 	tamp2 = fastamp2[{1,1},decayslist[[i]]]; 
 	prefac=determinefac[foutlistDecays[[i]],1];
+	dof=determineDof[foutlistDecays[[i,1]]];
 	
 	Which[
 		TheMass[foutlistDecays[[i,2]]] === 0 && !PossibleZeroQ[TheMass[foutlistDecays[[i,3]]]],
-		sub=tamp2[[1]]/prefac// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
+		sub=tamp2[[1]]/prefac/dof// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
 		// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2,0] &// DoPolarizationSums[#, p3] & //DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify,
 		
 		!PossibleZeroQ[TheMass[foutlistDecays[[i,2]]]] && TheMass[foutlistDecays[[i,3]]] === 0, 
-		sub=tamp2[[1]]/prefac// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
+		sub=tamp2[[1]]/prefac/dof// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
 		// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2] &// DoPolarizationSums[#, p3,0] & //DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify,
 		
 		TheMass[foutlistDecays[[i,2]]] === 0 && TheMass[foutlistDecays[[i,3]]] === 0,
-		sub=tamp2[[1]]/prefac// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
+		sub=tamp2[[1]]/prefac/dof// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
 		// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2,0] &// DoPolarizationSums[#, p3,0] & //DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify,
 			
 		True,
-		sub=tamp2[[1]]/prefac// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
+		sub=tamp2[[1]]/prefac/dof// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
 		// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2] &// DoPolarizationSums[#, p3] & //DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify
 		];
 			
@@ -913,8 +939,8 @@ Do[
 	Write[sfile, "\t\tparticles[\"",ToString[dsnames[[i]]],"\"]=&",ToString[dsmass[[i]]],";"]
 ,{i,Length[dsmass]}]
 Do[
-	Write[sfile, "\t\tdsmasses.push_back(&", dsmass[[i]],");"];
-,{i,Length[dsmass]}]
+	Write[sfile, "\t\tdsDof[\"",ToString[dsnames[[i]]],"\"]=",ToString[dsDof[[i]]],";"]
+,{i,Length[dsnames]}]
 Do[
 	Write[sfile, "\t\tneutraldsmasses.push_back(&", neutraldsmasses[[i]],");"];
 ,{i,Length[neutraldsmasses]}]
@@ -926,7 +952,6 @@ Write[sfile, "\t\tADDCHANNEL(",ToString[processname[[i]]],", ",ToString[processn
 ,If[StringLength[ToString[ReplaceAll[mk[[i]],subrule]]]==1,StringReplace[ToString[ReplaceAll[mk[[i]],subrule]],"0"->"ZERO"],ToString[ReplaceAll[mk[[i]],subrule]]],
 ", ",If[StringLength[ToString[ReplaceAll[ml[[i]],subrule]]]==1,StringReplace[ToString[ReplaceAll[ml[[i]],subrule]],"0"->"ZERO"],ToString[ReplaceAll[ml[[i]],subrule]]],")"];
 ,{i,Length[processname]}]
-
 
 Do[
 	Write[sfile, "\t\tdenstructures.push_back(&", StringReplace[ToString[relevantWs[[i]]],{"FeynCalc`"->""}] ,");"];

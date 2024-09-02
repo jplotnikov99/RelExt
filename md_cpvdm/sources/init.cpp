@@ -12,11 +12,11 @@ namespace DT{
 		particles["H3"]=&mH3;
 		particles["Hc"]=&mHc;
 		particles["HC"]=&mHc;
-		dsmasses.push_back(&mH1);
-		dsmasses.push_back(&mH2);
-		dsmasses.push_back(&mH3);
-		dsmasses.push_back(&mHc);
-		dsmasses.push_back(&mHc);
+		dsDof["H1"]=1;
+		dsDof["H2"]=1;
+		dsDof["H3"]=1;
+		dsDof["Hc"]=1;
+		dsDof["HC"]=1;
 		neutraldsmasses.push_back(&mH1);
 		neutraldsmasses.push_back(&mH2);
 		neutraldsmasses.push_back(&mH3);

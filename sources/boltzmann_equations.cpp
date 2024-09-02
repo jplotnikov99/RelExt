@@ -41,13 +41,15 @@ double Beqs::yeq(const double &x) {
 
     if (x > 10) {
         for (auto it : mod->bath_masses) {
-            mtemp = *it;
-            yeq += pow(mtemp, 2) * a * besselK2(Tinv * mtemp);
+            mtemp = mod->the_mass(it);
+            yeq +=
+                mod->the_dof(it) * pow(mtemp, 2) * a * besselK2(Tinv * mtemp);
         }
     } else {
         for (auto it : mod->bath_masses) {
-            mtemp = *it;
-            yeq += pow(mtemp, 2) * a * std::cyl_bessel_k(2, Tinv * mtemp);
+            mtemp = mod->the_mass(it);
+            yeq += mod->the_dof(it) * pow(mtemp, 2) * a *
+                   std::cyl_bessel_k(2, Tinv * mtemp);
         }
     }
     yeq *= 45 * x * x / (4 * dof->heff(1 / Tinv) * M_PI * M_PI * M_PI * M_PI);

@@ -96,8 +96,8 @@ void Tac::calc_polK2(const double &x) {
     double mtemp, cur;
     polK2s.clear();
     for (auto it : mod->bath_masses) {
-        mtemp = *it;
-        cur = mtemp * mtemp * polK2(Tinv * mtemp);
+        mtemp = mod->the_mass(it);
+        cur = mod->the_dof(it) * mtemp * mtemp * polK2(Tinv * mtemp);
         polK2s.push_back(cur);
     }
 }
@@ -112,7 +112,7 @@ double Tac::lipsv(const double &s, const double &x) {
     if (x > 10) {
         num += Tinv * polK1(sqs * Tinv);
         for (size_t i = 0; i < mod->bath_masses.size(); i++) {
-            mtemp = *mod->bath_masses.at(i);
+            mtemp = mod->the_mass(mod->bath_masses[i]);
             den += exp(-Tinv * (mtemp - sqs / 2)) * polK2s.at(i);
         }
         den *= den;
@@ -123,7 +123,7 @@ double Tac::lipsv(const double &s, const double &x) {
             num += Tinv * std::cyl_bessel_k(1, sqs * Tinv);
         }
         for (auto it : mod->bath_masses) {
-            mtemp = *it;
+            mtemp = mod->the_mass(it);
             den += mtemp * mtemp * std::cyl_bessel_k(2, Tinv * mtemp);
         }
         den *= den;

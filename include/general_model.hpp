@@ -20,11 +20,6 @@ namespace DT {
     mass3s[#name] = &m3;                         \
     mass4s[#name] = &m4;
 
-#define ADDINITIALSTATE(name, m1, m2) \
-    inifuncs.push_back(name);         \
-    inimasses.push_back(&m1);         \
-    inimasses.push_back(&m2);
-
 typedef std::function<double(const double &, const double &)> f;
 typedef std::vector<f> vamp2;
 typedef std::unordered_map<std::string, f> fmap;
@@ -32,9 +27,8 @@ typedef std::unordered_map<std::string, f> fmap;
 class Model {
    private:
     std::unordered_map<std::string, double *> particles;
-    std::vector<double *> dsmasses;
+    std::unordered_map<std::string, double> dsDof;
     std::vector<double *> neutraldsmasses;
-    vamp2 inifuncs;
     fmap amp2s;
     fmap amp2fls;
     vstring channelnames;
@@ -54,7 +48,7 @@ class Model {
     size_t N_widths;
     std::map<std::string, double *> parmap;
     std::vector<double *> denstructures;
-    std::vector<double *> bath_masses;
+    vstring bath_masses;
     double MDM = 0.;
 
     Model();
@@ -66,6 +60,8 @@ class Model {
     void load_tokens();
     void load_everything();
 
+    double the_mass(const std::string &prtcl);
+    double the_dof(const std::string &prtcl);
     bool check_par_existence(const std::string par);
     double get_parameter_val(const std::string par);
     void change_parameter(const std::string par, const double newval,

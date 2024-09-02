@@ -328,7 +328,7 @@ C[ S[2] , S[2] , S[1] , S[1] ] == {{((-1/2*I)*Cos[alpha]*(svev*Cos[alpha]*(FCGV[
 
 C[ S[3] , -S[3] , S[1] , S[1] ] == {{((-1/2*I)*Cos[alpha]*(svev*Cos[alpha]*(FCGV["MH"]^2 + MS1^2 + (FCGV["MH"]^2 - MS1^2)*Cos[2*alpha]) + 2*(FCGV["MH"]^2 - MS1^2)*vev*Sin[alpha]^3))/(svev*vev^2), 0}},
 
-C[ S[4] , S[4] , S[4] ] == {{(((-9*I)/2)*MS1^2*vev*Cos[alpha] - ((3*I)/2)*MS1^2*vev*Cos[alpha]^3 + ((9*I)/2)*MS1^2*svev*Sin[alpha] - ((9*I)/2)*MS1^2*svev*Cos[alpha]^2*Sin[alpha] + ((9*I)/2)*MS1^2*vev*Cos[alpha]*Sin[alpha]^2 + ((3*I)/2)*MS1^2*svev*Sin[alpha]^3)/(2*svev*vev), 0}},
+C[ S[4] , S[4] , S[4] ] == {{(((-3*I)/4)*MS1^2*(3*vev*Cos[alpha] + vev*Cos[3*alpha] - 4*svev*Sin[alpha]^3))/(svev*vev), 0}},
 
 C[ S[1] , S[1] , S[1] ] == {{(((-3*I)/4)*FCGV["MH"]^2*(3*svev*Cos[alpha] + svev*Cos[3*alpha] + 4*vev*Sin[alpha]^3))/(svev*vev), 0}},
 

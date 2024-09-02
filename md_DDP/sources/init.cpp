@@ -11,10 +11,10 @@ namespace DT{
 		particles["A0"]=&MA0;
 		particles["Hch"]=&MHch;
 		particles["HCH"]=&MHch;
-		dsmasses.push_back(&MH3);
-		dsmasses.push_back(&MA0);
-		dsmasses.push_back(&MHch);
-		dsmasses.push_back(&MHch);
+		dsDof["H3"]=1;
+		dsDof["A0"]=1;
+		dsDof["Hch"]=1;
+		dsDof["HCH"]=1;
 		neutraldsmasses.push_back(&MH3);
 		neutraldsmasses.push_back(&MA0);
 		ADDCHANNEL(H3H3H1H1, H3H3H1H1fl, MH3, MH3, MH1, MH1)

@@ -8,7 +8,7 @@ namespace DT{
 	void Model::init()
 	{
 		particles["A1"]=&MA1;
-		dsmasses.push_back(&MA1);
+		dsDof["A1"]=1;
 		neutraldsmasses.push_back(&MA1);
 		ADDCHANNEL(A1A1HH, A1A1HHfl, MA1, MA1, MH, MH)
 		ADDCHANNEL(A1A1HS1, A1A1HS1fl, MA1, MA1, MH, MS1)

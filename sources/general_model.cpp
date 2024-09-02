@@ -7,9 +7,17 @@ Model::Model() {}
 void Model::load_everything() {
     load_parameters();
     assigndm();
-    //calc_widths_and_scale();
-    //load_parameters();
+    // calc_widths_and_scale();
+    // load_parameters();
     load_tokens();
+}
+
+double Model::the_mass(const std::string &prtcl){
+    return *particles[prtcl];
+}
+
+double Model::the_dof(const std::string &prtcl){
+    return dsDof[prtcl];
 }
 
 bool Model::check_par_existence(const std::string par) {
@@ -41,7 +49,9 @@ size_t Model::get_N_all_channels() {
 
 bool Model::check_channel_existence(const std::string &channel) {
     for (auto it : channelnames) {
-        if(it == channel){return true;}
+        if (it == channel) {
+            return true;
+        }
     }
     return false;
 }
@@ -59,10 +69,12 @@ void Model::get_channel_masses(double &m1, double &m2, double &m3, double &m4,
 void Model::assign_bath_masses(const vstring &prtcls) {
     bath_masses.clear();
     if (prtcls.size() == 0) {
-        bath_masses = dsmasses;
+        for (auto it : particles) {
+            bath_masses.push_back(it.first);
+        }
     } else {
         for (auto it : prtcls) {
-            bath_masses.push_back(particles[it]);
+            bath_masses = prtcls;
         }
     }
 }
@@ -111,8 +123,8 @@ void Model::assigndm() {
     MDM = 1e16;
 
     for (auto it : bath_masses) {
-        if (MDM > *it) {
-            MDM = *it;
+        if (MDM > the_mass(it)) {
+            MDM = the_mass(it);
         }
     }
 }
