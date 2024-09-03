@@ -20,29 +20,30 @@ namespace DT {
     mass3s[#name] = &m3;                         \
     mass4s[#name] = &m4;
 
+#define CHECKCONDITION(condition)                 \
+    condition_passed = condition ? true : false; \
+    if (!condition_passed) return false;
+
 typedef std::function<double(const double &, const double &)> f;
 typedef std::vector<f> vamp2;
 typedef std::unordered_map<std::string, f> fmap;
+typedef std::unordered_map<std::string, double *> sMapDp;
 
 class Model {
    private:
-    std::unordered_map<std::string, double *> particles;
+    sMapDp particles;
     std::unordered_map<std::string, double> dsDof;
     std::vector<double *> neutraldsmasses;
     fmap amp2s;
     fmap amp2fls;
     vstring channelnames;
-    std::unordered_map<std::string, double *> mass1s;
-    std::unordered_map<std::string, double *> mass2s;
-    std::unordered_map<std::string, double *> mass3s;
-    std::unordered_map<std::string, double *> mass4s;
-    std::vector<double *> inimasses;
-
+    sMapDp mass1s;
+    sMapDp mass2s;
+    sMapDp mass3s;
+    sMapDp mass4s;
     vamp2 cur_channel;
-    size_t N_cur;
-    size_t N_all_channels;
-    size_t N_initial_states;
     double ZERO = 0;
+    bool condition_passed;
 
    public:
     size_t N_widths;
@@ -58,18 +59,17 @@ class Model {
     void load_parameters();
     void load_parameter_map();
     void load_tokens();
-    void load_everything();
+    bool check_conditions();
 
+    bool load_everything();
     double the_mass(const std::string &prtcl);
     double the_dof(const std::string &prtcl);
     bool check_par_existence(const std::string par);
     double get_parameter_val(const std::string par);
     void change_parameter(const std::string par, const double newval,
                           const bool load = true);
-    size_t get_N_all_channels();
     vstring get_all_channels();
     bool check_channel_existence(const std::string &channel);
-    size_t get_N_initial_states();
     void get_channel_masses(double &m1, double &m2, double &m3, double &m4,
                             const std::string &channel);
     vstring find_channels_by_particle(const std::string &particle);

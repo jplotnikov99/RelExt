@@ -4,21 +4,18 @@ namespace DT {
 
 Model::Model() {}
 
-void Model::load_everything() {
+bool Model::load_everything() {
     load_parameters();
     assigndm();
-    // calc_widths_and_scale();
-    // load_parameters();
+    calc_widths_and_scale();
+    load_parameters();
     load_tokens();
+    return check_conditions();
 }
 
-double Model::the_mass(const std::string &prtcl){
-    return *particles[prtcl];
-}
+double Model::the_mass(const std::string &prtcl) { return *particles[prtcl]; }
 
-double Model::the_dof(const std::string &prtcl){
-    return dsDof[prtcl];
-}
+double Model::the_dof(const std::string &prtcl) { return dsDof[prtcl]; }
 
 bool Model::check_par_existence(const std::string par) {
     if (parmap.find(par) == parmap.end()) return false;
@@ -32,20 +29,10 @@ double Model::get_parameter_val(const std::string par) {
 void Model::change_parameter(const std::string par, const double newval,
                              const bool load) {
     *parmap[par] = newval;
-    if (load) {
-        load_parameters();
-        assigndm();
-        calc_widths_and_scale();
-        load_parameters();
-        load_tokens();
-    }
+    if (load) load_everything();
 }
 
 vstring Model::get_all_channels() { return channelnames; }
-
-size_t Model::get_N_all_channels() {
-    return channelnames.size() - N_initial_states;
-}
 
 bool Model::check_channel_existence(const std::string &channel) {
     for (auto it : channelnames) {
@@ -55,8 +42,6 @@ bool Model::check_channel_existence(const std::string &channel) {
     }
     return false;
 }
-
-size_t Model::get_N_initial_states() { return N_initial_states; }
 
 void Model::get_channel_masses(double &m1, double &m2, double &m3, double &m4,
                                const std::string &channel) {
@@ -153,7 +138,6 @@ void Model::set_channel(double &m1, double &m2, const vstring &ch_str,
             cur_channel.push_back(amp2s[it]);
         }
     }
-    N_cur = cur_channel.size();
 }
 
 ResError Model::eval(const double cos_t, const double s) {

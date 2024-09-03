@@ -227,7 +227,7 @@ ResError Tac::simpson38_adap_peak(const double l, const double r,
     double m = (l + r) / 2;
     ResError I1 = simpson38_peak(l, m, x), I2 = simpson38_peak(m, r, x);
     ResError I = I1 + I2;
-    if ((fabs(I.res / ans.res - 1) < peak_eps) || (depth == 20)) {
+    if ((fabs(I.res / ans.res - 1) < peak_eps) || (depth == 18)) {
         I.err += fabs(I.res - ans.res);
         return I;
     }

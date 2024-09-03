@@ -137,8 +137,23 @@ void Main::load_read_file() {
     rdr->scanpars = rdr->assignHeaders(mod->parmap);
 }
 void Main::load_parameters(const size_t i) {
-    std::cout << "Parameter point: " << i << std::endl;
-    if (input_file != "") {
+    if (mode == 2 && first_run) {
+        std::vector<double> lower, upper;
+        double a, b;
+        for (auto it : generator_list) {
+            a = get_number(it.at(1), __func__);
+            b = get_number(it.at(2), __func__);
+            lower.push_back(a);
+            upper.push_back(b);
+            relops->set_par_bounds(it.at(0), a, b);
+        }
+        std::unordered_map<std::string, double> best;
+        if (rdr->is_binned) {
+            best = rdr->get_best_bins();
+        }
+        relops->init_montecarlo(generator_list.size(), lower, upper, best);
+    }
+    do {
         switch (mode) {
             case 1:
                 if (first_run)
@@ -147,23 +162,6 @@ void Main::load_parameters(const size_t i) {
                     }
                 break;
             case 2:
-                if (first_run) {
-                    std::vector<double> lower, upper;
-                    double a, b;
-                    for (auto it : generator_list) {
-                        a = get_number(it.at(1), __func__);
-                        b = get_number(it.at(2), __func__);
-                        lower.push_back(a);
-                        upper.push_back(b);
-                        relops->set_par_bounds(it.at(0), a, b);
-                    }
-                    std::unordered_map<std::string, double> best;
-                    if (rdr->is_binned) {
-                        best = rdr->get_best_bins();
-                    }
-                    relops->init_montecarlo(generator_list.size(), lower, upper,
-                                            best);
-                }
                 relops->generate_new_pars();
                 break;
             case 3:
@@ -172,8 +170,8 @@ void Main::load_parameters(const size_t i) {
             default:
                 break;
         }
-    }
-    mod->load_everything();
+    } while (!mod->load_everything());
+    std::cout << "Parameter point: " << i << std::endl;
 }
 
 void Main::def_thermal_bath() {

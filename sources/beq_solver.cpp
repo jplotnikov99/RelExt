@@ -74,6 +74,7 @@ double BeqSolver::dopr5(double &x, ResError &y, const double &h) {
             e6 * k6.res + e7 * k7.res);
 }
 double BeqSolver::controller(const double &hnow, const double &err) {
+    static const double minh = 1e-4;
     double hnext;
     if (err > 1) {
         hnext = 0.9 * 1 / (sqrt(sqrt(err))) * hnow;
@@ -86,6 +87,10 @@ double BeqSolver::controller(const double &hnow, const double &err) {
         } else {
             hnext = 5 * hnow;
         }
+    }
+    if (hnext < minh) {
+        std::cout << "Min step reached in DoPr54.\n";
+        hnext = minh;
     }
     return hnext;
 }
@@ -205,8 +210,6 @@ ResError BeqSolver::calc_yield(const double &xtoday, double &x, ResError &y,
     return y0;
 }
 
-void BeqSolver::reset_tac_state(const bool full){
-    beq->reset_tac_state(full);
-}
+void BeqSolver::reset_tac_state(const bool full) { beq->reset_tac_state(full); }
 
 }  // namespace DT
