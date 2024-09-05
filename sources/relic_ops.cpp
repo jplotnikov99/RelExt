@@ -17,7 +17,9 @@ void RelicOps::generate_new_pars() {
     dvec1 new_pars = Mc->generate_new_pars();
     for (size_t i = 0; i < par_names.size(); i++) {
         mod->change_parameter(par_names[i], new_pars[i]);
+        std::cout << par_names[i] << ": " << new_pars[i] << "\n";
     }
+    std::cout << "\n";
 }
 
 void RelicOps::set_bath_procs(const vstring &b) { bath_procs = b; }

@@ -74,7 +74,6 @@ double BeqSolver::dopr5(double &x, ResError &y, const double &h) {
             e6 * k6.res + e7 * k7.res);
 }
 double BeqSolver::controller(const double &hnow, const double &err) {
-    static const double minh = 1e-4;
     double hnext;
     if (err > 1) {
         hnext = 0.9 * 1 / (sqrt(sqrt(err))) * hnow;
@@ -87,10 +86,6 @@ double BeqSolver::controller(const double &hnow, const double &err) {
         } else {
             hnext = 5 * hnow;
         }
-    }
-    if (hnext < minh) {
-        std::cout << "Min step reached in DoPr54.\n";
-        hnext = minh;
     }
     return hnext;
 }
@@ -135,9 +130,14 @@ void BeqSolver::adap_dopr5(const double &xtoday, double &x, ResError &y,
     double errest = fabs(dopr5(x, y, h));
     double err = errest / std::max(ysave.res, y.res) / dopr_eps;
     h = controller(h, err);
-    if (x + h == x) {
+    /* if (x + h == x) {
         printf("Stepsize too small. Stiff system suspected.\n");
         exit(1);
+    } */
+    if (h < 1e-6) {
+        h = 1e-6;
+        y.err += errest;
+        adap_dopr5(xtoday, x, y, h);
     } else if (err > 1) {
         x = xsave;
         y = ysave;
@@ -145,9 +145,10 @@ void BeqSolver::adap_dopr5(const double &xtoday, double &x, ResError &y,
     } else if (x + h > xtoday) {
         h = xtoday - x;
         dopr5(x, y, h);
-    } else if ((y.res > 10. * beq->yeq(x)) && FOapprox) {
+    } /* else if ((y.res > 10. * beq->yeq(x)) && FOapprox) {
         y.err += errest;
-    } else {
+    } */
+    else {
         y.err += errest;
         adap_dopr5(xtoday, x, y, h);
     }

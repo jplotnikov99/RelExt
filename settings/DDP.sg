@@ -3,7 +3,7 @@
 ######## Standard settings ########
 
 Mode                |3
-InputFile           |ddp.csv
+InputFile           |micro_ddp.csv
 OutputFile          |our_ddp.csv
 StartPoint          |1
 EndPoint            |

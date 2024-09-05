@@ -11,14 +11,14 @@ Tac::Tac(std::shared_ptr<Model> model) {
 }
 
 bool Tac::sort_inimasses(const vstring &ch_str) {
-    bool res = true;
+    double temp;
     for (auto it : ch_str) {
         mod->set_channel(m1, m2, {it});
-        if (std::isnan(mod->eval(0.5, (m1 + m2) * (m1 + m2) * 2).res))
-            res = false;
+        temp = mod->eval(0.5, (m1 + m2) * (m1 + m2) * 100).res;
+        if (std::isnan(temp)) return false;
         inimap[m1 + m2].push_back(it);
     }
-    return res;
+    return true;
 }
 
 ResError Tac::simpson38_adap_cos_t(const double l, const double r,
@@ -275,7 +275,7 @@ ResError Tac::adap_gauss_kronrod(const double l, const double r,
               0.381830050505118944950369775488975 * (y[5] + y[9]) +
               0.417959183673469387755102040816327 * y[7]);
     double err = fabs(I1.res - I2.res);
-    if ((err < gauss_kronrod_eps * est) || (depth > 18)) {
+    if ((err < gauss_kronrod_eps * fabs(est)) || (depth > 18)) {
         I1.err += err;
         return I1;
     }
