@@ -29,7 +29,9 @@ class BeqSolver {
     double yeq(const double &x);
 
     // secant method implementation to find a root between x1 and x2
-    double secant_method(double x0, double x1);
+    double secant_method(double x0, double x1, const double del);
+
+    double bisec(double x1, double x2, const double del);
 
     double dopr5(double &x, ResError &y, const double &h);
 

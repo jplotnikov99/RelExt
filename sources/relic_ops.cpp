@@ -57,8 +57,13 @@ ResError RelicOps::CalcRelic() {
 
     switch (mechanism) {
         case 0:
-            x = bs->secant_method(15., 15.1);
-            y.res = 1.1 * bs->yeq(x);
+            x = bs->bisec(5., 50., 1.);
+            //x = bs->secant_method(15.,15.1,0.1);
+            if (x == 0) {
+                bs->reset_tac_state(true);
+                return {0., 0.};
+            }
+            y.res = 2. * bs->yeq(x);
             xinitial = x;
             xtoday = xtoday_FO;
             appr = false;

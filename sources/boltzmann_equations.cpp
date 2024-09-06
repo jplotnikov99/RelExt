@@ -9,7 +9,9 @@ Beqs::Beqs(std::shared_ptr<Model> model) {
 
 void Beqs::set_mechanism(const size_t &m) { mech = m; }
 
-void Beqs::reset_tac_state(const bool full) { tac->clear_state(full); }
+void Beqs::reset_tac_state(const bool full) {
+    tac->clear_state(full);
+}
 
 bool Beqs::sort_inimasses(const vstring &ch_str) {
     return tac->sort_inimasses(ch_str);
@@ -54,6 +56,15 @@ double Beqs::yeq(const double &x) {
     }
     yeq *= 45 * x * x / (4 * dof->heff(1 / Tinv) * M_PI * M_PI * M_PI * M_PI);
     return yeq;
+}
+
+double Beqs::dlogyeq(const double x) {
+    static const double h = 0.0001;
+    return (log(yeq(x + h)) - log(yeq(x - h))) / (2. * h);
+}
+
+ResError Beqs::fout_condition(const double x, const double del) {
+    return pre(x) * tac->tac(x) * yeq(x) * del * (del + 2) + dlogyeq(x);
 }
 
 double Beqs::fstart(double x) {

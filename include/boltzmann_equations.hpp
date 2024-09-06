@@ -41,6 +41,10 @@ class Beqs {
 
     double yeq(const double &x);
 
+    double dlogyeq(const double x);
+
+    ResError fout_condition(const double x, const double del);
+
     // function to help find the starting point to be used in the runge Kutta
     // routine
     double fstart(double x);

@@ -14,7 +14,7 @@ bool BeqSolver::sort_inimasses(const vstring &ch_str) {
 
 double BeqSolver::yeq(const double &x) { return beq->yeq(x); }
 
-double BeqSolver::secant_method(double x0, double x1) {
+double BeqSolver::secant_method(double x0, double x1, const double del) {
     // Initialize the number of iterations
     int iterations = 0;
     double x2;
@@ -27,7 +27,6 @@ double BeqSolver::secant_method(double x0, double x1) {
         y1 = beq->fstart(x1);
 
         x2 = x1 - (x1 - x0) * y1 / (y1 - y0);
-
         // Update the values of x0, x1 and y0
         x0 = x1;
         x1 = x2;
@@ -39,6 +38,20 @@ double BeqSolver::secant_method(double x0, double x1) {
 
     // Return the root of the function
     return x2;
+}
+
+double BeqSolver::bisec(double x1, double x2, const double del) {
+    double dx, xmid, rtb;
+    double f = beq->fout_condition(x1, del).res;
+    double fmid = beq->fout_condition(x2, del).res;
+    if(f*fmid >= 0.) return 0.;
+    rtb = f < 0. ? (dx = x2 - x1, x1) : (dx = x1 - x2, x2);
+    for (size_t i = 0; i < 100; i++) {
+        fmid = beq->fout_condition(xmid = rtb + (dx *= 0.5), del).res;
+        if (fmid <= 0.) rtb = xmid;
+        if (fabs(dx) < secant_eps) return rtb;
+    }
+    return rtb;
 }
 
 double BeqSolver::dopr5(double &x, ResError &y, const double &h) {
@@ -201,11 +214,11 @@ ResError BeqSolver::calc_yield(const double &xtoday, double &x, ResError &y,
                                const bool appr) {
     FOapprox = appr;
     ResError y0;
-    adap_dopr5(xtoday, x, y);
     if (appr) {
         y0 = 1 / y - icoll(x, xtoday);
         y0 = 1 / y0;
     } else {
+        adap_dopr5(xtoday, x, y);
         y0 = y;
     }
     return y0;
