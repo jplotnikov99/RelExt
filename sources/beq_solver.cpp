@@ -44,7 +44,7 @@ double BeqSolver::bisec(double x1, double x2, const double del) {
     double dx, xmid, rtb;
     double f = beq->fout_condition(x1, del).res;
     double fmid = beq->fout_condition(x2, del).res;
-    if(f*fmid >= 0.) return 0.;
+    if (f * fmid >= 0.) return 0.;
     rtb = f < 0. ? (dx = x2 - x1, x1) : (dx = x1 - x2, x2);
     for (size_t i = 0; i < 100; i++) {
         fmid = beq->fout_condition(xmid = rtb + (dx *= 0.5), del).res;
@@ -167,6 +167,22 @@ void BeqSolver::adap_dopr5(const double &xtoday, double &x, ResError &y,
     }
 }
 
+double BeqSolver::kronrod_61(const double l, const double r) {
+    double m = 0.5 * (r + l);
+    double h = 0.5 * (r - l);
+
+    double res = 0;
+    for (size_t i = 0; i < 30; i++) {
+        double dx = h * kronx_61[i];
+        res +=
+            wkron_61[i] * (beq->pre_tac(m + dx).res + beq->pre_tac(m - dx).res);
+    }
+    res += wkron_61[30] * (beq->pre_tac(m).res);
+    res *= h;
+
+    return res;
+}
+
 ResError BeqSolver::adap_simpson38(const double l, const double r, ResError *y,
                                    const double &est) {
     ResError I1, I2, I3, y1[4];
@@ -195,19 +211,17 @@ ResError BeqSolver::icoll(const double xf, const double x0) {
     ResError f[4];
     double f_est[10], f_err[10];
     double h = (x0 - xf) / 9;
-    for (size_t i = 0; i < 10; i++) {
-        f[0] = beq->pre_tac(xf + h * (double)i);
-        f_est[i] = f[0].res;
-        f_err[i] = f[0].err;
+    for (size_t i = 0; i < 4; i++) {
+        f[i] = beq->pre_tac(xf + h * (double)(i * 3));
     }
-    double est = simpson_est(xf, x0, f_est);
+    double est = kronrod_61(xf, xf + (x0 - xf) * 1e-3);
+    est += kronrod_61(xf + (x0 - xf) * 1e-3, x0);
+    return {est, 0.};
+    if (est == 0.) return {0., 0.};
 
-    f[0] = {f_est[0], f_err[0]};
-    f[1] = {f_est[3], f_err[3]};
-    f[2] = {f_est[6], f_err[6]};
-    f[3] = {f_est[9], f_err[9]};
-
-    return adap_simpson38(xf, x0, f, est);
+    ResError res = adap_simpson38(xf, x0, f, est);
+    std::cout << est / res.res << "\n";
+    return res;
 }
 
 ResError BeqSolver::calc_yield(const double &xtoday, double &x, ResError &y,

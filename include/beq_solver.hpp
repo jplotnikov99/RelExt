@@ -42,6 +42,8 @@ class BeqSolver {
     void adap_dopr5(const double &xtoday, double &x, ResError &y,
                     double h = 1e-3);
 
+    double kronrod_61(const double l, const double r);
+
     ResError adap_simpson38(const double l, const double r, ResError *y,
                             const double &est);
 

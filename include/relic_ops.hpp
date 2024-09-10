@@ -52,10 +52,14 @@ class RelicOps {
 
     void set_par_bounds(const std::string par, const double a, const double b);
 
-    ResError get_last_relic();
+    ResError calc_omega(const ResError yield);
 
     // calculates the relic density for a specific mechanism
     ResError CalcRelic();
+
+    ResError get_last_relic();
+
+    dvec1 calc_channel_contributions(double contrib);
 
     double get_next_step(const double &x1, const double &x2, const double &y1,
                          const double &y2, const double &ytarget);

@@ -428,6 +428,8 @@ void Main::CalcRelic(const vstring &args) {
         check_var_existence(args.at(2), __func__);
         variable_map.at(args.at(2)) = omega;
     }
+    if (channel_contrib != 1.)
+        channel_percent = relops->calc_channel_contributions(channel_contrib);
 }
 
 void Main::FindParameter(const vstring &args) {
@@ -462,6 +464,8 @@ void Main::FindParameter(const vstring &args) {
         check_var_existence(args.at(5), __func__);
         variable_map.at(args.at(5)) = omega;
     }
+    if (channel_contrib != 1.)
+        channel_percent = relops->calc_channel_contributions(channel_contrib);
 }
 
 void Main::RandomWalk(const vstring &args) {
@@ -500,6 +504,8 @@ void Main::RandomWalk(const vstring &args) {
 
     omega = relops->random_walk();
     std::cout << "Omega full:\n" << omega << "\n\n";
+    if (channel_contrib != 1.)
+        channel_percent = relops->calc_channel_contributions(channel_contrib);
 }
 
 void Main::SaveData(const vstring &args) {
@@ -528,6 +534,11 @@ void Main::SaveData(const vstring &args) {
             get_number(args.at(i), __func__);
             outfile << "\t" << args.at(i);
         }
+        if (channel_contrib != 1.) {
+            for (auto it : bath_procs) {
+                outfile << "\t" << it;
+            }
+        }
         outfile << "\n";
     }
 
@@ -538,6 +549,9 @@ void Main::SaveData(const vstring &args) {
     }
     for (size_t i = 1; i < args.size(); i++) {
         outfile << "\t" << variable_map.at(args.at(i)).res;
+    }
+    for (auto it : channel_percent) {
+        outfile << "\t" << it;
     }
     outfile << "\n";
 

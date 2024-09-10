@@ -27,6 +27,7 @@ class Main {
     vstring saved_pars = {};
     bool first_run = true;
     double channel_contrib = 1.;
+    dvec1 channel_percent;
     std::unordered_map<std::string, std::function<void(const vstring)>>
         operations_map;
     std::unordered_map<std::string, ResError> variable_map;

@@ -332,8 +332,8 @@ void Tac::integrate_s(const double &x, ResError &res, double &estimate) {
                                          boundaries.at(3 * i - 1), x, estimate);
         }
     } else {
-        res = res + adap_gauss_kronrod(0, 1e-10, x, estimate);
-        res = res + adap_gauss_kronrod(1e-10, 1e-3, x, estimate);
+        //res = res + adap_gauss_kronrod(0, 1e-10, x, estimate);
+        res = res + adap_gauss_kronrod(0, 1e-3, x, estimate);
         res = res + adap_gauss_kronrod(1e-3, 1, x, estimate);
     }
 }
@@ -358,11 +358,6 @@ ResError Tac::tac(const double &x) {
                 set_boundaries(x);
                 integrate_s(x, res, estimate);
             }
-        }
-        if ((fabs(res.err / res.res) > 1e-1) && (!tac_error_reached)) {
-            tac_error_reached = true;
-            std::cout << "Result and error are of the same order in the TAC.\n";
-            std::cout << x << " " << res << std::endl;
         }
         tac_x[x] = res;
         return res;

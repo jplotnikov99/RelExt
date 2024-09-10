@@ -44,7 +44,9 @@ void RelicOps::set_par_bounds(const std::string par, const double a,
     bounds.push_back(std::make_pair(a, b));
 }
 
-ResError RelicOps::get_last_relic() { return omega; }
+ResError RelicOps::calc_omega(const ResError yield) {
+    return 2.742e8 * mod->MDM * yield;
+}
 
 ResError RelicOps::CalcRelic() {
     if (!bs->sort_inimasses(bath_procs)) {
@@ -57,16 +59,16 @@ ResError RelicOps::CalcRelic() {
 
     switch (mechanism) {
         case 0:
-            x = bs->bisec(5., 50., 1.);
-            //x = bs->secant_method(15.,15.1,0.1);
+            x = bs->bisec(5., 50., 1.5);
+            // x = bs->secant_method(15.,15.1,0.1);
             if (x == 0) {
                 bs->reset_tac_state(true);
                 return {0., 0.};
             }
-            y.res = 2. * bs->yeq(x);
+            y.res = 2.5 * bs->yeq(x);
             xinitial = x;
             xtoday = xtoday_FO;
-            appr = false;
+            appr = true;
             break;
         case 1:
             x = x_reheating;
@@ -83,7 +85,7 @@ ResError RelicOps::CalcRelic() {
     }
     y = bs->calc_yield(xtoday, x, y, appr);
     bs->reset_tac_state(true);
-    omega = 2.742e8 * mod->MDM * y;
+    omega = calc_omega(y);
 
     if (is_monte) {
         dvec1 par_vals;
@@ -94,6 +96,27 @@ ResError RelicOps::CalcRelic() {
         Mc->set_weight(par_vals, w);
     }
     return omega;
+}
+
+ResError RelicOps::get_last_relic() { return omega; }
+
+dvec1 RelicOps::calc_channel_contributions(double contrib) {
+    if (contrib > 1 || contrib < 0) contrib = 0.01;
+    dvec1 res;
+    double om;
+    double sum = 0.;
+    for (auto it : bath_procs) {
+        bs->sort_inimasses({it});
+        om = calc_omega(-1 / bs->icoll(xinitial, xtoday_FO)).res;
+        res.push_back(1 / om);
+        sum += 1 / om;
+        bs->reset_tac_state(true);
+    }
+    for (auto &it : res) {
+        it /= sum;
+        if (it < contrib) it = 0;
+    }
+    return res;
 }
 
 double RelicOps::get_next_step(const double &x1, const double &x2,
