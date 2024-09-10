@@ -332,7 +332,7 @@ void Tac::integrate_s(const double &x, ResError &res, double &estimate) {
                                          boundaries.at(3 * i - 1), x, estimate);
         }
     } else {
-        //res = res + adap_gauss_kronrod(0, 1e-10, x, estimate);
+        // res = res + adap_gauss_kronrod(0, 1e-10, x, estimate);
         res = res + adap_gauss_kronrod(0, 1e-3, x, estimate);
         res = res + adap_gauss_kronrod(1e-3, 1, x, estimate);
     }
@@ -341,34 +341,28 @@ void Tac::integrate_s(const double &x, ResError &res, double &estimate) {
 ResError Tac::tac(const double &x) {
     ResError res{0., 0.};
     double estimate = 0.;
-    if (tac_x.count(x) == 0) {
-        calc_polK2(x);
-        for (auto &it : inimap) {
-            mod->set_channel(m1, m2, it.second);
-            lower_bound = (m1 + m2) * (m1 + m2);
-            if (beps(x)) {
-                set_boundaries(x);
-                estimate_integrate_s(x, res, estimate);
-            }
+    calc_polK2(x);
+    for (auto &it : inimap) {
+        mod->set_channel(m1, m2, it.second);
+        lower_bound = (m1 + m2) * (m1 + m2);
+        if (beps(x)) {
+            set_boundaries(x);
+            estimate_integrate_s(x, res, estimate);
         }
-        for (auto &it : inimap) {
-            mod->set_channel(m1, m2, it.second);
-            lower_bound = (m1 + m2) * (m1 + m2);
-            if (beps(x)) {
-                set_boundaries(x);
-                integrate_s(x, res, estimate);
-            }
-        }
-        tac_x[x] = res;
-        return res;
-    } else {
-        return tac_x.at(x);
     }
+    for (auto &it : inimap) {
+        mod->set_channel(m1, m2, it.second);
+        lower_bound = (m1 + m2) * (m1 + m2);
+        if (beps(x)) {
+            set_boundaries(x);
+            integrate_s(x, res, estimate);
+        }
+    }
+    return res;
 }
 
 void Tac::clear_state(const bool full) {
     tac_error_reached = false;
-    tac_x.clear();
     sig_s.clear();
     if (full) inimap.clear();
 }

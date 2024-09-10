@@ -21,7 +21,6 @@ class Tac {
     std::vector<double> boundaries;
     std::vector<double> polK2s;
     std::unordered_map<double, ResError> sig_s;
-    std::unordered_map<double, ResError> tac_x;
     std::map<double, vstring> inimap;
     std::map<double, vstring>::iterator ini_it;
 
