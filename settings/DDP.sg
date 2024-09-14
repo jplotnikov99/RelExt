@@ -12,6 +12,7 @@ ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |
 ChannelContributions|1
+Fast                |1
 
 ######## Operations on scan ########
 START

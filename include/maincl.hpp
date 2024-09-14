@@ -19,11 +19,6 @@ class Main {
     std::string input_file;
     std::string output_file;
     std::string setting_file;
-    vstring bath_particles = {};
-    vstring bath_procs = {};
-    vstring considered_procs = {};
-    vstring subtracted_procs = {};
-    vstring neglected_particles = {};
     vstring saved_pars = {};
     bool first_run = true;
     double channel_contrib = 1.;
@@ -34,6 +29,7 @@ class Main {
     vvstring user_operations;
     vvstring generator_list;
     std::unique_ptr<DataReader> rdr;
+    std::unique_ptr<DataReader> sgr;
     std::shared_ptr<Model> mod;
     std::unique_ptr<RelicOps> relops;
 
@@ -58,13 +54,13 @@ class Main {
     double get_parameter_val(const std::string &par);
 
     // defines which particles are in the DS bath via the particle names
-    void def_thermal_bath();
+    vstring def_thermal_bath(const vstring bath_particles = {});
 
     // sets the channels which contribute to the relic density
-    void set_channels();
+    void set_channels(vstring bath_procs);
 
     // checks if the thermal bath particles and the input channels match
-    void check_procs(const vstring &ch_str);
+    void check_procs(const vstring &ch_str, const vstring &bath_procs);
 
     int check_var_existence(const std::string &var,
                             const std::string func = "");

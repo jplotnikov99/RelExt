@@ -4,14 +4,15 @@
 
 Mode                |2
 InputFile           |../dataOutput/bins_cpvdm_random.dat
-OutputFile          |cpvdm_randomwalk.dat
+OutputFile          |cpvdm_best_cells_rwalk.dat
 StartPoint          |1
-EndPoint            |1000
+EndPoint            |1e4
 SavedParameters     |mH1, mH2, mHc, alph1, alph2, alph3, m22sq, mssq
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |u,d,e,mu
 ChannelContributions|1
+Fast                |1
 
 ######## Operations on scan ########
 START
@@ -26,10 +27,10 @@ BepsEps             |1e-6
 xTodayFO            |1e6
 ThetaIntEps         |1e-6
 PeakIntEps          |1e-6
-sIntEps             |1e-6
+sIntEps             |1e-4
 DoPrEps             |1e-6
 Bins                |500
-BestBins            |500
+BestBins            |1000
 Prandom             |0
 VanguardStep        |0.5
 DescentRate         |0.1

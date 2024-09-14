@@ -35,7 +35,7 @@ class Tac {
     // adaptive simpson
     ResError simpson38_adap_cos_t(const double l, const double r,
                                   const double &s, ResError *f,
-                                  const double &est);
+                                  const double &est, const size_t depth = 0);
 
     ResError xsec(const double &s, const std::string &channel);
 

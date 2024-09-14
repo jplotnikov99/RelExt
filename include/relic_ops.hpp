@@ -16,6 +16,7 @@ class RelicOps {
    private:
     vstring bath_procs;
     size_t mechanism;
+    bool fast = true;
     double xinitial;
     double par_bounds[2] = {-1e100, 1e100};
     vstring par_names;
@@ -41,6 +42,10 @@ class RelicOps {
     void generate_new_pars();
 
     void set_bath_procs(const vstring &b);
+
+    void set_fast(const bool f);
+
+    vstring get_bath_procs();
 
     void set_mechanism(const size_t mech);
 

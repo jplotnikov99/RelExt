@@ -23,7 +23,7 @@ bool Tac::sort_inimasses(const vstring &ch_str) {
 
 ResError Tac::simpson38_adap_cos_t(const double l, const double r,
                                    const double &s, ResError *f,
-                                   const double &est) {
+                                   const double &est, const size_t depth) {
     ResError I1, I2, I3, f1[4];
     double m = (r + l) / 2.;
     double h = (r - l) / 8.;
@@ -39,12 +39,12 @@ ResError Tac::simpson38_adap_cos_t(const double l, const double r,
     I2 = h / 2 * (f1[0] + 3 * f1[1] + 3 * f1[2] + f1[3]);
     I3 = I1 + I2;
 
-    if (fabs(I.res - I3.res) < theta_eps * fabs(est)) {
+    if (fabs(I.res - I3.res) < theta_eps * fabs(est) || (depth > 10)) {
         I3.err = fabs(I.res - I3.res);
         return I3;
     }
-    return simpson38_adap_cos_t(l, m, s, f, est) +
-           simpson38_adap_cos_t(m, r, s, f1, est);
+    return simpson38_adap_cos_t(l, m, s, f, est, depth + 1) +
+           simpson38_adap_cos_t(m, r, s, f1, est, depth + 1);
 }
 
 ResError Tac::xsec(const double &s, const std::string &channel) {
@@ -313,8 +313,8 @@ void Tac::estimate_integrate_s(const double &x, ResError &res,
         estimate += (kronrod_61(0, boundaries.at(3 * N_relevant_peaks - 1), x) +
                      kronrod_61(boundaries.at(0), 1, x));
     } else {
-        estimate += kronrod_61(0, 1e-10, x);
-        estimate += kronrod_61(1e-10, 1e-3, x);
+        estimate += kronrod_61(0, 1e-6, x);
+        estimate += kronrod_61(1e-6, 1e-3, x);
         estimate += kronrod_61(1e-3, 1, x);
     }
 }
@@ -332,7 +332,6 @@ void Tac::integrate_s(const double &x, ResError &res, double &estimate) {
                                          boundaries.at(3 * i - 1), x, estimate);
         }
     } else {
-        // res = res + adap_gauss_kronrod(0, 1e-10, x, estimate);
         res = res + adap_gauss_kronrod(0, 1e-3, x, estimate);
         res = res + adap_gauss_kronrod(1e-3, 1, x, estimate);
     }

@@ -17,12 +17,14 @@ void RelicOps::generate_new_pars() {
     dvec1 new_pars = Mc->generate_new_pars();
     for (size_t i = 0; i < par_names.size(); i++) {
         mod->change_parameter(par_names[i], new_pars[i]);
-        std::cout << par_names[i] << ": " << new_pars[i] << "\n";
     }
-    std::cout << "\n";
 }
 
 void RelicOps::set_bath_procs(const vstring &b) { bath_procs = b; }
+
+void RelicOps::set_fast(const bool f) { fast = f; }
+
+vstring RelicOps::get_bath_procs() { return bath_procs; }
 
 void RelicOps::set_mechanism(const size_t mech) {
     mechanism = mech;
@@ -53,22 +55,28 @@ ResError RelicOps::CalcRelic() {
         bs->reset_tac_state(true);
         return {0., 0.};
     }
-    double x, xtoday;
+    double x, xtoday, del;
     bool appr;
     ResError y{0., 0.};
 
     switch (mechanism) {
         case 0:
-            x = bs->bisec(5., 50., 1.5);
-            // x = bs->secant_method(15.,15.1,0.1);
-            if (x == 0) {
+            if (fast) {
+                appr = true;
+                del = 1.5;
+            } else {
+                appr = false;
+                del = 0.1;
+            }
+            x = bs->bisec(5., 50., del);
+            if (x < 5.01 || x > 49.9) {
+                std::cout << "Freeze-out temperature could not be found.\n";
                 bs->reset_tac_state(true);
                 return {0., 0.};
             }
-            y.res = 2.5 * bs->yeq(x);
+            y.res = (del + 1) * bs->yeq(x);
             xinitial = x;
             xtoday = xtoday_FO;
-            appr = true;
             break;
         case 1:
             x = x_reheating;

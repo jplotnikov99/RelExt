@@ -4,14 +4,15 @@
 
 Mode                |3
 InputFile           |micro_cxsm.csv
-OutputFile          |our_cxsm.csv
+OutputFile          |fast.csv
 StartPoint          |1
-EndPoint            |1
+EndPoint            |
 SavedParameters     |MA1, MS1, alpha, svev
 ConsideredChannels  |
 SubtractChannels    |
 NeglectParticles    |
-ChannelContributions|0.01
+ChannelContributions|1
+Fast                |0
 
 ######## Operations on scan ########
 START

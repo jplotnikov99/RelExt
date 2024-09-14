@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_bmd5/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
 (*directory = "/home/rodrigo/Downloads/darktree_new/md_bmd5/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
@@ -626,7 +626,10 @@ Block[{q1, PDG, i1},
 					q1 = "lepton"
 				],
 			q1==="S",
-				q1 = "scalar"
+				If[(PDG === "36")||((Length[PDG]==3 && StringTake[PDG,1]=="3")),
+					q1 = "pseudoscalar",
+					q1 = "scalar"
+				];
 			];
 			Return[q1];
 ]
@@ -1147,36 +1150,6 @@ Do[
 		Write[sfile, "}"];
 		Close[sfile];
 	];
-	
-	(*(*if decaying particle is a scalar:*)
-	If[ inifuncDecays[i][[1,8]] == 0,
-		Do[
-			subsDecays=Replace[inifuncDecays[i][[j,9,1]],defer,All];
-			subsDecays=ToString[ToString[CForm[subsDecays],StandardForm]];
-			subsDecays=StringReplace[subsDecays,{"Sqrt"-> "sqrt","Defer"->" ","Cos("->"cos( ","Sin"->"sin", "Tan"->"tan", "Power"->"pow"}];
-			Write[sfile, "double DT::w" , ToString[inifuncDecays[i][[j,1]]] , "(){"];
-			symfac="";
-			If[inifuncDecays[i][[j,6]]===inifuncDecays[i][[j,7]],symfac="0.5*"];	
-			Write[sfile, "\tstd::unique_ptr<Width> w = std::make_unique<Width>(MH);"];
-			Write[sfile, "\t\tdouble coupling2 = ", symfac, subsDecays, ";"];
-			Write[sfile, "\t\tdouble m2 = ", ToString[inifuncDecays[i][[j,3]]],  ";"];
-			Write[sfile, "\t\tdouble m3 = ", ToString[inifuncDecays[i][[j,4]]],  ";"];
-			Write[sfile, "\t\treturn w->partial_width(" , inifuncDecays[i][[j,10,1]], ",", inifuncDecays[i][[j,10,2]], ", m2, m3, coupling2);"];
-			Write[sfile, "}"]
-		,{j,Length[inifuncDecays[i]]}];
-	];
-	
-	Write[sfile, "double DT::ww" , ToString[possibleiniDecays[[i]]] , "(){"];
-	allcontr="( ";
-	Do[
-		If[j!=Length[inifuncDecays[i]],
-			allcontr=StringJoin[allcontr,"w",ToString[inifuncDecays[i][[j,1]]],"() + "],
-			allcontr=StringJoin[allcontr,"w",ToString[inifuncDecays[i][[j,1]]],"() );"]
-		]
-	,{j,Length[inifuncDecays[i]]}];
-	Write[sfile, "\treturn ", allcontr];
-	Write[sfile, "}"];
-	Close[sfile];*)
 	
 	(*if decaying particle is a scalar:*)
 	If[ inifuncDecays[i][[1,8]] == 0,

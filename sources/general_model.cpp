@@ -2,12 +2,15 @@
 
 namespace DT {
 
-Model::Model() {}
+Model::Model() {
+    init();
+    load_parameter_map();
+}
 
 bool Model::load_everything() {
     load_parameters();
     assigndm();
-    //calc_widths_and_scale();
+    // calc_widths_and_scale();
     load_parameters();
     load_tokens();
     return check_conditions();

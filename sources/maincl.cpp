@@ -27,12 +27,12 @@ Main::Main(int argc, char **argv) {
     operations_map["SaveData"] = [this](const vstring a) { this->SaveData(a); };
 
     setting_file = std::string(argv[1]);
+    sgr = std::make_unique<DataReader>(setting_file, 0);
     load_setting();
 
     mod = std::make_shared<Model>();
-    mod->init();
-    mod->load_parameter_map();
     relops = std::make_unique<RelicOps>(mod);
+    relops->set_fast((bool)sgr->get_val_of("Fast"));
 
     if (input_file != "") {
         rdr = std::make_unique<DataReader>(input_file, 1);
@@ -56,23 +56,18 @@ Main::Main(int argc, char **argv) {
                 break;
         }
     }
-
-    def_thermal_bath();
-    set_channels();
+    vstring bath_procs;
+    bath_procs = def_thermal_bath();
+    set_channels(bath_procs);
 }
 
 void Main::load_setting() {
-    std::unique_ptr<DataReader> sgr =
-        std::make_unique<DataReader>(setting_file, 0);
     // Standard settings
     mode = (size_t)sgr->get_val_of("Mode");
     input_file = sgr->get_name_of("InputFile");
     output_file = sgr->get_name_of("OutputFile");
     start_point = (size_t)sgr->get_val_of("StartPoint");
     end_point = (size_t)sgr->get_val_of("EndPoint") + 1;
-    considered_procs = sgr->get_slist_of("ConsideredChannels");
-    subtracted_procs = sgr->get_slist_of("SubtractChannels");
-    neglected_particles = sgr->get_slist_of("NeglectParticles");
     saved_pars = sgr->get_slist_of("SavedParameters");
     channel_contrib = sgr->get_val_of("ChannelContributions");
 
@@ -91,6 +86,7 @@ void Main::load_setting() {
     random_walk_rate = sgr->get_val_of("RandomWalkRate");
 
     user_operations = sgr->get_operation_slist();
+    setting_file.clear();
 }
 
 void Main::check_start_end_points() {
@@ -174,12 +170,12 @@ void Main::load_parameters(const size_t i) {
     std::cout << "Parameter point: " << i << std::endl;
 }
 
-void Main::def_thermal_bath() {
-    bath_procs = mod->find_thermal_procs(bath_particles);
+vstring Main::def_thermal_bath(const vstring bath_particles) {
     mod->assign_bath_masses(bath_particles);
+    return mod->find_thermal_procs(bath_particles);
 }
 
-void Main::check_procs(const vstring &ch_str) {
+void Main::check_procs(const vstring &ch_str, const vstring &bath_procs) {
     bool found;
     for (auto it : ch_str) {
         found = false;
@@ -194,29 +190,33 @@ void Main::check_procs(const vstring &ch_str) {
     }
 }
 
-void Main::set_channels() {
+void Main::set_channels(vstring bath_procs) {
+    vstring neglected_particles = sgr->get_slist_of("NeglectParticles");
+    vstring subtracted_channels = sgr->get_slist_of("SubtractChannels");
+    vstring considered_channels = sgr->get_slist_of("ConsideredChannels");
     if (neglected_particles.size() != 0) {
         vstring temp;
         for (auto it : neglected_particles) {
             temp = mod->find_channels_by_particle(it);
-            append_to_vstring(subtracted_procs, temp);
+            append_to_vstring(subtracted_channels, temp);
         }
     }
-    if (subtracted_procs.size() != 0) {
-        for (auto it : subtracted_procs) {
+    if (subtracted_channels.size() != 0) {
+        for (auto it : subtracted_channels) {
             ASSERT(mod->check_channel_existence(it),
                    "Error in SubtractChannels: " << it
                                                  << " is not a valid channel.")
             for (size_t i = 0; i < bath_procs.size(); i++) {
                 if (it == bath_procs.at(i)) {
                     bath_procs.erase(bath_procs.begin() + i);
+                    break;
                 }
             }
         }
     }
-    if (considered_procs.size() != 0) {
-        check_procs(considered_procs);
-        bath_procs = considered_procs;
+    if (considered_channels.size() != 0) {
+        check_procs(considered_channels, bath_procs);
+        bath_procs = considered_channels;
     }
     relops->set_bath_procs(bath_procs);
 }
@@ -325,15 +325,15 @@ void Main::Div(const vstring &args) {
 
 void Main::ChangeThermalBath(const vstring &args) {
     check_arguments_number(false, 1, args.size(), __func__);
-
-    bath_particles.clear();
+    vstring bath_particles;
+    vstring bath_procs;
     bath_procs.clear();
     for (size_t i = 1; i < args.size(); i++) {
         bath_particles.push_back(args.at(i));
     }
 
-    def_thermal_bath();
-    set_channels();
+    bath_procs = def_thermal_bath(bath_particles);
+    set_channels(bath_procs);
 
     mod->assigndm();
     mod->calc_widths_and_scale();
@@ -535,7 +535,7 @@ void Main::SaveData(const vstring &args) {
             outfile << "\t" << args.at(i);
         }
         if (channel_contrib != 1.) {
-            for (auto it : bath_procs) {
+            for (auto it : relops->get_bath_procs()) {
                 outfile << "\t" << it;
             }
         }
@@ -567,6 +567,7 @@ void Main::do_user_operations() {
                 exit(1);
             }
         }
+        sgr.reset();
     }
     for (auto it : user_operations) {
         operations_map[it.at(0)](it);
