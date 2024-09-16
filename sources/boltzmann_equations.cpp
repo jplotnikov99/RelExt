@@ -9,9 +9,7 @@ Beqs::Beqs(std::shared_ptr<Model> model) {
 
 void Beqs::set_mechanism(const size_t &m) { mech = m; }
 
-void Beqs::reset_tac_state(const bool full) {
-    tac->clear_state(full);
-}
+void Beqs::reset_tac_state(const bool full) { tac->clear_state(full); }
 
 bool Beqs::sort_inimasses(const vstring &ch_str) {
     return tac->sort_inimasses(ch_str);
@@ -41,18 +39,9 @@ double Beqs::yeq(const double &x) {
     double a = 1 / (mod->MDM * mod->MDM);
     double Tinv = x / mod->MDM;
 
-    if (x > 10) {
-        for (auto it : mod->bath_masses) {
-            mtemp = mod->the_mass(it);
-            yeq +=
-                mod->the_dof(it) * pow(mtemp, 2) * a * besselK2(Tinv * mtemp);
-        }
-    } else {
-        for (auto it : mod->bath_masses) {
-            mtemp = mod->the_mass(it);
-            yeq += mod->the_dof(it) * pow(mtemp, 2) * a *
-                   std::cyl_bessel_k(2, Tinv * mtemp);
-        }
+    for (auto it : mod->bath_masses) {
+        mtemp = mod->the_mass(it);
+        yeq += mod->the_dof(it) * pow(mtemp, 2) * a * besselK2(Tinv * mtemp);
     }
     yeq *= 45 * x * x / (4 * dof->heff(1 / Tinv) * M_PI * M_PI * M_PI * M_PI);
     return yeq;

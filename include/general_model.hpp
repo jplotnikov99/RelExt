@@ -21,8 +21,7 @@ namespace DT {
     mass4s[#name] = &m4;
 
 #define CHECKCONDITION(condition)                 \
-    condition_passed = condition ? true : false; \
-    if (!condition_passed) return false;
+    if (!(condition)) return false;
 
 typedef std::function<double(const double &, const double &)> f;
 typedef std::vector<f> vamp2;
@@ -43,7 +42,6 @@ class Model {
     sMapDp mass4s;
     vamp2 cur_channel;
     double ZERO = 0;
-    bool condition_passed;
 
    public:
     size_t N_widths;

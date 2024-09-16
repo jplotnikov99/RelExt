@@ -109,7 +109,7 @@ double Tac::lipsv(const double &s, const double &x) {
     double sqs = sqrt(s);
     double Tinv = x / mod->MDM;
 
-    if (x > 10) {
+    if (x > 5) {
         num += Tinv * polK1(sqs * Tinv);
         for (size_t i = 0; i < mod->bath_masses.size(); i++) {
             mtemp = mod->the_mass(mod->bath_masses[i]);
@@ -124,7 +124,7 @@ double Tac::lipsv(const double &s, const double &x) {
         }
         for (auto it : mod->bath_masses) {
             mtemp = mod->the_mass(it);
-            den += mtemp * mtemp * std::cyl_bessel_k(2, Tinv * mtemp);
+            den += mtemp * mtemp * besselK2(Tinv * mtemp);
         }
         den *= den;
     }

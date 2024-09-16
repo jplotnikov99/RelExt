@@ -3,8 +3,8 @@
 ######## Standard settings ########
 
 Mode                |2
-InputFile           |../dataOutput/bins_cpvdm_random.dat
-OutputFile          |cpvdm_best_cells_rwalk.dat
+InputFile           |examples/cpvdm_example1.dat
+OutputFile          |cpvdm_random.dat
 StartPoint          |1
 EndPoint            |1e4
 SavedParameters     |mH1, mH2, mHc, alph1, alph2, alph3, m22sq, mssq
@@ -17,7 +17,7 @@ Fast                |1
 ######## Operations on scan ########
 START
 
-RandomWalk          |0, 0.12, 0.002
+CalcRelic           |0
 SaveData            | 
 
 END

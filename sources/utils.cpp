@@ -16,27 +16,30 @@ double kaellen(const double x, const double y, const double z) {
 
 double flux(const double &s, const double &m1, const double &m2,
             const double &m3, const double &m4) {
-    return sqrt((s - (m1 + m2) * (m1 + m2)) * (s - (m1 - m2) * (m1 - m2)) *
-                (s - (m3 + m4) * (m3 + m4)) * (s - (m3 - m4) * (m3 - m4)));
-}
-
-double polK(const int n, const double &x) {
-    return 1.2533141373155 * 1 / sqrt(x) *
-           (1 + (4 * n * n - 1) / (8 * x) +
-            (4 * n * n - 1) * (4 * n * n - 9) / (128 * x * x) +
-            (4 * n * n - 1) * (4 * n * n - 9) * (4 * n * n - 25) /
-                (3072 * x * x * x));
+    const double a = m1 + m2, b = m1 - m2, c = m3 + m4, d = m3 - m4;
+    return sqrt((s - a * a) * (s - b * b) * (s - c * c) * (s - d * d));
 }
 
 double besselK2(const double &x) {
-    double y = 1 / x;
-    return 1.2533141373155 * exp(-x) / sqrt(x) *
-           (1 + 1.875 * y *
-                    (1 + 0.4375 * y *
-                             (1 - 0.375 * y *
-                                      (1 - 1.03125 * y *
-                                               (1 - 1.625 * y *
-                                                        (1 - 2.1875 * y))))));
+    static const double c0 = 1.984;
+    double y = 1. / x;
+    if (x > 5.) {
+        return 1.2533141373155 * exp(-x) / sqrt(x) *
+               (1. +
+                1.875 * y *
+                    (1. +
+                     0.4375 * y *
+                         (1. - 0.375 * y *
+                                   (1. - 1.03125 * y *
+                                             (1. - 1.625 * y *
+                                                       (1. - 2.1875 * y))))));
+    } else {
+        return exp(-x) * (1. + 2.627 * y + 2. * y * y) /
+               pow(0.033 * pow(x, c0 / 5) - 0.102 * pow(x, c0 / 4) +
+                       0.113 * pow(x, c0 / 3) + 1.162 * pow(x, c0 / 2) +
+                       pow(2. * x / M_PI, c0) + 1.,
+                   1. / (2. * c0));
+    }
 }
 
 double polK1(const double &x) {

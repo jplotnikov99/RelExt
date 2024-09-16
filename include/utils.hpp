@@ -28,8 +28,6 @@ double flux(const double &s, const double &m1, const double &m2,
 
 // Bessel functions
 
-double polK(const int n, const double &x);
-
 double besselK2(const double &x);
 
 double polK1(const double &x);
