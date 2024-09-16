@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_bmd5/FR_modfiles" <> "/FA_modfiles";*)
 (*directory = "/home/rodrigo/Downloads/darktree_new/md_bmd5/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
@@ -597,10 +597,9 @@ Block[{numerator,denominator,coefficient={},temp1,temp2},
 (*function to determine type of particle appearing in the decay final states*)
 gluonExistence = False;
 determineType[sts_, ind_]:=
-Block[{q1, PDG, i1},
-		i1 = ind;
-		q1=StringPart[ToString[sts[[i1]]/.-x_:>x],1];
-		PDG = IDtoPDG[sts[[i1]]];
+Block[{q1, PDG},
+		PDG = IDtoPDG[sts[[ind]]];
+		q1=StringPart[ToString[sts[[ind]]/.-x_:>x],1];
 		If[PDG === "21", gluonExistence=True];
 		Which[
 			PDG === "23",
@@ -616,12 +615,12 @@ Block[{q1, PDG, i1},
 			PDG === "6",
 				q1 = "t_quark",
 			q1==="V",
-				If[PossibleZeroQ[TheMass[sts[[i1]]]],
+				If[PossibleZeroQ[TheMass[sts[[ind]]]],
 					q1 = "massless_vector_boson",
 					q1 = "massive_vector_boson"
 				],
 			q1==="F",
-				If[StringContainsQ[ToString[sts[[i1]]/.-x_:>x],"Col"],
+				If[StringContainsQ[ToString[sts[[ind]]/.-x_:>x],"Col"],
 					q1 = "quark",
 					q1 = "lepton"
 				],

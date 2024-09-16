@@ -6,11 +6,6 @@ bool heaviDecays(const double &m1, const double &m2, const double &m3) {
     return (m1 > m2 + m3);
 }
 
-bool heavi(const double &s, const double &m1, const double &m2) {
-    return true;
-    return ((m1 + m2) * (m1 + m2) - s <= 0);
-}
-
 double kaellen(const double x, const double y, const double z) {
     return (x - y - z) * (x - y - z) - 4 * y * z;
 }
