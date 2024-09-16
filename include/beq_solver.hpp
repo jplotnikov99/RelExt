@@ -13,7 +13,6 @@ class BeqSolver {
    private:
     std::shared_ptr<Model> mod;
     std::unique_ptr<Beqs> beq;
-    bool FOapprox = true;
     bool reject = false;
     double errold = 1e-4;
 
@@ -42,10 +41,7 @@ class BeqSolver {
     void adap_dopr5(const double &xtoday, double &x, ResError &y,
                     double h = 1e-3);
 
-    double kronrod_61(const double l, const double r);
-
-    ResError adap_simpson38(const double l, const double r, ResError *y,
-                            const double &est);
+    ResError kronrod_61(const double l, const double r);
 
     ResError icoll(const double xf, const double x0);
 

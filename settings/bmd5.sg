@@ -26,7 +26,7 @@ BepsEps             |1e-6
 xTodayFO            |1e6
 ThetaIntEps         |1e-6
 PeakIntEps          |1e-6
-sIntEps             |1e-6
+sIntEps             |1e-4
 DoPrEps             |1e-6
 Bins                |500
 BestBins            |500

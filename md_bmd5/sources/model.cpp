@@ -47,7 +47,7 @@ namespace DT{
 	double MA0 = 360;
 	double MphiQ = 1000;
 	double WZ = 2.4952;
-	double WW = 0.;
+	double WW = 2.085;
 	double WT = 1.50834;
 	double WH = 0.00407;
 	double WchiM = 1;

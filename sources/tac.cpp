@@ -18,6 +18,10 @@ bool Tac::sort_inimasses(const vstring &ch_str) {
         if (std::isnan(temp)) return false;
         inimap[m1 + m2].push_back(it);
     }
+    dsmasses.clear();
+    for(auto it : mod->bath_masses){
+        dsmasses.push_back(mod->the_mass(it));
+    }
     return true;
 }
 
@@ -95,9 +99,9 @@ void Tac::calc_polK2(const double &x) {
     double Tinv = x / mod->MDM;
     double mtemp, cur;
     polK2s.clear();
-    for (auto it : mod->bath_masses) {
-        mtemp = mod->the_mass(it);
-        cur = mod->the_dof(it) * mtemp * mtemp * polK2(Tinv * mtemp);
+    for (size_t i = 0; i < dsmasses.size(); i++) {
+        mtemp = dsmasses[i];
+        cur = mod->the_dof(mod->bath_masses[i]) * mtemp * mtemp * polK2(Tinv * mtemp);
         polK2s.push_back(cur);
     }
 }
@@ -111,8 +115,8 @@ double Tac::lipsv(const double &s, const double &x) {
 
     if (x > 5) {
         num += Tinv * polK1(sqs * Tinv);
-        for (size_t i = 0; i < mod->bath_masses.size(); i++) {
-            mtemp = mod->the_mass(mod->bath_masses[i]);
+        for (size_t i = 0; i < dsmasses.size(); i++) {
+            mtemp = dsmasses[i];
             den += exp(-Tinv * (mtemp - sqs / 2)) * polK2s.at(i);
         }
         den *= den;
@@ -122,8 +126,8 @@ double Tac::lipsv(const double &s, const double &x) {
         } else {
             num += Tinv * std::cyl_bessel_k(1, sqs * Tinv);
         }
-        for (auto it : mod->bath_masses) {
-            mtemp = mod->the_mass(it);
+        for (auto it : dsmasses) {
+            mtemp = it;
             den += mtemp * mtemp * besselK2(Tinv * mtemp);
         }
         den *= den;
@@ -133,31 +137,31 @@ double Tac::lipsv(const double &s, const double &x) {
 }
 
 ResError Tac::sigv(const double &u, const double &x) {
-    double s = lower_bound + (1 - u) / u;
+    double s = lower_bound * lower_bound + (1 - u) / u;
     return wij(s) * lipsv(s, x) * 1 / (u * u);
 }
 
 bool Tac::beps(const double &x) {
-    return (x * (m1 + m2 - 2 * mod->MDM) / mod->MDM <= -beps_eps);
+    return (x * (lower_bound - 2 * mod->MDM) / mod->MDM <= -beps_eps);
 }
 
 double Tac::peak_relevance(const double &peakpos) {
-    if (peakpos == (m1 + m2)) return -1.;
-    return -(beps_eps - 4.6051701859880) * mod->MDM / (peakpos - m1 - m2);
+    if (peakpos == lower_bound) return -1.;
+    return -(beps_eps - 4.6051701859880) * mod->MDM / (peakpos - lower_bound);
 }
 
 double *Tac::peak_bounds(const double &peakpos, const double &width) {
     static double bounds[3];
     double n = 0.1;
-    while (peakpos - 2 * width / n < m1 + m2) {
+    while (peakpos - 2 * width / n < lower_bound) {
         n *= 2;
     }
 
     bounds[0] = 1 / ((peakpos - 2 * width / n) * (peakpos - 2 * width / n) -
-                     (m1 + m2) * (m1 + m2) + 1);
-    bounds[1] = 1 / (peakpos * peakpos - (m1 + m2) * (m1 + m2) + 1);
+                     lower_bound * lower_bound + 1);
+    bounds[1] = 1 / (peakpos * peakpos - lower_bound * lower_bound + 1);
     bounds[2] = 1 / ((peakpos + 2 * width / n) * (peakpos + 2 * width / n) -
-                     (m1 + m2) * (m1 + m2) + 1);
+                     lower_bound * lower_bound + 1);
 
     return bounds;
 }
@@ -343,7 +347,7 @@ ResError Tac::tac(const double &x) {
     calc_polK2(x);
     for (auto &it : inimap) {
         mod->set_channel(m1, m2, it.second);
-        lower_bound = (m1 + m2) * (m1 + m2);
+        lower_bound = m1 + m2;
         if (beps(x)) {
             set_boundaries(x);
             estimate_integrate_s(x, res, estimate);
@@ -351,7 +355,7 @@ ResError Tac::tac(const double &x) {
     }
     for (auto &it : inimap) {
         mod->set_channel(m1, m2, it.second);
-        lower_bound = (m1 + m2) * (m1 + m2);
+        lower_bound = m1 + m2;
         if (beps(x)) {
             set_boundaries(x);
             integrate_s(x, res, estimate);

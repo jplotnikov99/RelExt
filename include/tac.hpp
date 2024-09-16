@@ -13,8 +13,7 @@ namespace DT {
 class Tac {
    private:
     std::shared_ptr<Model> mod;
-    double m1;
-    double m2;
+    double m1, m2;
     double lower_bound;
     size_t N_relevant_peaks;
     bool tac_error_reached = false;
@@ -25,6 +24,8 @@ class Tac {
     std::map<double, vstring>::iterator ini_it;
 
    public:
+    std::vector<double> dsmasses;
+
     Tac(std::shared_ptr<Model> model);
 
     // sorts different channels by their total initial state masses

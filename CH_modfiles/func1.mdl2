@@ -1,0 +1,6 @@
+%*slhaFound    |1+access("vars1.lha", 0)                                                                                       %Check whether LHA file is present.
+%*rdSLHA       |if(slhaFound,slhaRead("vars1.lha", 0),-1)                                                                      %Read LHA file.
+%MassList[[2]] |if(slhaFound,if(slhaValExists("MASS",1,Abs[MassList[[1,1]]]),slhaVal("MASS",0,1,Abs[MassList[[1,1]]]),MassList[[2]]Def),MassList[[2]]Def)           %Mass of PRIVATE`MassToPart[MassList[[2]]].        
+%2[[2]]        |if(slhaFound,if(slhaValExists("MASS",1,Abs[2[[1,1]]]),slhaVal("MASS",0,1,Abs[2[[1,1]]]),2[[2]]Def),2[[2]]Def)                                       %Mass of PRIVATE`MassToPart[2[[2]]].               
+%WidthList[[2]]|if(slhaFound,if(1+slhaDecayExists(Abs[WidthList[[1,1]]]),slhaWidth(Abs[WidthList[[1,1]]]),WidthList[[2]]Def),WidthList[[2]]Def)                     %Width of PRIVATE`WidthToPart[WidthList[[2]]].     
+%2[[2]]        |if(slhaFound,if(1+slhaDecayExists(Abs[2[[1,1]]]),slhaWidth(Abs[2[[1,1]]]),2[[2]]Def),2[[2]]Def)                                                     %Width of PRIVATE`WidthToPart[2[[2]]].             

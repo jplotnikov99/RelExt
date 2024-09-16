@@ -7,6 +7,7 @@ bool heaviDecays(const double &m1, const double &m2, const double &m3) {
 }
 
 bool heavi(const double &s, const double &m1, const double &m2) {
+    return true;
     return ((m1 + m2) * (m1 + m2) - s <= 0);
 }
 

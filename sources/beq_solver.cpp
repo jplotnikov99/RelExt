@@ -103,39 +103,6 @@ double BeqSolver::controller(const double &hnow, const double &err) {
     return hnext;
 }
 
-/* double BeqSolver::controller(const double &hnow, const double &err)
-{
-    static const double beta = 0.05, alpha = 0.2 - beta * 0.75, safe = 0.9,
-minscale = 0.2, maxscale = 10.0; double hnext; double scale; if (err > 1)
-    {
-        scale = std::max(safe * pow(err, -alpha), minscale);
-        hnext = hnow * scale;
-        reject = true;
-    }
-    else
-    {
-        if (err != 0)
-        {
-            scale = safe * pow(err, -alpha) * pow(errold, beta);
-            if (scale < minscale)
-                scale = minscale;
-            if (scale > maxscale)
-                scale = maxscale;
-        }
-        else
-        {
-            scale = maxscale;
-        }
-        if (reject)
-            hnext = hnow * std::min(scale, 1.);
-        else
-            hnext = hnow * scale;
-        errold = std::max(err, 1e-4);
-        reject = false;
-    }
-    return hnext;
-} */
-
 void BeqSolver::adap_dopr5(const double &xtoday, double &x, ResError &y,
                            double h) {
     double xsave = x;
@@ -158,75 +125,35 @@ void BeqSolver::adap_dopr5(const double &xtoday, double &x, ResError &y,
     } else if (x + h > xtoday) {
         h = xtoday - x;
         dopr5(x, y, h);
-    } /* else if ((y.res > 10. * beq->yeq(x)) && FOapprox) {
-        y.err += errest;
-    } */
-    else {
+    } else {
         y.err += errest;
         adap_dopr5(xtoday, x, y, h);
     }
 }
 
-double BeqSolver::kronrod_61(const double l, const double r) {
+ResError BeqSolver::kronrod_61(const double l, const double r) {
     double m = 0.5 * (r + l);
     double h = 0.5 * (r - l);
 
-    double res = 0;
+    ResError res = {0., 0.};
     for (size_t i = 0; i < 30; i++) {
         double dx = h * kronx_61[i];
-        res +=
-            wkron_61[i] * (beq->pre_tac(m + dx).res + beq->pre_tac(m - dx).res);
+        res = res + wkron_61[i] * (beq->pre_tac(m + dx) + beq->pre_tac(m - dx));
     }
-    res += wkron_61[30] * (beq->pre_tac(m).res);
-    res *= h;
+    res = res + wkron_61[30] * beq->pre_tac(m);
+    res = res * h;
 
     return res;
 }
 
-ResError BeqSolver::adap_simpson38(const double l, const double r, ResError *y,
-                                   const double &est) {
-    ResError I1, I2, I3, y1[4];
-    double m = (r + l) / 2.;
-    double h = (r - l) / 8.;
-    ResError I = h * (y[0] + 3 * y[1] + 3 * y[2] + y[3]);
-    y1[0] = beq->pre_tac(m);
-    y1[1] = y[2];
-    y1[2] = beq->pre_tac((l + 5 * r) / 6);
-    y1[3] = y[3];
-    y[3] = y1[0];
-    y[2] = y[1];
-    y[1] = beq->pre_tac((5 * l + r) / 6);
-    I1 = h / 2 * (y[0] + 3 * y[1] + 3 * y[2] + y[3]);
-    I2 = h / 2 * (y1[0] + 3 * y1[1] + 3 * y1[2] + y1[3]);
-    I3 = I1 + I2;
-
-    if (fabs(I.res - I3.res) < 1e-6 * fabs(est)) {
-        I3.err += fabs(I.res - I3.res);
-        return I3;
-    }
-    return adap_simpson38(l, m, y, est) + adap_simpson38(m, r, y1, est);
-}
-
 ResError BeqSolver::icoll(const double xf, const double x0) {
-    ResError f[4];
-    double f_est[10], f_err[10];
-    double h = (x0 - xf) / 9;
-    for (size_t i = 0; i < 4; i++) {
-        f[i] = beq->pre_tac(xf + h * (double)(i * 3));
-    }
-    double est = kronrod_61(xf, xf + (x0 - xf) * 1e-3);
-    est += kronrod_61(xf + (x0 - xf) * 1e-3, x0);
-    return {est, 0.};
-    if (est == 0.) return {0., 0.};
-
-    ResError res = adap_simpson38(xf, x0, f, est);
-    std::cout << est / res.res << "\n";
+    ResError res = kronrod_61(xf, xf + (x0 - xf) * 0.005);
+    res = res + kronrod_61(xf + (x0 - xf) * 0.005, x0);
     return res;
 }
 
 ResError BeqSolver::calc_yield(const double &xtoday, double &x, ResError &y,
                                const bool appr) {
-    FOapprox = appr;
     ResError y0;
     if (appr) {
         y0 = 1 / y - icoll(x, xtoday);

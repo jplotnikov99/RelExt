@@ -626,7 +626,7 @@ Block[{q1, PDG, i1},
 					q1 = "lepton"
 				],
 			q1==="S",
-				If[(PDG === "36")||((Length[PDG]==3 && StringTake[PDG,1]=="3")),
+				If[(PDG === "36")||((StringLength[PDG]===3 && StringTake[PDG,1]==="3")),
 					q1 = "pseudoscalar",
 					q1 = "scalar"
 				];
@@ -1074,8 +1074,9 @@ Do[
 			Write[sfile, "\tdouble u = -s - t + " , ToString[inifunc[i][[j,2]]] , "*" , ToString[inifunc[i][[j,2]]] ," + ", ToString[inifunc[i][[j,3]]] , "*" , ToString[inifunc[i][[j,3]]] ," + "
 			, ToString[inifunc[i][[j,4]]] , "*" , ToString[inifunc[i][[j,4]]] ," + ", ToString[inifunc[i][[j,5]]] , "*" , ToString[inifunc[i][[j,5]]] , ";"];
 		];
-		
-		Write[sfile, "\treturn " , subsamp2 , ";"];
+		symfac="";
+		If[inifunc[i][[j,8]]===inifunc[i][[j,9]],symfac="0.5*"];
+		Write[sfile, "\treturn ", symfac , "(" , subsamp2 , ");"];
 		Write[sfile, "}"]
 	,{j,Length[inifunc[i]]}];
 	Close[sfile];
@@ -1090,7 +1091,6 @@ Do[
 	Write[sfile, "#include \"utils.hpp\"\n"];
 	Do[
 		symfac="";
-		If[inifunc[i][[j,8]]===inifunc[i][[j,9]],symfac="0.5*"];
 		If[ToString[inifunc[i][[j,6]]]!=ToString[inifunc[i][[j,7]]],symfac=StringJoin[symfac,"2*"]];
 		If[SelfConjugate[inifunc[i][[j,6]]],
 			If[Not[SelfConjugate[inifunc[i][[j,7]]]],
@@ -1101,11 +1101,11 @@ Do[
 			]
 		];
 		Write[sfile, "double DT::" , ToString[inifunc[i][[j,1]]] , "fl(const double &cos_t, const double &s){"];
-		Write[sfile, "\t if(heavi(s," , ToString[inifunc[i][[j,4]]] , "," , ToString[inifunc[i][[j,5]]] , ")){"];
-		Write[sfile, "\t\t return " , symfac , "flux(s, " , ToString[inifunc[i][[j,2]]] , "," , ToString[inifunc[i][[j,3]]] , "," , ToString[inifunc[i][[j,4]]] , "," , ToString[inifunc[i][[j,5]]] , ")*",
+		(*Write[sfile, "\t if(heavi(s," , ToString[inifunc[i][[j,4]]] , "," , ToString[inifunc[i][[j,5]]] , ")){"];*)
+		Write[sfile, "\treturn " , symfac , "flux(s, " , ToString[inifunc[i][[j,2]]] , "," , ToString[inifunc[i][[j,3]]] , "," , ToString[inifunc[i][[j,4]]] , "," , ToString[inifunc[i][[j,5]]] , ")*",
 					 inifunc[i][[j,1]] , "(cos_t, s);"];
-		Write[sfile, "\t }"];
-		Write[sfile, "\t else{ return 0; }\n"];
+		(*Write[sfile, "\t }"];
+		Write[sfile, "\t else{ return 0; }\n"];*)
 		Write[sfile, "}"]
 	,{j,Length[inifunc[i]]}];
 	
@@ -1132,7 +1132,7 @@ Do[
 			symfac="";
 			If[inifuncDecays[i][[j,6]]===inifuncDecays[i][[j,7]],symfac="0.5*"];	
 			Write[sfile, "\tif(heaviDecays(" , ToString[inifuncDecays[i][[j,2]]] , "," , ToString[inifuncDecays[i][[j,3]]], "," , ToString[inifuncDecays[i][[j,4]]] , ")){"];
-			Write[sfile, "\t\treturn " , symfac, subsDecays , ";"];
+			Write[sfile, "\treturn " , symfac, subsDecays , ";"];
 			Write[sfile, "\t}"];
 			Write[sfile, "\telse{ return 0; }\n"];
 			Write[sfile, "}"]
