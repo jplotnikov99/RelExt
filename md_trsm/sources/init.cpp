@@ -9,8 +9,8 @@ namespace DT{
 	{
 		particles["Chi"]=&MChi;
 		particles["Psi"]=&MPsi;
-		dsDof["Chi"]=1.;
-		dsDof["Psi"]=1.;
+		dsDof["Chi"]=1;
+		dsDof["Psi"]=1;
 		neutraldsmasses.push_back(&MChi);
 		neutraldsmasses.push_back(&MPsi);
 		ADDCHANNEL(ChiChiHH, ChiChiHHfl, MChi, MChi, MH, MH)

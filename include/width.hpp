@@ -6,10 +6,11 @@
 namespace DT {
 enum ParticleType {
     scalar = 1,
-    massive_vector_boson = 2,
-    massless_vector_boson = 4,
-    lepton = 8,
-    quark = 16,
+    pseudoscalar = 2,
+    massive_vector_boson = 4,
+    massless_vector_boson = 8,
+    lepton = 16,
+    quark = 32,
     w_boson = -1,
     z_boson = -2,
     s_quark = -4,

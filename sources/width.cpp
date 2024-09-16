@@ -174,6 +174,12 @@ double Width::partial_width(const ParticleType ptype1,
         case scalar + scalar:
             if (mh < m1 + m2) return 0.;
             break;
+        case pseudoscalar + scalar:
+            if (mh < m1 + m2) return 0.;
+            break;
+        case pseudoscalar + pseudoscalar:
+            if (mh < m1 + m2) return 0.;
+            break;
         case massive_vector_boson + massive_vector_boson:
             if (mh > m1 + m2) {
                 res *= (3 + kaellen(mh * mh, m1 * m1, m2 * m2) /
@@ -185,7 +191,7 @@ double Width::partial_width(const ParticleType ptype1,
         case lepton + lepton:
             if (mh > m1 + m2) {
                 res *= is_pseudo ? 2 * mh * mh
-                                : 2 * (mh * mh - (m1 + m2) * (m1 + m2));
+                                 : 2 * (mh * mh - (m1 + m2) * (m1 + m2));
             } else {
                 return 0.;
             }
