@@ -78,12 +78,6 @@ void Main::load_setting() {
     peak_eps = sgr->get_val_of("PeakIntEps");
     gauss_kronrod_eps = sgr->get_val_of("sIntEps");
     dopr_eps = sgr->get_val_of("DoPrEps");
-    N_bins = (size_t)sgr->get_val_of("Bins");
-    N_best = (size_t)sgr->get_val_of("BestBins");
-    p_random = sgr->get_val_of("Prandom");
-    descent_learning_rate = sgr->get_val_of("DescentRate");
-    max_N_bisections = sgr->get_val_of("MaxBisections");
-    random_walk_rate = sgr->get_val_of("RandomWalkRate");
 
     user_operations = sgr->get_operation_slist();
 }
@@ -133,6 +127,9 @@ void Main::load_read_file() {
 }
 void Main::load_parameters(const size_t i) {
     if (mode == 2 && first_run) {
+        N_bins = (size_t)sgr->get_val_of("Bins");
+        N_best = (size_t)sgr->get_val_of("BestBins");
+        p_random = sgr->get_val_of("Prandom");
         std::vector<double> lower, upper;
         double a, b;
         for (auto it : generator_list) {
@@ -466,11 +463,7 @@ void Main::FindParameter(const vstring &args) {
 }
 
 void Main::RandomWalk(const vstring &args) {
-    if (first_run) {
-        std::unique_ptr<DataReader> sgr =
-            std::make_unique<DataReader>(setting_file, 0);
-        random_walk_rate = sgr->get_val_of("RandomWalkRate");
-    }
+    if (first_run) random_walk_rate = sgr->get_val_of("RandomWalkRate");
     check_arguments_number(false, 3, args.size(), (std::string) __func__);
     size_t mechanism = get_number(args.at(1), __func__);
     double om_target = get_number(args.at(2), __func__);
