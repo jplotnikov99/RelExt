@@ -12,6 +12,7 @@ ConsideredChannels  |
 SubtractChannels    |A1A1Uu, A1A1Ee, A1A1MUmu
 NeglectParticles    |
 ChannelContributions|1
+Fast                |1
 
 ######## Operations on scan ########
 START
@@ -27,8 +28,11 @@ BepsEps             |1e-6
 xTodayFO            |1e6
 ThetaIntEps         |1e-6
 PeakIntEps          |1e-6
-sIntEps             |1e-6
+sIntEps             |1e-4
 DoPrEps             |1e-6
+Bins                |500
+BestBins            |1000
+Prandom             |0
 VanguardStep        |0.5
 DescentRate         |0.1
 MaxBisections       |50

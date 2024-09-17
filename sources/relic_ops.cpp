@@ -58,7 +58,6 @@ ResError RelicOps::CalcRelic() {
     double x, xtoday, del;
     bool appr;
     ResError y{0., 0.};
-
     switch (mechanism) {
         case 0:
             if (fast) {
@@ -68,8 +67,8 @@ ResError RelicOps::CalcRelic() {
                 appr = false;
                 del = 0.1;
             }
-            x = bs->bisec(5., 50., del);
-            if (x < 5.01 || x > 49.9) {
+            x = bs->bisec(4.9, 50.1, del);
+            if (x < 5. || x > 50.) {
                 std::cout << "Freeze-out temperature could not be found.\n";
                 bs->reset_tac_state(true);
                 return {0., 0.};
@@ -128,12 +127,12 @@ dvec1 RelicOps::calc_channel_contributions(double contrib) {
 }
 
 double RelicOps::get_next_step(const double &x1, const double &x2,
-                               const double &y1, const double &y2,
-                               const double &ytarget) {
+                               const double &y1, const double &y2) {
     double gradient = (fabs(y2) - fabs(y1)) / (x2 - x1);
     switch (searchmode) {
         case vanguard: {
-            double step = fabs(y1) / ytarget > 1 ? 1. : fabs(y1) / ytarget;
+            double step =
+                fabs(y1) / omega_target > 1 ? 1. : fabs(y1) / omega_target;
             if (gradient > 0) {
                 step *= -vanguard_step_size;
             } else {
@@ -174,7 +173,7 @@ void RelicOps::check_sign_flip(const double step_new, const double omega_new,
 }
 
 double RelicOps::get_next_omega(const std::string &par, const double om) {
-    const double eps = 0.001;
+    static const double eps = 0.001;
     double om1 = om;
     double par1, par2, om2, step;
 
@@ -183,11 +182,14 @@ double RelicOps::get_next_omega(const std::string &par, const double om) {
     mod->change_parameter(par, par2);
     om2 = CalcRelic().res - omega_target;
 
-    step = get_next_step(par1, par2, om1, om2, omega_target);
+    step = get_next_step(par1, par2, om1, om2);
     par1 += step;
     if (par1 < par_bounds[0]) par1 = par_bounds[0];
     if (par1 > par_bounds[1]) par1 = par_bounds[1];
-    mod->change_parameter(par, par1);
+    if (!mod->change_parameter(par, par1)) {
+        omega = {om1, omega.err};
+        return om1;
+    }
     om1 = CalcRelic().res - omega_target;
     check_sign_flip(step, om1, par1);
     par_old = par1;

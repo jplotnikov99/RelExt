@@ -64,7 +64,7 @@ class Model {
     double the_dof(const std::string &prtcl);
     bool check_par_existence(const std::string par);
     double get_parameter_val(const std::string par);
-    void change_parameter(const std::string par, const double newval,
+    bool change_parameter(const std::string par, const double newval,
                           const bool load = true);
     vstring get_all_channels();
     bool check_channel_existence(const std::string &channel);

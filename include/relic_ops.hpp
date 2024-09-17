@@ -67,7 +67,7 @@ class RelicOps {
     dvec1 calc_channel_contributions(double contrib);
 
     double get_next_step(const double &x1, const double &x2, const double &y1,
-                         const double &y2, const double &ytarget);
+                         const double &y2);
 
     void check_sign_flip(const double step_new, const double omega_new,
                          const double par_new);

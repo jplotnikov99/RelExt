@@ -86,7 +86,6 @@ void Main::load_setting() {
     random_walk_rate = sgr->get_val_of("RandomWalkRate");
 
     user_operations = sgr->get_operation_slist();
-    setting_file.clear();
 }
 
 void Main::check_start_end_points() {
@@ -434,8 +433,6 @@ void Main::CalcRelic(const vstring &args) {
 
 void Main::FindParameter(const vstring &args) {
     if (first_run) {
-        std::unique_ptr<DataReader> sgr =
-            std::make_unique<DataReader>(setting_file, 0);
         vanguard_step_size = sgr->get_val_of("VanguardStep");
         descent_learning_rate = sgr->get_val_of("DescentRate");
         max_N_bisections = sgr->get_val_of("MaxBisections");
@@ -567,12 +564,15 @@ void Main::do_user_operations() {
                 exit(1);
             }
         }
-        sgr.reset();
     }
     for (auto it : user_operations) {
         operations_map[it.at(0)](it);
     }
-    first_run = false;
+    if (first_run) {
+        sgr.reset();
+        setting_file.clear();
+        first_run = false;
+    }
 }
 
 Main::~Main() {

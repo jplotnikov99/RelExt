@@ -10,7 +10,7 @@ Model::Model() {
 bool Model::load_everything() {
     load_parameters();
     assigndm();
-    // calc_widths_and_scale();
+    calc_widths_and_scale();
     load_parameters();
     load_tokens();
     return check_conditions();
@@ -29,10 +29,11 @@ double Model::get_parameter_val(const std::string par) {
     return (*parmap[par]);
 }
 
-void Model::change_parameter(const std::string par, const double newval,
+bool Model::change_parameter(const std::string par, const double newval,
                              const bool load) {
     *parmap[par] = newval;
-    if (load) load_everything();
+    if (load) return load_everything();
+    return true;
 }
 
 vstring Model::get_all_channels() { return channelnames; }
