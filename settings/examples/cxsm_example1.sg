@@ -30,10 +30,6 @@ ThetaIntEps         |1e-6
 PeakIntEps          |1e-6
 sIntEps             |1e-4
 DoPrEps             |1e-6
-Bins                |500
-BestBins            |1000
-Prandom             |0
 VanguardStep        |0.5
 DescentRate         |0.1
 MaxBisections       |50
-RandomWalkRate      |0.01

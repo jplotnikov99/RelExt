@@ -328,16 +328,20 @@ ResError RelicOps::random_walk() {
                 current_step[i] = random_step(i);
             }
         }
-        mod->load_everything();
-        om1 = CalcRelic().res;
-        if (fabs(om1 - omega_target) >= fabs(om2 - omega_target) || om1 == 0.) {
-            for (size_t i = 0; i < par_names.size(); i++) {
-                mod->change_parameter(par_names[i], saved_vals[i], false);
-            }
+        if (!mod->load_everything()) {
             is_step_good = false;
-            om1 = om2;
         } else {
-            is_step_good = true;
+            om1 = CalcRelic().res;
+            if (fabs(om1 - omega_target) >= fabs(om2 - omega_target) ||
+                om1 == 0.) {
+                for (size_t i = 0; i < par_names.size(); i++) {
+                    mod->change_parameter(par_names[i], saved_vals[i], false);
+                }
+                is_step_good = false;
+                om1 = om2;
+            } else {
+                is_step_good = true;
+            }
         }
         if ((cur_steps % 100) == 0) {
             std::cout << "Current Step: " << cur_steps << " Omega: " << om1

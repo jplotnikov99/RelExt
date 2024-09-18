@@ -158,7 +158,7 @@ void MC::print_best_bins() {
 
 void MC::save_best_bins(const vstring &par_names, const std::string &filename) {
     assert(par_names.size() == lbounds.size());
-    std::string filesave = "../dataOutput/bins_" + filename;
+    std::string filesave = "../dataOutput/cells_" + filename;
     std::ofstream outfile(filesave);
     outfile << "--- Bin Info ---\n";
     outfile << "Bins    |" << N_bins << "\n";

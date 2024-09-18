@@ -3,10 +3,10 @@
 ######## Standard settings ########
 
 Mode                |2
-InputFile           |examples/cpvdm_example1.dat
-OutputFile          |cpvdm_random.dat
+InputFile           |../dataOutput/cells_cpvdm_random.dat
+OutputFile          |cpvdm_best_cells.dat
 StartPoint          |1
-EndPoint            |2e5
+EndPoint            |1e4
 SavedParameters     |mH1, mH2, mHc, alph1, alph2, alph3, m22sq, mssq
 ConsideredChannels  |
 SubtractChannels    |
@@ -31,4 +31,4 @@ sIntEps             |1e-4
 DoPrEps             |1e-6
 Bins                |500
 BestBins            |1000
-Prandom             |1
+Prandom             |0
