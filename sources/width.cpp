@@ -188,6 +188,18 @@ double Width::partial_width(const ParticleType ptype1,
                 return 0.;
             }
             break;
+        case massive_vector_boson + scalar:
+            if(mh>m1+m2) {
+                res*= mh * mh / 4. * sqrt(kaellen(1, m1 * m1 / (mh * mh), m2 * m2 / (mh * mh))) * pow(kaellen(mh*mh, m1*m1, m2*m2),0.5);
+            } else {
+                return 0.;
+            }
+        case massive_vector_boson + pseudoscalar:
+            if(mh > m1 + m2) {
+                res*= mh * mh / 4. * sqrt(kaellen(1, m1 * m1 / (mh * mh), m2 * m2 / (mh * mh))) * pow(kaellen(mh*mh, m1*m1, m2*m2),0,5)
+            } else {
+                return 0.;
+            }
         case lepton + lepton:
             if (mh > m1 + m2) {
                 res *= is_pseudo ? 2 * mh * mh
@@ -283,31 +295,43 @@ double Width::partial_width(const ParticleType ptype1,
             const double tau = 4 * mt_pole * mt_pole / (mh * mh);
             double AQ2;
             if (tau < 1) {
-                const double logt = log((2 * sqrt(1 - tau) - tau + 2) / tau);
+                if(is_pseudo){
+                    const double logt = log(1/(1+sqrt(1-tau)));
+                    AQ2 = tau * tau * 1/16. * (M_PI * M_PI + logt*logt) * (M_PI * M_PI + logt*logt);
+                }
+                else { const double logt = log((2 * sqrt(1 - tau) - tau + 2) / tau);
                 const double var = (tau - 1);
                 AQ2 = 9 / 64. * tau * tau *
                       (pow(M_PI * M_PI * var - 4, 2) +
                        var * logt * logt *
                            (2 * M_PI * M_PI * var + 8 + var * logt * logt));
+            }
             } else {
-                const double AQ = 3 / 2. * tau *
+                if(is_pseudo){
+                    const double AQ = tau * pow(asin(1/sqrt(tau)),2);
+                    AQ2 = AQ * AQ;
+                }
+                else {const double AQ = 3 / 2. * tau *
                                   (1 + (1 - tau) * pow(asin(1 / sqrt(tau)), 2));
                 AQ2 = AQ * AQ;
+                }
             }
             double a = aS / M_PI;
             double lt = log(mh * mh / (mt_pole * mt_pole));
-            return 2 * mh / (18 * M_PI * M_PI * M_PI) * (aS * aS) / tau * AQ2 *
-                   coupling * mt_pole * mt_pole / (m1 * m1) *
-                   (1 + 18.675 * a + (156.8 + 5.71 * lt) * a * a +
-                    (521.415 + 122.443 * lt + 10.955 * lt * lt) * a * a * a);
+            return is_pseudo ? mh / (8 * M_PI * M_PI* M_PI) * coupling * mt_pole * mt_pole / (m1 * m1) * (aS*aS) / tau * AQ2 * 
+                              (1+ 22.7329 * a + ( 171.52 + 5 * lt) * a * a)
+                              : 2 * mh / (18 * M_PI * M_PI * M_PI) * (aS * aS) / tau * AQ2 *
+                              coupling * mt_pole * mt_pole / (m1 * m1) *
+                              (1 + 18.675 * a + (156.8 + 5.71 * lt) * a * a +
+                              (521.415 + 122.443 * lt + 10.955 * lt * lt) * a * a * a);
         } break;
 
         default:
             break;
     }
     res = res * pre *
-          sqrt(kaellen(1, m1 * m1 / (mh * mh), m2 * m2 / (mh * mh))) * coupling;
-
+          sqrt(kaellen(1, m1 * m1 / (mh * mh), m2 * m2 / (mh * mh))) * coupling; 
+ 
     return res;
 }
 }  // namespace DT
