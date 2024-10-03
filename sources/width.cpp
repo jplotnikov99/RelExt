@@ -1,4 +1,4 @@
-#include "width.hpp"
+#include "../include/width.hpp"
 
 namespace DT {
 void Width::set_alphaS(const double x) { aS = x; }

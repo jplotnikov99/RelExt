@@ -1,4 +1,4 @@
-#include "maincl.hpp"
+#include "../include/maincl.hpp"
 
 namespace DT {
 Main::Main(int argc, char **argv) {

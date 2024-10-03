@@ -1,4 +1,4 @@
-#include "boltzmann_equations.hpp"
+#include "../include/boltzmann_equations.hpp"
 
 namespace DT {
 Beqs::Beqs(std::shared_ptr<Model> model) {

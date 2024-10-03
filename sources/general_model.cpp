@@ -1,4 +1,4 @@
-#include "general_model.hpp"
+#include "../include/general_model.hpp"
 
 namespace DT {
 
