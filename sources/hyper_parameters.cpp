@@ -1,4 +1,4 @@
-#include "hyper_parameters.hpp"
+#include "../include/hyper_parameters.hpp"
 
 namespace DT {
 // SM parameters

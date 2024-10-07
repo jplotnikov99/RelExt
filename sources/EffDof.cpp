@@ -1,4 +1,4 @@
-#include "EffDof.hpp"
+#include "../include/EffDof.hpp"
 
 namespace DT {
 Dof::Dof() {

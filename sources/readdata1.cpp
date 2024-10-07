@@ -1,4 +1,4 @@
-#include "readdata1.hpp"
+#include "../include/readdata1.hpp"
 
 namespace DT {
 DataReader::DataReader(const std::string file, const size_t mode) {

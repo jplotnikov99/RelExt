@@ -8,6 +8,7 @@
 #include "hyper_parameters.hpp"
 #include "utils.hpp"
 
+
 namespace DT {
 class BeqSolver {
    private:

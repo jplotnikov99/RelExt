@@ -1,4 +1,4 @@
-#include "beq_solver.hpp"
+#include "../include/beq_solver.hpp"
 
 namespace DT {
 BeqSolver::BeqSolver(std::shared_ptr<Model> model) {

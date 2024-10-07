@@ -1,4 +1,4 @@
-#include "relic_ops.hpp"
+#include "../include/relic_ops.hpp"
 
 namespace DT {
 RelicOps::RelicOps(std::shared_ptr<Model> model) {

@@ -1,4 +1,4 @@
-#include "mass_run.hpp"
+#include "../include/mass_run.hpp"
 
 namespace DT {
 Mrun::Mrun() {
