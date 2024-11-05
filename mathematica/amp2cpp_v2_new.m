@@ -1,8 +1,8 @@
 (* ::Package:: *)
 
 (*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_bmd5/FR_modfiles" <> "/FA_modfiles";*)
-directory = "/home/rodrigo/Downloads/darktree_new/md_cpvdm/FR_modfiles"<>"/FA_modfiles";
+directory = "/home/johann/Documents/Projects/DM/darktree_new/md_vdm/FR_modfiles" <> "/FA_modfiles";
+(*directory = "/home/rodrigo/Downloads/darktree_new/md_cpvdm/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
 
@@ -148,10 +148,11 @@ AppendTo[alldiags, Feynmangraph];
 
 (*exclude goldstone and DS particles from final states*)
 Do[
-alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> GSlist[[1]]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> GSlist[[1]]]&];
-alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> -GSlist[[1]]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> -GSlist[[1]]]&];
-alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> GSlist[[2]]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> GSlist[[2]]]&];
-alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> -GSlist[[2]]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> -GSlist[[2]]]&];
+	Do[
+		alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> GSlist[[j]]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> GSlist[[j]]]&];
+		alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[3] -> -GSlist[[j]]]&]; alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#, Field[4] -> -GSlist[[j]]]&];
+	,{j,Length[GSlist]}];
+
 Table[ alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#/.F_[x_,{y_}]:>F[x], Field[3] -> dslist[[j]]]&] , {j, Length[dslist]}];
 Table[ alldiags[[i]] = DiagramSelect[alldiags[[i]], FreeQ[#/.F_[x_,{y_}]:>F[x], Field[4] -> dslist[[j]]]&] , {j, Length[dslist]}];
 , {i, Length[alldiags]}]
@@ -529,10 +530,11 @@ alldiagsDecay;
 
 (*exclude goldstone from final states*)
 Do[
-alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[2] -> GSlist[[1]]]&]; alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[3] -> GSlist[[1]]]&];
-alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[2] -> -GSlist[[1]]]&]; alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[3] -> -GSlist[[1]]]&];
-alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[2] -> GSlist[[2]]]&]; alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[3] -> GSlist[[2]]]&];
-alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[2] -> -GSlist[[2]]]&]; alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[3] -> -GSlist[[2]]]&];
+	Do[
+		alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[2] -> GSlist[[j]]]&]; alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[3] -> GSlist[[j]]]&];
+		alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[2] -> -GSlist[[j]]]&]; alldiagsDecay[[i]] = DiagramSelect[alldiagsDecay[[i]], FreeQ[#, Field[3] -> -GSlist[[j]]]&];
+	,{j,Length[GSlist]}];
+
 , {i, Length[alldiagsDecay]}]
 
 
