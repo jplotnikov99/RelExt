@@ -72,7 +72,10 @@ void Main::load_setting() {
     channel_contrib = sgr->get_val_of("ChannelContributions");
 
     // Advanced settings
-    beps_eps = log(sgr->get_val_of("BepsEps"));
+    double temp = sgr->get_val_of("BepsEps");
+    if (temp >= 1.) temp = 0.99;
+    if (temp == 0.) temp = 1e-100;
+    beps_eps = log(temp);
     xtoday_FO = sgr->get_val_of("xTodayFO");
     theta_eps = sgr->get_val_of("ThetaIntEps");
     peak_eps = sgr->get_val_of("PeakIntEps");
@@ -405,6 +408,7 @@ void Main::CalcTac(const vstring &args) {
 
     double step = (max_x - min_x) / ((double)points);
     ResError res;
+    beps_eps = log(1e-100);
 
     tac->sort_inimasses(channel);
     for (double i = min_x; i <= max_x; i += step) {
