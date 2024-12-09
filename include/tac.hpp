@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #include "general_model.hpp"
+#include "data_structures.hpp"
 #include "hyper_parameters.hpp"
 #include "result_error_pair.hpp"
 #include "utils.hpp"
@@ -17,8 +18,8 @@ class Tac {
     double lower_bound;
     size_t N_relevant_peaks;
     bool tac_error_reached = false;
-    std::vector<double> boundaries;
-    std::vector<double> polK2s;
+    VecDoub boundaries;
+    VecDoub polK2s;
     std::unordered_map<double, ResError> sig_s;
     std::map<double, vstring> inimap;
     std::map<double, vstring>::iterator ini_it;

@@ -53,6 +53,12 @@ VecDoub::VecDoub(const VecDoub &a)
     for (size_t i = 0; i < nn; i++) v[i] = a[i];
 }
 
+size_t VecDoub::size() { return nn; }
+
+void VecDoub::zero() {
+    for (size_t i = 0; i < nn; i++) v[i] = 0;
+}
+
 void VecDoub::resize(const size_t newn) {
     if (newn != nn) {
         if (v != nullptr) delete[] (v);
@@ -65,8 +71,6 @@ void VecDoub::print() {
     for (size_t i = 0; i < nn; i++) std::cout << v[i] << "\t";
     std::cout << "\n";
 }
-
-size_t VecDoub::size() { return nn; }
 
 VecDoub &VecDoub::operator=(VecDoub &a) {
     if (this != &a) {

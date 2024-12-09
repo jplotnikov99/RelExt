@@ -1,7 +1,9 @@
 #pragma once
 
 #include <iostream>
+
 #include "hyper_parameters.hpp"
+#include "result_error_pair.hpp"
 
 template <class FUNC>
 double kronrod_61(FUNC &f, const double l, const double r) {
@@ -83,8 +85,8 @@ double h_adap_gauss_kronrod_15(FUNC &f, const double l, const double r,
 }
 
 template <class FUNC>
-double adap_simpson38(FUNC &f, const double l, const double r, double *f0,
-                      const double err, const size_t depth = 0) {
+double h_adap_simpson38(FUNC &f, const double l, const double r, double *f0,
+                        const double err, const size_t depth = 0) {
     double I1, I2, f1[4];
     double m = (r + l) / 2.;
     double h = (r - l) / 8.;

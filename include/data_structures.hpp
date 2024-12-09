@@ -35,6 +35,7 @@ class VecDoub {
     VecDoub(const size_t n, const double &a);
     VecDoub(const VecDoub &a);
     size_t size();
+    void zero();
     void resize(const size_t newn);
     void print();
     VecDoub &operator=(VecDoub &a);

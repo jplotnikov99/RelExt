@@ -1,16 +1,11 @@
 #include "../include/tac.hpp"
 
 namespace DT {
-Tac::Tac(Model &model) : mod(model) {
-    for (size_t i = 0; i < mod.N_widths; i++) {
-        boundaries.push_back(0);
-        boundaries.push_back(0);
-        boundaries.push_back(0);
-    }
-}
+Tac::Tac(Model &model) : mod(model), boundaries(3 * mod.N_widths) {}
 
 bool Tac::sort_inimasses(const vstring &ch_str) {
     double temp;
+    polK2s.resize(mod.bath_masses.size());
     for (auto it : ch_str) {
         mod.set_channel(m1, m2, {it});
         temp = mod(0.5, (m1 + m2) * (m1 + m2) * 100).res;
@@ -97,12 +92,11 @@ ResError Tac::wij(const double &s) {
 void Tac::calc_polK2(const double &x) {
     double Tinv = x / mod.MDM;
     double mtemp, cur;
-    polK2s.clear();
     for (size_t i = 0; i < dsmasses.size(); i++) {
         mtemp = dsmasses[i];
         cur = mod.the_dof(mod.bath_masses[i]) * mtemp * mtemp *
               polK2(Tinv * mtemp);
-        polK2s.push_back(cur);
+        polK2s[i] = cur;
     }
 }
 
@@ -117,7 +111,7 @@ double Tac::lipsv(const double &s, const double &x) {
         num += Tinv * polK1(sqs * Tinv);
         for (size_t i = 0; i < dsmasses.size(); i++) {
             mtemp = dsmasses[i];
-            den += exp(-Tinv * (mtemp - sqs / 2)) * polK2s.at(i);
+            den += exp(-Tinv * (mtemp - sqs / 2)) * polK2s[i];
         }
         den *= den;
     } else {
@@ -170,28 +164,28 @@ void Tac::i_sort_boundaries() {
     double current[3];
     int l;
     for (int i = 1; i < N_relevant_peaks; i++) {
-        current[0] = boundaries.at(3 * i);
-        current[1] = boundaries.at(3 * i + 1);
-        current[2] = boundaries.at(3 * i + 2);
+        current[0] = boundaries[3 * i];
+        current[1] = boundaries[3 * i + 1];
+        current[2] = boundaries[3 * i + 2];
 
         l = i;
-        while ((l > 0) && (boundaries.at(3 * (l - 1) + 1) < current[1])) {
-            boundaries.at(3 * l) = boundaries.at(3 * (l - 1));
-            boundaries.at(3 * l + 1) = boundaries.at(3 * (l - 1) + 1);
-            boundaries.at(3 * l + 2) = boundaries.at(3 * (l - 1) + 2);
+        while ((l > 0) && (boundaries[3 * (l - 1) + 1] < current[1])) {
+            boundaries[3 * l] = boundaries[3 * (l - 1)];
+            boundaries[3 * l + 1] = boundaries[3 * (l - 1) + 1];
+            boundaries[3 * l + 2] = boundaries[3 * (l - 1) + 2];
 
             l--;
         }
-        boundaries.at(3 * l) = current[0];
-        boundaries.at(3 * l + 1) = current[1];
-        boundaries.at(3 * l + 2) = current[2];
+        boundaries[3 * l] = current[0];
+        boundaries[3 * l + 1] = current[1];
+        boundaries[3 * l + 2] = current[2];
     }
 }
 
 void Tac::check_boundaries() {
     for (size_t i = 0; i < boundaries.size() - 1; i++) {
-        if (boundaries.at(i) < boundaries.at(i + 1)) {
-            boundaries.at(i + 1) = boundaries.at(i);
+        if (boundaries[i] < boundaries[i + 1]) {
+            boundaries[i + 1] = boundaries[i];
         }
     }
 }
@@ -208,9 +202,9 @@ void Tac::set_boundaries(const double &x) {
         if (peak_xf > 0 && x < peak_xf) {
             b = peak_bounds(*mod.denstructures.at(2 * j),
                             *mod.denstructures.at(2 * j + 1));
-            boundaries.at(3 * N_relevant_peaks) = *b;
-            boundaries.at(3 * N_relevant_peaks + 1) = *(b + 1);
-            boundaries.at(3 * N_relevant_peaks + 2) = *(b + 2);
+            boundaries[3 * N_relevant_peaks] = *b;
+            boundaries[3 * N_relevant_peaks + 1] = *(b + 1);
+            boundaries[3 * N_relevant_peaks + 2] = *(b + 2);
             N_relevant_peaks++;
         }
     }
@@ -292,9 +286,9 @@ ResError Tac::integrate_peaks(const double &x) {
     ResError res{0., 0.};
     double b[3];
     for (size_t i = 0; i < N_relevant_peaks; i++) {
-        b[0] = boundaries.at(3 * i);
-        b[1] = boundaries.at(3 * i + 1);
-        b[2] = boundaries.at(3 * i + 2);
+        b[0] = boundaries[3 * i];
+        b[1] = boundaries[3 * i + 1];
+        b[2] = boundaries[3 * i + 2];
         res = res +
               simpson38_adap_peak(b[2], b[1], x, simpson38_peak(b[2], b[1], x));
         res = res +
@@ -310,12 +304,11 @@ void Tac::estimate_integrate_s(const double &x, ResError &res,
         estimate += res.res;
 
         for (size_t i = 1; i < N_relevant_peaks; i++) {
-            estimate +=
-                kronrod_61(boundaries.at(3 * i), boundaries.at(3 * i - 1), x);
+            estimate += kronrod_61(boundaries[3 * i], boundaries[3 * i - 1], x);
         }
 
-        estimate += (kronrod_61(0, boundaries.at(3 * N_relevant_peaks - 1), x) +
-                     kronrod_61(boundaries.at(0), 1, x));
+        estimate += (kronrod_61(0, boundaries[3 * N_relevant_peaks - 1], x) +
+                     kronrod_61(boundaries[0], 1, x));
     } else {
         estimate += kronrod_61(0, 1e-6, x);
         estimate += kronrod_61(1e-6, 1e-3, x);
@@ -325,15 +318,13 @@ void Tac::estimate_integrate_s(const double &x, ResError &res,
 
 void Tac::integrate_s(const double &x, ResError &res, double &estimate) {
     if (N_relevant_peaks > 0) {
-        res = res +
-              (adap_gauss_kronrod(0, boundaries.at(3 * N_relevant_peaks - 1), x,
-                                  estimate) +
-               adap_gauss_kronrod(boundaries.at(0), 1, x, estimate));
+        res = res + (adap_gauss_kronrod(0, boundaries[3 * N_relevant_peaks - 1],
+                                        x, estimate) +
+                     adap_gauss_kronrod(boundaries[0], 1, x, estimate));
 
         for (size_t i = 1; i < N_relevant_peaks; i++) {
-            res =
-                res + adap_gauss_kronrod(boundaries.at(3 * i),
-                                         boundaries.at(3 * i - 1), x, estimate);
+            res = res + adap_gauss_kronrod(boundaries[3 * i],
+                                           boundaries[3 * i - 1], x, estimate);
         }
     } else {
         res = res + adap_gauss_kronrod(0, 1e-3, x, estimate);

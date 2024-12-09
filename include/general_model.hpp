@@ -30,6 +30,7 @@ typedef std::unordered_map<std::string, double *> sMapDp;
 
 class Model {
    private:
+    double ss;
     sMapDp particles;
     std::unordered_map<std::string, double> dsDof;
     std::vector<double *> neutraldsmasses;
@@ -59,6 +60,7 @@ class Model {
     void load_tokens();
     bool check_conditions();
 
+    void set_s(const double new_s);
     bool load_everything();
     double the_mass(const std::string &prtcl);
     double the_dof(const std::string &prtcl);

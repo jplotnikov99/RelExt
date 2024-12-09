@@ -16,6 +16,8 @@ bool Model::load_everything() {
     return check_conditions();
 }
 
+void Model::set_s(const double new_s) { ss = new_s; }
+
 double Model::the_mass(const std::string &prtcl) { return *particles[prtcl]; }
 
 double Model::the_dof(const std::string &prtcl) { return dsDof[prtcl]; }
