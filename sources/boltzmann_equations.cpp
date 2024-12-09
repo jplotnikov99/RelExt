@@ -1,7 +1,7 @@
 #include "../include/boltzmann_equations.hpp"
 
 namespace DT {
-Beqs::Beqs(std::shared_ptr<Model> model) {
+Beqs::Beqs(Model &model) : mod(model) {
     dof = std::make_unique<Dof>();
     mod = model;
     tac = std::make_unique<Tac>(mod);
@@ -16,7 +16,7 @@ bool Beqs::sort_inimasses(const vstring &ch_str) {
 }
 
 double Beqs::pre(const double &x) {
-    return sqrt(M_PI / (45 * G)) * mod->MDM / (x * x) * dof->g12(mod->MDM / x);
+    return sqrt(M_PI / (45 * G)) * mod.MDM / (x * x) * dof->g12(mod.MDM / x);
 }
 
 ResError Beqs::pre_tac(const double &x) { return -pre(x) * tac->tac(x); }
@@ -24,24 +24,25 @@ ResError Beqs::pre_tac(const double &x) { return -pre(x) * tac->tac(x); }
 double Beqs::T_ent(const double &ent) {
     // assuming heff cte for the values of x (~25, ie, at FO) that are relevant
     // (and small changes in ent)
-    return pow(45 * ent / (2 * M_PI * M_PI * dof->heff(mod->MDM / 25)),
+    return pow(45 * ent / (2 * M_PI * M_PI * dof->heff(mod.MDM / 25)),
                0.33333333);
 }
 
 double Beqs::ent_T(const double &x) {
-    return 2 * M_PI * M_PI * mod->MDM * mod->MDM * mod->MDM / (x * x * x) *
-           dof->heff(mod->MDM / x) / 45;
+    return 2 * M_PI * M_PI * mod.MDM * mod.MDM * mod.MDM / (x * x * x) *
+           dof->heff(mod.MDM / x) / 45;
 }
 
 double Beqs::yeq(const double &x) {
     double yeq = 0;
     double mtemp;
-    double a = 1 / (mod->MDM * mod->MDM);
-    double Tinv = x / mod->MDM;
+    double a = 1 / (mod.MDM * mod.MDM);
+    double Tinv = x / mod.MDM;
 
     for (size_t i = 0; i < tac->dsmasses.size(); i++) {
         mtemp = tac->dsmasses[i];
-        yeq += mod->the_dof(mod->bath_masses[i]) * pow(mtemp, 2) * a * besselK2(Tinv * mtemp);
+        yeq += mod.the_dof(mod.bath_masses[i]) * pow(mtemp, 2) * a *
+               besselK2(Tinv * mtemp);
     }
     yeq *= 45 * x * x / (4 * dof->heff(1 / Tinv) * M_PI * M_PI * M_PI * M_PI);
     return yeq;
@@ -62,18 +63,18 @@ double Beqs::fstart(double x) {
     double d = 0.001 * ent;  // stepsize for entropy increase
     double upper, lower, dlnYeqdent;
 
-    x = mod->MDM / T_ent(ent + d);
+    x = mod.MDM / T_ent(ent + d);
     upper = log(yeq(x));  // logYeq for entropy = entropy + d
-    x = mod->MDM / T_ent(ent - d);
+    x = mod.MDM / T_ent(ent - d);
     lower = log(yeq(x));  // logYeq for entropy = entropy - d
     dlnYeqdent =
         (upper - lower) / (2 * d);  // this is derivative of logYeq wrt entropy
-    x = mod->MDM / T_ent(ent);
+    x = mod.MDM / T_ent(ent);
 
     // eq 6 from microlecture
-    return (dlnYeqdent * (sqrt(6 * M_PI * M_PI * M_PI / 30 * mod->MDM *
-                               mod->MDM * mod->MDM * mod->MDM /
-                               (x * x * x * x) * dof->geff(mod->MDM / x) * G) /
+    return (dlnYeqdent * (sqrt(6 * M_PI * M_PI * M_PI / 30 * mod.MDM *
+                               mod.MDM * mod.MDM * mod.MDM /
+                               (x * x * x * x) * dof->geff(mod.MDM / x) * G) /
                           tac->tac(x).res) -
             dif * yeq(x));
 }

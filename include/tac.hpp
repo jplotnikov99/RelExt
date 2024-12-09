@@ -9,11 +9,10 @@
 #include "result_error_pair.hpp"
 #include "utils.hpp"
 
-
 namespace DT {
 class Tac {
    private:
-    std::shared_ptr<Model> mod;
+    Model &mod;
     double m1, m2;
     double lower_bound;
     size_t N_relevant_peaks;
@@ -27,7 +26,7 @@ class Tac {
    public:
     std::vector<double> dsmasses;
 
-    Tac(std::shared_ptr<Model> model);
+    Tac(Model &model);
 
     // sorts different channels by their total initial state masses
     bool sort_inimasses(const vstring &ch_str = {});

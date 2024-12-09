@@ -12,13 +12,13 @@
 namespace DT {
 class BeqSolver {
    private:
-    std::shared_ptr<Model> mod;
+    Model &mod;
     std::unique_ptr<Beqs> beq;
     bool reject = false;
     double errold = 1e-4;
 
    public:
-    BeqSolver(std::shared_ptr<Model> model);
+    BeqSolver(Model &model);
 
     // sets the mechanism of DM generation
     void set_mechanism(const size_t &mech);

@@ -144,7 +144,7 @@ void Model::set_channel(double &m1, double &m2, const vstring &ch_str,
     }
 }
 
-ResError Model::eval(const double cos_t, const double s) {
+ResError Model::operator()(const double cos_t, const double s) {
     ResError res = {0., 0.};
     for (auto it : cur_channel) {
         res.res += it(cos_t, s);

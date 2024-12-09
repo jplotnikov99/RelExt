@@ -1,8 +1,7 @@
 #include "../include/beq_solver.hpp"
 
 namespace DT {
-BeqSolver::BeqSolver(std::shared_ptr<Model> model) {
-    mod = model;
+BeqSolver::BeqSolver(Model &model) : mod(model) {
     beq = std::make_unique<Beqs>(mod);
 }
 

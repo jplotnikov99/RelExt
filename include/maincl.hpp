@@ -30,7 +30,7 @@ class Main {
     vvstring generator_list;
     std::unique_ptr<DataReader> rdr;
     std::unique_ptr<DataReader> sgr;
-    std::shared_ptr<Model> mod;
+    Model &mod;
     std::unique_ptr<RelicOps> relops;
 
    public:

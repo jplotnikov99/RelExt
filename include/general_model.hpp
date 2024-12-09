@@ -79,7 +79,7 @@ class Model {
     void assign_masses(double &m1, double &m2, const std::string &channel);
     void set_channel(double &m1, double &m2, const vstring &ch_str,
                      const bool flux = true);
-    ResError eval(const double cos_t, const double s);
+    ResError operator()(const double cos_t, const double s);
 
     ~Model() {};
 };
