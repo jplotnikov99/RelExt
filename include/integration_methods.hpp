@@ -1,10 +1,12 @@
 #pragma once
 
 #include <iostream>
+#include <cmath>
 
 #include "hyper_parameters.hpp"
 #include "result_error_pair.hpp"
 
+namespace DT {
 template <class FUNC>
 double kronrod_61(FUNC &f, const double l, const double r) {
     double m = 0.5 * (r + l);
@@ -85,12 +87,13 @@ double h_adap_gauss_kronrod_15(FUNC &f, const double l, const double r,
 }
 
 template <class FUNC>
-double h_adap_simpson38(FUNC &f, const double l, const double r, double *f0,
-                        const double err, const size_t depth = 0) {
-    double I1, I2, f1[4];
+ResError h_adap_simpson38(FUNC &f, const double l, const double r, ResError *f0,
+                          const double &est, const double err,
+                          const size_t depth = 0) {
+    ResError I1, I2, f1[4];
     double m = (r + l) / 2.;
     double h = (r - l) / 8.;
-    double Ia = h * (f0[0] + 3 * f0[1] + 3 * f0[2] + f0[3]);
+    ResError Ia = h * (f0[0] + 3 * f0[1] + 3 * f0[2] + f0[3]);
     f1[0] = f(m);
     f1[1] = f0[2];
     f1[2] = f((l + 5 * r) / 6);
@@ -100,13 +103,14 @@ double h_adap_simpson38(FUNC &f, const double l, const double r, double *f0,
     f0[1] = f((5 * l + r) / 6);
     I1 = h / 2 * (f0[0] + 3 * f0[1] + 3 * f0[2] + f0[3]);
     I2 = h / 2 * (f1[0] + 3 * f1[1] + 3 * f1[2] + f1[3]);
-    double Ib = I1 + I2;
+    ResError Ib = I1 + I2;
 
-    if ((std::abs(Ia / Ib - 1) < err) || (depth > 16)) {
+    if ((std::abs(Ia.res - Ib.res) < err * fabs(est)) || (depth > 16)) {
+        Ib.err = std::abs(Ia.res - Ib.res);
         return Ib;
     }
-    return adap_simpson38(f, l, m, f0, err, depth + 1) +
-           adap_simpson38(f, m, r, f1, err, depth + 1);
+    return h_adap_simpson38(f, l, m, f0, err, depth + 1) +
+           h_adap_simpson38(f, m, r, f1, err, depth + 1);
 }
 
 template <class FUNC>
@@ -134,3 +138,5 @@ double h_adap_simpson38(FUNC &f, const double l, const double r, double *f0,
     return h_adap_simpson38(f, l, m, f0, est, err, depth + 1) +
            h_adap_simpson38(f, m, r, f1, est, err, depth + 1);
 }
+
+}  // namespace DT

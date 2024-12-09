@@ -16,7 +16,7 @@ bool Model::load_everything() {
     return check_conditions();
 }
 
-void Model::set_s(const double new_s) { ss = new_s; }
+void Model::set_s(const double new_s) { s = new_s; }
 
 double Model::the_mass(const std::string &prtcl) { return *particles[prtcl]; }
 
@@ -146,7 +146,7 @@ void Model::set_channel(double &m1, double &m2, const vstring &ch_str,
     }
 }
 
-ResError Model::operator()(const double cos_t, const double s) {
+ResError Model::operator()(const double cos_t) {
     ResError res = {0., 0.};
     for (auto it : cur_channel) {
         res.res += it(cos_t, s);

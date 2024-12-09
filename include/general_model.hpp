@@ -30,7 +30,7 @@ typedef std::unordered_map<std::string, double *> sMapDp;
 
 class Model {
    private:
-    double ss;
+    double s;
     sMapDp particles;
     std::unordered_map<std::string, double> dsDof;
     std::vector<double *> neutraldsmasses;
@@ -81,7 +81,7 @@ class Model {
     void assign_masses(double &m1, double &m2, const std::string &channel);
     void set_channel(double &m1, double &m2, const vstring &ch_str,
                      const bool flux = true);
-    ResError operator()(const double cos_t, const double s);
+    ResError operator()(const double cos_t);
 
     ~Model() {};
 };

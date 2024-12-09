@@ -8,7 +8,8 @@ bool Tac::sort_inimasses(const vstring &ch_str) {
     polK2s.resize(mod.bath_masses.size());
     for (auto it : ch_str) {
         mod.set_channel(m1, m2, {it});
-        temp = mod(0.5, (m1 + m2) * (m1 + m2) * 100).res;
+        mod.set_s((m1 + m2) * (m1 + m2) * 100);
+        temp = mod(0.5).res;
         if (std::isnan(temp)) return false;
         inimap[m1 + m2].push_back(it);
     }
@@ -19,7 +20,7 @@ bool Tac::sort_inimasses(const vstring &ch_str) {
     return true;
 }
 
-ResError Tac::simpson38_adap_cos_t(const double l, const double r,
+/* ResError Tac::simpson38_adap_cos_t(const double l, const double r,
                                    const double &s, ResError *f,
                                    const double &est, const size_t depth) {
     ResError I1, I2, I3, f1[4];
@@ -43,11 +44,12 @@ ResError Tac::simpson38_adap_cos_t(const double l, const double r,
     }
     return simpson38_adap_cos_t(l, m, s, f, est, depth + 1) +
            simpson38_adap_cos_t(m, r, s, f1, est, depth + 1);
-}
+} */
 
 ResError Tac::xsec(const double &s, const std::string &channel) {
     double m1, m2, m3, m4;
     mod.set_channel(m1, m2, {channel}, false);
+    mod.set_s(s);
     if (sqrt(s) < m1 + m2) {
         return {0., 0.};
     }
@@ -55,7 +57,7 @@ ResError Tac::xsec(const double &s, const std::string &channel) {
 
     double f_est[10];
     for (size_t i = 0; i < 10; i++) {
-        f_est[i] = mod(-1 + 0.2222222222222222 * i, s).res;
+        f_est[i] = mod(-1 + 0.2222222222222222 * i).res;
     }
     double est = simpson_est(-1, 1, f_est);
     ResError f[4];
@@ -65,14 +67,15 @@ ResError Tac::xsec(const double &s, const std::string &channel) {
     f[3] = {f_est[9], 0.};
     return 1 / (32 * M_PI * s) *
            sqrt(kaellen(s, m3 * m3, m4 * m4) / kaellen(s, m1 * m1, m2 * m2)) *
-           simpson38_adap_cos_t(-1, 1, s, f, est);
+           h_adap_simpson38(mod, -1, 1, f, est, theta_eps);
 }
 
 ResError Tac::wij(const double &s) {
     if (sig_s.count(s) == 0) {
+        mod.set_s(s);
         double f_est[10];
         for (size_t i = 0; i < 10; i++) {
-            f_est[i] = mod(-1 + 0.2222222222222222 * i, s).res;
+            f_est[i] = mod(-1 + 0.2222222222222222 * i).res;
         }
         double est = simpson_est(-1, 1, f_est);
         ResError f[4];
@@ -81,7 +84,7 @@ ResError Tac::wij(const double &s) {
         f[2] = {f_est[6], 0.};
         f[3] = {f_est[9], 0.};
         ResError crs = 1 / (256 * M_PI * s * sqrt(s)) *
-                       simpson38_adap_cos_t(-1, 1, s, f, est);
+                       h_adap_simpson38(mod, -1, 1, f, est, theta_eps);
         sig_s[s] = crs;
         return crs;
     } else {

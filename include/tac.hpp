@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #include "general_model.hpp"
+#include "integration_methods.hpp"
 #include "data_structures.hpp"
 #include "hyper_parameters.hpp"
 #include "result_error_pair.hpp"
