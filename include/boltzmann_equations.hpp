@@ -14,11 +14,11 @@ class Beqs {
     const double G = 6.7e-39;
     size_t mech = 0;
     std::shared_ptr<Dof> dof;
-    Model &mod;
+    ModelInfo &MI;
     std::unique_ptr<Tac> tac;
 
    public:
-    Beqs(Model &model);
+    Beqs(ModelInfo &model);
     // set the DM generatio mechanism
     void set_mechanism(const size_t &m);
 

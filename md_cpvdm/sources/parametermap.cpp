@@ -5,7 +5,7 @@
 #include "../model.hpp"
 
 namespace DT{
-	void Model::load_parameter_map(){
+	void ModelInfo::load_parameter_map(){
 		parmap["MZ"] = &MZ;
 		parmap["aEWM1"] = &aEWM1;
 		parmap["Gf"] = &Gf;

@@ -12,13 +12,13 @@
 namespace DT {
 class BeqSolver {
    private:
-    Model &mod;
+    ModelInfo &MI;
     std::unique_ptr<Beqs> beq;
     bool reject = false;
     double errold = 1e-4;
 
    public:
-    BeqSolver(Model &model);
+    BeqSolver(ModelInfo &model);
 
     // sets the mechanism of DM generation
     void set_mechanism(const size_t &mech);

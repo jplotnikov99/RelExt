@@ -1,7 +1,7 @@
 #include "../include/relic_ops.hpp"
 
 namespace DT {
-RelicOps::RelicOps(Model &model) : mod(model) {
+RelicOps::RelicOps(ModelInfo &model) : MI(model) {
     bs = std::make_unique<BeqSolver>(model);
 }
 
@@ -15,7 +15,7 @@ void RelicOps::init_montecarlo(const size_t N_pars, const dvec1 &lower,
 void RelicOps::generate_new_pars() {
     dvec1 new_pars = Mc->generate_new_pars();
     for (size_t i = 0; i < par_names.size(); i++) {
-        mod.change_parameter(par_names[i], new_pars[i]);
+        MI.change_parameter(par_names[i], new_pars[i]);
     }
 }
 
@@ -46,7 +46,7 @@ void RelicOps::set_par_bounds(const std::string par, const double a,
 }
 
 ResError RelicOps::calc_omega(const ResError yield) {
-    return 2.742e8 * mod.MDM * yield;
+    return 2.742e8 * MI.MDM * yield;
 }
 
 ResError RelicOps::CalcRelic() {
@@ -96,7 +96,7 @@ ResError RelicOps::CalcRelic() {
     if (is_monte) {
         dvec1 par_vals;
         for (size_t i = 0; i < par_names.size(); i++)
-            par_vals.push_back(mod.get_parameter_val(par_names[i]));
+            par_vals.push_back(MI.get_parameter_val(par_names[i]));
         double w = omega.res > 0.12 ? pow(0.12 / omega.res, 2)
                                     : pow(omega.res / 0.12, 2);
         Mc->set_weight(par_vals, w);
@@ -176,16 +176,16 @@ double RelicOps::get_next_omega(const std::string &par, const double om) {
     double om1 = om;
     double par1, par2, om2, step;
 
-    par1 = mod.get_parameter_val(par);
+    par1 = MI.get_parameter_val(par);
     par2 = par1 * (1 + eps);
-    mod.change_parameter(par, par2);
+    MI.change_parameter(par, par2);
     om2 = CalcRelic().res - omega_target;
 
     step = get_next_step(par1, par2, om1, om2);
     par1 += step;
     if (par1 < par_bounds[0]) par1 = par_bounds[0];
     if (par1 > par_bounds[1]) par1 = par_bounds[1];
-    if (!mod.change_parameter(par, par1)) {
+    if (!MI.change_parameter(par, par1)) {
         omega = {om1, omega.err};
         return om1;
     }
@@ -201,7 +201,7 @@ void RelicOps::vanguard_search(const std::string &par) {
     double om1, om2;
     om1 = CalcRelic().res - omega_target;
     omega_old = om1;
-    par_old = mod.get_parameter_val(par);
+    par_old = MI.get_parameter_val(par);
     while ((fabs(om1) > omega_err) && (searchmode == vanguard)) {
         om2 = om1;
         om1 = get_next_omega(par, om1);
@@ -241,7 +241,7 @@ void RelicOps::bisect_search(const std::string &par) {
     for (size_t i = 0; i < (size_t)max_N_bisections; i++) {
         dx *= 0.5;
         xmid = rtb + dx;
-        mod.change_parameter(par, xmid);
+        MI.change_parameter(par, xmid);
         bi_y2 = CalcRelic().res - omega_target;
 
         if (bi_y2 <= 0.) rtb = xmid;
@@ -282,7 +282,7 @@ ResError RelicOps::find_par(const std::string &par) {
 double RelicOps::random_step(const size_t par_i) {
     int sign;
     double rate;
-    double val = mod.get_parameter_val(par_names[par_i]);
+    double val = MI.get_parameter_val(par_names[par_i]);
     double b1 = bounds[par_i].first;
     double b2 = bounds[par_i].second;
     sign = (int)generate_random(0, 2);
@@ -291,18 +291,18 @@ double RelicOps::random_step(const size_t par_i) {
     val = val * (1 + (double)sign * rate);
     if (val < b1) val = b1 * (1 - 0.01);
     if (val > b2) val = b2 * (1 - 0.01);
-    mod.change_parameter(par_names[par_i], val, false);
+    MI.change_parameter(par_names[par_i], val, false);
     return (double)sign * rate;
 }
 
 void RelicOps::same_step(const size_t par_i, const double step) {
-    double val = mod.get_parameter_val(par_names[par_i]);
+    double val = MI.get_parameter_val(par_names[par_i]);
     double b1 = bounds[par_i].first;
     double b2 = bounds[par_i].second;
     val = val * (1 + step);
     if (val < b1) val = b1 * (1 - 0.01);
     if (val > b2) val = b2 * (1 - 0.01);
-    mod.change_parameter(par_names[par_i], val, false);
+    MI.change_parameter(par_names[par_i], val, false);
 }
 
 ResError RelicOps::random_walk() {
@@ -318,23 +318,23 @@ ResError RelicOps::random_walk() {
         om2 = om1;
         if (is_step_good) {
             for (size_t i = 0; i < par_names.size(); i++) {
-                saved_vals[i] = mod.get_parameter_val(par_names[i]);
+                saved_vals[i] = MI.get_parameter_val(par_names[i]);
                 same_step(i, current_step[i]);
             }
         } else {
             for (size_t i = 0; i < par_names.size(); i++) {
-                saved_vals[i] = mod.get_parameter_val(par_names[i]);
+                saved_vals[i] = MI.get_parameter_val(par_names[i]);
                 current_step[i] = random_step(i);
             }
         }
-        if (!mod.load_everything()) {
+        if (!MI.load_everything()) {
             is_step_good = false;
         } else {
             om1 = CalcRelic().res;
             if (fabs(om1 - omega_target) >= fabs(om2 - omega_target) ||
                 om1 == 0.) {
                 for (size_t i = 0; i < par_names.size(); i++) {
-                    mod.change_parameter(par_names[i], saved_vals[i], false);
+                    MI.change_parameter(par_names[i], saved_vals[i], false);
                 }
                 is_step_good = false;
                 om1 = om2;
@@ -349,7 +349,7 @@ ResError RelicOps::random_walk() {
         cur_steps++;
     } while (fabs(om1 - omega_target) > omega_err && (cur_steps < max_steps));
     std::cout << "Steps taken: " << cur_steps << std::endl;
-    mod.load_everything();
+    MI.load_everything();
     return CalcRelic();
 }
 

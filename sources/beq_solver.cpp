@@ -1,8 +1,8 @@
 #include "../include/beq_solver.hpp"
 
 namespace DT {
-BeqSolver::BeqSolver(Model &model) : mod(model) {
-    beq = std::make_unique<Beqs>(mod);
+BeqSolver::BeqSolver(ModelInfo &model) : MI(model) {
+    beq = std::make_unique<Beqs>(MI);
 }
 
 void BeqSolver::set_mechanism(const size_t &mech) { beq->set_mechanism(mech); }

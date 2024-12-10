@@ -27,13 +27,13 @@ class RelicOps {
     double omega_target, omega_err;
     double omega_old, step_old, par_old;
     double bi_x1, bi_x2, bi_y1, bi_y2;
-    Model &mod;
+    ModelInfo &MI;
     std::unique_ptr<BeqSolver> bs;
     bool is_monte = false;
     std::unique_ptr<MC> Mc;
 
    public:
-    RelicOps(Model &model);
+    RelicOps(ModelInfo &model);
 
     void init_montecarlo(const size_t N_pars, const dvec1 &lower,
                          const dvec1 &upper,

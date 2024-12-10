@@ -15,6 +15,7 @@ namespace DT {
 
 class SigvInt {
    private:
+    ModelInfo &MI;
     Model &mod;
     double x;
 
@@ -23,7 +24,7 @@ class SigvInt {
     std::vector<double> dsmasses;
     std::unordered_map<double, ResError> sig_s;
     double lower_bound;
-    SigvInt(Model &model) : mod(model) {};
+    SigvInt(ModelInfo &model, Model &model2) : MI(model), mod(model2) {};
 
     void set_x(const double new_x);
 
@@ -46,6 +47,7 @@ class SigvInt {
 
 class Tac {
    private:
+    ModelInfo &MI;
     Model &mod;
     double m1, m2;
     size_t N_relevant_peaks;
@@ -56,7 +58,7 @@ class Tac {
 
    public:
     SigvInt sigv;
-    Tac(Model &model);
+    Tac(ModelInfo &model);
 
     // sorts different channels by their total initial state masses
     bool sort_inimasses(const vstring &ch_str = {});

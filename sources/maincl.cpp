@@ -1,7 +1,7 @@
 #include "../include/maincl.hpp"
 
 namespace DT {
-Main::Main(int argc, char **argv) : mod(*new Model){
+Main::Main(int argc, char **argv) : MI(*new ModelInfo){
     srand((unsigned)time(NULL));
 
     operations_map["Set"] = [this](const vstring a) { this->Set(a); };
@@ -30,7 +30,7 @@ Main::Main(int argc, char **argv) : mod(*new Model){
     sgr = std::make_unique<DataReader>(setting_file, 0);
     load_setting();
 
-    relops = std::make_unique<RelicOps>(mod);
+    relops = std::make_unique<RelicOps>(MI);
     relops->set_fast((bool)sgr->get_val_of("Fast"));
 
     if (input_file != "") {
@@ -104,7 +104,7 @@ void Main::load_generation_file() {
                    "Error in InputFile: " << it.at(0)
                                           << " is missing a boundary value")
         }
-        ASSERT(mod.check_par_existence(it.at(0)),
+        ASSERT(MI.check_par_existence(it.at(0)),
                "Error in InputFile: " << it.at(0)
                                       << " is not a valid external parameter")
     }
@@ -125,7 +125,7 @@ void Main::load_read_file() {
     ASSERT((end_point - 1) >= start_point,
            "StartPoint cannot be larger than EndPoint")
 
-    rdr->scanpars = rdr->assignHeaders(mod.parmap);
+    rdr->scanpars = rdr->assignHeaders(MI.parmap);
 }
 void Main::load_parameters(const size_t i) {
     if (mode == 2 && first_run) {
@@ -152,7 +152,7 @@ void Main::load_parameters(const size_t i) {
             case 1:
                 if (first_run)
                     for (auto it : generator_list) {
-                        *mod.parmap[it.at(0)] = get_number(it.at(3), __func__);
+                        *MI.parmap[it.at(0)] = get_number(it.at(3), __func__);
                     }
                 break;
             case 2:
@@ -164,13 +164,13 @@ void Main::load_parameters(const size_t i) {
             default:
                 break;
         }
-    } while (!mod.load_everything());
+    } while (!MI.load_everything());
     std::cout << "Parameter point: " << i << std::endl;
 }
 
 vstring Main::def_thermal_bath(const vstring bath_particles) {
-    mod.assign_bath_masses(bath_particles);
-    return mod.find_thermal_procs(bath_particles);
+    MI.assign_bath_masses(bath_particles);
+    return MI.find_thermal_procs(bath_particles);
 }
 
 void Main::check_procs(const vstring &ch_str, const vstring &bath_procs) {
@@ -195,13 +195,13 @@ void Main::set_channels(vstring bath_procs) {
     if (neglected_particles.size() != 0) {
         vstring temp;
         for (auto it : neglected_particles) {
-            temp = mod.find_channels_by_particle(it);
+            temp = MI.find_channels_by_particle(it);
             append_to_vstring(subtracted_channels, temp);
         }
     }
     if (subtracted_channels.size() != 0) {
         for (auto it : subtracted_channels) {
-            ASSERT(mod.check_channel_existence(it),
+            ASSERT(MI.check_channel_existence(it),
                    "Error in SubtractChannels: " << it
                                                  << " is not a valid channel.")
             for (size_t i = 0; i < bath_procs.size(); i++) {
@@ -221,7 +221,7 @@ void Main::set_channels(vstring bath_procs) {
 
 int Main::check_var_existence(const std::string &var, const std::string func) {
     if (variable_map.find(var) == variable_map.end()) {
-        if (!mod.check_par_existence(var)) {
+        if (!MI.check_par_existence(var)) {
             ASSERT(func == "",
                    "Error in " << func << ": " << var << " is not defined")
             return 0;
@@ -234,7 +234,7 @@ int Main::check_var_existence(const std::string &var, const std::string func) {
 double Main::get_number(const std::string &arg, const std::string &func) {
     int var_type = check_var_existence(arg);
     if (var_type == 1) {
-        return mod.get_parameter_val(arg);
+        return MI.get_parameter_val(arg);
     } else if (var_type == 2) {
         return variable_map[arg].res;
     } else {
@@ -263,7 +263,7 @@ void Main::Set(const vstring &args) {
     int type = check_var_existence(args.at(1), __func__);
     double a = get_number(args.at(2), __func__);
     if (type == 1) {
-        mod.change_parameter(args.at(1), a);
+        MI.change_parameter(args.at(1), a);
     } else {
         variable_map.at(args.at(1)).res = a;
     }
@@ -274,9 +274,9 @@ void Main::Add(const vstring &args) {
     int type = check_var_existence(args.at(1), __func__);
     double a = get_number(args.at(2), __func__);
     if (type == 1) {
-        double b = mod.get_parameter_val(args.at(1));
+        double b = MI.get_parameter_val(args.at(1));
         b += a;
-        mod.change_parameter(args.at(1), b);
+        MI.change_parameter(args.at(1), b);
     } else {
         variable_map.at(args.at(1)).res += a;
     }
@@ -287,9 +287,9 @@ void Main::Sub(const vstring &args) {
     int type = check_var_existence(args.at(1), __func__);
     double a = get_number(args.at(2), __func__);
     if (type == 1) {
-        double b = mod.get_parameter_val(args.at(1));
+        double b = MI.get_parameter_val(args.at(1));
         b -= a;
-        mod.change_parameter(args.at(1), b);
+        MI.change_parameter(args.at(1), b);
     } else {
         variable_map.at(args.at(1)).res -= a;
     }
@@ -300,9 +300,9 @@ void Main::Mult(const vstring &args) {
     int type = check_var_existence(args.at(1), __func__);
     double a = get_number(args.at(2), __func__);
     if (type == 1) {
-        double b = mod.get_parameter_val(args.at(1));
+        double b = MI.get_parameter_val(args.at(1));
         b *= a;
-        mod.change_parameter(args.at(1), b);
+        MI.change_parameter(args.at(1), b);
     } else {
         variable_map.at(args.at(1)).res *= a;
     }
@@ -313,9 +313,9 @@ void Main::Div(const vstring &args) {
     int type = check_var_existence(args.at(1), __func__);
     double a = get_number(args.at(2), __func__);
     if (type == 1) {
-        double b = mod.get_parameter_val(args.at(1));
+        double b = MI.get_parameter_val(args.at(1));
         b /= a;
-        mod.change_parameter(args.at(1), b);
+        MI.change_parameter(args.at(1), b);
     } else {
         variable_map.at(args.at(1)).res /= a;
     }
@@ -333,10 +333,10 @@ void Main::ChangeThermalBath(const vstring &args) {
     bath_procs = def_thermal_bath(bath_particles);
     set_channels(bath_procs);
 
-    mod.assigndm();
-    mod.calc_widths_and_scale();
-    mod.load_parameters();
-    mod.load_tokens();
+    MI.assigndm();
+    MI.calc_widths_and_scale();
+    MI.load_parameters();
+    MI.load_tokens();
 }
 
 void Main::CalcXsec(const vstring &args) {
@@ -345,7 +345,8 @@ void Main::CalcXsec(const vstring &args) {
            "CalcXsec can only be called for one point, not a range. "
                << "Please choose the same StartPoint and EndPoint")
 
-    std::unique_ptr<SigvInt> sigv= std::make_unique<SigvInt>(mod);
+    Model mod;
+    std::unique_ptr<SigvInt> sigv = std::make_unique<SigvInt>(MI, mod);
     std::unique_ptr<DataReader> xsr =
         std::make_unique<DataReader>(output_file, 2);
 
@@ -382,7 +383,7 @@ void Main::CalcTac(const vstring &args) {
            "CalcTac can only be called for one point, not a range. "
                << "Please choose the same StartPoint and EndPoint")
 
-    std::unique_ptr<Tac> tac = std::make_unique<Tac>(mod);
+    std::unique_ptr<Tac> tac = std::make_unique<Tac>(MI);
     std::unique_ptr<DataReader> tar =
         std::make_unique<DataReader>(output_file, 2);
 
@@ -403,7 +404,7 @@ void Main::CalcTac(const vstring &args) {
         channel.push_back(args.at(i));
     }
 
-    if (args.size() == 4) channel = mod.get_all_channels();
+    if (args.size() == 4) channel = MI.get_all_channels();
 
     double step = (max_x - min_x) / ((double)points);
     ResError res;
@@ -518,7 +519,7 @@ void Main::SaveData(const vstring &args) {
         outfile << "Omega\tOmega_uncer";
 
         for (auto it : saved_pars) {
-            ASSERT(mod.check_par_existence(it),
+            ASSERT(MI.check_par_existence(it),
                    "Error in SaveData: "
                        << it << " is not a valid parameter of the model")
             outfile << "\t" << it;
@@ -538,7 +539,7 @@ void Main::SaveData(const vstring &args) {
     outfile << omega.res << "\t" << omega.err;
 
     for (auto it : saved_pars) {
-        outfile << "\t" << mod.get_parameter_val(it);
+        outfile << "\t" << MI.get_parameter_val(it);
     }
     for (size_t i = 1; i < args.size(); i++) {
         outfile << "\t" << variable_map.at(args.at(i)).res;

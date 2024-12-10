@@ -8,19 +8,20 @@ void SigvInt::set_lower_bound(const double new_lower) {
     lower_bound = new_lower;
 }
 
-void SigvInt::set_dsmasses(const std::vector<double> &masses){
+void SigvInt::set_dsmasses(const std::vector<double> &masses) {
     dsmasses = masses;
     polK2s.resize(dsmasses.size());
 }
 
 ResError SigvInt::xsec(const double &s, const std::string &channel) {
     double m1, m2, m3, m4;
-    mod.set_channel(m1, m2, {channel}, false);
+    mod.set_channel({channel}, false);
+    MI.assign_masses(m1, m2, channel);
     mod.set_s(s);
     if (sqrt(s) < m1 + m2) {
         return {0., 0.};
     }
-    mod.get_channel_masses(m1, m2, m3, m4, channel);
+    MI.get_channel_masses(m1, m2, m3, m4, channel);
 
     double f_est[10];
     for (size_t i = 0; i < 10; i++) {
@@ -60,12 +61,11 @@ ResError SigvInt::wij(const double &s) {
 }
 
 void SigvInt::calc_polK2() {
-    double Tinv = x / mod.MDM;
+    double Tinv = x / MI.MDM;
     double mtemp, cur;
     for (size_t i = 0; i < dsmasses.size(); i++) {
         mtemp = dsmasses[i];
-        cur = mod.the_dof(mod.bath_masses[i]) * mtemp * mtemp *
-              polK2(Tinv * mtemp);
+        cur = MI.DSdof[MI.bath_masses[i]] * mtemp * mtemp * polK2(Tinv * mtemp);
         polK2s[i] = cur;
     }
 }
@@ -75,7 +75,7 @@ double SigvInt::lipsv(const double &s) {
     double den = 0.;
     double mtemp;
     double sqs = sqrt(s);
-    double Tinv = x / mod.MDM;
+    double Tinv = x / MI.MDM;
 
     if (x > 5) {
         num += Tinv * polK1(sqs * Tinv);
@@ -105,32 +105,34 @@ ResError SigvInt::operator()(const double &u) {
     return wij(s) * lipsv(s) * 1 / (u * u);
 }
 
-Tac::Tac(Model &model) : mod(model), sigv(mod), boundaries(3 * mod.N_widths) {}
+Tac::Tac(ModelInfo &model)
+    : MI(model), mod(*new Model), sigv(MI, mod), boundaries(3 * MI.N_widths) {}
 
 bool Tac::sort_inimasses(const vstring &ch_str) {
     double temp;
-    sigv.polK2s.resize(mod.bath_masses.size());
+    sigv.polK2s.resize(MI.bath_masses.size());
     for (auto it : ch_str) {
-        mod.set_channel(m1, m2, {it});
+        mod.set_channel({it});
+        MI.assign_masses(m1, m2, it);
         mod.set_s((m1 + m2) * (m1 + m2) * 100);
         temp = mod(0.5).res;
         if (std::isnan(temp)) return false;
         inimap[m1 + m2].push_back(it);
     }
     sigv.dsmasses.clear();
-    for (auto it : mod.bath_masses) {
-        sigv.dsmasses.push_back(mod.the_mass(it));
+    for (auto it : MI.bath_masses) {
+        sigv.dsmasses.push_back(*MI.DSmasses[it]);
     }
     return true;
 }
 
 bool Tac::beps(const double &x) {
-    return (x * (sigv.lower_bound - 2 * mod.MDM) / mod.MDM <= -beps_eps);
+    return (x * (sigv.lower_bound - 2 * MI.MDM) / MI.MDM <= -beps_eps);
 }
 
 double Tac::peak_relevance(const double &peakpos) {
     if (peakpos == sigv.lower_bound) return -1.;
-    return -(beps_eps - 4.6051701859880) * mod.MDM /
+    return -(beps_eps - 4.6051701859880) * MI.MDM /
            (peakpos - sigv.lower_bound);
 }
 
@@ -187,12 +189,12 @@ void Tac::set_boundaries(const double &x) {
 
     N_relevant_peaks = 0;
 
-    for (int j = 0; j < mod.N_widths; j++) {
-        peak_xf = peak_relevance(*mod.denstructures.at(2 * j));
+    for (int j = 0; j < MI.N_widths; j++) {
+        peak_xf = peak_relevance(*MI.denstructures.at(2 * j));
 
         if (peak_xf > 0 && x < peak_xf) {
-            b = peak_bounds(*mod.denstructures.at(2 * j),
-                            *mod.denstructures.at(2 * j + 1));
+            b = peak_bounds(*MI.denstructures.at(2 * j),
+                            *MI.denstructures.at(2 * j + 1));
             boundaries[3 * N_relevant_peaks] = *b;
             boundaries[3 * N_relevant_peaks + 1] = *(b + 1);
             boundaries[3 * N_relevant_peaks + 2] = *(b + 2);
@@ -268,7 +270,8 @@ ResError Tac::tac(const double &x) {
     sigv.set_x(x);
     sigv.calc_polK2();
     for (auto &it : inimap) {
-        mod.set_channel(m1, m2, it.second);
+        mod.set_channel(it.second);
+        MI.assign_masses(m1, m2, it.second[0]);
         sigv.set_lower_bound(m1 + m2);
         if (beps(x)) {
             set_boundaries(x);
@@ -276,7 +279,8 @@ ResError Tac::tac(const double &x) {
         }
     }
     for (auto &it : inimap) {
-        mod.set_channel(m1, m2, it.second);
+        mod.set_channel(it.second);
+        MI.assign_masses(m1, m2, it.second[0]);
         sigv.set_lower_bound(m1 + m2);
         if (beps(x)) {
             set_boundaries(x);

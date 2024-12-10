@@ -28,7 +28,7 @@ class Main {
     std::unordered_map<std::string, ResError> variable_map;
     vvstring user_operations;
     vvstring generator_list;
-    Model &mod;
+    ModelInfo &MI;
     std::unique_ptr<DataReader> rdr;
     std::unique_ptr<DataReader> sgr;
     std::unique_ptr<RelicOps> relops;
