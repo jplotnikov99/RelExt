@@ -4,51 +4,62 @@
 #include <memory>
 #include <unordered_map>
 
-#include "general_model.hpp"
-#include "integration_methods.hpp"
 #include "data_structures.hpp"
+#include "general_model.hpp"
 #include "hyper_parameters.hpp"
+#include "integration_methods.hpp"
 #include "result_error_pair.hpp"
 #include "utils.hpp"
 
 namespace DT {
-class Tac {
+
+class SigvInt {
    private:
     Model &mod;
-    double m1, m2;
-    double lower_bound;
-    size_t N_relevant_peaks;
-    bool tac_error_reached = false;
-    VecDoub boundaries;
-    VecDoub polK2s;
-    std::unordered_map<double, ResError> sig_s;
-    std::map<double, vstring> inimap;
-    std::map<double, vstring>::iterator ini_it;
+    double x;
 
    public:
+    VecDoub polK2s;
     std::vector<double> dsmasses;
+    std::unordered_map<double, ResError> sig_s;
+    double lower_bound;
+    SigvInt(Model &model) : mod(model) {};
 
-    Tac(Model &model);
+    void set_x(const double new_x);
 
-    // sorts different channels by their total initial state masses
-    bool sort_inimasses(const vstring &ch_str = {});
+    void set_lower_bound(const double new_lower);
 
-    ResError eval(const double cos_t, const double s);
-
-    // adaptive simpson
-    ResError simpson38_adap_cos_t(const double l, const double r,
-                                  const double &s, ResError *f,
-                                  const double &est, const size_t depth = 0);
+    void set_dsmasses(const std::vector<double> &masses);
 
     ResError xsec(const double &s, const std::string &channel);
 
     ResError wij(const double &s);
 
-    void calc_polK2(const double &x);
+    void calc_polK2();
 
-    double lipsv(const double &s, const double &x);
+    double lipsv(const double &s);
 
-    ResError sigv(const double &u, const double &x);
+    ResError operator()(const double &u);
+
+    ~SigvInt() {};
+};
+
+class Tac {
+   private:
+    Model &mod;
+    double m1, m2;
+    size_t N_relevant_peaks;
+    bool tac_error_reached = false;
+    VecDoub boundaries;
+    std::map<double, vstring> inimap;
+    std::map<double, vstring>::iterator ini_it;
+
+   public:
+    SigvInt sigv;
+    Tac(Model &model);
+
+    // sorts different channels by their total initial state masses
+    bool sort_inimasses(const vstring &ch_str = {});
 
     bool beps(const double &x);
 
@@ -70,27 +81,12 @@ class Tac {
     // peaks dl
     void set_boundaries(const double &x);
 
-    // simpson method for the calculation of the peaks for TAC
-    ResError simpson38_peak(const double l, const double r, const double &x);
-
-    // adaptive simpson method for the calculation of the peaks for TAC
-    ResError simpson38_adap_peak(const double l, const double r,
-                                 const double &x, const ResError &ans,
-                                 size_t depth = 0);
-
-    // gauss kronrod 31 point method to be used as quick estimation of TAC
-    // between peaks
-    double kronrod_61(const double l, const double r, const double &x);
-
-    // adaptive gauss kronrod 13 point method for TAC between peaks
-    ResError adap_gauss_kronrod(const double l, const double r, const double &x,
-                                const double &est, size_t depth = 0);
-
     // integral of the peaks over s
     ResError integrate_peaks(const double &x);
 
     // estimate s integral
-    void estimate_integrate_s(const double &x, ResError &res, double &estimate);
+    void estimate_integrate_s(const double &x, ResError &res,
+                              ResError &estimate);
 
     // integral over s of the whole interval
     void integrate_s(const double &x, ResError &res, double &estimate);

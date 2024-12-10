@@ -39,8 +39,8 @@ double Beqs::yeq(const double &x) {
     double a = 1 / (mod.MDM * mod.MDM);
     double Tinv = x / mod.MDM;
 
-    for (size_t i = 0; i < tac->dsmasses.size(); i++) {
-        mtemp = tac->dsmasses[i];
+    for (size_t i = 0; i < tac->sigv.dsmasses.size(); i++) {
+        mtemp = tac->sigv.dsmasses[i];
         yeq += mod.the_dof(mod.bath_masses[i]) * pow(mtemp, 2) * a *
                besselK2(Tinv * mtemp);
     }

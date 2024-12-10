@@ -345,7 +345,7 @@ void Main::CalcXsec(const vstring &args) {
            "CalcXsec can only be called for one point, not a range. "
                << "Please choose the same StartPoint and EndPoint")
 
-    std::unique_ptr<Tac> tac = std::make_unique<Tac>(mod);
+    std::unique_ptr<SigvInt> sigv= std::make_unique<SigvInt>(mod);
     std::unique_ptr<DataReader> xsr =
         std::make_unique<DataReader>(output_file, 2);
 
@@ -370,7 +370,7 @@ void Main::CalcXsec(const vstring &args) {
     for (double sqs = min_sqs; sqs <= max_sqs; sqs += step) {
         res = 0;
         for (auto it : channel) {
-            res += tac->xsec(sqs * sqs, it).res;
+            res += sigv->xsec(sqs * sqs, it).res;
         }
         xsr->save_data({"sqrts", "xsec"}, {sqs, res});
     }

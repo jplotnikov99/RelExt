@@ -1,52 +1,19 @@
 #include "../include/tac.hpp"
 
 namespace DT {
-Tac::Tac(Model &model) : mod(model), boundaries(3 * mod.N_widths) {}
 
-bool Tac::sort_inimasses(const vstring &ch_str) {
-    double temp;
-    polK2s.resize(mod.bath_masses.size());
-    for (auto it : ch_str) {
-        mod.set_channel(m1, m2, {it});
-        mod.set_s((m1 + m2) * (m1 + m2) * 100);
-        temp = mod(0.5).res;
-        if (std::isnan(temp)) return false;
-        inimap[m1 + m2].push_back(it);
-    }
-    dsmasses.clear();
-    for (auto it : mod.bath_masses) {
-        dsmasses.push_back(mod.the_mass(it));
-    }
-    return true;
+void SigvInt::set_x(const double new_x) { x = new_x; }
+
+void SigvInt::set_lower_bound(const double new_lower) {
+    lower_bound = new_lower;
 }
 
-/* ResError Tac::simpson38_adap_cos_t(const double l, const double r,
-                                   const double &s, ResError *f,
-                                   const double &est, const size_t depth) {
-    ResError I1, I2, I3, f1[4];
-    double m = (r + l) / 2.;
-    double h = (r - l) / 8.;
-    ResError I = h * (f[0] + 3 * f[1] + 3 * f[2] + f[3]);
-    f1[0] = mod(m, s);
-    f1[1] = f[2];
-    f1[2] = mod((l + 5 * r) / 6, s);
-    f1[3] = f[3];
-    f[3] = f1[0];
-    f[2] = f[1];
-    f[1] = mod((5 * l + r) / 6, s);
-    I1 = h / 2 * (f[0] + 3 * f[1] + 3 * f[2] + f[3]);
-    I2 = h / 2 * (f1[0] + 3 * f1[1] + 3 * f1[2] + f1[3]);
-    I3 = I1 + I2;
+void SigvInt::set_dsmasses(const std::vector<double> &masses){
+    dsmasses = masses;
+    polK2s.resize(dsmasses.size());
+}
 
-    if (fabs(I.res - I3.res) < theta_eps * fabs(est) || (depth > 10)) {
-        I3.err = fabs(I.res - I3.res);
-        return I3;
-    }
-    return simpson38_adap_cos_t(l, m, s, f, est, depth + 1) +
-           simpson38_adap_cos_t(m, r, s, f1, est, depth + 1);
-} */
-
-ResError Tac::xsec(const double &s, const std::string &channel) {
+ResError SigvInt::xsec(const double &s, const std::string &channel) {
     double m1, m2, m3, m4;
     mod.set_channel(m1, m2, {channel}, false);
     mod.set_s(s);
@@ -70,7 +37,7 @@ ResError Tac::xsec(const double &s, const std::string &channel) {
            h_adap_simpson38(mod, -1, 1, f, est, theta_eps);
 }
 
-ResError Tac::wij(const double &s) {
+ResError SigvInt::wij(const double &s) {
     if (sig_s.count(s) == 0) {
         mod.set_s(s);
         double f_est[10];
@@ -92,7 +59,7 @@ ResError Tac::wij(const double &s) {
     }
 }
 
-void Tac::calc_polK2(const double &x) {
+void SigvInt::calc_polK2() {
     double Tinv = x / mod.MDM;
     double mtemp, cur;
     for (size_t i = 0; i < dsmasses.size(); i++) {
@@ -103,7 +70,7 @@ void Tac::calc_polK2(const double &x) {
     }
 }
 
-double Tac::lipsv(const double &s, const double &x) {
+double SigvInt::lipsv(const double &s) {
     double num = 0.;
     double den = 0.;
     double mtemp;
@@ -133,32 +100,53 @@ double Tac::lipsv(const double &s, const double &x) {
     return num / den;
 }
 
-ResError Tac::sigv(const double &u, const double &x) {
+ResError SigvInt::operator()(const double &u) {
     double s = lower_bound * lower_bound + (1 - u) / u;
-    return wij(s) * lipsv(s, x) * 1 / (u * u);
+    return wij(s) * lipsv(s) * 1 / (u * u);
+}
+
+Tac::Tac(Model &model) : mod(model), sigv(mod), boundaries(3 * mod.N_widths) {}
+
+bool Tac::sort_inimasses(const vstring &ch_str) {
+    double temp;
+    sigv.polK2s.resize(mod.bath_masses.size());
+    for (auto it : ch_str) {
+        mod.set_channel(m1, m2, {it});
+        mod.set_s((m1 + m2) * (m1 + m2) * 100);
+        temp = mod(0.5).res;
+        if (std::isnan(temp)) return false;
+        inimap[m1 + m2].push_back(it);
+    }
+    sigv.dsmasses.clear();
+    for (auto it : mod.bath_masses) {
+        sigv.dsmasses.push_back(mod.the_mass(it));
+    }
+    return true;
 }
 
 bool Tac::beps(const double &x) {
-    return (x * (lower_bound - 2 * mod.MDM) / mod.MDM <= -beps_eps);
+    return (x * (sigv.lower_bound - 2 * mod.MDM) / mod.MDM <= -beps_eps);
 }
 
 double Tac::peak_relevance(const double &peakpos) {
-    if (peakpos == lower_bound) return -1.;
-    return -(beps_eps - 4.6051701859880) * mod.MDM / (peakpos - lower_bound);
+    if (peakpos == sigv.lower_bound) return -1.;
+    return -(beps_eps - 4.6051701859880) * mod.MDM /
+           (peakpos - sigv.lower_bound);
 }
 
 double *Tac::peak_bounds(const double &peakpos, const double &width) {
     static double bounds[3];
     double n = 0.1;
-    while (peakpos - 2 * width / n < lower_bound) {
+    while (peakpos - 2 * width / n < sigv.lower_bound) {
         n *= 2;
     }
 
     bounds[0] = 1 / ((peakpos - 2 * width / n) * (peakpos - 2 * width / n) -
-                     lower_bound * lower_bound + 1);
-    bounds[1] = 1 / (peakpos * peakpos - lower_bound * lower_bound + 1);
+                     sigv.lower_bound * sigv.lower_bound + 1);
+    bounds[1] =
+        1 / (peakpos * peakpos - sigv.lower_bound * sigv.lower_bound + 1);
     bounds[2] = 1 / ((peakpos + 2 * width / n) * (peakpos + 2 * width / n) -
-                     lower_bound * lower_bound + 1);
+                     sigv.lower_bound * sigv.lower_bound + 1);
 
     return bounds;
 }
@@ -215,76 +203,6 @@ void Tac::set_boundaries(const double &x) {
     check_boundaries();
 }
 
-ResError Tac::simpson38_peak(const double l, const double r, const double &x) {
-    return (r - l) / 8 *
-           (sigv(l, x) + 3 * sigv((2 * l + r) / 3, x) +
-            3 * sigv((l + 2 * r) / 3, x) + sigv(r, x));
-}
-
-ResError Tac::simpson38_adap_peak(const double l, const double r,
-                                  const double &x, const ResError &ans,
-                                  size_t depth) {
-    if (ans.res == 0) return ans;
-    double m = (l + r) / 2;
-    ResError I1 = simpson38_peak(l, m, x), I2 = simpson38_peak(m, r, x);
-    ResError I = I1 + I2;
-    if ((fabs(I.res / ans.res - 1) < peak_eps) || (depth == 18)) {
-        I.err += fabs(I.res - ans.res);
-        return I;
-    }
-    return simpson38_adap_peak(l, m, x, I1, depth + 1) +
-           simpson38_adap_peak(m, r, x, I2, depth + 1);
-}
-
-double Tac::kronrod_61(const double l, const double r, const double &x) {
-    double m = 0.5 * (r + l);
-    double h = 0.5 * (r - l);
-
-    double res = 0;
-    for (size_t i = 0; i < 30; i++) {
-        double dx = h * kronx_61[i];
-        res += wkron_61[i] * (sigv(m + dx, x).res + sigv(m - dx, x).res);
-    }
-    res += wkron_61[30] * (sigv(m, x).res);
-    res *= h;
-
-    return res;
-}
-
-ResError Tac::adap_gauss_kronrod(const double l, const double r,
-                                 const double &x, const double &est,
-                                 size_t depth) {
-    ResError I1, I2, y[15];
-    double h = (r - l) / 2;
-    for (int i = 0; i < 15; i++) {
-        y[i] = sigv((kronx_15[i] + 1) * h + l, x);
-    }
-
-    I1 = h * (0.022935322010529224963732008058970 * (y[0] + y[14]) +
-              0.063092092629978553290700663189204 * (y[1] + y[13]) +
-              0.104790010322250183839876322541518 * (y[2] + y[12]) +
-              0.140653259715525918745189590510238 * (y[3] + y[11]) +
-              0.169004726639267902826583426598550 * (y[4] + y[10]) +
-              0.190350578064785409913256402421014 * (y[5] + y[9]) +
-              0.204432940075298892414161999234649 * (y[6] + y[8]) +
-              0.209482141084727828012999174891714 * y[7]);
-    if (I1.res == 0) {
-        return I1;
-    }
-    I2 = h * (0.129484966168869693270611432679082 * (y[1] + y[13]) +
-              0.279705391489276667901467771423780 * (y[3] + y[11]) +
-              0.381830050505118944950369775488975 * (y[5] + y[9]) +
-              0.417959183673469387755102040816327 * y[7]);
-    double err = fabs(I1.res - I2.res);
-    if ((err < gauss_kronrod_eps * fabs(est)) || (depth > 18)) {
-        I1.err += err;
-        return I1;
-    }
-    double m = (2 * l + r) / 3;
-    return adap_gauss_kronrod(l, m, x, est, depth + 1) +
-           adap_gauss_kronrod(m, r, x, est, depth + 1);
-}
-
 ResError Tac::integrate_peaks(const double &x) {
     ResError res{0., 0.};
     double b[3];
@@ -292,56 +210,66 @@ ResError Tac::integrate_peaks(const double &x) {
         b[0] = boundaries[3 * i];
         b[1] = boundaries[3 * i + 1];
         b[2] = boundaries[3 * i + 2];
-        res = res +
-              simpson38_adap_peak(b[2], b[1], x, simpson38_peak(b[2], b[1], x));
-        res = res +
-              simpson38_adap_peak(b[1], b[0], x, simpson38_peak(b[1], b[0], x));
+        ResError f0[4];
+        simpson38_vals(sigv, b[2], b[1], f0);
+        res = res + adap_simpson38(sigv, b[2], b[1], f0, peak_eps);
+        simpson38_vals(sigv, b[1], b[0], f0);
+        res = res + adap_simpson38(sigv, b[1], b[0], f0, peak_eps);
     }
     return res;
 }
 
 void Tac::estimate_integrate_s(const double &x, ResError &res,
-                               double &estimate) {
+                               ResError &estimate) {
     if (N_relevant_peaks > 0) {
         res = res + integrate_peaks(x);
-        estimate += res.res;
+        estimate = estimate + res;
 
         for (size_t i = 1; i < N_relevant_peaks; i++) {
-            estimate += kronrod_61(boundaries[3 * i], boundaries[3 * i - 1], x);
+            estimate = estimate + kronrod_61(sigv, boundaries[3 * i],
+                                             boundaries[3 * i - 1]);
         }
 
-        estimate += (kronrod_61(0, boundaries[3 * N_relevant_peaks - 1], x) +
-                     kronrod_61(boundaries[0], 1, x));
+        estimate = estimate +
+                   (kronrod_61(sigv, 0, boundaries[3 * N_relevant_peaks - 1]) +
+                    kronrod_61(sigv, boundaries[0], 1));
     } else {
-        estimate += kronrod_61(0, 1e-6, x);
-        estimate += kronrod_61(1e-6, 1e-3, x);
-        estimate += kronrod_61(1e-3, 1, x);
+        estimate = estimate + kronrod_61(sigv, 0, 1e-6);
+        estimate = estimate + kronrod_61(sigv, 1e-6, 1e-3);
+        estimate = estimate + kronrod_61(sigv, 1e-3, 1);
     }
 }
 
 void Tac::integrate_s(const double &x, ResError &res, double &estimate) {
     if (N_relevant_peaks > 0) {
-        res = res + (adap_gauss_kronrod(0, boundaries[3 * N_relevant_peaks - 1],
-                                        x, estimate) +
-                     adap_gauss_kronrod(boundaries[0], 1, x, estimate));
+        res = res +
+              h_adap_gauss_kronrod_15(sigv, 0,
+                                      boundaries[3 * N_relevant_peaks - 1],
+                                      estimate, gauss_kronrod_eps) +
+              h_adap_gauss_kronrod_15(sigv, boundaries[0], 1, estimate,
+                                      gauss_kronrod_eps);
 
         for (size_t i = 1; i < N_relevant_peaks; i++) {
-            res = res + adap_gauss_kronrod(boundaries[3 * i],
-                                           boundaries[3 * i - 1], x, estimate);
+            res = res + h_adap_gauss_kronrod_15(sigv, boundaries[3 * i],
+                                                boundaries[3 * i - 1], estimate,
+                                                gauss_kronrod_eps);
         }
     } else {
-        res = res + adap_gauss_kronrod(0, 1e-3, x, estimate);
-        res = res + adap_gauss_kronrod(1e-3, 1, x, estimate);
+        res = res + h_adap_gauss_kronrod_15(sigv, 0, 1e-3, estimate,
+                                            gauss_kronrod_eps);
+        res = res + h_adap_gauss_kronrod_15(sigv, 1e-3, 1, estimate,
+                                            gauss_kronrod_eps);
     }
 }
 
 ResError Tac::tac(const double &x) {
     ResError res{0., 0.};
-    double estimate = 0.;
-    calc_polK2(x);
+    ResError estimate = {0., 0.};
+    sigv.set_x(x);
+    sigv.calc_polK2();
     for (auto &it : inimap) {
         mod.set_channel(m1, m2, it.second);
-        lower_bound = m1 + m2;
+        sigv.set_lower_bound(m1 + m2);
         if (beps(x)) {
             set_boundaries(x);
             estimate_integrate_s(x, res, estimate);
@@ -349,10 +277,10 @@ ResError Tac::tac(const double &x) {
     }
     for (auto &it : inimap) {
         mod.set_channel(m1, m2, it.second);
-        lower_bound = m1 + m2;
+        sigv.set_lower_bound(m1 + m2);
         if (beps(x)) {
             set_boundaries(x);
-            integrate_s(x, res, estimate);
+            integrate_s(x, res, estimate.res);
         }
     }
     return res;
@@ -360,7 +288,7 @@ ResError Tac::tac(const double &x) {
 
 void Tac::clear_state(const bool full) {
     tac_error_reached = false;
-    sig_s.clear();
+    sigv.sig_s.clear();
     if (full) inimap.clear();
 }
 
