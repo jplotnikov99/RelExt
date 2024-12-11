@@ -53,20 +53,16 @@ struct ModelInfo {
     void load_tokens();
     bool check_conditions();
     bool load_everything();
-    bool check_par_existence(const std::string par);
-    double get_parameter_val(const std::string par);
-    bool change_parameter(const std::string par, const double newval,
+    bool check_par_existence(const std::string &par);
+    bool change_parameter(const std::string &par, const double newval,
                           const bool load = true);
-    vstring get_all_channels();
     bool check_channel_existence(const std::string &channel);
     void get_channel_masses(double &m1, double &m2, double &m3, double &m4,
                             const std::string &channel);
     vstring find_channels_by_particle(const std::string &particle);
     void assign_bath_masses(const vstring &prtcls = {});
     vstring find_thermal_procs(const vstring &prtcls = {});
-
     void assigndm();
-
     void assign_masses(double &m1, double &m2, const std::string &channel);
 
     ModelInfo();

@@ -234,7 +234,7 @@ int Main::check_var_existence(const std::string &var, const std::string func) {
 double Main::get_number(const std::string &arg, const std::string &func) {
     int var_type = check_var_existence(arg);
     if (var_type == 1) {
-        return MI.get_parameter_val(arg);
+        return *MI.parmap[arg];
     } else if (var_type == 2) {
         return variable_map[arg].res;
     } else {
@@ -274,7 +274,7 @@ void Main::Add(const vstring &args) {
     int type = check_var_existence(args.at(1), __func__);
     double a = get_number(args.at(2), __func__);
     if (type == 1) {
-        double b = MI.get_parameter_val(args.at(1));
+        double b = *MI.parmap[args.at(1)];
         b += a;
         MI.change_parameter(args.at(1), b);
     } else {
@@ -287,7 +287,7 @@ void Main::Sub(const vstring &args) {
     int type = check_var_existence(args.at(1), __func__);
     double a = get_number(args.at(2), __func__);
     if (type == 1) {
-        double b = MI.get_parameter_val(args.at(1));
+        double b = *MI.parmap[args.at(1)];
         b -= a;
         MI.change_parameter(args.at(1), b);
     } else {
@@ -300,7 +300,7 @@ void Main::Mult(const vstring &args) {
     int type = check_var_existence(args.at(1), __func__);
     double a = get_number(args.at(2), __func__);
     if (type == 1) {
-        double b = MI.get_parameter_val(args.at(1));
+        double b = *MI.parmap[args.at(1)];
         b *= a;
         MI.change_parameter(args.at(1), b);
     } else {
@@ -313,7 +313,7 @@ void Main::Div(const vstring &args) {
     int type = check_var_existence(args.at(1), __func__);
     double a = get_number(args.at(2), __func__);
     if (type == 1) {
-        double b = MI.get_parameter_val(args.at(1));
+        double b = *MI.parmap[args.at(1)];
         b /= a;
         MI.change_parameter(args.at(1), b);
     } else {
@@ -404,7 +404,7 @@ void Main::CalcTac(const vstring &args) {
         channel.push_back(args.at(i));
     }
 
-    if (args.size() == 4) channel = MI.get_all_channels();
+    if (args.size() == 4) channel = MI.channelnames;
 
     double step = (max_x - min_x) / ((double)points);
     ResError res;
@@ -539,7 +539,7 @@ void Main::SaveData(const vstring &args) {
     outfile << omega.res << "\t" << omega.err;
 
     for (auto it : saved_pars) {
-        outfile << "\t" << MI.get_parameter_val(it);
+        outfile << "\t" << *MI.parmap[it];
     }
     for (size_t i = 1; i < args.size(); i++) {
         outfile << "\t" << variable_map.at(args.at(i)).res;

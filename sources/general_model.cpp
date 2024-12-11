@@ -16,23 +16,17 @@ bool ModelInfo::load_everything() {
     return check_conditions();
 }
 
-bool ModelInfo::check_par_existence(const std::string par) {
-    if (parmap.find(par) == parmap.end()) return false;
+bool ModelInfo::check_par_existence(const std::string &par) {
+    if (parmap.count(par) == 0) return false;
     return true;
 }
 
-double ModelInfo::get_parameter_val(const std::string par) {
-    return (*parmap[par]);
-}
-
-bool ModelInfo::change_parameter(const std::string par, const double newval,
+bool ModelInfo::change_parameter(const std::string &par, const double newval,
                                  const bool load) {
     *parmap[par] = newval;
     if (load) return load_everything();
     return true;
 }
-
-vstring ModelInfo::get_all_channels() { return channelnames; }
 
 bool ModelInfo::check_channel_existence(const std::string &channel) {
     for (auto it : channelnames) {
@@ -80,7 +74,7 @@ vstring ModelInfo::find_thermal_procs(const vstring &prtcls) {
     bool existance = false;
     vstring res = {};
     size_t found;
-    if (prtcls.size() == 0) return get_all_channels();
+    if (prtcls.size() == 0) return channelnames;
     for (auto it : prtcls) {
         existance = false;
         for (auto jt : channelnames) {

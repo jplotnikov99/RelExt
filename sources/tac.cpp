@@ -9,8 +9,7 @@ void SigvInt::set_lower_bound(const double new_lower) {
 }
 
 void SigvInt::set_dsmasses(const std::vector<double> &masses) {
-    dsmasses = masses;
-    polK2s.resize(dsmasses.size());
+    polK2s.resize(masses.size());
 }
 
 ResError SigvInt::xsec(const double &s, const std::string &channel) {
@@ -63,14 +62,17 @@ ResError SigvInt::wij(const double &s) {
 void SigvInt::calc_polK2() {
     double Tinv = x / MI.MDM;
     double mtemp, cur;
-    for (size_t i = 0; i < dsmasses.size(); i++) {
-        mtemp = dsmasses[i];
-        cur = MI.DSdof[MI.bath_masses[i]] * mtemp * mtemp * polK2(Tinv * mtemp);
+    size_t i = 0;
+    for (auto it : MI.bath_masses) {
+        mtemp = *MI.DSmasses[it];
+        cur = MI.DSdof[it] * mtemp * mtemp * polK2(Tinv * mtemp);
         polK2s[i] = cur;
+        i++;
     }
 }
 
 double SigvInt::lipsv(const double &s) {
+    size_t i = 0;
     double num = 0.;
     double den = 0.;
     double mtemp;
@@ -79,9 +81,10 @@ double SigvInt::lipsv(const double &s) {
 
     if (x > 5) {
         num += Tinv * polK1(sqs * Tinv);
-        for (size_t i = 0; i < dsmasses.size(); i++) {
-            mtemp = dsmasses[i];
+        for (auto it : MI.bath_masses) {
+            mtemp = *MI.DSmasses[it];
             den += exp(-Tinv * (mtemp - sqs / 2)) * polK2s[i];
+            i++;
         }
         den *= den;
     } else {
@@ -90,8 +93,8 @@ double SigvInt::lipsv(const double &s) {
         // } else {
         //     num += Tinv * bessel::cyl_k(1, sqs * Tinv);
         // }
-        for (auto it : dsmasses) {
-            mtemp = it;
+        for (auto it : MI.bath_masses) {
+            mtemp = *MI.DSmasses[it];
             den += mtemp * mtemp * besselK2(Tinv * mtemp);
         }
         den *= den;
@@ -118,10 +121,6 @@ bool Tac::sort_inimasses(const vstring &ch_str) {
         temp = mod(0.5).res;
         if (std::isnan(temp)) return false;
         inimap[m1 + m2].push_back(it);
-    }
-    sigv.dsmasses.clear();
-    for (auto it : MI.bath_masses) {
-        sigv.dsmasses.push_back(*MI.DSmasses[it]);
     }
     return true;
 }

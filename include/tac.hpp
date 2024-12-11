@@ -2,7 +2,6 @@
 #include <cmath>
 #include <functional>
 #include <memory>
-#include <unordered_map>
 
 #include "data_structures.hpp"
 #include "general_model.hpp"
@@ -60,7 +59,7 @@ class Tac {
     SigvInt sigv;
     Tac(ModelInfo &model);
 
-    // sorts different channels by their total initial state masses
+    // sorts different channels by their total initial/final state masses
     bool sort_inimasses(const vstring &ch_str = {});
 
     bool beps(const double &x);

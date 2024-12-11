@@ -96,7 +96,7 @@ ResError RelicOps::CalcRelic() {
     if (is_monte) {
         dvec1 par_vals;
         for (size_t i = 0; i < par_names.size(); i++)
-            par_vals.push_back(MI.get_parameter_val(par_names[i]));
+            par_vals.push_back(*MI.parmap[par_names[i]]);
         double w = omega.res > 0.12 ? pow(0.12 / omega.res, 2)
                                     : pow(omega.res / 0.12, 2);
         Mc->set_weight(par_vals, w);
@@ -176,7 +176,7 @@ double RelicOps::get_next_omega(const std::string &par, const double om) {
     double om1 = om;
     double par1, par2, om2, step;
 
-    par1 = MI.get_parameter_val(par);
+    par1 = *MI.parmap[par];
     par2 = par1 * (1 + eps);
     MI.change_parameter(par, par2);
     om2 = CalcRelic().res - omega_target;
@@ -201,7 +201,7 @@ void RelicOps::vanguard_search(const std::string &par) {
     double om1, om2;
     om1 = CalcRelic().res - omega_target;
     omega_old = om1;
-    par_old = MI.get_parameter_val(par);
+    par_old = *MI.parmap[par];
     while ((fabs(om1) > omega_err) && (searchmode == vanguard)) {
         om2 = om1;
         om1 = get_next_omega(par, om1);
@@ -282,7 +282,7 @@ ResError RelicOps::find_par(const std::string &par) {
 double RelicOps::random_step(const size_t par_i) {
     int sign;
     double rate;
-    double val = MI.get_parameter_val(par_names[par_i]);
+    double val = *MI.parmap[par_names[par_i]];
     double b1 = bounds[par_i].first;
     double b2 = bounds[par_i].second;
     sign = (int)generate_random(0, 2);
@@ -296,7 +296,7 @@ double RelicOps::random_step(const size_t par_i) {
 }
 
 void RelicOps::same_step(const size_t par_i, const double step) {
-    double val = MI.get_parameter_val(par_names[par_i]);
+    double val = *MI.parmap[par_names[par_i]];
     double b1 = bounds[par_i].first;
     double b2 = bounds[par_i].second;
     val = val * (1 + step);
@@ -318,12 +318,12 @@ ResError RelicOps::random_walk() {
         om2 = om1;
         if (is_step_good) {
             for (size_t i = 0; i < par_names.size(); i++) {
-                saved_vals[i] = MI.get_parameter_val(par_names[i]);
+                saved_vals[i] = *MI.parmap[par_names[i]];
                 same_step(i, current_step[i]);
             }
         } else {
             for (size_t i = 0; i < par_names.size(); i++) {
-                saved_vals[i] = MI.get_parameter_val(par_names[i]);
+                saved_vals[i] = *MI.parmap[par_names[i]];
                 current_step[i] = random_step(i);
             }
         }
