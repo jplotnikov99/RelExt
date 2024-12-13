@@ -3,18 +3,27 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <cassert>
 #include <random>
 #include <string>
 #include <vector>
 
 #include "hyper_parameters.hpp"
 #include "result_error_pair.hpp"
-//#include "bessel-library.hpp"
+// #include "bessel-library.hpp"
 
 namespace DT {
 
 typedef std::vector<std::string> vstring;
 typedef std::vector<vstring> vvstring;
+
+double MIN(const double a, const double b);
+
+double MAX(const double a, const double b);
+
+double SQR(const double a);
+
+double SIGN(const double a, const double b);
 
 // Heavi-side function and flux factor for the amp2sflux
 

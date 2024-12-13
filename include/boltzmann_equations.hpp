@@ -7,20 +7,14 @@
 #include "tac.hpp"
 #include "utils.hpp"
 
-
 namespace DT {
-class Beqs {
-   private:
-    const double G = 6.7e-39;
-    size_t mech = 0;
-    std::shared_ptr<Dof> dof;
-    ModelInfo &MI;
-    std::unique_ptr<Tac> tac;
 
-   public:
-    Beqs(ModelInfo &model);
-    // set the DM generatio mechanism
-    void set_mechanism(const size_t &m);
+struct BeqInfo {
+    const double G = 6.7e-39;
+    ModelInfo &MI;
+    Dof &dof;
+    Tac tac;
+    BeqInfo(ModelInfo &model);
 
     // clear TAC maps which are necessary for faster computation
     void reset_tac_state(const bool full);
@@ -28,21 +22,55 @@ class Beqs {
     // sorts different channels by their total initial state masses
     bool sort_inimasses(const vstring &ch_str = {});
 
-    // prefactor of the boltzmann equation
     double pre(const double &x);
+    double T_ent(const double &ent, const double &m);
+    double ent_T(const double &x, const double &m);
+    double yeq(const double &x);
+    double dlogyeq(const double x);
+};
+
+class FOCondition {
+   private:
+    BeqInfo &BI;
+
+   public:
+    double del;
+    FOCondition(BeqInfo &bi, const double &dell) : BI(bi), del(dell) {}
+    double operator()(const double &x);
+    ~FOCondition() {}
+};
+
+class FOAppr {
+   private:
+    BeqInfo &BI;
+
+   public:
+    FOAppr(BeqInfo &bi) : BI(bi) {};
+    ResError operator()(const double &x);
+    ~FOAppr() {};
+};
+
+class FOFull {
+   private:
+    BeqInfo &BI;
+
+   public:
+    FOFull(BeqInfo &bi) : BI(bi) {};
+    void operator()(const double &x, const ResError &y, ResError &dydx);
+    ~FOFull() {};
+};
+
+class Beqs : public BeqInfo {
+   private:
+    size_t mech = 0;
+
+   public:
+    Beqs(ModelInfo &model) : BeqInfo(model) {};
+    // set the DM generatio mechanism
+    void set_mechanism(const size_t &m);
 
     // prefactor + tac of the boltzmann equation
     ResError pre_tac(const double &x);
-
-    // Temperature for a given entropy
-    double T_ent(const double &ent);
-
-    // Entropy for a given temperature
-    double ent_T(const double &x);
-
-    double yeq(const double &x);
-
-    double dlogyeq(const double x);
 
     ResError fout_condition(const double x, const double del);
 
@@ -52,9 +80,9 @@ class Beqs {
 
     // Boltzmann equation that needs to be solved for freeze-out and simple
     // freeze-in
-    ResError beq(const double &x, const ResError &y);
+    ResError operator()(const double &x, const ResError &y);
 
-    ~Beqs() {};
+    ~Beqs() { delete &dof; }
 };
 
 }  // namespace DT

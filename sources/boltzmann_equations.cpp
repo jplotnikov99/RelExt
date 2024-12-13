@@ -1,38 +1,29 @@
 #include "../include/boltzmann_equations.hpp"
 
 namespace DT {
-Beqs::Beqs(ModelInfo &model) : MI(model) {
-    dof = std::make_unique<Dof>();
-    tac = std::make_unique<Tac>(MI);
+
+BeqInfo::BeqInfo(ModelInfo &model) : dof(*new Dof), MI(model), tac(MI) {}
+
+void BeqInfo::reset_tac_state(const bool full) { tac.clear_state(full); }
+
+bool BeqInfo::sort_inimasses(const vstring &ch_str) {
+    return tac.sort_inimasses(ch_str);
+}
+double BeqInfo::pre(const double &x) {
+    return sqrt(M_PI / (45 * G)) * MI.MDM / (x * x) * dof.g12(MI.MDM / x);
 }
 
-void Beqs::set_mechanism(const size_t &m) { mech = m; }
-
-void Beqs::reset_tac_state(const bool full) { tac->clear_state(full); }
-
-bool Beqs::sort_inimasses(const vstring &ch_str) {
-    return tac->sort_inimasses(ch_str);
-}
-
-double Beqs::pre(const double &x) {
-    return sqrt(M_PI / (45 * G)) * MI.MDM / (x * x) * dof->g12(MI.MDM / x);
-}
-
-ResError Beqs::pre_tac(const double &x) { return -pre(x) * tac->tac(x); }
-
-double Beqs::T_ent(const double &ent) {
+double BeqInfo::T_ent(const double &ent, const double &m) {
     // assuming heff cte for the values of x (~25, ie, at FO) that are relevant
     // (and small changes in ent)
-    return pow(45 * ent / (2 * M_PI * M_PI * dof->heff(MI.MDM / 25)),
-               0.33333333);
+    return pow(45 * ent / (2 * M_PI * M_PI * dof.heff(m / 25)), 0.33333333);
 }
 
-double Beqs::ent_T(const double &x) {
-    return 2 * M_PI * M_PI * MI.MDM * MI.MDM * MI.MDM / (x * x * x) *
-           dof->heff(MI.MDM / x) / 45;
+double BeqInfo::ent_T(const double &x, const double &m) {
+    return 2 * M_PI * M_PI * m * m * m / (x * x * x) * dof.heff(m / x) / 45;
 }
 
-double Beqs::yeq(const double &x) {
+double BeqInfo::yeq(const double &x) {
     double yeq = 0;
     double mtemp;
     double a = 1 / (MI.MDM * MI.MDM);
@@ -42,50 +33,65 @@ double Beqs::yeq(const double &x) {
         mtemp = *MI.DSmasses[it];
         yeq += MI.DSdof[it] * mtemp * mtemp * a * besselK2(Tinv * mtemp);
     }
-    yeq *= 45 * x * x / (4 * dof->heff(1 / Tinv) * M_PI * M_PI * M_PI * M_PI);
+    yeq *= 45 * x * x / (4 * dof.heff(1 / Tinv) * M_PI * M_PI * M_PI * M_PI);
     return yeq;
 }
 
-double Beqs::dlogyeq(const double x) {
+double BeqInfo::dlogyeq(const double x) {
     static const double h = 0.0001;
     return (log(yeq(x + h)) - log(yeq(x - h))) / (2. * h);
 }
 
+double FOCondition::operator()(const double &x) {
+    return BI.pre(x) * BI.tac(x).res * BI.yeq(x) * del * (del + 2) +
+           BI.dlogyeq(x);
+}
+
+ResError FOAppr::operator()(const double &x) { return -BI.pre(x) * BI.tac(x); }
+
+void FOFull::operator()(const double &x, const ResError &y, ResError &dydx) {
+    dydx = BI.pre(x) * BI.tac(x) * (pow(BI.yeq(x), 2) - y * y);
+}
+
+void Beqs::set_mechanism(const size_t &m) { mech = m; }
+
+ResError Beqs::pre_tac(const double &x) { return -pre(x) * tac(x); }
+
 ResError Beqs::fout_condition(const double x, const double del) {
-    return pre(x) * tac->tac(x) * yeq(x) * del * (del + 2) + dlogyeq(x);
+    return pre(x) * tac(x) * yeq(x) * del * (del + 2) + dlogyeq(x);
 }
 
 double Beqs::fstart(double x) {
-    double dif = 0.1;        // (Y-Yeq)/Yeq at starting point
-    double ent = ent_T(x);   // entropy as function of T
-    double d = 0.001 * ent;  // stepsize for entropy increase
+    double dif = 0.1;               // (Y-Yeq)/Yeq at starting point
+    double ent = ent_T(x, MI.MDM);  // entropy as function of T
+    double d = 0.001 * ent;         // stepsize for entropy increase
     double upper, lower, dlnYeqdent;
 
-    x = MI.MDM / T_ent(ent + d);
+    x = MI.MDM / T_ent(ent + d, MI.MDM);
     upper = log(yeq(x));  // logYeq for entropy = entropy + d
-    x = MI.MDM / T_ent(ent - d);
+    x = MI.MDM / T_ent(ent - d, MI.MDM);
     lower = log(yeq(x));  // logYeq for entropy = entropy - d
     dlnYeqdent =
         (upper - lower) / (2 * d);  // this is derivative of logYeq wrt entropy
-    x = MI.MDM / T_ent(ent);
+    x = MI.MDM / T_ent(ent, MI.MDM);
 
     // eq 6 from microlecture
     return (dlnYeqdent *
                 (sqrt(6 * M_PI * M_PI * M_PI / 30 * MI.MDM * MI.MDM * MI.MDM *
-                      MI.MDM / (x * x * x * x) * dof->geff(MI.MDM / x) * G) /
-                 tac->tac(x).res) -
+                      MI.MDM / (x * x * x * x) * dof.geff(MI.MDM / x) * G) /
+                 tac(x).res) -
             dif * yeq(x));
 }
 
-ResError Beqs::beq(const double &x, const ResError &y) {
+ResError Beqs::operator()(const double &x, const ResError &y) {
     ResError res{0., 0.};
     switch (mech) {
         case 0:
-            res = -pre(x) * tac->tac(x) * (y * y - pow(yeq(x), 2));
+            res = -1 * tac(x) * (y * y - pow(yeq(x), 2));
             break;
 
         case 1:
-            res = pre(x) * tac->tac(x) * (pow(yeq(x), 2) - y * y);
+            res = tac(x) * (pow(yeq(x), 2) - y * y);
             break;
 
         default:

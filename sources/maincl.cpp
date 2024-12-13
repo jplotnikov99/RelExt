@@ -1,7 +1,7 @@
 #include "../include/maincl.hpp"
 
 namespace DT {
-Main::Main(int argc, char **argv) : MI(*new ModelInfo){
+Main::Main(int argc, char **argv) : MI(*new ModelInfo) {
     srand((unsigned)time(NULL));
 
     operations_map["Set"] = [this](const vstring a) { this->Set(a); };
@@ -30,8 +30,7 @@ Main::Main(int argc, char **argv) : MI(*new ModelInfo){
     sgr = std::make_unique<DataReader>(setting_file, 0);
     load_setting();
 
-    relops = std::make_unique<RelicOps>(MI);
-    relops->set_fast((bool)sgr->get_val_of("Fast"));
+    relops = std::make_unique<RelicOps>(MI, (bool)sgr->get_val_of("Fast"));
 
     if (input_file != "") {
         rdr = std::make_unique<DataReader>(input_file, 1);
@@ -383,7 +382,7 @@ void Main::CalcTac(const vstring &args) {
            "CalcTac can only be called for one point, not a range. "
                << "Please choose the same StartPoint and EndPoint")
 
-    std::unique_ptr<Tac> tac = std::make_unique<Tac>(MI);
+    Tac tac(MI);
     std::unique_ptr<DataReader> tar =
         std::make_unique<DataReader>(output_file, 2);
 
@@ -410,9 +409,9 @@ void Main::CalcTac(const vstring &args) {
     ResError res;
     beps_eps = log(1e-100);
 
-    tac->sort_inimasses(channel);
+    tac.sort_inimasses(channel);
     for (double i = min_x; i <= max_x; i += step) {
-        res = tac->tac(i);
+        res = tac(i);
         tar->save_data({"x", "tac", "uncertainty"}, {i, res.res, res.err});
     }
 }
@@ -574,5 +573,6 @@ void Main::do_user_operations() {
 
 Main::~Main() {
     if (mode == 2) relops->save_best_bins(output_file);
+    delete &MI;
 }
 }  // namespace DT

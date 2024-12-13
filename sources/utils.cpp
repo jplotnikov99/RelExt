@@ -2,6 +2,17 @@
 
 namespace DT {
 
+double MIN(const double a, const double b) { return a < b ? a : b; };
+
+double MAX(const double a, const double b) { return a > b ? a : b; };
+
+double SQR(const double a) { return a * a; }
+
+double SIGN(const double a, const double b) {
+    assert(std::abs(b) != 0);
+    return std::abs(a / b) * b;
+}
+
 bool heaviDecays(const double &m1, const double &m2, const double &m3) {
     return (m1 > m2 + m3);
 }

@@ -17,8 +17,7 @@ bool ModelInfo::load_everything() {
 }
 
 bool ModelInfo::check_par_existence(const std::string &par) {
-    if (parmap.count(par) == 0) return false;
-    return true;
+    return parmap.count(par) == 0 ? false : true;
 }
 
 bool ModelInfo::change_parameter(const std::string &par, const double newval,

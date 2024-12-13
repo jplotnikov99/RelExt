@@ -6,11 +6,13 @@
 #include "data_structures.hpp"
 #include "general_model.hpp"
 #include "hyper_parameters.hpp"
-#include "integration_methods.hpp"
+#include "numerical/integration_methods.hpp"
 #include "result_error_pair.hpp"
 #include "utils.hpp"
 
 namespace DT {
+
+static const double G = 6.7e-39;
 
 class SigvInt {
    private:
@@ -92,11 +94,11 @@ class Tac {
     // integral over s of the whole interval
     void integrate_s(const double &x, ResError &res, double &estimate);
 
+    double prefac(const double &x);
+
     // the one. the only. the THERMALLY AVERAGED CROSS SECTION!! at a certain x
     // value
-    ResError tac(const double &x);
-
-    double get_error();
+    ResError operator()(const double &x);
 
     void clear_state(const bool full);
 

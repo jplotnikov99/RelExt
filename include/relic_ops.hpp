@@ -14,9 +14,10 @@ namespace DT {
 enum SearchMode { vanguard, bisect, descent, stop };
 class RelicOps {
    private:
+    FO1DM fo;
     vstring bath_procs;
     size_t mechanism;
-    bool fast = true;
+    bool fast;
     double xinitial;
     double par_bounds[2] = {-1e100, 1e100};
     vstring par_names;
@@ -28,12 +29,11 @@ class RelicOps {
     double omega_old, step_old, par_old;
     double bi_x1, bi_x2, bi_y1, bi_y2;
     ModelInfo &MI;
-    std::unique_ptr<BeqSolver> bs;
     bool is_monte = false;
     std::unique_ptr<MC> Mc;
 
    public:
-    RelicOps(ModelInfo &model);
+    RelicOps(ModelInfo &model, const bool &appr);
 
     void init_montecarlo(const size_t N_pars, const dvec1 &lower,
                          const dvec1 &upper,

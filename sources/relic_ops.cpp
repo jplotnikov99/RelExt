@@ -1,9 +1,8 @@
 #include "../include/relic_ops.hpp"
 
 namespace DT {
-RelicOps::RelicOps(ModelInfo &model) : MI(model) {
-    bs = std::make_unique<BeqSolver>(model);
-}
+RelicOps::RelicOps(ModelInfo &model, const bool &appr)
+    : MI(model), fo(model, appr, xtoday_FO), fast(appr) {}
 
 void RelicOps::init_montecarlo(const size_t N_pars, const dvec1 &lower,
                                const dvec1 &upper,
@@ -25,10 +24,7 @@ void RelicOps::set_fast(const bool f) { fast = f; }
 
 vstring RelicOps::get_bath_procs() { return bath_procs; }
 
-void RelicOps::set_mechanism(const size_t mech) {
-    mechanism = mech;
-    bs->set_mechanism(mech);
-}
+void RelicOps::set_mechanism(const size_t mech) { mechanism = mech; }
 
 void RelicOps::set_omega_target(const double om) { omega_target = om; }
 
@@ -50,31 +46,12 @@ ResError RelicOps::calc_omega(const ResError yield) {
 }
 
 ResError RelicOps::CalcRelic() {
-    if (!bs->sort_inimasses(bath_procs)) {
-        bs->reset_tac_state(true);
-        return {0., 0.};
-    }
     double x, xtoday, del;
     bool appr;
     ResError y{0., 0.};
     switch (mechanism) {
         case 0:
-            if (fast) {
-                appr = true;
-                del = 1.5;
-            } else {
-                appr = false;
-                del = 0.1;
-            }
-            x = bs->bisec(4.9, 50.1, del);
-            if (x < 5. || x > 50.) {
-                std::cout << "Freeze-out temperature could not be found.\n";
-                bs->reset_tac_state(true);
-                return {0., 0.};
-            }
-            y.res = (del + 1) * bs->yeq(x);
-            xinitial = x;
-            xtoday = xtoday_FO;
+            omega = fo(bath_procs);
             break;
         case 1:
             x = x_reheating;
@@ -86,12 +63,8 @@ ResError RelicOps::CalcRelic() {
         default:
             std::cout << "This mechanism ID is not valid. Please set the "
                          "mechanism to 0 or 1.\n";
-            exit(1);
             break;
     }
-    y = bs->calc_yield(xtoday, x, y, appr);
-    bs->reset_tac_state(true);
-    omega = calc_omega(y);
 
     if (is_monte) {
         dvec1 par_vals;
@@ -111,17 +84,17 @@ dvec1 RelicOps::calc_channel_contributions(double contrib) {
     dvec1 res;
     double om;
     double sum = 0.;
+    fo.set_appr(true);
     for (auto it : bath_procs) {
-        bs->sort_inimasses({it});
-        om = calc_omega(-1 / bs->icoll(xinitial, xtoday_FO)).res;
+        om = fo({it}).res;
         res.push_back(1 / om);
         sum += 1 / om;
-        bs->reset_tac_state(true);
     }
     for (auto &it : res) {
         it /= sum;
         if (it < contrib) it = 0;
     }
+    fo.set_appr(fast);
     return res;
 }
 

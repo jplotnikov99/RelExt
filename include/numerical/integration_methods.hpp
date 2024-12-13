@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "hyper_parameters.hpp"
-#include "result_error_pair.hpp"
+#include "../hyper_parameters.hpp"
+#include "../result_error_pair.hpp"
 
 namespace DT {
 
@@ -70,16 +70,22 @@ ResError h_adap_simpson38(FUNC &f, const double l, const double r, ResError *f0,
 
 template <class FUNC>
 ResError kronrod_61(FUNC &f, const double l, const double r) {
+    ResError I1{0., 0.}, I2{0., 0.};
+    ResError y[61];
     double m = 0.5 * (r + l);
     double h = 0.5 * (r - l);
-    ResError res{0., 0.};
-
-    for (size_t i = 0; i < 30; i++) {
+    size_t i;
+    for (i = 0; i < 30; i++) {
         double dx = h * kronx_61[i];
-        res = res + wkron_61[i] * (f(m + dx).res + f(m - dx).res);
+        y[i] = f(m + dx);
+        y[60 - i] = f(m - dx);
     }
-    res = res + wkron_61[30] * f(m).res;
-    return h * res;
+    for (i = 0; i < 30; i++) I1 = I1 + wkron_61[i] * (y[i] + y[60 - i]);
+    for (i = 0; i < 15; i++)
+        I2 = I2 + wgauss_30[i] * (y[2 * i + 1] + y[59 - 2 * i]);
+    I1 = I1 + wkron_61[30] * f(m);
+    I1.err = std::abs(I2.res - I1.res);
+    return h * I1;
 }
 
 template <class FUNC>
