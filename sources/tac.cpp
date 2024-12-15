@@ -250,7 +250,7 @@ void Tac::estimate_integrate_s(const double &x, ResError &res,
             }
             estimate = estimate + kronrod_61(sigv, 0., a);
             imax++;
-        } while ((std::abs(estimate.err / estimate.res) > 0.5) && (imax < 5));
+        } while ((std::abs(estimate.err / estimate.res) > 1.) && (imax < 4));
     }
 }
 
