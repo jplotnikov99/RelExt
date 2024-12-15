@@ -68,7 +68,7 @@ struct ModelInfo {
     ModelInfo();
 };
 
-class Model {
+class AnnihilationAmps{
    private:
     double s;
     fmap amp2s;
@@ -76,13 +76,13 @@ class Model {
     vamp2 cur_channel;
 
    public:
-    Model();
+    AnnihilationAmps();
 
     void init();
     void set_s(const double new_s);
     void set_channel(const vstring &ch_str, const bool flux = true);
     ResError operator()(const double cos_t);
 
-    ~Model() {};
+    ~AnnihilationAmps() {};
 };
 }  // namespace DT

@@ -179,7 +179,7 @@ void ModelInfo::init() {
     N_widths = 3;
 }
 
-void Model::init() {
+void AnnihilationAmps::init() {
     ADDCHANNEL(H1H1hh, H1H1hhfl)
     ADDCHANNEL(H1H1hZ, H1H1hZfl)
     ADDCHANNEL(H1H1ZZ, H1H1ZZfl)

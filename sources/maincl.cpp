@@ -344,8 +344,8 @@ void Main::CalcXsec(const vstring &args) {
            "CalcXsec can only be called for one point, not a range. "
                << "Please choose the same StartPoint and EndPoint")
 
-    Model mod;
-    std::unique_ptr<SigvInt> sigv = std::make_unique<SigvInt>(MI, mod);
+    AnnihilationAmps AA;
+    std::unique_ptr<SigvInt> sigv = std::make_unique<SigvInt>(MI, AA);
     std::unique_ptr<DataReader> xsr =
         std::make_unique<DataReader>(output_file, 2);
 

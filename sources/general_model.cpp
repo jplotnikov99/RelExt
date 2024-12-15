@@ -119,13 +119,12 @@ void ModelInfo::assign_masses(double &m1, double &m2,
     }
 }
 
-Model::Model() { init(); }
+AnnihilationAmps::AnnihilationAmps() { init(); }
 
-void Model::set_s(const double new_s) { s = new_s; }
+void AnnihilationAmps::set_s(const double new_s) { s = new_s; }
 
-void Model::set_channel(const vstring &ch_str, const bool flux) {
+void AnnihilationAmps::set_channel(const vstring &ch_str, const bool flux) {
     cur_channel.clear();
-    // assign_masses(m1, m2, ch_str.at(0));
     if (flux) {
         for (auto it : ch_str) {
             cur_channel.push_back(amp2fls[it]);
@@ -137,7 +136,7 @@ void Model::set_channel(const vstring &ch_str, const bool flux) {
     }
 }
 
-ResError Model::operator()(const double cos_t) {
+ResError AnnihilationAmps::operator()(const double cos_t) {
     ResError res = {0., 0.};
     for (auto it : cur_channel) {
         res.res += it(cos_t, s);

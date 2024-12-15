@@ -14,9 +14,9 @@ void SigvInt::set_dsmasses(const std::vector<double> &masses) {
 
 ResError SigvInt::xsec(const double &s, const std::string &channel) {
     double m1, m2, m3, m4;
-    mod.set_channel({channel}, false);
+    AA.set_channel({channel}, false);
     MI.assign_masses(m1, m2, channel);
-    mod.set_s(s);
+    AA.set_s(s);
     if (sqrt(s) < m1 + m2) {
         return {0., 0.};
     }
@@ -24,7 +24,7 @@ ResError SigvInt::xsec(const double &s, const std::string &channel) {
 
     double f_est[10];
     for (size_t i = 0; i < 10; i++) {
-        f_est[i] = mod(-1 + 0.2222222222222222 * i).res;
+        f_est[i] = AA(-1 + 0.2222222222222222 * i).res;
     }
     double est = simpson_est(-1, 1, f_est);
     ResError f[4];
@@ -34,15 +34,15 @@ ResError SigvInt::xsec(const double &s, const std::string &channel) {
     f[3] = {f_est[9], 0.};
     return 1 / (32 * M_PI * s) *
            sqrt(kaellen(s, m3 * m3, m4 * m4) / kaellen(s, m1 * m1, m2 * m2)) *
-           h_adap_simpson38(mod, -1, 1, f, est, theta_eps);
+           h_adap_simpson38(AA, -1, 1, f, est, theta_eps);
 }
 
 ResError SigvInt::wij(const double &s) {
     if (sig_s.count(s) == 0) {
-        mod.set_s(s);
+        AA.set_s(s);
         double f_est[10];
         for (size_t i = 0; i < 10; i++) {
-            f_est[i] = mod(-1 + 0.2222222222222222 * i).res;
+            f_est[i] = AA(-1 + 0.2222222222222222 * i).res;
         }
         double est = simpson_est(-1, 1, f_est);
         ResError f[4];
@@ -51,7 +51,7 @@ ResError SigvInt::wij(const double &s) {
         f[2] = {f_est[6], 0.};
         f[3] = {f_est[9], 0.};
         ResError crs = 1 / (256 * M_PI * s * sqrt(s)) *
-                       h_adap_simpson38(mod, -1, 1, f, est, theta_eps);
+                       h_adap_simpson38(AA, -1, 1, f, est, theta_eps);
         sig_s[s] = crs;
         return crs;
     } else {
@@ -109,16 +109,16 @@ ResError SigvInt::operator()(const double &u) {
 }
 
 Tac::Tac(ModelInfo &model)
-    : MI(model), mod(*new Model), sigv(MI, mod), boundaries(3 * MI.N_widths) {}
+    : MI(model), AA(*new AnnihilationAmps), sigv(MI, AA), boundaries(3 * MI.N_widths) {}
 
 bool Tac::sort_inimasses(const vstring &ch_str) {
     double temp;
     sigv.polK2s.resize(MI.bath_masses.size());
     for (auto it : ch_str) {
-        mod.set_channel({it});
+        AA.set_channel({it});
         MI.assign_masses(m1, m2, it);
-        mod.set_s((m1 + m2) * (m1 + m2) * 100);
-        temp = mod(0.5).res;
+        AA.set_s((m1 + m2) * (m1 + m2) * 100);
+        temp = AA(0.5).res;
         if (std::isnan(temp)) return false;
         inimap[m1 + m2].push_back(it);
     }
@@ -279,7 +279,7 @@ ResError Tac::operator()(const double &x) {
     sigv.set_x(x);
     sigv.calc_polK2();
     for (auto &it : inimap) {
-        mod.set_channel(it.second);
+        AA.set_channel(it.second);
         MI.assign_masses(m1, m2, it.second[0]);
         sigv.set_lower_bound(m1 + m2);
         if (beps(x)) {
@@ -288,7 +288,7 @@ ResError Tac::operator()(const double &x) {
         }
     }
     for (auto &it : inimap) {
-        mod.set_channel(it.second);
+        AA.set_channel(it.second);
         MI.assign_masses(m1, m2, it.second[0]);
         sigv.set_lower_bound(m1 + m2);
         if (beps(x)) {
