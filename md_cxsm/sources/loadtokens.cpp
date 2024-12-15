@@ -5,7 +5,7 @@
 #include "../model.hpp"
 
 namespace DT{
-	void Model::load_tokens(){
+	void ModelInfo::load_tokens(){
 		token1 = -1;
 		token2 = sin(alpha);
 		token3 = 2*(MH - MS1)*(MH + MS1)*svev*pow(cos(alpha),3) + vev*(pow(MH,2) + pow(MS1,2) + (-pow(MH,2) + pow(MS1,2))*cos(2*alpha))*sin(alpha);

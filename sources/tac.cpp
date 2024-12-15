@@ -109,7 +109,10 @@ ResError SigvInt::operator()(const double &u) {
 }
 
 Tac::Tac(ModelInfo &model)
-    : MI(model), AA(*new AnnihilationAmps), sigv(MI, AA), boundaries(3 * MI.N_widths) {}
+    : MI(model),
+      AA(*new AnnihilationAmps),
+      sigv(MI, AA),
+      boundaries(3 * MI.N_widths) {}
 
 bool Tac::sort_inimasses(const vstring &ch_str) {
     double temp;
@@ -247,7 +250,7 @@ void Tac::estimate_integrate_s(const double &x, ResError &res,
             }
             estimate = estimate + kronrod_61(sigv, 0., a);
             imax++;
-        } while (std::abs(estimate.err / estimate.res) > 0.5);
+        } while ((std::abs(estimate.err / estimate.res) > 0.5) && (imax < 5));
     }
 }
 
@@ -300,7 +303,6 @@ ResError Tac::operator()(const double &x) {
 }
 
 void Tac::clear_state(const bool full) {
-    tac_error_reached = false;
     sigv.sig_s.clear();
     if (full) inimap.clear();
 }

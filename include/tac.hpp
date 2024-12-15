@@ -52,7 +52,6 @@ class Tac {
     AnnihilationAmps &AA;
     double m1, m2;
     size_t N_relevant_peaks;
-    bool tac_error_reached = false;
     VecDoub boundaries;
     std::map<double, vstring> inimap;
     std::map<double, vstring>::iterator ini_it;
