@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_vdm/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cpvdm/FR_modfiles" <> "/FA_modfiles";*)
 (*directory = "/home/rodrigo/Downloads/darktree_new/md_cpvdm/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
@@ -837,10 +837,6 @@ Do[
 ,{i,Length[processnameDecays]}]
 
 
-inifuncDecays[1];
-possibleiniDecays
-
-
 (*if scalar mediator has tt decay, add gg decay*)
 Do[
 	If[SelfConjugate[inifuncDecays[i1][[1,5]]]&&inifuncDecays[i1][[1,8]]==0,
@@ -946,20 +942,20 @@ Write[sfile, mathlabel];
 Write[sfile, "#include \"general_model.hpp\""]
 Write[sfile, "#include \"../model.hpp\"\n"]
 Write[sfile, "namespace DT{"];
-Write[sfile,"\tvoid Model::init()"];
+Write[sfile,"\tvoid ModelInfo::init()"];
 Write[sfile,"\t{"];
 
 Do[
-	Write[sfile, "\t\tparticles[\"",ToString[dsnames[[i]]],"\"]=&",ToString[dsmass[[i]]],";"]
+	Write[sfile, "\t\tDSmasses[\"",ToString[dsnames[[i]]],"\"]=&",ToString[dsmass[[i]]],";"]
 ,{i,Length[dsmass]}]
 Do[
-	Write[sfile, "\t\tdsDof[\"",ToString[dsnames[[i]]],"\"]=",ToString[dsDof[[i]]],";"]
+	Write[sfile, "\t\tDSdof[\"",ToString[dsnames[[i]]],"\"]=",ToString[dsDof[[i]]],";"]
 ,{i,Length[dsnames]}]
 Do[
 	Write[sfile, "\t\tneutraldsmasses.push_back(&", neutraldsmasses[[i]],");"];
 ,{i,Length[neutraldsmasses]}]
 Do[
-Write[sfile, "\t\tADDCHANNEL(",ToString[processname[[i]]],", ",ToString[processname[[i]]],"fl, "
+Write[sfile, "\t\tADDCHANNELINFO(",ToString[processname[[i]]],", "
 , If[mi[[i]]===0, "ZERO", ToString[ReplaceAll[mi[[i]],subrule]]],
 ", ",
 If[mj[[i]]===0, "ZERO", ToString[ReplaceAll[mj[[i]],subrule]]],", "
@@ -974,7 +970,18 @@ Do[
 Write[sfile,"\t\tN_widths = ",ToString[Length[relevantWs]/2],";"];
 
 Write[sfile,"\t}"];
+Write[sfile, "\n"];
+
+Write[sfile,"\tvoid AnnihilationAmps::init()"];
+Write[sfile,"\t{"];
+
+Do[
+Write[sfile, "\t\tADDCHANNEL(",ToString[processname[[i]]],", ", ToString[processname[[i]]],"fl)"];
+,{i,Length[processname]}]
+
+Write[sfile,"\t}"];
 Write[sfile, "}"];
+
 Close[sfile];
 
 
@@ -985,7 +992,7 @@ Write[sfile, mathlabel];
 Write[sfile, "#include \"general_model.hpp\""]
 Write[sfile, "#include \"../model.hpp\"\n"]
 Write[sfile, "namespace DT{"];
-Write[sfile, "\tvoid Model::load_parameter_map(){"];
+Write[sfile, "\tvoid ModelInfo::load_parameter_map(){"];
 Do[
 	Write[sfile, "\t\tparmap[\"", external[[i,1]] ,"\"] = &", external[[i,1]],";"]
 ,{i,Length[external]}]
@@ -1005,7 +1012,7 @@ Write[sfile, "#include \"general_model.hpp\""]
 Write[sfile, "#include \"../model.hpp\""]
 Write[sfile, "namespace DT{"]
 
-Write[sfile, "\tvoid Model::load_parameters(){"]
+Write[sfile, "\tvoid ModelInfo::load_parameters(){"]
 Write[sfile, "\t\tFAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;"];
 If[ContainsAll[external[[All,1]], {"yms", "ymb", "ymt", "ymc"}],
 	Write[sfile, "\t\tyms = ", ToString[runMasses[[1]]], ";"];
@@ -1032,7 +1039,7 @@ Write[sfile, "#include \"../model.hpp\""]
 Write[sfile, "#include \"mass_run.hpp\"\n"]
 Write[sfile, "namespace DT{"]
 
-Write[sfile, "\tvoid Model::calc_widths_and_scale(){"]
+Write[sfile, "\tvoid ModelInfo::calc_widths_and_scale(){"]
 (*running masses for widths*)
 Write[sfile, "\t\tstd::unique_ptr<Mrun> Run = std::make_unique<Mrun>();"];
 Write[sfile, "\t\tdouble *quark_masses[4] = {&",ToString[runMasses[[1]]],", &",ToString[runMasses[[2]]],", &",ToString[runMasses[[3]]],", &",ToString[runMasses[[4]]],"};"];
@@ -1060,7 +1067,7 @@ Write[sfile, "#include \"general_model.hpp\""]
 Write[sfile, "#include \"../model.hpp\"\n"]
 Write[sfile, "namespace DT{"]
 
-Write[sfile, "\tvoid Model::load_tokens(){"]
+Write[sfile, "\tvoid ModelInfo::load_tokens(){"]
 Do[
 	toksub=StringReplace[ToString[CForm[tokenreverse[[i,2]]]],{"Power"->"pow","Cos"->"cos","Sin"->"sin","Conjugate"->"", "Sqrt"-> "sqrt", "Defer"-> " ", "FeynCalc_MT"->"MT", "FeynCalc`"->"", "SMP(\"g_s\")"->"gs"}];
 	Write[sfile, "\t\t", ToString[tokenreverse[[i,1]]] ," = ", toksub,";"],{i,Length[tokenreverse]}]
