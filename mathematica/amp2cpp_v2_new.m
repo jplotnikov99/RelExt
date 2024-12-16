@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cpvdm/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_bmd5/FR_modfiles" <> "/FA_modfiles";*)
 (*directory = "/home/rodrigo/Downloads/darktree_new/md_cpvdm/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
@@ -89,7 +89,7 @@ getWidthsandDSMasses[];
 IDtoPDG[ID_]:=
 Block[{NID},
 	NID=ID/.-x_:>x;
-	NID=NID/.F[x_,{y_}]:>F[x];
+	NID=NID/.F_[x_,{y_}]:>F[x];
 	Return[particlelist[[Position[particlelist,NID][[1,1]],4]]];
 ]
 (*PDG to particle identifier*)
@@ -1157,37 +1157,8 @@ Do[
 	Write[sfile,"#include \"width.hpp\""];
 	Write[sfile,"#include <memory>\n"];
 	
-	(*if decaying particle is NOT a scalar:*)
-	If[ inifuncDecays[i][[1,8]] != 0,
-		Do[
-			subsDecays=Replace[inifuncDecays[i][[j,8]],defer,All];
-			subsDecays=ToString[ToString[CForm[subsDecays],StandardForm]];
-			subsDecays=StringReplace[subsDecays,{"Sqrt"-> "sqrt","Defer"->" ","Cos("->"cos( ","Sin"->"sin", "Tan"->"tan", "Power"->"pow"}];
-			Write[sfile, "double DT::w" , ToString[inifuncDecays[i][[j,1]]] , "(){"];
-			symfac="";
-			If[inifuncDecays[i][[j,6]]===inifuncDecays[i][[j,7]],symfac="0.5*"];	
-			Write[sfile, "\tif(heaviDecays(" , ToString[inifuncDecays[i][[j,2]]] , "," , ToString[inifuncDecays[i][[j,3]]], "," , ToString[inifuncDecays[i][[j,4]]] , ")){"];
-			Write[sfile, "\treturn " , symfac, subsDecays , ";"];
-			Write[sfile, "\t}"];
-			Write[sfile, "\telse{ return 0; }\n"];
-			Write[sfile, "}"]
-		,{j,Length[inifuncDecays[i]]}];
-		
-		Write[sfile, "double DT::ww" , ToString[possibleiniDecays[[i]]] , "(const double QCDaS){"];
-		allcontr="( ";
-		Do[
-			If[j!=Length[inifuncDecays[i]],
-				allcontr=StringJoin[allcontr,"w",ToString[inifuncDecays[i][[j,1]]],"() + "],
-				allcontr=StringJoin[allcontr,"w",ToString[inifuncDecays[i][[j,1]]],"() );"]
-			]
-		,{j,Length[inifuncDecays[i]]}];
-		Write[sfile, "\treturn ", allcontr];
-		Write[sfile, "}"];
-		Close[sfile];
-	];
-	
 	(*if decaying particle is a scalar:*)
-	If[ inifuncDecays[i][[1,8]] == 0,
+	If[ inifuncDecays[i][[1,8]] === 0,
 		Write[sfile, "double DT::ww" , ToString[possibleiniDecays[[i]]] , "(const double QCDaS){"];
 		Write[sfile, "\tdouble width = 0;"];
 		Write[sfile, "\tstd::unique_ptr<Width> w = std::make_unique<Width>(", inifuncDecays[i][[1,2]],");"];
@@ -1229,6 +1200,34 @@ Do[
 		Write[sfile, "\t}"];
 		Write[sfile, "\treturn width;"];
 		Write[sfile, "}"];
+		Close[sfile],
+		
+		(*if decaying particle is NOT a scalar:*)
+		Do[
+			subsDecays=Replace[inifuncDecays[i][[j,8]],defer,All];
+			subsDecays=ToString[ToString[CForm[subsDecays],StandardForm]];
+			subsDecays=StringReplace[subsDecays,{"Sqrt"-> "sqrt","Defer"->" ","Cos("->"cos( ","Sin"->"sin", "Tan"->"tan", "Power"->"pow"}];
+			Write[sfile, "double DT::w" , ToString[inifuncDecays[i][[j,1]]] , "(){"];
+			symfac="";
+			If[inifuncDecays[i][[j,6]]===inifuncDecays[i][[j,7]],symfac="0.5*"];	
+			Write[sfile, "\tif(heaviDecays(" , ToString[inifuncDecays[i][[j,2]]] , "," , ToString[inifuncDecays[i][[j,3]]], "," , ToString[inifuncDecays[i][[j,4]]] , ")){"];
+			Write[sfile, "\treturn " , symfac, subsDecays , ";"];
+			Write[sfile, "\t}"];
+			Write[sfile, "\telse{ return 0; }\n"];
+			Write[sfile, "}"]
+		,{j,Length[inifuncDecays[i]]}];
+		
+		Write[sfile, "double DT::ww" , ToString[possibleiniDecays[[i]]] , "(const double QCDaS){"];
+		allcontr="( ";
+		Do[
+			If[j!=Length[inifuncDecays[i]],
+				allcontr=StringJoin[allcontr,"w",ToString[inifuncDecays[i][[j,1]]],"() + "],
+				allcontr=StringJoin[allcontr,"w",ToString[inifuncDecays[i][[j,1]]],"() );"]
+			]
+		,{j,Length[inifuncDecays[i]]}];
+		Write[sfile, "\treturn ", allcontr];
+		Write[sfile, "}"];
 		Close[sfile];
 	];
 ,{i,Length[possibleiniDecays]}]
+
