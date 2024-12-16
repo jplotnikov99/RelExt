@@ -552,6 +552,14 @@ namespace DT{
 	double A0A0(const double &cos_t, const double &s);
 	double A0pQ(const double &cos_t, const double &s);
 	double pQpQ(const double &cos_t, const double &s);
+	double wtHt();
+	double wtpQchi0();
+	double wtAt();
+	double wtZt();
+	double wtWd();
+	double wtWs();
+	double wtWb();
+	double wtGt();
 	double wHHH();
 	double wHS0S0();
 	double wHA0A0();
@@ -567,5 +575,6 @@ namespace DT{
 	double wHDd();
 	double wHSs();
 	double wHBb();
+	double wwt(const double QCDaS);
 	double wwH(const double QCDaS);
 }
