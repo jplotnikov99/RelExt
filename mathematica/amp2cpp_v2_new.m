@@ -1158,7 +1158,7 @@ Do[
 	Write[sfile,"#include <memory>\n"];
 	
 	(*if decaying particle is NOT a scalar:*)
-	If[ inifuncDecays[i][[1,8]] != 0,
+	If[ inifuncDecays[i][[1,8]] === 0, ,
 		Do[
 			subsDecays=Replace[inifuncDecays[i][[j,8]],defer,All];
 			subsDecays=ToString[ToString[CForm[subsDecays],StandardForm]];
@@ -1187,7 +1187,7 @@ Do[
 	];
 	
 	(*if decaying particle is a scalar:*)
-	If[ inifuncDecays[i][[1,8]] == 0,
+	If[ inifuncDecays[i][[1,8]] === 0,
 		Write[sfile, "double DT::ww" , ToString[possibleiniDecays[[i]]] , "(const double QCDaS){"];
 		Write[sfile, "\tdouble width = 0;"];
 		Write[sfile, "\tstd::unique_ptr<Width> w = std::make_unique<Width>(", inifuncDecays[i][[1,2]],");"];
