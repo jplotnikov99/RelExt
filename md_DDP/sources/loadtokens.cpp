@@ -5,7 +5,7 @@
 #include "../model.hpp"
 
 namespace DT{
-	void Model::load_tokens(){
+	void ModelInfo::load_tokens(){
 		token1 = ((2*pow(m11,2) - 2*pow(MH3,2) + lam7*pow(vs,2))*pow(cos(aDM),2))/pow(v,2) - lam7*pow(sin(aDM),2);
 		token2 = 3;
 		token3 = pow(MH1,2);

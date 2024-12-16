@@ -239,10 +239,11 @@ void Tac::estimate_integrate_s(const double &x, ResError &res,
                     kronrod_61(sigv, boundaries[0], 1));
     } else {
         ResError temp = estimate;
-        double a = 1., b = 1.;
+        double a = 1., b;
         size_t i, imax = 1;
         do {
             estimate = temp;
+            b = 1.;
             for (i = 1; i < imax; i++) {
                 a = (double)i * 1e-3 * b;
                 estimate = estimate + kronrod_61(sigv, a, b);
@@ -250,7 +251,7 @@ void Tac::estimate_integrate_s(const double &x, ResError &res,
             }
             estimate = estimate + kronrod_61(sigv, 0., a);
             imax++;
-        } while ((std::abs(estimate.err / estimate.res) > 1.) && (imax < 4));
+        } while ((std::abs(estimate.err / estimate.res) > 0.5) && (imax < 4));
     }
 }
 

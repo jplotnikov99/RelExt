@@ -24,18 +24,7 @@ ResError FO1DM::operator()(const vstring &channels) {
     }
     if (appr) {
         FOAppr foa(BI);
-        double a = xtoday, b = xtoday;
-        size_t i, imax = 2;
-        do {
-            res = {0., 0.};
-            for (i = 1; i < imax; i++) {
-                a = xfo + (double)i * 1e-3 * (b - xfo);
-                res = res + kronrod_61(foa, a, b);
-                b = a;
-            }
-            res = res + kronrod_61(foa, xfo, a);
-            imax++;
-        } while (std::abs(res.err / res.res) > 0.01);
+        res = adap_gauss_kronrod_15(foa, xfo, xtoday, 1e-3);
         res = 1. / yfo - res;
         res = 1. / res;
     } else {
