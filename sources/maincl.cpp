@@ -235,7 +235,7 @@ double Main::get_number(const std::string &arg, const std::string &func) {
     if (var_type == 1) {
         return *MI.parmap[arg];
     } else if (var_type == 2) {
-        return variable_map[arg].res;
+        return variable_map[arg];
     } else {
         double val;
         try {
@@ -253,7 +253,7 @@ void Main::Def(const vstring &args) {
     if (first_run) {
         check_arguments_number(true, 2, args.size(), __func__);
         double a = get_number(args.at(2), __func__);
-        variable_map[args.at(1)] = {a, 0.};
+        variable_map[args.at(1)] = a;
     }
 }
 
@@ -264,7 +264,7 @@ void Main::Set(const vstring &args) {
     if (type == 1) {
         MI.change_parameter(args.at(1), a);
     } else {
-        variable_map.at(args.at(1)).res = a;
+        variable_map.at(args.at(1)) = a;
     }
 }
 
@@ -277,7 +277,7 @@ void Main::Add(const vstring &args) {
         b += a;
         MI.change_parameter(args.at(1), b);
     } else {
-        variable_map.at(args.at(1)).res += a;
+        variable_map.at(args.at(1)) += a;
     }
 }
 
@@ -290,7 +290,7 @@ void Main::Sub(const vstring &args) {
         b -= a;
         MI.change_parameter(args.at(1), b);
     } else {
-        variable_map.at(args.at(1)).res -= a;
+        variable_map.at(args.at(1)) -= a;
     }
 }
 
@@ -303,7 +303,7 @@ void Main::Mult(const vstring &args) {
         b *= a;
         MI.change_parameter(args.at(1), b);
     } else {
-        variable_map.at(args.at(1)).res *= a;
+        variable_map.at(args.at(1)) *= a;
     }
 }
 
@@ -316,7 +316,7 @@ void Main::Div(const vstring &args) {
         b /= a;
         MI.change_parameter(args.at(1), b);
     } else {
-        variable_map.at(args.at(1)).res /= a;
+        variable_map.at(args.at(1)) /= a;
     }
 }
 
@@ -370,7 +370,7 @@ void Main::CalcXsec(const vstring &args) {
     for (double sqs = min_sqs; sqs <= max_sqs; sqs += step) {
         res = 0;
         for (auto it : channel) {
-            res += sigv->xsec(sqs * sqs, it).res;
+            res += sigv->xsec(sqs * sqs, it);
         }
         xsr->save_data({"sqrts", "xsec"}, {sqs, res});
     }
@@ -406,13 +406,13 @@ void Main::CalcTac(const vstring &args) {
     if (args.size() == 4) channel = MI.channelnames;
 
     double step = (max_x - min_x) / ((double)points);
-    ResError res;
+    double res;
     beps_eps = log(1e-100);
 
     tac.sort_inimasses(channel);
     for (double i = min_x; i <= max_x; i += step) {
         res = tac(i);
-        tar->save_data({"x", "tac", "uncertainty"}, {i, res.res, res.err});
+        tar->save_data({"x", "tac"}, {i, res});
     }
 }
 
@@ -535,13 +535,13 @@ void Main::SaveData(const vstring &args) {
         outfile << "\n";
     }
 
-    outfile << omega.res << "\t" << omega.err;
+    outfile << omega;
 
     for (auto it : saved_pars) {
         outfile << "\t" << *MI.parmap[it];
     }
     for (size_t i = 1; i < args.size(); i++) {
-        outfile << "\t" << variable_map.at(args.at(i)).res;
+        outfile << "\t" << variable_map.at(args.at(i));
     }
     for (auto it : channel_percent) {
         outfile << "\t" << it;
@@ -552,7 +552,7 @@ void Main::SaveData(const vstring &args) {
 }
 
 void Main::do_user_operations() {
-    omega = {0., 0.};
+    omega = 0.;
     if (first_run) {
         for (auto it : user_operations) {
             if (operations_map.find(it.at(0)) == operations_map.end()) {

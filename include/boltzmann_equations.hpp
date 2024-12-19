@@ -46,7 +46,7 @@ class FOAppr {
 
    public:
     FOAppr(BeqInfo &bi) : BI(bi) {};
-    ResError operator()(const double &x);
+    double operator()(const double &x);
     ~FOAppr() {};
 };
 
@@ -56,7 +56,7 @@ class FOFull {
 
    public:
     FOFull(BeqInfo &bi) : BI(bi) {};
-    void operator()(const double &x, const ResError &y, ResError &dydx);
+    void operator()(const double &x, const double &y, double &dydx);
     ~FOFull() {};
 };
 
@@ -70,9 +70,9 @@ class Beqs : public BeqInfo {
     void set_mechanism(const size_t &m);
 
     // prefactor + tac of the boltzmann equation
-    ResError pre_tac(const double &x);
+    double pre_tac(const double &x);
 
-    ResError fout_condition(const double x, const double del);
+    double fout_condition(const double x, const double del);
 
     // function to help find the starting point to be used in the runge Kutta
     // routine
@@ -80,7 +80,7 @@ class Beqs : public BeqInfo {
 
     // Boltzmann equation that needs to be solved for freeze-out and simple
     // freeze-in
-    ResError operator()(const double &x, const ResError &y);
+    double operator()(const double &x, const double &y);
 
     ~Beqs() { delete &dof; }
 };

@@ -10,7 +10,7 @@ ModelInfo::ModelInfo() {
 bool ModelInfo::load_everything() {
     load_parameters();
     assigndm();
-    calc_widths_and_scale();
+    //calc_widths_and_scale();
     load_parameters();
     load_tokens();
     return check_conditions();
@@ -136,10 +136,10 @@ void AnnihilationAmps::set_channel(const vstring &ch_str, const bool flux) {
     }
 }
 
-ResError AnnihilationAmps::operator()(const double cos_t) {
-    ResError res = {0., 0.};
+double AnnihilationAmps::operator()(const double cos_t) {
+    double res = 0.;
     for (auto it : cur_channel) {
-        res.res += it(cos_t, s);
+        res += it(cos_t, s);
     }
     return res;
 }

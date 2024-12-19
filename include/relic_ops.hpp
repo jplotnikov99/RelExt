@@ -8,7 +8,6 @@
 #include "general_model.hpp"
 #include "hyper_parameters.hpp"
 #include "montecarlo.hpp"
-#include "result_error_pair.hpp"
 
 namespace DT {
 class RelicOps {
@@ -21,7 +20,7 @@ class RelicOps {
     double par_bounds[2] = {-1e100, 1e100};
     vstring par_names;
     std::vector<std::pair<double, double>> bounds;
-    ResError omega;
+    double omega;
     bool first_step = true;
     SearchMode searchmode = vanguard;
     double omega_target, omega_err;
@@ -56,12 +55,12 @@ class RelicOps {
 
     void set_par_bounds(const std::string par, const double a, const double b);
 
-    ResError calc_omega(const ResError yield);
+    double calc_omega(const double yield);
 
     // calculates the relic density for a specific mechanism
-    ResError CalcRelic();
+    double CalcRelic();
 
-    ResError get_last_relic();
+    double get_last_relic();
 
     dvec1 calc_channel_contributions(double contrib);
 
@@ -79,13 +78,13 @@ class RelicOps {
 
     void bisect_search(const std::string &par);
 
-    ResError find_par(const std::string &par);
+    double find_par(const std::string &par);
 
     double random_step(const size_t par_i);
 
     void same_step(const size_t par_i, const double step);
 
-    ResError random_walk();
+    double random_walk();
 
     void save_best_bins(const std::string &filename);
 

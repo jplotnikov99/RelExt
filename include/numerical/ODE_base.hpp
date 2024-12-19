@@ -38,7 +38,7 @@ class Output {
 template <class Stepper>
 void Output::save_dense(Stepper &s, const double xo, const double h) {
     if (count == kmax) resize();
-    ysave[count] = s.dense_out(xo, h).res;
+    ysave[count] = s.dense_out(xo, h);
     xsave[count++] = xo;
 }
 
@@ -65,15 +65,15 @@ class Odeint {
     double EPS;
     double x, x1, x2, h, hmin;
     bool dense;
-    ResError y, dydx;
-    ResError &ystart;
+    double y, dydx;
+    double &ystart;
     Output &out;
     typename Stepper::Dtype &derivs;
     Stepper s;
     size_t nstp;
 
    public:
-    Odeint(ResError &ystartt, const double xx1, const double xx2,
+    Odeint(double &ystartt, const double xx1, const double xx2,
            const double atol, const double rtol, const double h1,
            const double hminn, Output &outt, typename Stepper::Dtype &derivss)
         : ystart(ystartt),
@@ -100,9 +100,9 @@ template <class Stepper>
 void Odeint<Stepper>::integrate() {
     derivs(x, y, dydx);
     if (dense)
-        out.out(-1, x, y.res, s, h);
+        out.out(-1, x, y, s, h);
     else
-        out.save(x, y.res);
+        out.save(x, y);
     for (nstp = 0; nstp < MAXSTP; nstp++) {
         if ((x + h * 1.0001 - x2) * (x2 - x1) > 0.) h = x2 - x;
         s.step(h, derivs);
@@ -111,14 +111,14 @@ void Odeint<Stepper>::integrate() {
         else
             nbad++;
         if (dense)
-            out.out(nstp, x, y.res, s, s.hdid);
+            out.out(nstp, x, y, s, s.hdid);
         else
-            out.save(x, y.res);
+            out.save(x, y);
         if ((x - x2) * (x2 - x1) >= 0.) {
             ystart = y;
             if (out.get_kmax() > 0 && std::abs(out.xsave[out.get_count() - 1] -
                                                x2) > 100 * std::abs(x2) * EPS)
-                out.save(x, y.res);
+                out.save(x, y);
             return;
         }
         if (std::abs(s.hnext) <= hmin)
@@ -131,11 +131,11 @@ void Odeint<Stepper>::integrate() {
 struct StepperBase {
     double &x;
     double xold, atol, rtol, hdid, hnext, EPS;
-    ResError &y, &dydx;
-    ResError yout;
+    double &y, &dydx;
+    double yout;
     double yerr;
     bool dense;
-    StepperBase(ResError &yy, ResError &dydxx, double &xx, const double atoll,
+    StepperBase(double &yy, double &dydxx, double &xx, const double atoll,
                 const double rtoll, const bool dens)
         : y(yy), dydx(dydxx), x(xx), atol(atoll), rtol(rtoll), dense(dens) {}
 };

@@ -7,20 +7,20 @@ void FO1DM::set_appr(const bool &apprr) {
     foc.del = appr ? 1.5 : 0.1;
 }
 
-ResError FO1DM::omega(const ResError &yield) {
+double FO1DM::omega(const double &yield) {
     return 2.742e8 * BI.MI.MDM * yield;
 }
 
-ResError FO1DM::operator()(const vstring &channels) {
-    ResError res;
+double FO1DM::operator()(const vstring &channels) {
+    double res;
     if (!BI.tac.sort_inimasses(channels)) {
-        res = {0., 0.};
+        res = 0.;
     }
     double xfo = bisec(foc, 4.9, 50.1, secant_eps);
-    ResError yfo = {(1. + foc.del) * BI.yeq(xfo), 0.};
+    double yfo = (1. + foc.del) * BI.yeq(xfo);
     if (xfo < 5. || xfo > 50.) {
         std::cout << "Freeze-out temperature could not be found.\n";
-        res = {0., 0.};
+        res = 0.;
     }
     if (appr) {
         FOAppr foa(BI);

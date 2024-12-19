@@ -23,8 +23,8 @@ class FO1DM {
     FO1DM(ModelInfo &model, const bool &apprr, const double &xto)
         : BI(model), appr(apprr), foc(BI, apprr ? 1.5 : 0.1), xtoday(xto) {};
     void set_appr(const bool &apprr);
-    ResError omega(const ResError &yield);
-    ResError operator()(const vstring &channels);
+    double omega(const double &yield);
+    double operator()(const vstring &channels);
     ~FO1DM() {};
 };
 }  // namespace DT

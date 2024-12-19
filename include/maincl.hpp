@@ -14,7 +14,7 @@
 namespace DT {
 class Main {
    private:
-    ResError omega;
+    double omega;
     size_t mode;
     std::string input_file;
     std::string output_file;
@@ -25,7 +25,7 @@ class Main {
     dvec1 channel_percent;
     std::unordered_map<std::string, std::function<void(const vstring)>>
         operations_map;
-    std::unordered_map<std::string, ResError> variable_map;
+    std::unordered_map<std::string, double> variable_map;
     vvstring user_operations;
     vvstring generator_list;
     ModelInfo &MI;

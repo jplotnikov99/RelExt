@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "hyper_parameters.hpp"
-#include "result_error_pair.hpp"
 // #include "bessel-library.hpp"
 
 namespace DT {

@@ -81,7 +81,7 @@ class AnnihilationAmps{
     void init();
     void set_s(const double new_s);
     void set_channel(const vstring &ch_str, const bool flux = true);
-    ResError operator()(const double cos_t);
+    double operator()(const double cos_t);
 
     ~AnnihilationAmps() {};
 };

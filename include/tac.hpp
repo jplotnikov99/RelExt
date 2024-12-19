@@ -7,7 +7,6 @@
 #include "general_model.hpp"
 #include "hyper_parameters.hpp"
 #include "numerical/integration_methods.hpp"
-#include "result_error_pair.hpp"
 #include "utils.hpp"
 
 namespace DT {
@@ -23,7 +22,7 @@ class SigvInt {
    public:
     VecDoub polK2s;
     std::vector<double> dsmasses;
-    std::unordered_map<double, ResError> sig_s;
+    std::unordered_map<double, double> sig_s;
     double lower_bound;
     SigvInt(ModelInfo &model, AnnihilationAmps &AnAmps) : MI(model), AA(AnAmps) {};
 
@@ -33,15 +32,15 @@ class SigvInt {
 
     void set_dsmasses(const std::vector<double> &masses);
 
-    ResError xsec(const double &s, const std::string &channel);
+    double xsec(const double &s, const std::string &channel);
 
-    ResError wij(const double &s);
+    double wij(const double &s);
 
     void calc_polK2();
 
     double lipsv(const double &s);
 
-    ResError operator()(const double &u);
+    double operator()(const double &u);
 
     ~SigvInt() {};
 };
@@ -84,20 +83,20 @@ class Tac {
     void set_boundaries(const double &x);
 
     // integral of the peaks over s
-    ResError integrate_peaks(const double &x);
+    double integrate_peaks(const double &x);
 
     // estimate s integral
-    void estimate_integrate_s(const double &x, ResError &res,
-                              ResError &estimate);
+    void estimate_integrate_s(const double &x, double &res,
+                              double &estimate);
 
     // integral over s of the whole interval
-    void integrate_s(const double &x, ResError &res, double &estimate);
+    void integrate_s(const double &x, double &res, double &estimate);
 
     double prefac(const double &x);
 
     // the one. the only. the THERMALLY AVERAGED CROSS SECTION!! at a certain x
     // value
-    ResError operator()(const double &x);
+    double operator()(const double &x);
 
     void clear_state(const bool full);
 

@@ -41,21 +41,21 @@ void RelicOps::set_par_bounds(const std::string par, const double a,
     bounds.push_back(std::make_pair(a, b));
 }
 
-ResError RelicOps::calc_omega(const ResError yield) {
+double RelicOps::calc_omega(const double yield) {
     return 2.742e8 * MI.MDM * yield;
 }
 
-ResError RelicOps::CalcRelic() {
+double RelicOps::CalcRelic() {
     double x, xtoday, del;
     bool appr;
-    ResError y{0., 0.};
+    double y = 0.;
     switch (mechanism) {
         case 0:
             omega = fo(bath_procs);
             break;
         case 1:
             x = x_reheating;
-            y.res = 0;
+            y = 0;
             xtoday = xtoday_FI;
             appr = false;
             break;
@@ -70,14 +70,14 @@ ResError RelicOps::CalcRelic() {
         dvec1 par_vals;
         for (size_t i = 0; i < par_names.size(); i++)
             par_vals.push_back(*MI.parmap[par_names[i]]);
-        double w = omega.res > 0.12 ? pow(0.12 / omega.res, 2)
-                                    : pow(omega.res / 0.12, 2);
+        double w = omega > 0.12 ? pow(0.12 / omega, 2)
+                                    : pow(omega / 0.12, 2);
         Mc->set_weight(par_vals, w);
     }
     return omega;
 }
 
-ResError RelicOps::get_last_relic() { return omega; }
+double RelicOps::get_last_relic() { return omega; }
 
 dvec1 RelicOps::calc_channel_contributions(double contrib) {
     if (contrib > 1 || contrib < 0) contrib = 0.01;
@@ -86,7 +86,7 @@ dvec1 RelicOps::calc_channel_contributions(double contrib) {
     double sum = 0.;
     fo.set_appr(true);
     for (auto it : bath_procs) {
-        om = fo({it}).res;
+        om = fo({it});
         res.push_back(1 / om);
         sum += 1 / om;
     }
@@ -152,17 +152,17 @@ double RelicOps::get_next_omega(const std::string &par, const double om) {
     par1 = *MI.parmap[par];
     par2 = par1 * (1 + eps);
     MI.change_parameter(par, par2);
-    om2 = CalcRelic().res - omega_target;
+    om2 = CalcRelic() - omega_target;
 
     step = get_next_step(par1, par2, om1, om2);
     par1 += step;
     if (par1 < par_bounds[0]) par1 = par_bounds[0];
     if (par1 > par_bounds[1]) par1 = par_bounds[1];
     if (!MI.change_parameter(par, par1)) {
-        omega = {om1, omega.err};
+        omega = om1;
         return om1;
     }
-    om1 = CalcRelic().res - omega_target;
+    om1 = CalcRelic() - omega_target;
     check_sign_flip(step, om1, par1);
     par_old = par1;
     step_old = step;
@@ -172,7 +172,7 @@ double RelicOps::get_next_omega(const std::string &par, const double om) {
 
 void RelicOps::vanguard_search(const std::string &par) {
     double om1, om2;
-    om1 = CalcRelic().res - omega_target;
+    om1 = CalcRelic() - omega_target;
     omega_old = om1;
     par_old = *MI.parmap[par];
     while ((fabs(om1) > omega_err) && (searchmode == vanguard)) {
@@ -215,7 +215,7 @@ void RelicOps::bisect_search(const std::string &par) {
         dx *= 0.5;
         xmid = rtb + dx;
         MI.change_parameter(par, xmid);
-        bi_y2 = CalcRelic().res - omega_target;
+        bi_y2 = CalcRelic() - omega_target;
 
         if (bi_y2 <= 0.) rtb = xmid;
         if (fabs(bi_y2) < omega_err) {
@@ -227,7 +227,7 @@ void RelicOps::bisect_search(const std::string &par) {
     std::cout << "Bisection limit reached.\n";
 }
 
-ResError RelicOps::find_par(const std::string &par) {
+double RelicOps::find_par(const std::string &par) {
     first_step = true;
     searchmode = vanguard;
 
@@ -278,15 +278,15 @@ void RelicOps::same_step(const size_t par_i, const double step) {
     MI.change_parameter(par_names[par_i], val, false);
 }
 
-ResError RelicOps::random_walk() {
+double RelicOps::random_walk() {
     const size_t max_steps = 400;
     size_t cur_steps = 0;
     bool is_step_good = false;
     double om1, om2;
     double saved_vals[par_names.size()];
     double current_step[par_names.size()];
-    om1 = CalcRelic().res;
-    if (om1 == 0.) return {0., 0.};
+    om1 = CalcRelic();
+    if (om1 == 0.) return 0.;
     do {
         om2 = om1;
         if (is_step_good) {
@@ -303,7 +303,7 @@ ResError RelicOps::random_walk() {
         if (!MI.load_everything()) {
             is_step_good = false;
         } else {
-            om1 = CalcRelic().res;
+            om1 = CalcRelic();
             if (fabs(om1 - omega_target) >= fabs(om2 - omega_target) ||
                 om1 == 0.) {
                 for (size_t i = 0; i < par_names.size(); i++) {
