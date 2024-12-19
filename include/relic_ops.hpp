@@ -11,7 +11,6 @@
 #include "result_error_pair.hpp"
 
 namespace DT {
-enum SearchMode { vanguard, bisect, descent, stop };
 class RelicOps {
    private:
     FO1DM fo;

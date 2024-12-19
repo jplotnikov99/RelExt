@@ -29,7 +29,7 @@ extern size_t N_bins;
 extern size_t N_best;
 extern double p_random;
 extern double vanguard_step_size;
-extern double descent_learning_rate;
+extern double descent_rate;
 extern double max_N_bisections;
 extern double random_walk_rate;
 

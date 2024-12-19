@@ -434,7 +434,7 @@ void Main::CalcRelic(const vstring &args) {
 void Main::FindParameter(const vstring &args) {
     if (first_run) {
         vanguard_step_size = sgr->get_val_of("VanguardStep");
-        descent_learning_rate = sgr->get_val_of("DescentRate");
+        descent_rate = sgr->get_val_of("DescentRate");
         max_N_bisections = sgr->get_val_of("MaxBisections");
     }
     check_arguments_number(false, 4, args.size(), (std::string) __func__);

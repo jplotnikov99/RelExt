@@ -114,7 +114,7 @@ double RelicOps::get_next_step(const double &x1, const double &x2,
             break;
         }
         case descent:
-            return -descent_learning_rate * gradient;
+            return -descent_rate * gradient;
             break;
         default:
             std::cout << "Wrong case in " << __func__ << ".\n";

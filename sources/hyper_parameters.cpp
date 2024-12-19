@@ -23,7 +23,7 @@ size_t N_bins = 100;
 size_t N_best = 500;
 double p_random = 0.2;
 double vanguard_step_size = 0.5;
-double descent_learning_rate = 0.1;
+double descent_rate = 0.1;
 double max_N_bisections = 50;
 double random_walk_rate = 0.01;
 

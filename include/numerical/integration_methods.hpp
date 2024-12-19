@@ -33,7 +33,7 @@ ResError adap_simpson38(FUNC &f, const double l, const double r, ResError *f0,
     I2 = h / 2 * (f1[0] + 3 * f1[1] + 3 * f1[2] + f1[3]);
     ResError Ib = I1 + I2;
 
-    if ((std::abs(Ia.res / Ib.res - 1) < err) || (depth > 16)) {
+    if ((std::abs(Ia.res - Ib.res) < err * std::abs(Ib.res)) || (depth > 16)) {
         Ib.err += std::abs(Ia.res - Ib.res);
         return Ib;
     }
