@@ -10,6 +10,25 @@
 #include "montecarlo.hpp"
 
 namespace DT {
+class OmegaGoal {
+   private:
+    double omega;
+    const double goal;
+    const std::string par;
+    const vstring channels;
+    FO1DM fo;
+    ModelInfo &MI;
+
+   public:
+    OmegaGoal(ModelInfo &model, const std::string &parr,
+              const vstring &channelss, const double goall,
+              const bool fast = true);
+    bool valid(const double x);
+    double get_omega();
+    double operator()(const double x);
+    ~OmegaGoal() {};
+};
+
 class RelicOps {
    private:
     FO1DM fo;

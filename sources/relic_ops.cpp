@@ -1,6 +1,26 @@
 #include "../include/relic_ops.hpp"
 
 namespace DT {
+
+OmegaGoal::OmegaGoal(ModelInfo &model, const std::string &parr,
+                     const vstring &channelss, const double goall,
+                     const bool fast)
+    : MI(model),
+      par(parr),
+      channels(channelss),
+      goal(goall),
+      fo(model, fast, xtoday_FO) {}
+
+bool OmegaGoal::valid(const double x) { return MI.change_parameter(par, x); }
+
+double OmegaGoal::get_omega() { return omega; }
+
+double OmegaGoal::operator()(const double x) {
+    MI.change_parameter(par, x);
+    omega = fo(channels);
+    return omega - goal;
+}
+
 RelicOps::RelicOps(ModelInfo &model, const bool &appr)
     : MI(model), fo(model, appr, xtoday_FO), fast(appr) {}
 
@@ -70,8 +90,7 @@ double RelicOps::CalcRelic() {
         dvec1 par_vals;
         for (size_t i = 0; i < par_names.size(); i++)
             par_vals.push_back(*MI.parmap[par_names[i]]);
-        double w = omega > 0.12 ? pow(0.12 / omega, 2)
-                                    : pow(omega / 0.12, 2);
+        double w = omega > 0.12 ? pow(0.12 / omega, 2) : pow(omega / 0.12, 2);
         Mc->set_weight(par_vals, w);
     }
     return omega;
@@ -228,7 +247,12 @@ void RelicOps::bisect_search(const std::string &par) {
 }
 
 double RelicOps::find_par(const std::string &par) {
-    first_step = true;
+    OmegaGoal omg(MI, par, bath_procs, omega_target);
+    FindRoot fr(par_bounds[0], par_bounds[1], omega_err, omega_target);
+    fr.find(omg, *MI.parmap[par]);
+    return omg.get_omega();
+
+    /* first_step = true;
     searchmode = vanguard;
 
     while (searchmode != stop) {
@@ -249,7 +273,7 @@ double RelicOps::find_par(const std::string &par) {
                 break;
         }
     }
-    return get_last_relic();
+    return get_last_relic(); */
 }
 
 double RelicOps::random_step(const size_t par_i) {

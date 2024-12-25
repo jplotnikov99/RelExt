@@ -16,7 +16,7 @@ double absgradient(FUNC &f, const double x, const double y) {
 }
 
 template <class FUNC>
-double bisec(FUNC &f, double x1, double x2, const double eps) {
+double bisec_to_x(FUNC &f, double x1, double x2, const double eps) {
     double dx, xmid, rtb;
     double ff = f(x1);
     double fmid = f(x2);
@@ -25,7 +25,22 @@ double bisec(FUNC &f, double x1, double x2, const double eps) {
     for (size_t i = 0; i < 100; i++) {
         fmid = f(xmid = rtb + (dx *= 0.5));
         if (fmid <= 0.) rtb = xmid;
-        if (std::abs(dx) < eps) return rtb;
+        if (std::abs(xmid) < eps) return rtb;
+    }
+    return rtb;
+}
+
+template <class FUNC>
+double bisec_to_y(FUNC &f, double x1, double x2, const double eps) {
+    double dx, xmid, rtb;
+    double ff = f(x1);
+    double fmid = f(x2);
+    if (ff * fmid >= 0.) return 0.;
+    rtb = ff < 0. ? (dx = x2 - x1, x1) : (dx = x1 - x2, x2);
+    for (size_t i = 0; i < 200; i++) {
+        fmid = f(xmid = rtb + (dx *= 0.5));
+        if (fmid <= 0.) rtb = xmid;
+        if (std::abs(fmid) < eps) return rtb;
     }
     return rtb;
 }
@@ -64,7 +79,7 @@ double FindRoot::next_x(FUNC &f, double x) {
 
 template <class FUNC>
 double FindRoot::find(FUNC &f, double xstart) {
-    static const int MAXIT = 200;
+    static const int MAXIT = 500;
     double y = f(xstart);
     int it = 0;
     while (it != MAXIT) {
@@ -79,7 +94,8 @@ double FindRoot::find(FUNC &f, double xstart) {
                 step =
                     dir * (step * vanguard_step_size + 1e-5) * std::abs(xstart);
                 xstart = next_x(f, xstart - step);
-                if (std::abs(xstart - xold) < 1e-14 * xold) return xstart;
+                if (std::abs(xstart - xold) < 1e-14 * std::abs(xold))
+                    return xstart;
                 y = f(xstart);
                 update_mode(step, y);
                 stepold = step;
@@ -95,13 +111,11 @@ double FindRoot::find(FUNC &f, double xstart) {
                 if (std::abs(y - yold) < eps * std::abs(yold)) return xstart;
             } break;
 
-            case bisect:
-                return bisec(f, xold, xstart);
-                break;
-
             default:
                 break;
         }
+        if (searchmode == bisect) return bisec_to_y(f, xold, xstart, eps);
     }
+    return xstart;
 }
 }  // namespace DT
