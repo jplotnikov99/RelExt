@@ -86,11 +86,11 @@ double Beqs::operator()(const double &x, const double &y) {
     double res = 0.;
     switch (mech) {
         case 0:
-            res = -1 * tac(x) * (y * y - pow(yeq(x), 2));
+            res = -tac(x) * (y * y - SQR(yeq(x)));
             break;
 
         case 1:
-            res = tac(x) * (pow(yeq(x), 2) - y * y);
+            res = tac(x) * (SQR(yeq(x)) - y * y);
             break;
 
         default:

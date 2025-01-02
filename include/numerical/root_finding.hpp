@@ -10,7 +10,7 @@ enum SearchMode { vanguard, bisect, descent, stop };
 
 template <class FUNC>
 double absgradient(FUNC &f, const double x, const double y) {
-    double x2 = x * (1. + 1e-6);
+    double x2 = x + std::abs(x) * 1e-6;
     double y2 = f(x2);
     return (std::abs(y2) - std::abs(y)) / (x2 - x);
 }

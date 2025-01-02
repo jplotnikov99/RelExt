@@ -51,7 +51,7 @@ double SigvInt::wij(const double &s) {
         f[2] = f_est[6];
         f[3] = f_est[9];
         double crs = 1 / (256 * M_PI * s * sqrt(s)) *
-                       h_adap_simpson38(AA, -1, 1, f, est, theta_eps);
+                     h_adap_simpson38(AA, -1, 1, f, est, theta_eps);
         sig_s[s] = crs;
         return crs;
     } else {
@@ -223,21 +223,20 @@ double Tac::integrate_peaks(const double &x) {
     return res;
 }
 
-void Tac::estimate_integrate_s(const double &x, double &res,
-                               double &estimate) {
+void Tac::estimate_integrate_s(const double &x, double &res, double &estimate) {
     double error;
     if (N_relevant_peaks > 0) {
         res = res + integrate_peaks(x);
-        estimate = estimate + res;
+        estimate += res;
 
         for (size_t i = 1; i < N_relevant_peaks; i++) {
-            estimate = estimate + kronrod_61(sigv, boundaries[3 * i],
-                                             boundaries[3 * i - 1], error);
+            estimate += kronrod_61(sigv, boundaries[3 * i],
+                                   boundaries[3 * i - 1], error);
         }
 
-        estimate = estimate +
-                   (kronrod_61(sigv, 0, boundaries[3 * N_relevant_peaks - 1], error) +
-                    kronrod_61(sigv, boundaries[0], 1, error));
+        estimate +=
+            (kronrod_61(sigv, 0, boundaries[3 * N_relevant_peaks - 1], error) +
+             kronrod_61(sigv, boundaries[0], 1, error));
     } else {
         double temp = estimate;
         double a = 1., b;
@@ -248,10 +247,10 @@ void Tac::estimate_integrate_s(const double &x, double &res,
             b = 1.;
             for (i = 1; i < imax; i++) {
                 a = (double)i * 1e-3 * b;
-                estimate = estimate + kronrod_61(sigv, a, b, error);
+                estimate += kronrod_61(sigv, a, b, error);
                 b = a;
             }
-            estimate = estimate + kronrod_61(sigv, 0., a, error);
+            estimate += kronrod_61(sigv, 0., a, error);
             imax++;
         } while ((std::abs(error / estimate) > 0.5) && (imax < 4));
     }
@@ -259,23 +258,22 @@ void Tac::estimate_integrate_s(const double &x, double &res,
 
 void Tac::integrate_s(const double &x, double &res, double &estimate) {
     if (N_relevant_peaks > 0) {
-        res = res +
-              h_adap_gauss_kronrod_15(sigv, 0,
-                                      boundaries[3 * N_relevant_peaks - 1],
-                                      estimate, gauss_kronrod_eps) +
-              h_adap_gauss_kronrod_15(sigv, boundaries[0], 1, estimate,
-                                      gauss_kronrod_eps);
+        res += h_adap_gauss_kronrod_15(sigv, 0,
+                                       boundaries[3 * N_relevant_peaks - 1],
+                                       estimate, gauss_kronrod_eps) +
+               h_adap_gauss_kronrod_15(sigv, boundaries[0], 1, estimate,
+                                       gauss_kronrod_eps);
 
         for (size_t i = 1; i < N_relevant_peaks; i++) {
-            res = res + h_adap_gauss_kronrod_15(sigv, boundaries[3 * i],
-                                                boundaries[3 * i - 1], estimate,
-                                                gauss_kronrod_eps);
+            res += h_adap_gauss_kronrod_15(sigv, boundaries[3 * i],
+                                           boundaries[3 * i - 1], estimate,
+                                           gauss_kronrod_eps);
         }
     } else {
-        res = res + h_adap_gauss_kronrod_15(sigv, 0, 1e-3, estimate,
-                                            gauss_kronrod_eps);
-        res = res + h_adap_gauss_kronrod_15(sigv, 1e-3, 1, estimate,
-                                            gauss_kronrod_eps);
+        res +=
+            h_adap_gauss_kronrod_15(sigv, 0, 1e-3, estimate, gauss_kronrod_eps);
+        res +=
+            h_adap_gauss_kronrod_15(sigv, 1e-3, 1, estimate, gauss_kronrod_eps);
     }
 }
 
