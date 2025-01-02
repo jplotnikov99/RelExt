@@ -83,20 +83,6 @@ class RelicOps {
 
     dvec1 calc_channel_contributions(double contrib);
 
-    double get_next_step(const double &x1, const double &x2, const double &y1,
-                         const double &y2);
-
-    void check_sign_flip(const double step_new, const double omega_new,
-                         const double par_new);
-
-    double get_next_omega(const std::string &par, const double om);
-
-    void vanguard_search(const std::string &par);
-
-    void descent_search(const std::string &par);
-
-    void bisect_search(const std::string &par);
-
     double find_par(const std::string &par);
 
     double random_step(const size_t par_i);

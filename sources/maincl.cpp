@@ -515,7 +515,7 @@ void Main::SaveData(const vstring &args) {
     outfile.seekp(0, std::ios::end);
 
     if (outfile.tellp() == 0) {
-        outfile << "Omega\tOmega_uncer";
+        outfile << "Omega";
 
         for (auto it : saved_pars) {
             ASSERT(MI.check_par_existence(it),
