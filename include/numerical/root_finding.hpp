@@ -2,7 +2,9 @@
 #include <cmath>
 #include <iostream>
 
+#include "../data_structures.hpp"
 #include "../hyper_parameters.hpp"
+#include "../utils.hpp"
 
 namespace DT {
 
@@ -73,7 +75,9 @@ double FindRoot::next_x(FUNC &f, double x) {
     double xsave = x;
     if (x < xlo) x = xlo;
     if (x > xhi) x = xhi;
-    if (!f.valid(x)) x = xsave;
+    VecDoub xv(1);
+    xv[0] = x;
+    if (!f.valid(xv)) x = xsave;
     return x;
 }
 
@@ -118,4 +122,60 @@ double FindRoot::find(FUNC &f, double xstart) {
     }
     return xstart;
 }
+
+class RandomWalk {
+   private:
+    const double eps;
+    const size_t max_steps = 400;
+    bool is_good = false;
+    double ynew, yold;
+    VecDoub xold, cur_step;
+    const VecDoub x1, x2;
+
+   public:
+    RandomWalk(VecDoub &xx1, VecDoub xx2, const double epss)
+        : xold(xx1.size()), cur_step(xx1.size()), x1(xx1), x2(xx2), eps(epss) {
+          };
+
+    void random_step(VecDoub &x);
+
+    void same_step(VecDoub &x);
+
+    template <class FUNC>
+    VecDoub walk(FUNC &f);
+
+    ~RandomWalk() {};
+};
+
+template <class FUNC>
+VecDoub RandomWalk::walk(FUNC &f) {
+    size_t cur_step = 0;
+    VecDoub xnew(f.get_parvals());
+    ynew = f(xnew);
+    do {
+        yold = ynew;
+        if (is_good) {
+            xold = xnew;
+            same_step(xnew);
+        } else {
+            xold = xnew;
+            random_step(xnew);
+        }
+        ynew = f(xnew);
+        if (std::abs(ynew) >= std::abs(yold)) {
+            xnew = xold;
+            ynew = yold;
+            is_good = false;
+        } else
+            is_good = true;
+        if ((cur_step % 100) == 0) {
+            std::cout << "Current Step: " << cur_step << " Omega: " << f.get_omega()
+                      << "\n";
+        }
+        cur_step++;
+    } while (std::abs(ynew) > eps && (cur_step < max_steps));
+    std::cout << "Steps taken: " << cur_step << std::endl;
+    return xnew;
+}
+
 }  // namespace DT

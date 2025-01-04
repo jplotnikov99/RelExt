@@ -61,8 +61,8 @@ double h_adap_simpson38(FUNC &f, const double l, const double r, double *f0,
     if ((std::abs(Ia - Ib) < err * fabs(est)) || (depth > 16)) {
         return Ib;
     }
-    return h_adap_simpson38(f, l, m, f0, err, depth + 1) +
-           h_adap_simpson38(f, m, r, f1, err, depth + 1);
+    return h_adap_simpson38(f, l, m, f0, est, err, depth + 1) +
+           h_adap_simpson38(f, m, r, f1, est, err, depth + 1);
 }
 
 template <class FUNC>
@@ -134,7 +134,7 @@ double h_adap_gauss_kronrod_15(FUNC &f, const double l, const double r,
               0.190350578064785409913256402421014 * (y[5] + y[9]) +
               0.204432940075298892414161999234649 * (y[6] + y[8]) +
               0.209482141084727828012999174891714 * y[7]);
-    if ((I1 == 0) || (depth > 16)) {
+    if ((I1 == 0) || (depth > 14)) {
         return I1;
     }
     I2 = h * (0.129484966168869693270611432679082 * (y[1] + y[13]) +

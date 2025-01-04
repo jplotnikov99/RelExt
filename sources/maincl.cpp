@@ -467,35 +467,26 @@ void Main::FindParameter(const vstring &args) {
 
 void Main::RandomWalk(const vstring &args) {
     if (first_run) random_walk_rate = sgr->get_val_of("RandomWalkRate");
-    check_arguments_number(false, 3, args.size(), (std::string) __func__);
+    check_arguments_number(true, 3, args.size(), (std::string) __func__);
     size_t mechanism = get_number(args.at(1), __func__);
     double om_target = get_number(args.at(2), __func__);
     double om_err = get_number(args.at(3), __func__);
 
-    if (args.size() == 4) {
-    } else {
-        for (size_t i = 4; i < args.size(); i++) {
-            double found = false;
-            for (auto it : generator_list) {
-                if (args.at(i) == it.at(0)) {
-                    found = true;
-                    double a = get_number(it.at(1), __func__);
-                    double b = get_number(it.at(2), __func__);
-                    relops->set_par_bounds(it.at(0), a, b);
-                    break;
-                }
-                ASSERT(!found, "Error in "
-                                   << __func__ << ": " << args.at(i)
-                                   << " is not defined in the InputFile")
-            }
-        }
+    VecDoub lower(generator_list.size()), upper(generator_list.size());
+    vstring pars(generator_list.size());
+    double a, b;
+    for (size_t i = 0; i < generator_list.size(); i++) {
+        pars[i] = generator_list[i][0];
+        a = get_number(generator_list[i][1], __func__);
+        b = get_number(generator_list[i][2], __func__);
+        lower[i] = a;
+        upper[i] = b;
     }
-
     relops->set_mechanism(mechanism);
     relops->set_omega_target(om_target);
     relops->set_omega_err(om_err);
 
-    omega = relops->random_walk();
+    omega = relops->random_walk(pars, lower, upper);
     std::cout << "Omega full:\n" << omega << "\n\n";
     if (channel_contrib != 1.)
         channel_percent = relops->calc_channel_contributions(channel_contrib);

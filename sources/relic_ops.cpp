@@ -2,22 +2,42 @@
 
 namespace DT {
 
-OmegaGoal::OmegaGoal(ModelInfo &model, const std::string &parr,
+OmegaGoal::OmegaGoal(ModelInfo &model, const vstring &parss,
                      const vstring &channelss, const double goall,
                      const bool fast)
     : MI(model),
-      par(parr),
+      pars(parss),
       channels(channelss),
       goal(goall),
       fo(model, fast, xtoday_FO) {}
 
-bool OmegaGoal::valid(const double x) { return MI.change_parameter(par, x); }
+bool OmegaGoal::valid(VecDoub &x) {
+    for (size_t i = 0; i < x.size(); i++)
+        MI.change_parameter(pars[i], x[i], false);
+    return MI.load_everything();
+}
 
 double OmegaGoal::get_omega() { return omega; }
 
+VecDoub OmegaGoal::get_parvals() {
+    VecDoub res(pars.size());
+    for (size_t i = 0; i < pars.size(); i++) res[i] = *MI.parmap[pars[i]];
+    return res;
+}
+
 double OmegaGoal::operator()(const double x) {
-    MI.change_parameter(par, x);
-    omega = fo(channels);
+    if (MI.change_parameter(pars[0], x))
+        omega = fo(channels);
+    else
+        omega = 0.;
+    return omega - goal;
+}
+
+double OmegaGoal::operator()(VecDoub &x) {
+    if (valid(x))
+        omega = fo(channels);
+    else
+        omega = 0.;
     return omega - goal;
 }
 
@@ -34,8 +54,9 @@ void RelicOps::init_montecarlo(const size_t N_pars, const dvec1 &lower,
 void RelicOps::generate_new_pars() {
     dvec1 new_pars = Mc->generate_new_pars();
     for (size_t i = 0; i < par_names.size(); i++) {
-        MI.change_parameter(par_names[i], new_pars[i]);
+        MI.change_parameter(par_names[i], new_pars[i], false);
     }
+    MI.load_everything();
 }
 
 void RelicOps::set_bath_procs(const vstring &b) { bath_procs = b; }
@@ -118,84 +139,18 @@ dvec1 RelicOps::calc_channel_contributions(double contrib) {
 }
 
 double RelicOps::find_par(const std::string &par) {
-    OmegaGoal omg(MI, par, bath_procs, omega_target);
+    OmegaGoal omg(MI, {par}, bath_procs, omega_target);
     FindRoot fr(par_bounds[0], par_bounds[1], omega_err, omega_target);
     fr.find(omg, *MI.parmap[par]);
     return omg.get_omega();
 }
 
-double RelicOps::random_step(const size_t par_i) {
-    int sign;
-    double rate;
-    double val = *MI.parmap[par_names[par_i]];
-    double b1 = bounds[par_i].first;
-    double b2 = bounds[par_i].second;
-    sign = (int)generate_random(0, 2);
-    sign = (sign == 0) ? 1 : -1;
-    rate = generate_random(0, random_walk_rate);
-    val = val * (1 + (double)sign * rate);
-    if (val < b1) val = b1 * (1 - 0.01);
-    if (val > b2) val = b2 * (1 - 0.01);
-    MI.change_parameter(par_names[par_i], val, false);
-    return (double)sign * rate;
-}
-
-void RelicOps::same_step(const size_t par_i, const double step) {
-    double val = *MI.parmap[par_names[par_i]];
-    double b1 = bounds[par_i].first;
-    double b2 = bounds[par_i].second;
-    val = val * (1 + step);
-    if (val < b1) val = b1 * (1 - 0.01);
-    if (val > b2) val = b2 * (1 - 0.01);
-    MI.change_parameter(par_names[par_i], val, false);
-}
-
-double RelicOps::random_walk() {
-    const size_t max_steps = 400;
-    size_t cur_steps = 0;
-    bool is_step_good = false;
-    double om1, om2;
-    double saved_vals[par_names.size()];
-    double current_step[par_names.size()];
-    om1 = CalcRelic();
-    if (om1 == 0.) return 0.;
-    do {
-        om2 = om1;
-        if (is_step_good) {
-            for (size_t i = 0; i < par_names.size(); i++) {
-                saved_vals[i] = *MI.parmap[par_names[i]];
-                same_step(i, current_step[i]);
-            }
-        } else {
-            for (size_t i = 0; i < par_names.size(); i++) {
-                saved_vals[i] = *MI.parmap[par_names[i]];
-                current_step[i] = random_step(i);
-            }
-        }
-        if (!MI.load_everything()) {
-            is_step_good = false;
-        } else {
-            om1 = CalcRelic();
-            if (fabs(om1 - omega_target) >= fabs(om2 - omega_target) ||
-                om1 == 0.) {
-                for (size_t i = 0; i < par_names.size(); i++) {
-                    MI.change_parameter(par_names[i], saved_vals[i], false);
-                }
-                is_step_good = false;
-                om1 = om2;
-            } else {
-                is_step_good = true;
-            }
-        }
-        if ((cur_steps % 100) == 0) {
-            std::cout << "Current Step: " << cur_steps << " Omega: " << om1
-                      << "\n";
-        }
-        cur_steps++;
-    } while (fabs(om1 - omega_target) > omega_err && (cur_steps < max_steps));
-    std::cout << "Steps taken: " << cur_steps << std::endl;
-    MI.load_everything();
-    return CalcRelic();
+double RelicOps::random_walk(const vstring &pars, VecDoub &x1, VecDoub &x2) {
+    OmegaGoal omg(MI, pars, bath_procs, omega_target);
+    RandomWalk RW(x1, x2, omega_err);
+    VecDoub xnew(RW.walk(omg));
+    omg(xnew);
+    return omg.get_omega();
 }
 
 void RelicOps::save_best_bins(const std::string &filename) {

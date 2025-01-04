@@ -2,22 +2,22 @@
 
 ######## Standard settings ########
 
-Mode                |3
-InputFile           |CPVDMTest.csv
-OutputFile          |faster.csv
+Mode                |2
+InputFile           |examples/cpvdm_example1.dat
+OutputFile          |scan.dat
 StartPoint          |1
-EndPoint            |
+EndPoint            |1
 SavedParameters     |mH1, mH2, mHc
 ConsideredChannels  |
 SubtractChannels    |
-NeglectParticles    |
+NeglectParticles    |e,u,d
 ChannelContributions|1
 Fast                |1
 
 ######## Operations on scan ########
 START
 
-CalcRelic           |0
+RandomWalk          |0, 0.12, 0.002
 SaveData            |
 
 END
@@ -31,7 +31,7 @@ sIntEps             |1e-4
 DoPrEps             |1e-6
 Bins                |500
 BestBins            |500
-Prandom             |0
+Prandom             |1
 VanguardStep        |0.5
 DescentRate         |0.1
 MaxBisections       |50

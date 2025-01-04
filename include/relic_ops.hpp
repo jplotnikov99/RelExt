@@ -14,18 +14,20 @@ class OmegaGoal {
    private:
     double omega;
     const double goal;
-    const std::string par;
+    const vstring pars;
     const vstring channels;
     FO1DM fo;
     ModelInfo &MI;
 
    public:
-    OmegaGoal(ModelInfo &model, const std::string &parr,
+    OmegaGoal(ModelInfo &model, const vstring &parss,
               const vstring &channelss, const double goall,
               const bool fast = true);
-    bool valid(const double x);
+    bool valid(VecDoub &x);
     double get_omega();
+    VecDoub get_parvals();
     double operator()(const double x);
+    double operator()(VecDoub &x);
     ~OmegaGoal() {};
 };
 
@@ -44,7 +46,6 @@ class RelicOps {
     SearchMode searchmode = vanguard;
     double omega_target, omega_err;
     double omega_old, step_old, par_old;
-    double bi_x1, bi_x2, bi_y1, bi_y2;
     ModelInfo &MI;
     bool is_monte = false;
     std::unique_ptr<MC> Mc;
@@ -85,11 +86,7 @@ class RelicOps {
 
     double find_par(const std::string &par);
 
-    double random_step(const size_t par_i);
-
-    void same_step(const size_t par_i, const double step);
-
-    double random_walk();
+    double random_walk(const vstring &pars, VecDoub &x1, VecDoub &x2);
 
     void save_best_bins(const std::string &filename);
 
