@@ -6,7 +6,7 @@ Mode                |2
 InputFile           |examples/cpvdm_example1.dat
 OutputFile          |scan.dat
 StartPoint          |1
-EndPoint            |1
+EndPoint            |1000
 SavedParameters     |mH1, mH2, mHc
 ConsideredChannels  |
 SubtractChannels    |
@@ -17,7 +17,7 @@ Fast                |1
 ######## Operations on scan ########
 START
 
-RandomWalk          |0, 0.12, 0.002
+CalcRelic           |0
 SaveData            |
 
 END

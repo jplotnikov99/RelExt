@@ -18,15 +18,10 @@ class Main {
     size_t mode;
     std::string input_file;
     std::string output_file;
-    std::string setting_file;
-    vstring saved_pars = {};
     bool first_run = true;
     double channel_contrib = 1.;
     dvec1 channel_percent;
-    std::unordered_map<std::string, std::function<void(const vstring)>>
-        operations_map;
-    std::unordered_map<std::string, double> variable_map;
-    vvstring user_operations;
+    vstring bath_procs;
     vvstring generator_list;
     ModelInfo &MI;
     std::unique_ptr<DataReader> rdr;
@@ -34,7 +29,8 @@ class Main {
     std::unique_ptr<RelicOps> relops;
 
    public:
-    Main(int argc, char **argv);
+    Main(const int modee, const std::string inputfile, const int start,
+         const int end = 0);
 
     int start_point = 1, end_point = 0;
     void load_setting();
@@ -57,33 +53,10 @@ class Main {
     vstring def_thermal_bath(const vstring bath_particles = {});
 
     // sets the channels which contribute to the relic density
-    void set_channels(vstring bath_procs);
+    void set_channels();
 
     // checks if the thermal bath particles and the input channels match
     void check_procs(const vstring &ch_str, const vstring &bath_procs);
-
-    int check_var_existence(const std::string &var,
-                            const std::string func = "");
-
-    double get_number(const std::string &arg, const std::string &func = "");
-
-    // args are: variable name, value
-    void Def(const vstring &args);
-
-    // args are: variable name, value (can be variable or number)
-    void Set(const vstring &args);
-
-    // args are: variable name, value (can be variable or number)
-    void Add(const vstring &args);
-
-    // args are: variable name, value (can be variable or number)
-    void Sub(const vstring &args);
-
-    // args are: variable name, value (can be variable or number)
-    void Mult(const vstring &args);
-
-    // args are: variable name, value (can be variable or number)
-    void Div(const vstring &args);
 
     // args are: particle names of DS particles included in the thermal bath
     void ChangeThermalBath(const vstring &args);
@@ -106,8 +79,6 @@ class Main {
 
     // saves the scanned data
     void SaveData(const vstring &args);
-
-    void do_user_operations();
 
     ~Main();
 };

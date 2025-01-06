@@ -7,10 +7,10 @@ double mc_pole = 1.4203295370482341;
 double mb_pole = 4.8303295370482342;
 double mt_pole = 172.5;
 
-double theta_eps = 1e-5;
+double theta_eps = 1e-6;
 double beps_eps = 1e-6;
-double peak_eps = 1e-4;
-double gauss_kronrod_eps = 1e-7;
+double peak_eps = 1e-6;
+double gauss_kronrod_eps = 1e-6;
 
 double xtoday_FO = 1e6;
 double xtoday_FI = 100;
