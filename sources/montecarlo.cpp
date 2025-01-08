@@ -116,7 +116,7 @@ void MC::set_weight(const dvec1 &pars, const double x) {
 std::string MC::get_random_bin_ID() {
     std::string res;
     dvec1 p;
-    vstring IDs;
+    VecString IDs;
     for (auto it : best_bins) {
         IDs.push_back(it.first);
     }
@@ -156,7 +156,7 @@ void MC::print_best_bins() {
         std::cout << it.first << "\t" << it.second << "\n";
 }
 
-void MC::save_best_bins(const vstring &par_names, const std::string &filename) {
+void MC::save_best_bins(const VecString &par_names, const std::string &filename) {
     assert(par_names.size() == lbounds.size());
     std::string filesave = "../dataOutput/cells_" + filename;
     std::ofstream outfile(filesave);

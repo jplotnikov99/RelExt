@@ -114,7 +114,7 @@ Tac::Tac(ModelInfo &model)
       sigv(MI, AA),
       boundaries(3 * MI.N_widths) {}
 
-bool Tac::sort_inimasses(const vstring &ch_str) {
+bool Tac::sort_inimasses(const VecString &ch_str) {
     double temp;
     sigv.polK2s.resize(MI.bath_masses.size());
     for (auto it : ch_str) {

@@ -20,7 +20,7 @@ struct BeqInfo {
     void reset_tac_state(const bool full);
 
     // sorts different channels by their total initial state masses
-    bool sort_inimasses(const vstring &ch_str = {});
+    bool sort_inimasses(const VecString &ch_str = {});
 
     double pre(const double &x);
     double T_ent(const double &ent, const double &m);

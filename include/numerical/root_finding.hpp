@@ -169,8 +169,8 @@ VecDoub RandomWalk::walk(FUNC &f) {
         } else
             is_good = true;
         if ((cur_step % 100) == 0) {
-            std::cout << "Current Step: " << cur_step << " Omega: " << f.get_omega()
-                      << "\n";
+            std::cout << "Current Step: " << cur_step
+                      << " Omega: " << f.get_omega() << "\n";
         }
         cur_step++;
     } while (std::abs(ynew) > eps && (cur_step < max_steps));

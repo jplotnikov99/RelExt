@@ -56,7 +56,7 @@ class MC {
 
     void print_best_bins();
 
-    void save_best_bins(const vstring &par_names, const std::string &filename);
+    void save_best_bins(const VecString &par_names, const std::string &filename);
 
     ~MC() {};
 };

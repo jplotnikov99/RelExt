@@ -2,14 +2,9 @@
 
 namespace DT {
 
-OmegaGoal::OmegaGoal(ModelInfo &model, const vstring &parss,
-                     const vstring &channelss, const double goall,
-                     const bool fast)
-    : MI(model),
-      pars(parss),
-      channels(channelss),
-      goal(goall),
-      fo(model, fast, xtoday_FO) {}
+OmegaGoal::OmegaGoal(ModelInfo &model, FO1DM &fo, const VecString &parss,
+                     const VecString &channelss, const double goall)
+    : MI(model), pars(parss), channels(channelss), goal(goall), FO(fo) {}
 
 bool OmegaGoal::valid(VecDoub &x) {
     for (size_t i = 0; i < x.size(); i++)
@@ -27,7 +22,7 @@ VecDoub OmegaGoal::get_parvals() {
 
 double OmegaGoal::operator()(const double x) {
     if (MI.change_parameter(pars[0], x))
-        omega = fo(channels);
+        omega = FO(channels);
     else
         omega = 0.;
     return omega - goal;
@@ -35,14 +30,14 @@ double OmegaGoal::operator()(const double x) {
 
 double OmegaGoal::operator()(VecDoub &x) {
     if (valid(x))
-        omega = fo(channels);
+        omega = FO(channels);
     else
         omega = 0.;
     return omega - goal;
 }
 
 RelicOps::RelicOps(ModelInfo &model, const bool &appr)
-    : MI(model), fo(model, appr, xtoday_FO), fast(appr) {}
+    : MI(model), fo(model, appr), fast(appr) {}
 
 void RelicOps::init_montecarlo(const size_t N_pars, const dvec1 &lower,
                                const dvec1 &upper,
@@ -59,11 +54,11 @@ void RelicOps::generate_new_pars() {
     MI.load_everything();
 }
 
-void RelicOps::set_bath_procs(const vstring &b) { bath_procs = b; }
+void RelicOps::set_bath_procs(const VecString &b) { bath_procs = b; }
 
 void RelicOps::set_fast(const bool f) { fast = f; }
 
-vstring RelicOps::get_bath_procs() { return bath_procs; }
+VecString RelicOps::get_bath_procs() { return bath_procs; }
 
 void RelicOps::set_mechanism(const size_t mech) { mechanism = mech; }
 
@@ -139,18 +134,20 @@ dvec1 RelicOps::calc_channel_contributions(double contrib) {
 }
 
 double RelicOps::find_par(const std::string &par) {
-    OmegaGoal omg(MI, {par}, bath_procs, omega_target);
+    /* OmegaGoal omg(MI, {par}, bath_procs, omega_target);
     FindRoot fr(par_bounds[0], par_bounds[1], omega_err, omega_target);
     fr.find(omg, *MI.parmap[par]);
-    return omg.get_omega();
+    return omg.get_omega(); */
+    return 0.;
 }
 
-double RelicOps::random_walk(const vstring &pars, VecDoub &x1, VecDoub &x2) {
-    OmegaGoal omg(MI, pars, bath_procs, omega_target);
+double RelicOps::random_walk(const VecString &pars, VecDoub &x1, VecDoub &x2) {
+    /* OmegaGoal omg(MI, pars, bath_procs, omega_target);
     RandomWalk RW(x1, x2, omega_err);
     VecDoub xnew(RW.walk(omg));
     omg(xnew);
-    return omg.get_omega();
+    return omg.get_omega(); */
+    return 0.;
 }
 
 void RelicOps::save_best_bins(const std::string &filename) {

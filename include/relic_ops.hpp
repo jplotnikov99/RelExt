@@ -14,15 +14,14 @@ class OmegaGoal {
    private:
     double omega;
     const double goal;
-    const vstring pars;
-    const vstring channels;
-    FO1DM fo;
+    const VecString pars;
+    const VecString channels;
+    FO1DM &FO;
     ModelInfo &MI;
 
    public:
-    OmegaGoal(ModelInfo &model, const vstring &parss,
-              const vstring &channelss, const double goall,
-              const bool fast = true);
+    OmegaGoal(ModelInfo &model, FO1DM &fo, const VecString &parss,
+              const VecString &channelss, const double goall);
     bool valid(VecDoub &x);
     double get_omega();
     VecDoub get_parvals();
@@ -34,12 +33,12 @@ class OmegaGoal {
 class RelicOps {
    private:
     FO1DM fo;
-    vstring bath_procs;
+    VecString bath_procs;
     size_t mechanism;
     bool fast;
     double xinitial;
     double par_bounds[2] = {-1e100, 1e100};
-    vstring par_names;
+    VecString par_names;
     std::vector<std::pair<double, double>> bounds;
     double omega;
     bool first_step = true;
@@ -59,11 +58,11 @@ class RelicOps {
 
     void generate_new_pars();
 
-    void set_bath_procs(const vstring &b);
+    void set_bath_procs(const VecString &b);
 
     void set_fast(const bool f);
 
-    vstring get_bath_procs();
+    VecString get_bath_procs();
 
     void set_mechanism(const size_t mech);
 
@@ -86,7 +85,7 @@ class RelicOps {
 
     double find_par(const std::string &par);
 
-    double random_walk(const vstring &pars, VecDoub &x1, VecDoub &x2);
+    double random_walk(const VecString &pars, VecDoub &x1, VecDoub &x2);
 
     void save_best_bins(const std::string &filename);
 

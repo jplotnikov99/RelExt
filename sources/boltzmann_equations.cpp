@@ -6,7 +6,7 @@ BeqInfo::BeqInfo(ModelInfo &model) : dof(*new Dof), MI(model), tac(MI) {}
 
 void BeqInfo::reset_tac_state(const bool full) { tac.clear_state(full); }
 
-bool BeqInfo::sort_inimasses(const vstring &ch_str) {
+bool BeqInfo::sort_inimasses(const VecString &ch_str) {
     return tac.sort_inimasses(ch_str);
 }
 double BeqInfo::pre(const double &x) {

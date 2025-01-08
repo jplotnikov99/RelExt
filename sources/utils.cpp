@@ -71,7 +71,7 @@ double polK2(const double &x) {
                                                         (1 - 2.1875 * y))))));
 }
 
-void append_to_vstring(vstring &a, const vstring &b) {
+void append_to_VecString(VecString &a, const VecString &b) {
     for (auto it : b) {
         a.push_back(it);
     }

@@ -62,9 +62,9 @@ void DataReader::rmv_spaces(std::string &str) {
     str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
 }
 
-vstring DataReader::line_to_strings(const std::string line,
+VecString DataReader::line_to_strings(const std::string line,
                                     const char delimiter) {
-    vstring res;
+    VecString res;
     std::string temp;
     std::stringstream ss(line);
 
@@ -105,7 +105,7 @@ std::string DataReader::get_name_of(const std::string name) {
     return line;
 }
 
-vstring DataReader::get_slist_of(const std::string name) {
+VecString DataReader::get_slist_of(const std::string name) {
     std::string line;
     line = get_line_at(name);
     std::stringstream ss(line);
@@ -115,8 +115,8 @@ vstring DataReader::get_slist_of(const std::string name) {
     return line_to_strings(line, ',');
 }
 
-vstring DataReader::get_full_line(const std::string line) {
-    vstring res = {};
+VecString DataReader::get_full_line(const std::string line) {
+    VecString res = {};
     std::string hold;
     res = line_to_strings(line, '|');
     if (res.size() != 1) {
@@ -127,9 +127,9 @@ vstring DataReader::get_full_line(const std::string line) {
     return res;
 }
 
-vvstring DataReader::get_operation_slist() {
-    std::vector<vstring> res = {};
-    vstring temp;
+MatString DataReader::get_operation_slist() {
+    std::vector<VecString> res = {};
+    VecString temp;
     std::string line;
     line = get_line_at("START");
     while (getline(datafile, line)) {
@@ -227,10 +227,10 @@ void DataReader::read_parameter(const size_t row) {
     }
 }
 
-vvstring DataReader::get_generation_slist() {
-    vvstring res = {};
+MatString DataReader::get_generation_slist() {
+    MatString res = {};
     std::string line;
-    vstring temp;
+    VecString temp;
 
     getline(datafile, line);
     if (line.find("--- Bin Info ---") != std::string::npos) {
@@ -255,7 +255,7 @@ vvstring DataReader::get_generation_slist() {
 
 std::unordered_map<std::string, double> DataReader::get_best_bins() {
     std::unordered_map<std::string, double> res;
-    vstring temp;
+    VecString temp;
     std::string line;
     line = get_line_at("--- Best Bins ---");
     while (getline(datafile, line)) {

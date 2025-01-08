@@ -7,19 +7,21 @@ void FO1DM::set_appr(const bool &apprr) {
     foc.del = appr ? 1.5 : 0.1;
 }
 
-double FO1DM::omega(const double &yield) {
-    return 2.742e8 * BI.MI.MDM * yield;
-}
+void FO1DM::set_xtoday(const double &xtodayy) { xtoday = xtodayy; }
 
-double FO1DM::operator()(const vstring &channels) {
+double FO1DM::omega(const double &yield) { return 2.742e8 * BI.MI.MDM * yield; }
+
+double FO1DM::operator()(const VecString &channels) {
     double res;
     if (!BI.tac.sort_inimasses(channels)) {
+        BI.tac.clear_state(true);
         return 0.;
     }
     double xfo = bisec_to_x(foc, 4.9, 50.1, secant_eps);
     double yfo = (1. + foc.del) * BI.yeq(xfo);
     if (xfo < 5. || xfo > 50.) {
         std::cout << "Freeze-out temperature could not be found.\n";
+        BI.tac.clear_state(true);
         return 0.;
     }
     if (appr) {

@@ -52,15 +52,15 @@ class Tac {
     double m1, m2;
     size_t N_relevant_peaks;
     VecDoub boundaries;
-    std::map<double, vstring> inimap;
-    std::map<double, vstring>::iterator ini_it;
+    std::map<double, VecString> inimap;
+    std::map<double, VecString>::iterator ini_it;
 
    public:
     SigvInt sigv;
     Tac(ModelInfo &model);
 
     // sorts different channels by their total initial/final state masses
-    bool sort_inimasses(const vstring &ch_str = {});
+    bool sort_inimasses(const VecString &ch_str = {});
 
     bool beps(const double &x);
 
