@@ -3,10 +3,12 @@
 namespace DT {
 Main::Main(const int modee, const std::string &inputfile,
            const std::string &outputfile, double beps, const double xtoday,
-           const bool fast, const int start, const int end)
+           const bool fast, const bool savecontribs, const int start,
+           const int end)
     : MI(*new ModelInfo),
       mode(modee),
       output_file(outputfile),
+      save_contribs(savecontribs),
       start_point(start),
       end_point(end + 1),
       FO(MI, fast) {
@@ -84,21 +86,6 @@ void Main::load_read_file() {
 }
 
 void Main::load_parameters(const size_t i) {
-    if (mode == 2 && first_run) {
-        std::vector<double> lower, upper;
-        double a, b;
-        for (auto it : generator_list) {
-            a = std::stod(it.at(1));
-            b = std::stod(it.at(2));
-            lower.push_back(a);
-            upper.push_back(b);
-        }
-        std::unordered_map<std::string, double> best;
-        if (rdr->is_binned) {
-            best = rdr->get_best_bins();
-        }
-        Mc = std::make_unique<MC>(generator_list.size(), lower, upper, best);
-    }
     do {
         switch (mode) {
             case 1:
@@ -108,12 +95,23 @@ void Main::load_parameters(const size_t i) {
                     }
                 break;
             case 2: {
-                dvec1 new_pars = Mc->generate_new_pars();
-                for (size_t j = 0; j < generator_list.size(); j++) {
-                    MI.change_parameter(generator_list[j][0], new_pars[j],
-                                        false);
-                }
-                MI.load_everything();
+                do {
+                    if (MC) {
+                        VecDoub new_pars = MC->generate_new_pars();
+                        for (size_t j = 0; j < generator_list.size(); j++) {
+                            MI.change_parameter(generator_list[j][0],
+                                                new_pars[j], false);
+                        }
+                    } else {
+                        std::cout << "test\n";
+                        double a;
+                        for (auto it : generator_list) {
+                            a = generate_random(std::stod(it[1]),
+                                                std::stod(it[2]));
+                            MI.change_parameter(it[0], a, false);
+                        }
+                    }
+                } while (!MI.load_everything());
             } break;
             case 3:
                 rdr->read_parameter(i);
@@ -250,6 +248,28 @@ void Main::CalcTac(double xmin, double xmax, const size_t points,
     beps_eps = beps_save;
 }
 
+void Main::InitMonteCarlo(const size_t Nbins, const double prandom,
+                          const double target) {
+    ASSERT(mode == 1 || mode == 2, "Monte Carlo works only in mode 1 and 2")
+    std::unordered_map<std::string, double> best;
+    if (rdr->is_binned) best = rdr->get_best_bins();
+    size_t Npars = generator_list.size();
+    VecDoub lower(Npars);
+    VecDoub upper(Npars);
+    for (size_t i = 0; i < Npars; i++) {
+        lower[i] = std::stod(generator_list[i][1]);
+        upper[i] = std::stod(generator_list[i][2]);
+    }
+    MC = std::make_unique<MonteCarlo>(Npars, lower, upper, target, best);
+}
+
+void Main::SetWeight() {
+    VecDoub pars(generator_list.size());
+    for (size_t i = 0; i < generator_list.size(); i++)
+        pars[i] = *MI.parmap[generator_list[i][0]];
+    MC->set_weight(pars, omega);
+}
+
 double Main::CalcRelic(const int mechanism) {
     switch (mechanism) {
         case 0:
@@ -257,10 +277,14 @@ double Main::CalcRelic(const int mechanism) {
             break;
         default:
             std::cout << "This mechanism ID is not valid. Please set the "
-                         "mechanism to 0 or 1.\n";
+                         "mechanism to 0 or 1.\n ";
             break;
     }
     std::cout << "Omega full:\n" << omega << "\n\n";
+    if (save_contribs) {
+        VecDoub temp(FO.calc_contributions(bath_procs));
+        channel_frac = temp;
+    }
     return omega;
 }
 
@@ -270,8 +294,8 @@ void Main::FindParameter(const std::string &par, const double target,
     double a, b;
     for (auto it : generator_list)
         if (it.at(0) == par) {
-            a = std::stod(it.at(1));
-            b = std::stod(it.at(2));
+            a = std::stod(it[1]);
+            b = std::stod(it[2]);
             break;
         }
     OmegaGoal OMG(MI, FO, {par}, bath_procs, target);
@@ -279,25 +303,30 @@ void Main::FindParameter(const std::string &par, const double target,
     fr.find(OMG, *MI.parmap[par]);
     omega = OMG.get_omega();
     std::cout << "Omega full:\n" << omega << "\n\n";
-    if (channel_contrib != 1.)
-        channel_percent = relops->calc_channel_contributions(channel_contrib);
+    if (save_contribs) {
+        VecDoub temp(FO.calc_contributions(bath_procs));
+        channel_frac = temp;
+    }
 }
 
-void Main::RandomWalk(const double target, const double eps) {
+void Main::RWalk(const double target, const double eps) {
     VecDoub lower(generator_list.size()), upper(generator_list.size());
     VecString pars(generator_list.size());
-    double a, b;
     for (size_t i = 0; i < generator_list.size(); i++) {
         pars[i] = generator_list[i][0];
-        a = std::stod(generator_list[i][1]);
-        b = std::stod(generator_list[i][2]);
-        lower[i] = a;
-        upper[i] = b;
+        lower[i] = std::stod(generator_list[i][1]);
+        upper[i] = std::stod(generator_list[i][2]);
     }
-    omega = relops->random_walk(pars, lower, upper);
+    OmegaGoal OMG(MI, FO, pars, bath_procs, target);
+    RandomWalk RW(lower, upper, eps);
+    VecDoub xnew(RW.walk(OMG));
+    OMG(xnew);
+    omega = OMG.get_omega();
     std::cout << "Omega full:\n" << omega << "\n\n";
-    if (channel_contrib != 1.)
-        channel_percent = relops->calc_channel_contributions(channel_contrib);
+    if (save_contribs) {
+        VecDoub temp(FO.calc_contributions(bath_procs));
+        channel_frac = temp;
+    }
 }
 
 void Main::SaveData(const VecString &save_pars) {
@@ -321,21 +350,19 @@ void Main::SaveData(const VecString &save_pars) {
             MI.check_par_existence(it);
             outfile << "\t" << it;
         }
-        if (channel_contrib != 1.) {
-            for (auto it : relops->get_bath_procs()) {
+        if (save_contribs) {
+            for (auto it : bath_procs) {
                 outfile << "\t" << it;
             }
         }
         outfile << "\n";
     }
-
     outfile << omega;
-
     for (auto it : save_pars) {
         outfile << "\t" << *MI.parmap[it];
     }
-    for (auto it : channel_percent) {
-        outfile << "\t" << it;
+    for (size_t i = 0; i < channel_frac.size(); i++) {
+        outfile << "\t" << channel_frac[i];
     }
     outfile << "\n";
 
@@ -343,7 +370,13 @@ void Main::SaveData(const VecString &save_pars) {
 }
 
 Main::~Main() {
-    if (mode == 2) relops->save_best_bins(output_file);
+    if (MC) {
+        VecString par_names(generator_list.size());
+        for (size_t i = 0; i < generator_list.size(); i++) {
+            par_names[i] = generator_list[i][0];
+        }
+        MC->save_best_bins(par_names, output_file);
+    }
     delete &MI;
 }
 }  // namespace DT

@@ -16,8 +16,8 @@ class FO1DM {
    private:
     BeqInfo BI;
     FOCondition foc;
-    double xtoday;
-    bool appr;
+    double xtoday, xf;
+    bool appr, suppress = false;
 
    public:
     FO1DM(ModelInfo &model, const bool &apprr)
@@ -25,6 +25,7 @@ class FO1DM {
     void set_appr(const bool &apprr);
     void set_xtoday(const double &xtoday);
     double omega(const double &yield);
+    VecDoub calc_contributions(const VecString &channels);
     double operator()(const VecString &channels);
     ~FO1DM() {};
 };

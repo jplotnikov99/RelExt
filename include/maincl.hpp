@@ -20,20 +20,20 @@ class Main {
     size_t mode;
     std::string output_file;
     bool first_run = true;
-    double channel_contrib = 1.;
-    dvec1 channel_percent;
+    const bool save_contribs;
+    VecDoub channel_frac;
     VecString bath_procs;
     MatString generator_list;
     ModelInfo &MI;
     FO1DM FO;
     std::unique_ptr<DataReader> rdr;
-    std::unique_ptr<MC> Mc;
-    std::unique_ptr<RelicOps> relops;
+    std::unique_ptr<MonteCarlo> MC;
 
    public:
     Main(const int modee, const std::string &inputfile,
          const std::string &outputfile, double beps, const double xtoday,
-         const bool fast, const int start, const int end = 0);
+         const bool fast, const bool savecontribs, const int start,
+         const int end = 0);
 
     int start_point = 1, end_point = 0;
 
@@ -63,6 +63,13 @@ class Main {
     // args are: particle names of DS particles included in the thermal bath
     void ChangeThermalBath(const VecString &args);
 
+    // initialize MonteCarlo
+    void InitMonteCarlo(const size_t Nbins, const double prandom,
+                        const double target);
+
+    // set weight in the Montecarlo method
+    void SetWeight();
+
     // args are: min sqrt(s), max sqrt(s), number of points, channel names
     void CalcXsec(double sqsmin, double sqsmax, const size_t points,
                   const std::string outfile, const VecString channels);
@@ -80,7 +87,7 @@ class Main {
                        const double eps);
 
     // args are: mechanism, relic target, relic error, parameters
-    void RandomWalk(const double target, const double eps);
+    void RWalk(const double target, const double eps);
 
     // saves the scanned data
     void SaveData(const VecString &args);
