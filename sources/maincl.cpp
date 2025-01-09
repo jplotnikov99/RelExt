@@ -1,39 +1,26 @@
 #include "../include/maincl.hpp"
 
 namespace DT {
-Main::Main(int argc, char **argv) : MI(*new ModelInfo) {
+Main::Main(const int modee, const std::string &inputfile,
+           const std::string &outputfile, double beps, const double xtoday,
+           const bool fast, const bool savecontribs, const int start,
+           const int end)
+    : MI(*new ModelInfo),
+      mode(modee),
+      output_file(outputfile),
+      save_contribs(savecontribs),
+      start_point(start),
+      end_point(end + 1),
+      FO(MI, fast) {
     srand((unsigned)time(NULL));
 
-    operations_map["Set"] = [this](const vstring a) { this->Set(a); };
-    operations_map["Def"] = [this](const vstring a) { this->Def(a); };
-    operations_map["Add"] = [this](const vstring a) { this->Add(a); };
-    operations_map["Sub"] = [this](const vstring a) { this->Sub(a); };
-    operations_map["Mult"] = [this](const vstring a) { this->Mult(a); };
-    operations_map["Div"] = [this](const vstring a) { this->Div(a); };
-    operations_map["ChangeThermalBath"] = [this](const vstring a) {
-        this->ChangeThermalBath(a);
-    };
-    operations_map["CalcXsec"] = [this](const vstring a) { this->CalcXsec(a); };
-    operations_map["CalcTac"] = [this](const vstring a) { this->CalcTac(a); };
-    operations_map["CalcRelic"] = [this](const vstring a) {
-        this->CalcRelic(a);
-    };
-    operations_map["FindParameter"] = [this](const vstring a) {
-        this->FindParameter(a);
-    };
-    operations_map["RandomWalk"] = [this](const vstring a) {
-        this->RandomWalk(a);
-    };
-    operations_map["SaveData"] = [this](const vstring a) { this->SaveData(a); };
+    if (beps >= 1.) beps = 0.99;
+    if (beps == 0.) beps = 1e-100;
+    beps_eps = std::log(beps);
+    FO.set_xtoday(xtoday);
 
-    setting_file = std::string(argv[1]);
-    sgr = std::make_unique<DataReader>(setting_file, 0);
-    load_setting();
-
-    relops = std::make_unique<RelicOps>(MI, (bool)sgr->get_val_of("Fast"));
-
-    if (input_file != "") {
-        rdr = std::make_unique<DataReader>(input_file, 1);
+    if (inputfile != "") {
+        rdr = std::make_unique<DataReader>(inputfile, 1);
         ASSERT(start_point >= 1, "StartPoint must be 1 or larger")
         switch (mode) {
             case 1:
@@ -54,39 +41,13 @@ Main::Main(int argc, char **argv) : MI(*new ModelInfo) {
                 break;
         }
     }
-    vstring bath_procs;
     bath_procs = def_thermal_bath();
-    set_channels(bath_procs);
-}
-
-void Main::load_setting() {
-    // Standard settings
-    mode = (size_t)sgr->get_val_of("Mode");
-    input_file = sgr->get_name_of("InputFile");
-    output_file = sgr->get_name_of("OutputFile");
-    start_point = (size_t)sgr->get_val_of("StartPoint");
-    end_point = (size_t)sgr->get_val_of("EndPoint") + 1;
-    saved_pars = sgr->get_slist_of("SavedParameters");
-    channel_contrib = sgr->get_val_of("ChannelContributions");
-
-    // Advanced settings
-    double temp = sgr->get_val_of("BepsEps");
-    if (temp >= 1.) temp = 0.99;
-    if (temp == 0.) temp = 1e-100;
-    beps_eps = log(temp);
-    xtoday_FO = sgr->get_val_of("xTodayFO");
-    theta_eps = sgr->get_val_of("ThetaIntEps");
-    peak_eps = sgr->get_val_of("PeakIntEps");
-    gauss_kronrod_eps = sgr->get_val_of("sIntEps");
-    dopr_eps = sgr->get_val_of("DoPrEps");
-
-    user_operations = sgr->get_operation_slist();
 }
 
 void Main::check_start_end_points() {
     ASSERT((end_point - 1) >= 1,
            "StartPoint and/or EndPoint cannot be smaller than 1")
-    ASSERT(end_point - 1 >= start_point,
+    ASSERT((end_point - 1) >= start_point,
            "StartPoint cannot be larger than EndPoint")
 }
 
@@ -97,15 +58,13 @@ void Main::load_generation_file() {
         if (mode == 1) {
             ASSERT(it.size() == 4,
                    "Error in InputFile: "
-                       << it.at(0) << " is missing a boundary/initial value")
+                       << it.at(0) << " is missing a boundary or initial value")
         } else {
             ASSERT(it.size() >= 3,
                    "Error in InputFile: " << it.at(0)
                                           << " is missing a boundary value")
         }
-        ASSERT(MI.check_par_existence(it.at(0)),
-               "Error in InputFile: " << it.at(0)
-                                      << " is not a valid external parameter")
+        MI.check_par_existence(it.at(0));
     }
 }
 
@@ -114,7 +73,6 @@ void Main::load_read_file() {
     ASSERT(
         N_par_points > 1,
         "It appears. Your InputFile is either empty or not correctly formatted")
-
     if ((end_point - 1) <= 0) end_point = N_par_points;
     if (end_point > N_par_points) {
         std::cout << "EndPoint is out of range and is set to"
@@ -126,37 +84,35 @@ void Main::load_read_file() {
 
     rdr->scanpars = rdr->assignHeaders(MI.parmap);
 }
+
 void Main::load_parameters(const size_t i) {
-    if (mode == 2 && first_run) {
-        N_bins = (size_t)sgr->get_val_of("Bins");
-        N_best = (size_t)sgr->get_val_of("BestBins");
-        p_random = sgr->get_val_of("Prandom");
-        std::vector<double> lower, upper;
-        double a, b;
-        for (auto it : generator_list) {
-            a = get_number(it.at(1), __func__);
-            b = get_number(it.at(2), __func__);
-            lower.push_back(a);
-            upper.push_back(b);
-            relops->set_par_bounds(it.at(0), a, b);
-        }
-        std::unordered_map<std::string, double> best;
-        if (rdr->is_binned) {
-            best = rdr->get_best_bins();
-        }
-        relops->init_montecarlo(generator_list.size(), lower, upper, best);
-    }
     do {
         switch (mode) {
             case 1:
                 if (first_run)
                     for (auto it : generator_list) {
-                        *MI.parmap[it.at(0)] = get_number(it.at(3), __func__);
+                        *MI.parmap[it.at(0)] = std::stod(it.at(3));
                     }
                 break;
-            case 2:
-                relops->generate_new_pars();
-                break;
+            case 2: {
+                do {
+                    if (MC) {
+                        VecDoub new_pars = MC->generate_new_pars();
+                        for (size_t j = 0; j < generator_list.size(); j++) {
+                            MI.change_parameter(generator_list[j][0],
+                                                new_pars[j], false);
+                        }
+                    } else {
+                        std::cout << "test\n";
+                        double a;
+                        for (auto it : generator_list) {
+                            a = generate_random(std::stod(it[1]),
+                                                std::stod(it[2]));
+                            MI.change_parameter(it[0], a, false);
+                        }
+                    }
+                } while (!MI.load_everything());
+            } break;
             case 3:
                 rdr->read_parameter(i);
                 break;
@@ -167,39 +123,34 @@ void Main::load_parameters(const size_t i) {
     std::cout << "Parameter point: " << i << std::endl;
 }
 
-vstring Main::def_thermal_bath(const vstring bath_particles) {
+double Main::get_parameter(const std::string &par) {
+    MI.check_par_existence(par);
+    return *MI.parmap[par];
+}
+
+void Main::change_parameter(const std::string &par, const double newval) {
+    MI.check_par_existence(par);
+    MI.change_parameter(par, newval);
+}
+
+VecString Main::def_thermal_bath(const VecString bath_particles) {
     MI.assign_bath_masses(bath_particles);
     return MI.find_thermal_procs(bath_particles);
 }
 
-void Main::check_procs(const vstring &ch_str, const vstring &bath_procs) {
-    bool found;
-    for (auto it : ch_str) {
-        found = false;
-        for (auto jt : bath_procs) {
-            if (it == jt) {
-                found = true;
-                break;
-            }
-        }
-        ASSERT(found == true,
-               "The channel " << it << " does not exist in this thermal bath");
-    }
-}
-
-void Main::set_channels(vstring bath_procs) {
-    vstring neglected_particles = sgr->get_slist_of("NeglectParticles");
-    vstring subtracted_channels = sgr->get_slist_of("SubtractChannels");
-    vstring considered_channels = sgr->get_slist_of("ConsideredChannels");
-    if (neglected_particles.size() != 0) {
-        vstring temp;
-        for (auto it : neglected_particles) {
+void Main::set_channels(const VecString &consider, VecString &subtract,
+                        const VecString &neglect) {
+    // search channels which include the neglected particles
+    if (neglect.size() != 0) {
+        VecString temp;
+        for (auto it : neglect) {
             temp = MI.find_channels_by_particle(it);
-            append_to_vstring(subtracted_channels, temp);
+            append_to_VecString(subtract, temp);
         }
     }
-    if (subtracted_channels.size() != 0) {
-        for (auto it : subtracted_channels) {
+    // remove all channels that need to be neglected
+    if (subtract.size() != 0) {
+        for (auto it : subtract) {
             ASSERT(MI.check_channel_existence(it),
                    "Error in SubtractChannels: " << it
                                                  << " is not a valid channel.")
@@ -211,126 +162,35 @@ void Main::set_channels(vstring bath_procs) {
             }
         }
     }
-    if (considered_channels.size() != 0) {
-        check_procs(considered_channels, bath_procs);
-        bath_procs = considered_channels;
-    }
-    relops->set_bath_procs(bath_procs);
-}
-
-int Main::check_var_existence(const std::string &var, const std::string func) {
-    if (variable_map.find(var) == variable_map.end()) {
-        if (!MI.check_par_existence(var)) {
-            ASSERT(func == "",
-                   "Error in " << func << ": " << var << " is not defined")
-            return 0;
+    // with the remaining channels only consider the ones which the user wants
+    if (consider.size() != 0) {
+        bool found;
+        for (auto it : consider) {
+            found = false;
+            for (auto jt : bath_procs) {
+                if (it == jt) {
+                    found = true;
+                    break;
+                }
+            }
+            ASSERT(
+                found == true,
+                "The channel " << it << " does not exist in this thermal bath");
         }
-        return 1;
-    }
-    return 2;
-}
-
-double Main::get_number(const std::string &arg, const std::string &func) {
-    int var_type = check_var_existence(arg);
-    if (var_type == 1) {
-        return *MI.parmap[arg];
-    } else if (var_type == 2) {
-        return variable_map[arg].res;
-    } else {
-        double val;
-        try {
-            val = std::stod(arg);
-        } catch (const std::invalid_argument &) {
-            std::cout << "Error in " << func << ": " << arg
-                      << " is neither a declared variable, nor a number.\n";
-            exit(1);
-        }
-        return val;
+        bath_procs = consider;
     }
 }
 
-void Main::Def(const vstring &args) {
-    if (first_run) {
-        check_arguments_number(true, 2, args.size(), __func__);
-        double a = get_number(args.at(2), __func__);
-        variable_map[args.at(1)] = {a, 0.};
-    }
-}
-
-void Main::Set(const vstring &args) {
-    check_arguments_number(true, 2, args.size(), __func__);
-    int type = check_var_existence(args.at(1), __func__);
-    double a = get_number(args.at(2), __func__);
-    if (type == 1) {
-        MI.change_parameter(args.at(1), a);
-    } else {
-        variable_map.at(args.at(1)).res = a;
-    }
-}
-
-void Main::Add(const vstring &args) {
-    check_arguments_number(true, 2, args.size(), __func__);
-    int type = check_var_existence(args.at(1), __func__);
-    double a = get_number(args.at(2), __func__);
-    if (type == 1) {
-        double b = *MI.parmap[args.at(1)];
-        b += a;
-        MI.change_parameter(args.at(1), b);
-    } else {
-        variable_map.at(args.at(1)).res += a;
-    }
-}
-
-void Main::Sub(const vstring &args) {
-    check_arguments_number(true, 2, args.size(), __func__);
-    int type = check_var_existence(args.at(1), __func__);
-    double a = get_number(args.at(2), __func__);
-    if (type == 1) {
-        double b = *MI.parmap[args.at(1)];
-        b -= a;
-        MI.change_parameter(args.at(1), b);
-    } else {
-        variable_map.at(args.at(1)).res -= a;
-    }
-}
-
-void Main::Mult(const vstring &args) {
-    check_arguments_number(true, 2, args.size(), __func__);
-    int type = check_var_existence(args.at(1), __func__);
-    double a = get_number(args.at(2), __func__);
-    if (type == 1) {
-        double b = *MI.parmap[args.at(1)];
-        b *= a;
-        MI.change_parameter(args.at(1), b);
-    } else {
-        variable_map.at(args.at(1)).res *= a;
-    }
-}
-
-void Main::Div(const vstring &args) {
-    check_arguments_number(true, 2, args.size(), __func__);
-    int type = check_var_existence(args.at(1), __func__);
-    double a = get_number(args.at(2), __func__);
-    if (type == 1) {
-        double b = *MI.parmap[args.at(1)];
-        b /= a;
-        MI.change_parameter(args.at(1), b);
-    } else {
-        variable_map.at(args.at(1)).res /= a;
-    }
-}
-
-void Main::ChangeThermalBath(const vstring &args) {
+void Main::ChangeThermalBath(const VecString &args) {
     check_arguments_number(false, 1, args.size(), __func__);
-    vstring bath_particles;
-    vstring bath_procs;
+    VecString bath_particles;
     bath_procs.clear();
     for (size_t i = 1; i < args.size(); i++) {
         bath_particles.push_back(args.at(i));
     }
 
     bath_procs = def_thermal_bath(bath_particles);
-    set_channels(bath_procs);
+    // set_channels();
 
     MI.assigndm();
     MI.calc_widths_and_scale();
@@ -338,176 +198,145 @@ void Main::ChangeThermalBath(const vstring &args) {
     MI.load_tokens();
 }
 
-void Main::CalcXsec(const vstring &args) {
-    check_arguments_number(false, 4, args.size(), __func__);
-    ASSERT(start_point == (end_point - 1),
-           "CalcXsec can only be called for one point, not a range. "
-               << "Please choose the same StartPoint and EndPoint")
-
+void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
+                    const std::string outfile, const VecString channels) {
     AnnihilationAmps AA;
     std::unique_ptr<SigvInt> sigv = std::make_unique<SigvInt>(MI, AA);
     std::unique_ptr<DataReader> xsr =
         std::make_unique<DataReader>(output_file, 2);
 
-    double min_sqs = get_number(args.at(1), __func__);
-    double max_sqs = get_number(args.at(2), __func__);
-    ASSERT((min_sqs > 0) && (max_sqs > 0),
+    ASSERT((sqsmin > 0) && (sqsmax > 0),
            "Boundaries in " << __func__ << "can not have negative values.")
-    if (min_sqs > max_sqs) {
-        double temp = max_sqs;
-        max_sqs = min_sqs;
-        min_sqs = max_sqs;
+    if (sqsmin > sqsmax) {
+        double temp = sqsmax;
+        sqsmax = sqsmin;
+        sqsmin = temp;
     }
 
-    size_t points = get_number(args.at(3), __func__);
-    vstring channel;
-    for (size_t i = 4; i < args.size(); i++) {
-        channel.push_back(args.at(i));
-    }
-
-    double step = (max_sqs - min_sqs) / ((double)points);
+    double step = (sqsmax - sqsmin) / ((double)points);
     double res;
-    for (double sqs = min_sqs; sqs <= max_sqs; sqs += step) {
+    for (double sqs = sqsmin; sqs <= sqsmax; sqs += step) {
         res = 0;
-        for (auto it : channel) {
-            res += sigv->xsec(sqs * sqs, it).res;
+        for (auto it : channels) {
+            res += sigv->xsec(sqs * sqs, it);
         }
         xsr->save_data({"sqrts", "xsec"}, {sqs, res});
     }
 }
 
-void Main::CalcTac(const vstring &args) {
-    check_arguments_number(false, 3, args.size(), __func__);
-    ASSERT(start_point == (end_point - 1),
-           "CalcTac can only be called for one point, not a range. "
-               << "Please choose the same StartPoint and EndPoint")
-
+void Main::CalcTac(double xmin, double xmax, const size_t points,
+                   const std::string outfile, VecString channels) {
     Tac tac(MI);
-    std::unique_ptr<DataReader> tar =
-        std::make_unique<DataReader>(output_file, 2);
-
-    double min_x = get_number(args.at(1), __func__);
-    double max_x = get_number(args.at(2), __func__);
-    ASSERT((min_x > 0) && (max_x > 0),
+    std::unique_ptr<DataReader> TAR = std::make_unique<DataReader>(outfile, 2);
+    ASSERT((xmin > 0) && (xmax > 0),
            "Boundaries in " << __func__ << "can not have negative values.")
-    if (min_x > max_x) {
-        double temp = max_x;
-        max_x = min_x;
-        min_x = max_x;
+    if (xmin > xmax) {
+        double temp = xmax;
+        xmax = xmin;
+        xmin = temp;
     }
-
-    size_t points = get_number(args.at(3), __func__);
-
-    vstring channel;
-    for (size_t i = 4; i < args.size(); i++) {
-        channel.push_back(args.at(i));
-    }
-
-    if (args.size() == 4) channel = MI.channelnames;
-
-    double step = (max_x - min_x) / ((double)points);
-    ResError res;
+    if (channels.size() == 0) channels = MI.channelnames;
+    double step = (xmax - xmin) / ((double)points);
+    double res;
+    double beps_save = beps_eps;
     beps_eps = log(1e-100);
-
-    tac.sort_inimasses(channel);
-    for (double i = min_x; i <= max_x; i += step) {
+    tac.sort_inimasses(channels);
+    for (double i = xmin; i <= xmax; i += step) {
         res = tac(i);
-        tar->save_data({"x", "tac", "uncertainty"}, {i, res.res, res.err});
+        TAR->save_data({"x", "tac"}, {i, res});
     }
+    beps_eps = beps_save;
 }
 
-void Main::CalcRelic(const vstring &args) {
-    check_arguments_number(false, 1, args.size(), __func__);
+void Main::InitMonteCarlo(const size_t Nbins, const double prandom,
+                          const double target) {
+    ASSERT(mode == 1 || mode == 2, "Monte Carlo works only in mode 1 and 2")
+    std::unordered_map<std::string, double> best;
+    if (rdr->is_binned) best = rdr->get_best_bins();
+    size_t Npars = generator_list.size();
+    VecDoub lower(Npars);
+    VecDoub upper(Npars);
+    for (size_t i = 0; i < Npars; i++) {
+        lower[i] = std::stod(generator_list[i][1]);
+        upper[i] = std::stod(generator_list[i][2]);
+    }
+    MC = std::make_unique<MonteCarlo>(Npars, lower, upper, target, best);
+}
 
-    size_t mechanism = get_number(args.at(1), __func__);
-    relops->set_mechanism(mechanism);
-    omega = relops->CalcRelic();
+void Main::SetWeight() {
+    VecDoub pars(generator_list.size());
+    for (size_t i = 0; i < generator_list.size(); i++)
+        pars[i] = *MI.parmap[generator_list[i][0]];
+    MC->set_weight(pars, omega);
+}
+
+double Main::CalcRelic(const int mechanism) {
+    switch (mechanism) {
+        case 0:
+            omega = FO(bath_procs);
+            break;
+        default:
+            std::cout << "This mechanism ID is not valid. Please set the "
+                         "mechanism to 0 or 1.\n ";
+            break;
+    }
     std::cout << "Omega full:\n" << omega << "\n\n";
-    if (args.size() > 2) {
-        check_var_existence(args.at(2), __func__);
-        variable_map.at(args.at(2)) = omega;
+    if (save_contribs) {
+        VecDoub temp(FO.calc_contributions(bath_procs));
+        channel_frac = temp;
     }
-    if (channel_contrib != 1.)
-        channel_percent = relops->calc_channel_contributions(channel_contrib);
+    return omega;
 }
 
-void Main::FindParameter(const vstring &args) {
-    if (first_run) {
-        vanguard_step_size = sgr->get_val_of("VanguardStep");
-        descent_learning_rate = sgr->get_val_of("DescentRate");
-        max_N_bisections = sgr->get_val_of("MaxBisections");
-    }
-    check_arguments_number(false, 4, args.size(), (std::string) __func__);
-    check_var_existence(args.at(1), __func__);
-    size_t mechanism = get_number(args.at(2), __func__);
-    double om_target = get_number(args.at(3), __func__);
-    double om_err = get_number(args.at(4), __func__);
-
-    relops->set_mechanism(mechanism);
-    relops->set_omega_target(om_target);
-    relops->set_omega_err(om_err);
-    for (auto it : generator_list) {
-        if (it.at(0) == args.at(1)) {
-            double a = get_number(it.at(1));
-            double b = get_number(it.at(2));
-            relops->set_par_bounds(a, b);
+void Main::FindParameter(const std::string &par, const double target,
+                         const double eps) {
+    MI.check_par_existence(par);
+    double a, b;
+    for (auto it : generator_list)
+        if (it.at(0) == par) {
+            a = std::stod(it[1]);
+            b = std::stod(it[2]);
             break;
         }
-    }
-    omega = relops->find_par(args.at(1));
+    OmegaGoal OMG(MI, FO, {par}, bath_procs, target);
+    FindRoot fr(a, b, eps, target);
+    fr.find(OMG, *MI.parmap[par]);
+    omega = OMG.get_omega();
     std::cout << "Omega full:\n" << omega << "\n\n";
-
-    if (args.size() > 5) {
-        check_var_existence(args.at(5), __func__);
-        variable_map.at(args.at(5)) = omega;
+    if (save_contribs) {
+        VecDoub temp(FO.calc_contributions(bath_procs));
+        channel_frac = temp;
     }
-    if (channel_contrib != 1.)
-        channel_percent = relops->calc_channel_contributions(channel_contrib);
 }
 
-void Main::RandomWalk(const vstring &args) {
-    if (first_run) random_walk_rate = sgr->get_val_of("RandomWalkRate");
-    check_arguments_number(false, 3, args.size(), (std::string) __func__);
-    size_t mechanism = get_number(args.at(1), __func__);
-    double om_target = get_number(args.at(2), __func__);
-    double om_err = get_number(args.at(3), __func__);
-
-    if (args.size() == 4) {
-    } else {
-        for (size_t i = 4; i < args.size(); i++) {
-            double found = false;
-            for (auto it : generator_list) {
-                if (args.at(i) == it.at(0)) {
-                    found = true;
-                    double a = get_number(it.at(1), __func__);
-                    double b = get_number(it.at(2), __func__);
-                    relops->set_par_bounds(it.at(0), a, b);
-                    break;
-                }
-                ASSERT(!found, "Error in "
-                                   << __func__ << ": " << args.at(i)
-                                   << " is not defined in the InputFile")
-            }
-        }
+void Main::RWalk(const double target, const double eps) {
+    VecDoub lower(generator_list.size()), upper(generator_list.size());
+    VecString pars(generator_list.size());
+    for (size_t i = 0; i < generator_list.size(); i++) {
+        pars[i] = generator_list[i][0];
+        lower[i] = std::stod(generator_list[i][1]);
+        upper[i] = std::stod(generator_list[i][2]);
     }
-
-    relops->set_mechanism(mechanism);
-    relops->set_omega_target(om_target);
-    relops->set_omega_err(om_err);
-
-    omega = relops->random_walk();
+    OmegaGoal OMG(MI, FO, pars, bath_procs, target);
+    RandomWalk RW(lower, upper, eps);
+    VecDoub xnew(RW.walk(OMG));
+    OMG(xnew);
+    omega = OMG.get_omega();
     std::cout << "Omega full:\n" << omega << "\n\n";
-    if (channel_contrib != 1.)
-        channel_percent = relops->calc_channel_contributions(channel_contrib);
+    if (save_contribs) {
+        VecDoub temp(FO.calc_contributions(bath_procs));
+        channel_frac = temp;
+    }
 }
 
-void Main::SaveData(const vstring &args) {
+void Main::SaveData(const VecString &save_pars) {
     std::string filesave = "../dataOutput/" + output_file;
 
     if (first_run) {
         std::ofstream reset;
         reset.open(filesave, std::ofstream::out | std::ofstream::trunc);
         reset.close();
+        first_run = false;
     }
 
     std::ofstream outfile(filesave, std::ios::out | std::ios::app);
@@ -515,64 +344,39 @@ void Main::SaveData(const vstring &args) {
     outfile.seekp(0, std::ios::end);
 
     if (outfile.tellp() == 0) {
-        outfile << "Omega\tOmega_uncer";
+        outfile << "Omega";
 
-        for (auto it : saved_pars) {
-            ASSERT(MI.check_par_existence(it),
-                   "Error in SaveData: "
-                       << it << " is not a valid parameter of the model")
+        for (auto it : save_pars) {
+            MI.check_par_existence(it);
             outfile << "\t" << it;
         }
-        for (size_t i = 1; i < args.size(); i++) {
-            get_number(args.at(i), __func__);
-            outfile << "\t" << args.at(i);
-        }
-        if (channel_contrib != 1.) {
-            for (auto it : relops->get_bath_procs()) {
+        if (save_contribs) {
+            for (auto it : bath_procs) {
                 outfile << "\t" << it;
             }
         }
         outfile << "\n";
     }
-
-    outfile << omega.res << "\t" << omega.err;
-
-    for (auto it : saved_pars) {
+    outfile << omega;
+    for (auto it : save_pars) {
         outfile << "\t" << *MI.parmap[it];
     }
-    for (size_t i = 1; i < args.size(); i++) {
-        outfile << "\t" << variable_map.at(args.at(i)).res;
-    }
-    for (auto it : channel_percent) {
-        outfile << "\t" << it;
+    for (size_t i = 0; i < channel_frac.size(); i++) {
+        outfile << "\t" << channel_frac[i];
     }
     outfile << "\n";
 
     outfile.close();
 }
 
-void Main::do_user_operations() {
-    omega = {0., 0.};
-    if (first_run) {
-        for (auto it : user_operations) {
-            if (operations_map.find(it.at(0)) == operations_map.end()) {
-                std::cout << it.at(0) << " is not a valid operation.\n";
-                exit(1);
-            }
-        }
-    }
-    for (auto it : user_operations) {
-        operations_map[it.at(0)](it);
-    }
-    if (first_run) {
-        sgr.reset();
-        setting_file.clear();
-        first_run = false;
-    }
-}
-
 Main::~Main() {
-    if (mode == 2) relops->save_best_bins(output_file);
+    if (MC) {
+        VecString par_names(generator_list.size());
+        for (size_t i = 0; i < generator_list.size(); i++) {
+            par_names[i] = generator_list[i][0];
+        }
+        MC->save_best_bins(par_names, output_file);
+    }
     delete &MI;
 }
 }  // namespace DT

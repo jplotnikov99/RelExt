@@ -16,15 +16,17 @@ class FO1DM {
    private:
     BeqInfo BI;
     FOCondition foc;
-    const double xtoday;
-    bool appr;
+    double xtoday, xf;
+    bool appr, suppress = false;
 
    public:
-    FO1DM(ModelInfo &model, const bool &apprr, const double &xto)
-        : BI(model), appr(apprr), foc(BI, apprr ? 1.5 : 0.1), xtoday(xto) {};
+    FO1DM(ModelInfo &model, const bool &apprr)
+        : BI(model), appr(apprr), foc(BI, apprr ? 1.5 : 0.1) {};
     void set_appr(const bool &apprr);
-    ResError omega(const ResError &yield);
-    ResError operator()(const vstring &channels);
+    void set_xtoday(const double &xtoday);
+    double omega(const double &yield);
+    VecDoub calc_contributions(const VecString &channels);
+    double operator()(const VecString &channels);
     ~FO1DM() {};
 };
 }  // namespace DT

@@ -6,7 +6,7 @@ BeqInfo::BeqInfo(ModelInfo &model) : dof(*new Dof), MI(model), tac(MI) {}
 
 void BeqInfo::reset_tac_state(const bool full) { tac.clear_state(full); }
 
-bool BeqInfo::sort_inimasses(const vstring &ch_str) {
+bool BeqInfo::sort_inimasses(const VecString &ch_str) {
     return tac.sort_inimasses(ch_str);
 }
 double BeqInfo::pre(const double &x) {
@@ -43,21 +43,20 @@ double BeqInfo::dlogyeq(const double x) {
 }
 
 double FOCondition::operator()(const double &x) {
-    return BI.pre(x) * BI.tac(x).res * BI.yeq(x) * del * (del + 2) +
-           BI.dlogyeq(x);
+    return BI.pre(x) * BI.tac(x) * BI.yeq(x) * del * (del + 2) + BI.dlogyeq(x);
 }
 
-ResError FOAppr::operator()(const double &x) { return -BI.pre(x) * BI.tac(x); }
+double FOAppr::operator()(const double &x) { return -BI.pre(x) * BI.tac(x); }
 
-void FOFull::operator()(const double &x, const ResError &y, ResError &dydx) {
+void FOFull::operator()(const double &x, const double &y, double &dydx) {
     dydx = BI.pre(x) * BI.tac(x) * (pow(BI.yeq(x), 2) - y * y);
 }
 
 void Beqs::set_mechanism(const size_t &m) { mech = m; }
 
-ResError Beqs::pre_tac(const double &x) { return -pre(x) * tac(x); }
+double Beqs::pre_tac(const double &x) { return -pre(x) * tac(x); }
 
-ResError Beqs::fout_condition(const double x, const double del) {
+double Beqs::fout_condition(const double x, const double del) {
     return pre(x) * tac(x) * yeq(x) * del * (del + 2) + dlogyeq(x);
 }
 
@@ -79,19 +78,19 @@ double Beqs::fstart(double x) {
     return (dlnYeqdent *
                 (sqrt(6 * M_PI * M_PI * M_PI / 30 * MI.MDM * MI.MDM * MI.MDM *
                       MI.MDM / (x * x * x * x) * dof.geff(MI.MDM / x) * G) /
-                 tac(x).res) -
+                 tac(x)) -
             dif * yeq(x));
 }
 
-ResError Beqs::operator()(const double &x, const ResError &y) {
-    ResError res{0., 0.};
+double Beqs::operator()(const double &x, const double &y) {
+    double res = 0.;
     switch (mech) {
         case 0:
-            res = -1 * tac(x) * (y * y - pow(yeq(x), 2));
+            res = -tac(x) * (y * y - SQR(yeq(x)));
             break;
 
         case 1:
-            res = tac(x) * (pow(yeq(x), 2) - y * y);
+            res = tac(x) * (SQR(yeq(x)) - y * y);
             break;
 
         default:

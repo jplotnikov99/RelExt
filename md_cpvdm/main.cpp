@@ -1,20 +1,43 @@
 #include <iostream>
+
+#include "hyper_parameters.hpp"
 #include "maincl.hpp"
-#include "utils.hpp"
 
 using namespace DT;
+/* Change to desired settings starting from here
+ ***********************************************
+ */
+static constexpr int MODE = 2;
+static const std::string INPUTFILE = "examples/cpvdm_example1.dat";
+static const std::string OUTPUTFILE = "scan.dat";
+static constexpr int START = 1;
+static constexpr int END = 1;
+static const VecString SAVEPARS = {"mH1", "mH2", "mHc"};
+static const VecString CONSIDERCHANNELS = {};
+VecString NEGLECTCHANNELS = {};
+static const VecString NEGLECTPARTICLES = {"u", "d", "e", "mu"};
+static constexpr double BEPS = 1e-6;
+static constexpr double XTODAY = 1e6;
+static constexpr bool FAST = true;
+static constexpr bool SAVECONTIRIBS = false;
+/*
+ ***********************************************
+ Until here */
 
-int main(int argc, char **argv)
-{
-    Main main(argc, argv);
+int main() {
+    Main M(MODE, INPUTFILE, OUTPUTFILE, BEPS, XTODAY, FAST, SAVECONTIRIBS,
+           START, END);
+    M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
+
     clock_t begin_time = clock();
-
-    for (size_t i = main.start_point; i < main.end_point; i++)
-    {
-        main.load_parameters(i);
-        main.do_user_operations();
+    M.InitMonteCarlo(100, 1, 0.12);
+    for (size_t i = M.start_point; i < M.end_point; i++) {
+        M.load_parameters(i);
+        M.CalcRelic();
+        M.SetWeight();
+        M.SaveData(SAVEPARS);
     }
 
     std::cout << "Computation time:\n"
-              << float(clock() - begin_time) / CLOCKS_PER_SEC << "\n";
+              << float(clock() - begin_time) / CLOCKS_PER_SEC << std::endl;
 }

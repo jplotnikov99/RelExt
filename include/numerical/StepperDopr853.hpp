@@ -8,14 +8,14 @@ template <class D>
 class StepperDopr853 : public StepperBase {
    private:
     double sk;
-    ResError k2, k3, k4, k5, k6, k7, k8, k9, k10;
-    ResError rcont1, rcont2, rcont3, rcont4, rcont5, rcont6, rcont7, rcont8;
+    double k2, k3, k4, k5, k6, k7, k8, k9, k10;
+    double rcont1, rcont2, rcont3, rcont4, rcont5, rcont6, rcont7, rcont8;
     double yerr2;
-    ResError dydxnew;
+    double dydxnew;
 
    public:
     typedef D Dtype;
-    StepperDopr853(ResError &yy, ResError &dydxx, double &xx,
+    StepperDopr853(double &yy, double &dydxx, double &xx,
                    const double atoll, const double rtoll, const bool dens)
         : StepperBase(yy, dydxx, xx, atoll, rtoll, dens) {
         EPS = std::numeric_limits<double>::epsilon();
@@ -23,7 +23,7 @@ class StepperDopr853 : public StepperBase {
     void step(const double htry, D &derivs);
     void dy(const double h, D &derivs);
     void prepare_dense(const double h, D &derivs);
-    ResError dense_out(const double x, const double h);
+    double dense_out(const double x, const double h);
     double error(const double h);
     Controller con;
 
@@ -54,7 +54,7 @@ void StepperDopr853<D>::step(const double htry, D &derivs) {
 
 template <class D>
 void StepperDopr853<D>::dy(const double h, D &derivs) {
-    ResError ytemp;
+    double ytemp;
     int i;
     ytemp = y + h * a21 * dydx;
     derivs(x + c2 * h, ytemp, k2);
@@ -87,16 +87,16 @@ void StepperDopr853<D>::dy(const double h, D &derivs) {
     k4 = b1 * dydx + b6 * k6 + b7 * k7 + b8 * k8 + b9 * k9 + b10 * k10 +
          b11 * k2 + b12 * k3;
     yout = y + h * k4;
-    yerr = k4.res - bhh1 * dydx.res - bhh2 * k9.res - bhh3 * k3.res;
-    yerr2 = er1 * dydx.res + er6 * k6.res + er7 * k7.res + er8 * k8.res +
-            er9 * k9.res + er10 * k10.res + er11 * k2.res + er12 * k3.res;
+    yerr = k4 - bhh1 * dydx - bhh2 * k9 - bhh3 * k3;
+    yerr2 = er1 * dydx + er6 * k6 + er7 * k7 + er8 * k8 +
+            er9 * k9 + er10 * k10 + er11 * k2 + er12 * k3;
 }
 
 template <class D>
 void StepperDopr853<D>::prepare_dense(const double h, D &derivs) {
     int i;
-    ResError ydiff, bspl;
-    ResError ytemp;
+    double ydiff, bspl;
+    double ytemp;
     rcont1 = y;
     ydiff = yout - y;
     rcont2 = ydiff;
@@ -127,7 +127,7 @@ void StepperDopr853<D>::prepare_dense(const double h, D &derivs) {
 }
 
 template <class D>
-ResError StepperDopr853<D>::dense_out(const double x, const double h) {
+double StepperDopr853<D>::dense_out(const double x, const double h) {
     double s = (x - xold) / h;
     double s1 = 1.0 - s;
     return rcont1 +
@@ -140,7 +140,7 @@ ResError StepperDopr853<D>::dense_out(const double x, const double h) {
 template <class D>
 double StepperDopr853<D>::error(const double h) {
     double err = 0.0, err2 = 0.0, deno;
-    sk = atol + rtol * MAX(std::abs(y.res), std::abs(yout.res));
+    sk = atol + rtol * MAX(std::abs(y), std::abs(yout));
     err2 += SQR(yerr / sk);
     err += SQR(yerr2 / sk);
     deno = err + 0.01 * err2;

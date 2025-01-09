@@ -32,7 +32,7 @@ typedef std::unordered_map<std::string, double *> sMapDp;
 
 struct ModelInfo {
     sMapDp DSmasses;
-    vstring channelnames;
+    VecString channelnames;
     sMapDp mass1s;
     sMapDp mass2s;
     sMapDp mass3s;
@@ -42,7 +42,7 @@ struct ModelInfo {
     std::map<std::string, double *> parmap;
     std::vector<double *> denstructures;
     size_t N_widths;
-    vstring bath_masses;
+    VecString bath_masses;
     double ZERO = 0;
     double MDM = 0.;
 
@@ -59,9 +59,9 @@ struct ModelInfo {
     bool check_channel_existence(const std::string &channel);
     void get_channel_masses(double &m1, double &m2, double &m3, double &m4,
                             const std::string &channel);
-    vstring find_channels_by_particle(const std::string &particle);
-    void assign_bath_masses(const vstring &prtcls = {});
-    vstring find_thermal_procs(const vstring &prtcls = {});
+    VecString find_channels_by_particle(const std::string &particle);
+    void assign_bath_masses(const VecString &prtcls = {});
+    VecString find_thermal_procs(const VecString &prtcls = {});
     void assigndm();
     void assign_masses(double &m1, double &m2, const std::string &channel);
 
@@ -80,8 +80,8 @@ class AnnihilationAmps{
 
     void init();
     void set_s(const double new_s);
-    void set_channel(const vstring &ch_str, const bool flux = true);
-    ResError operator()(const double cos_t);
+    void set_channel(const VecString &ch_str, const bool flux = true);
+    double operator()(const double cos_t);
 
     ~AnnihilationAmps() {};
 };

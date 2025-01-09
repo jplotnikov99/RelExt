@@ -10,14 +10,19 @@ ModelInfo::ModelInfo() {
 bool ModelInfo::load_everything() {
     load_parameters();
     assigndm();
-    calc_widths_and_scale();
+    //calc_widths_and_scale();
     load_parameters();
     load_tokens();
     return check_conditions();
 }
 
 bool ModelInfo::check_par_existence(const std::string &par) {
-    return parmap.count(par) == 0 ? false : true;
+    bool exists = parmap.count(par) == 0 ? false : true;
+    if (!exists) {
+        std::cout << par << " is not an existing model parameter.\n";
+        exit(1);
+    }
+    return exists;
 }
 
 bool ModelInfo::change_parameter(const std::string &par, const double newval,
@@ -44,7 +49,7 @@ void ModelInfo::get_channel_masses(double &m1, double &m2, double &m3,
     m4 = *mass4s.at(channel);
 }
 
-void ModelInfo::assign_bath_masses(const vstring &prtcls) {
+void ModelInfo::assign_bath_masses(const VecString &prtcls) {
     bath_masses.clear();
     if (prtcls.size() == 0) {
         for (auto it : DSmasses) {
@@ -57,8 +62,8 @@ void ModelInfo::assign_bath_masses(const vstring &prtcls) {
     }
 }
 
-vstring ModelInfo::find_channels_by_particle(const std::string &particle) {
-    vstring res = {};
+VecString ModelInfo::find_channels_by_particle(const std::string &particle) {
+    VecString res = {};
     size_t found;
     for (auto it : channelnames) {
         found = it.find(particle);
@@ -69,9 +74,9 @@ vstring ModelInfo::find_channels_by_particle(const std::string &particle) {
     return res;
 }
 
-vstring ModelInfo::find_thermal_procs(const vstring &prtcls) {
+VecString ModelInfo::find_thermal_procs(const VecString &prtcls) {
     bool existance = false;
-    vstring res = {};
+    VecString res = {};
     size_t found;
     if (prtcls.size() == 0) return channelnames;
     for (auto it : prtcls) {
@@ -123,7 +128,7 @@ AnnihilationAmps::AnnihilationAmps() { init(); }
 
 void AnnihilationAmps::set_s(const double new_s) { s = new_s; }
 
-void AnnihilationAmps::set_channel(const vstring &ch_str, const bool flux) {
+void AnnihilationAmps::set_channel(const VecString &ch_str, const bool flux) {
     cur_channel.clear();
     if (flux) {
         for (auto it : ch_str) {
@@ -136,10 +141,10 @@ void AnnihilationAmps::set_channel(const vstring &ch_str, const bool flux) {
     }
 }
 
-ResError AnnihilationAmps::operator()(const double cos_t) {
-    ResError res = {0., 0.};
+double AnnihilationAmps::operator()(const double cos_t) {
+    double res = 0.;
     for (auto it : cur_channel) {
-        res.res += it(cos_t, s);
+        res += it(cos_t, s);
     }
     return res;
 }

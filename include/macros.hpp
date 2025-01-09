@@ -1,5 +1,4 @@
 #pragma once
-#include "result_error_pair.hpp"
 namespace DT {
 
 #define ASSERT(statement, message)     \
