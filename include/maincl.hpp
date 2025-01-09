@@ -46,7 +46,7 @@ class Main {
     void load_user_operations();
 
     // loads parameter point and assigns DM mass
-    void load_parameters(const size_t i);
+    void load_parameters(const size_t i = 0);
 
     // returns the value of the parameter
     double get_parameter(const std::string &par);
