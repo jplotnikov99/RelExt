@@ -2,7 +2,7 @@
 
 namespace DT {
 
-BeqInfo::BeqInfo(ModelInfo &model) : dof(*new Dof), MI(model), tac(MI) {}
+BeqInfo::BeqInfo(AnnihilationAmps &AnAmps) : dof(*new Dof), AA(AnAmps), tac(AA) {}
 
 void BeqInfo::reset_tac_state(const bool full) { tac.clear_state(full); }
 
@@ -10,7 +10,7 @@ bool BeqInfo::sort_inimasses(const VecString &ch_str) {
     return tac.sort_inimasses(ch_str);
 }
 double BeqInfo::pre(const double &x) {
-    return sqrt(M_PI / (45 * G)) * MI.MDM / (x * x) * dof.g12(MI.MDM / x);
+    return sqrt(M_PI / (45 * G)) * AA.MDM / (x * x) * dof.g12(AA.MDM / x);
 }
 
 double BeqInfo::T_ent(const double &ent, const double &m) {
@@ -26,12 +26,12 @@ double BeqInfo::ent_T(const double &x, const double &m) {
 double BeqInfo::yeq(const double &x) {
     double yeq = 0;
     double mtemp;
-    double a = 1 / (MI.MDM * MI.MDM);
-    double Tinv = x / MI.MDM;
+    double a = 1 / (AA.MDM * AA.MDM);
+    double Tinv = x / AA.MDM;
 
-    for (auto it : MI.bath_masses) {
-        mtemp = *MI.DSmasses[it];
-        yeq += MI.DSdof[it] * mtemp * mtemp * a * besselK2(Tinv * mtemp);
+    for (auto it : AA.bath_masses) {
+        mtemp = *AA.DSmasses[it];
+        yeq += AA.DSdof[it] * mtemp * mtemp * a * besselK2(Tinv * mtemp);
     }
     yeq *= 45 * x * x / (4 * dof.heff(1 / Tinv) * M_PI * M_PI * M_PI * M_PI);
     return yeq;
@@ -62,22 +62,22 @@ double Beqs::fout_condition(const double x, const double del) {
 
 double Beqs::fstart(double x) {
     double dif = 0.1;               // (Y-Yeq)/Yeq at starting point
-    double ent = ent_T(x, MI.MDM);  // entropy as function of T
+    double ent = ent_T(x, AA.MDM);  // entropy as function of T
     double d = 0.001 * ent;         // stepsize for entropy increase
     double upper, lower, dlnYeqdent;
 
-    x = MI.MDM / T_ent(ent + d, MI.MDM);
+    x = AA.MDM / T_ent(ent + d, AA.MDM);
     upper = log(yeq(x));  // logYeq for entropy = entropy + d
-    x = MI.MDM / T_ent(ent - d, MI.MDM);
+    x = AA.MDM / T_ent(ent - d, AA.MDM);
     lower = log(yeq(x));  // logYeq for entropy = entropy - d
     dlnYeqdent =
         (upper - lower) / (2 * d);  // this is derivative of logYeq wrt entropy
-    x = MI.MDM / T_ent(ent, MI.MDM);
+    x = AA.MDM / T_ent(ent, AA.MDM);
 
     // eq 6 from microlecture
     return (dlnYeqdent *
-                (sqrt(6 * M_PI * M_PI * M_PI / 30 * MI.MDM * MI.MDM * MI.MDM *
-                      MI.MDM / (x * x * x * x) * dof.geff(MI.MDM / x) * G) /
+                (sqrt(6 * M_PI * M_PI * M_PI / 30 * AA.MDM * AA.MDM * AA.MDM *
+                      AA.MDM / (x * x * x * x) * dof.geff(AA.MDM / x) * G) /
                  tac(x)) -
             dif * yeq(x));
 }

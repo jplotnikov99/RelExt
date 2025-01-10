@@ -15,7 +15,6 @@ static const double G = 6.7e-39;
 
 class SigvInt {
    private:
-    ModelInfo &MI;
     AnnihilationAmps &AA;
     double x;
 
@@ -24,7 +23,7 @@ class SigvInt {
     std::vector<double> dsmasses;
     std::unordered_map<double, double> sig_s;
     double lower_bound;
-    SigvInt(ModelInfo &model, AnnihilationAmps &AnAmps) : MI(model), AA(AnAmps) {};
+    SigvInt(AnnihilationAmps &AnAmps) : AA(AnAmps) {};
 
     void set_x(const double new_x);
 
@@ -47,7 +46,6 @@ class SigvInt {
 
 class Tac {
    private:
-    ModelInfo &MI;
     AnnihilationAmps &AA;
     double m1, m2;
     size_t N_relevant_peaks;
@@ -57,7 +55,7 @@ class Tac {
 
    public:
     SigvInt sigv;
-    Tac(ModelInfo &model);
+    Tac(AnnihilationAmps &AnAmps);
 
     // sorts different channels by their total initial/final state masses
     bool sort_inimasses(const VecString &ch_str = {});
@@ -86,8 +84,7 @@ class Tac {
     double integrate_peaks(const double &x);
 
     // estimate s integral
-    void estimate_integrate_s(const double &x, double &res,
-                              double &estimate);
+    void estimate_integrate_s(const double &x, double &res, double &estimate);
 
     // integral over s of the whole interval
     void integrate_s(const double &x, double &res, double &estimate);

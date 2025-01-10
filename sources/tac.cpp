@@ -15,12 +15,12 @@ void SigvInt::set_dsmasses(const std::vector<double> &masses) {
 double SigvInt::xsec(const double &s, const std::string &channel) {
     double m1, m2, m3, m4;
     AA.set_channel({channel}, false);
-    MI.assign_masses(m1, m2, channel);
+    AA.assign_masses(m1, m2, channel);
     AA.set_s(s);
     if (sqrt(s) < m1 + m2) {
         return 0.;
     }
-    MI.get_channel_masses(m1, m2, m3, m4, channel);
+    AA.get_channel_masses(m1, m2, m3, m4, channel);
 
     double f_est[10];
     for (size_t i = 0; i < 10; i++) {
@@ -60,12 +60,12 @@ double SigvInt::wij(const double &s) {
 }
 
 void SigvInt::calc_polK2() {
-    double Tinv = x / MI.MDM;
+    double Tinv = x / AA.MDM;
     double mtemp, cur;
     size_t i = 0;
-    for (auto it : MI.bath_masses) {
-        mtemp = *MI.DSmasses[it];
-        cur = MI.DSdof[it] * mtemp * mtemp * polK2(Tinv * mtemp);
+    for (auto it : AA.bath_masses) {
+        mtemp = *AA.DSmasses[it];
+        cur = AA.DSdof[it] * mtemp * mtemp * polK2(Tinv * mtemp);
         polK2s[i] = cur;
         i++;
     }
@@ -77,12 +77,12 @@ double SigvInt::lipsv(const double &s) {
     double den = 0.;
     double mtemp;
     double sqs = sqrt(s);
-    double Tinv = x / MI.MDM;
+    double Tinv = x / AA.MDM;
 
     if (x > 5) {
         num += Tinv * polK1(sqs * Tinv);
-        for (auto it : MI.bath_masses) {
-            mtemp = *MI.DSmasses[it];
+        for (auto it : AA.bath_masses) {
+            mtemp = *AA.DSmasses[it];
             den += exp(-Tinv * (mtemp - sqs / 2)) * polK2s[i];
             i++;
         }
@@ -93,8 +93,8 @@ double SigvInt::lipsv(const double &s) {
         // } else {
         //     num += Tinv * bessel::cyl_k(1, sqs * Tinv);
         // }
-        for (auto it : MI.bath_masses) {
-            mtemp = *MI.DSmasses[it];
+        for (auto it : AA.bath_masses) {
+            mtemp = *AA.DSmasses[it];
             den += mtemp * mtemp * besselK2(Tinv * mtemp);
         }
         den *= den;
@@ -108,18 +108,17 @@ double SigvInt::operator()(const double &u) {
     return wij(s) * lipsv(s) * 1 / (u * u);
 }
 
-Tac::Tac(ModelInfo &model)
-    : MI(model),
-      AA(*new AnnihilationAmps),
-      sigv(MI, AA),
-      boundaries(3 * MI.N_widths) {}
+Tac::Tac(AnnihilationAmps &AnAmps)
+    : AA(AnAmps),
+      sigv(AA),
+      boundaries(3 * AA.N_widths) {}
 
 bool Tac::sort_inimasses(const VecString &ch_str) {
     double temp;
-    sigv.polK2s.resize(MI.bath_masses.size());
+    sigv.polK2s.resize(AA.bath_masses.size());
     for (auto it : ch_str) {
         AA.set_channel({it});
-        MI.assign_masses(m1, m2, it);
+        AA.assign_masses(m1, m2, it);
         AA.set_s((m1 + m2) * (m1 + m2) * 100);
         temp = AA(0.5);
         if (std::isnan(temp)) return false;
@@ -129,12 +128,12 @@ bool Tac::sort_inimasses(const VecString &ch_str) {
 }
 
 bool Tac::beps(const double &x) {
-    return (x * (sigv.lower_bound - 2 * MI.MDM) / MI.MDM <= -beps_eps);
+    return (x * (sigv.lower_bound - 2 * AA.MDM) / AA.MDM <= -beps_eps);
 }
 
 double Tac::peak_relevance(const double &peakpos) {
     if (peakpos == sigv.lower_bound) return -1.;
-    return -(beps_eps - 4.6051701859880) * MI.MDM /
+    return -(beps_eps - 4.6051701859880) * AA.MDM /
            (peakpos - sigv.lower_bound);
 }
 
@@ -191,12 +190,12 @@ void Tac::set_boundaries(const double &x) {
 
     N_relevant_peaks = 0;
 
-    for (int j = 0; j < MI.N_widths; j++) {
-        peak_xf = peak_relevance(*MI.denstructures.at(2 * j));
+    for (int j = 0; j < AA.N_widths; j++) {
+        peak_xf = peak_relevance(*AA.denstructures.at(2 * j));
 
         if (peak_xf > 0 && x < peak_xf) {
-            b = peak_bounds(*MI.denstructures.at(2 * j),
-                            *MI.denstructures.at(2 * j + 1));
+            b = peak_bounds(*AA.denstructures.at(2 * j),
+                            *AA.denstructures.at(2 * j + 1));
             boundaries[3 * N_relevant_peaks] = *b;
             boundaries[3 * N_relevant_peaks + 1] = *(b + 1);
             boundaries[3 * N_relevant_peaks + 2] = *(b + 2);
@@ -285,7 +284,7 @@ double Tac::operator()(const double &x) {
     sigv.calc_polK2();
     for (auto &it : inimap) {
         AA.set_channel(it.second);
-        MI.assign_masses(m1, m2, it.second[0]);
+        AA.assign_masses(m1, m2, it.second[0]);
         sigv.set_lower_bound(m1 + m2);
         if (beps(x)) {
             set_boundaries(x);
@@ -294,7 +293,7 @@ double Tac::operator()(const double &x) {
     }
     for (auto &it : inimap) {
         AA.set_channel(it.second);
-        MI.assign_masses(m1, m2, it.second[0]);
+        AA.assign_masses(m1, m2, it.second[0]);
         sigv.set_lower_bound(m1 + m2);
         if (beps(x)) {
             set_boundaries(x);

@@ -32,23 +32,6 @@ bool ModelInfo::change_parameter(const std::string &par, const double newval,
     return true;
 }
 
-bool ModelInfo::check_channel_existence(const std::string &channel) {
-    for (auto it : channelnames) {
-        if (it == channel) {
-            return true;
-        }
-    }
-    return false;
-}
-
-void ModelInfo::get_channel_masses(double &m1, double &m2, double &m3,
-                                   double &m4, const std::string &channel) {
-    m1 = *mass1s.at(channel);
-    m2 = *mass2s.at(channel);
-    m3 = *mass3s.at(channel);
-    m4 = *mass4s.at(channel);
-}
-
 void ModelInfo::assign_bath_masses(const VecString &prtcls) {
     bath_masses.clear();
     if (prtcls.size() == 0) {
@@ -60,18 +43,6 @@ void ModelInfo::assign_bath_masses(const VecString &prtcls) {
             bath_masses = prtcls;
         }
     }
-}
-
-VecString ModelInfo::find_channels_by_particle(const std::string &particle) {
-    VecString res = {};
-    size_t found;
-    for (auto it : channelnames) {
-        found = it.find(particle);
-        if (found != std::string::npos) {
-            res.push_back(it);
-        }
-    }
-    return res;
 }
 
 VecString ModelInfo::find_thermal_procs(const VecString &prtcls) {
@@ -125,6 +96,36 @@ void ModelInfo::assign_masses(double &m1, double &m2,
 }
 
 AnnihilationAmps::AnnihilationAmps() { init(); }
+
+bool AnnihilationAmps::check_channel_existence(const std::string &channel) {
+    for (auto it : channelnames) {
+        if (it == channel) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void AnnihilationAmps::get_channel_masses(double &m1, double &m2, double &m3,
+                                   double &m4, const std::string &channel) {
+    m1 = *mass1s.at(channel);
+    m2 = *mass2s.at(channel);
+    m3 = *mass3s.at(channel);
+    m4 = *mass4s.at(channel);
+}
+
+VecString AnnihilationAmps::find_channels_by_particle(const std::string &particle) {
+    VecString res = {};
+    size_t found;
+    for (auto it : channelnames) {
+        found = it.find(particle);
+        if (found != std::string::npos) {
+            res.push_back(it);
+        }
+    }
+    return res;
+}
+
 
 void AnnihilationAmps::set_s(const double new_s) { s = new_s; }
 

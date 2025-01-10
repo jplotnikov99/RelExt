@@ -9,7 +9,7 @@ void FO1DM::set_appr(const bool &apprr) {
 
 void FO1DM::set_xtoday(const double &xtodayy) { xtoday = xtodayy; }
 
-double FO1DM::omega(const double &yield) { return 2.742e8 * BI.MI.MDM * yield; }
+double FO1DM::omega(const double &yield) { return 2.742e8 * BI.AA.MDM * yield; }
 
 double FO1DM::operator()(const VecString &channels) {
     double res;

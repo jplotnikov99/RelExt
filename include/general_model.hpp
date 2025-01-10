@@ -12,10 +12,10 @@
 
 namespace DT {
 #define ADDCHANNELINFO(name, m1, m2, m3, m4) \
-    channelnames.push_back(#name);                   \
-    mass1s[#name] = &m1;                             \
-    mass2s[#name] = &m2;                             \
-    mass3s[#name] = &m3;                             \
+    channelnames.push_back(#name);           \
+    mass1s[#name] = &m1;                     \
+    mass2s[#name] = &m2;                     \
+    mass3s[#name] = &m3;                     \
     mass4s[#name] = &m4;
 
 #define ADDCHANNEL(name, namefl) \
@@ -56,10 +56,7 @@ struct ModelInfo {
     bool check_par_existence(const std::string &par);
     bool change_parameter(const std::string &par, const double newval,
                           const bool load = true);
-    bool check_channel_existence(const std::string &channel);
-    void get_channel_masses(double &m1, double &m2, double &m3, double &m4,
-                            const std::string &channel);
-    VecString find_channels_by_particle(const std::string &particle);
+
     void assign_bath_masses(const VecString &prtcls = {});
     VecString find_thermal_procs(const VecString &prtcls = {});
     void assigndm();
@@ -68,7 +65,7 @@ struct ModelInfo {
     ModelInfo();
 };
 
-class AnnihilationAmps{
+class AnnihilationAmps : public ModelInfo {
    private:
     double s;
     fmap amp2s;
@@ -79,6 +76,10 @@ class AnnihilationAmps{
     AnnihilationAmps();
 
     void init();
+    bool check_channel_existence(const std::string &channel);
+    void get_channel_masses(double &m1, double &m2, double &m3, double &m4,
+                            const std::string &channel);
+    VecString find_channels_by_particle(const std::string &particle);
     void set_s(const double new_s);
     void set_channel(const VecString &ch_str, const bool flux = true);
     double operator()(const double cos_t);

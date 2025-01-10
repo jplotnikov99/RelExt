@@ -20,8 +20,8 @@ class FO1DM {
     bool appr, suppress = false;
 
    public:
-    FO1DM(ModelInfo &model, const bool &apprr)
-        : BI(model), appr(apprr), foc(BI, apprr ? 1.5 : 0.1) {};
+    FO1DM(AnnihilationAmps &AnAmps, const bool &apprr)
+        : BI(AnAmps), appr(apprr), foc(BI, apprr ? 1.5 : 0.1) {};
     void set_appr(const bool &apprr);
     void set_xtoday(const double &xtoday);
     double omega(const double &yield);

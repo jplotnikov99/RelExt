@@ -11,10 +11,10 @@ namespace DT {
 
 struct BeqInfo {
     const double G = 6.7e-39;
-    ModelInfo &MI;
+    AnnihilationAmps &AA;
     Dof &dof;
     Tac tac;
-    BeqInfo(ModelInfo &model);
+    BeqInfo(AnnihilationAmps &AnAmps);
 
     // clear TAC maps which are necessary for faster computation
     void reset_tac_state(const bool full);
@@ -65,7 +65,7 @@ class Beqs : public BeqInfo {
     size_t mech = 0;
 
    public:
-    Beqs(ModelInfo &model) : BeqInfo(model) {};
+    Beqs(AnnihilationAmps &AnAmps) : BeqInfo(AnAmps) {};
     // set the DM generatio mechanism
     void set_mechanism(const size_t &m);
 

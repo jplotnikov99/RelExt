@@ -24,7 +24,7 @@ class Main {
     VecDoub channel_frac;
     VecString bath_procs;
     MatString generator_list;
-    ModelInfo &MI;
+    AnnihilationAmps &AA;
     FO1DM FO;
     std::unique_ptr<DataReader> rdr;
     std::unique_ptr<MonteCarlo> MC;

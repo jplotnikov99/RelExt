@@ -5,13 +5,13 @@ Main::Main(const int modee, const std::string &inputfile,
            const std::string &outputfile, double beps, const double xtoday,
            const bool fast, const bool savecontribs, const int start,
            const int end)
-    : MI(*new ModelInfo),
+    : AA(*new AnnihilationAmps),
       mode(modee),
       output_file(outputfile),
       save_contribs(savecontribs),
       start_point(start),
       end_point(end + 1),
-      FO(MI, fast) {
+      FO(AA, fast) {
     srand((unsigned)time(NULL));
 
     if (beps >= 1.) beps = 0.99;
@@ -64,7 +64,7 @@ void Main::load_generation_file() {
                    "Error in InputFile: " << it.at(0)
                                           << " is missing a boundary value")
         }
-        MI.check_par_existence(it.at(0));
+        AA.check_par_existence(it.at(0));
     }
 }
 
@@ -82,7 +82,7 @@ void Main::load_read_file() {
     ASSERT((end_point - 1) >= start_point,
            "StartPoint cannot be larger than EndPoint")
 
-    rdr->scanpars = rdr->assignHeaders(MI.parmap);
+    rdr->scanpars = rdr->assignHeaders(AA.parmap);
 }
 
 void Main::load_parameters(const size_t i) {
@@ -91,7 +91,7 @@ void Main::load_parameters(const size_t i) {
             case 1:
                 if (first_run)
                     for (auto it : generator_list) {
-                        *MI.parmap[it.at(0)] = std::stod(it.at(3));
+                        *AA.parmap[it.at(0)] = std::stod(it.at(3));
                     }
                 break;
             case 2: {
@@ -99,7 +99,7 @@ void Main::load_parameters(const size_t i) {
                     if (MC) {
                         VecDoub new_pars = MC->generate_new_pars();
                         for (size_t j = 0; j < generator_list.size(); j++) {
-                            MI.change_parameter(generator_list[j][0],
+                            AA.change_parameter(generator_list[j][0],
                                                 new_pars[j], false);
                         }
                     } else {
@@ -108,10 +108,10 @@ void Main::load_parameters(const size_t i) {
                         for (auto it : generator_list) {
                             a = generate_random(std::stod(it[1]),
                                                 std::stod(it[2]));
-                            MI.change_parameter(it[0], a, false);
+                            AA.change_parameter(it[0], a, false);
                         }
                     }
-                } while (!MI.load_everything());
+                } while (!AA.load_everything());
             } break;
             case 3:
                 rdr->read_parameter(i);
@@ -119,23 +119,23 @@ void Main::load_parameters(const size_t i) {
             default:
                 break;
         }
-    } while (!MI.load_everything());
+    } while (!AA.load_everything());
     std::cout << "Parameter point: " << i << std::endl;
 }
 
 double Main::get_parameter(const std::string &par) {
-    MI.check_par_existence(par);
-    return *MI.parmap[par];
+    AA.check_par_existence(par);
+    return *AA.parmap[par];
 }
 
 void Main::change_parameter(const std::string &par, const double newval) {
-    MI.check_par_existence(par);
-    MI.change_parameter(par, newval);
+    AA.check_par_existence(par);
+    AA.change_parameter(par, newval);
 }
 
 VecString Main::def_thermal_bath(const VecString bath_particles) {
-    MI.assign_bath_masses(bath_particles);
-    return MI.find_thermal_procs(bath_particles);
+    AA.assign_bath_masses(bath_particles);
+    return AA.find_thermal_procs(bath_particles);
 }
 
 void Main::set_channels(const VecString &consider, VecString &subtract,
@@ -144,14 +144,14 @@ void Main::set_channels(const VecString &consider, VecString &subtract,
     if (neglect.size() != 0) {
         VecString temp;
         for (auto it : neglect) {
-            temp = MI.find_channels_by_particle(it);
+            temp = AA.find_channels_by_particle(it);
             append_to_VecString(subtract, temp);
         }
     }
     // remove all channels that need to be neglected
     if (subtract.size() != 0) {
         for (auto it : subtract) {
-            ASSERT(MI.check_channel_existence(it),
+            ASSERT(AA.check_channel_existence(it),
                    "Error in SubtractChannels: " << it
                                                  << " is not a valid channel.")
             for (size_t i = 0; i < bath_procs.size(); i++) {
@@ -192,16 +192,16 @@ void Main::ChangeThermalBath(const VecString &args) {
     bath_procs = def_thermal_bath(bath_particles);
     // set_channels();
 
-    MI.assigndm();
-    MI.calc_widths_and_scale();
-    MI.load_parameters();
-    MI.load_tokens();
+    AA.assigndm();
+    AA.calc_widths_and_scale();
+    AA.load_parameters();
+    AA.load_tokens();
 }
 
 void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
                     const std::string outfile, const VecString channels) {
     AnnihilationAmps AA;
-    std::unique_ptr<SigvInt> sigv = std::make_unique<SigvInt>(MI, AA);
+    std::unique_ptr<SigvInt> sigv = std::make_unique<SigvInt>(AA);
     std::unique_ptr<DataReader> xsr =
         std::make_unique<DataReader>(output_file, 2);
 
@@ -226,7 +226,7 @@ void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
 
 void Main::CalcTac(double xmin, double xmax, const size_t points,
                    const std::string outfile, VecString channels) {
-    Tac tac(MI);
+    Tac tac(AA);
     std::unique_ptr<DataReader> TAR = std::make_unique<DataReader>(outfile, 2);
     ASSERT((xmin > 0) && (xmax > 0),
            "Boundaries in " << __func__ << "can not have negative values.")
@@ -235,7 +235,7 @@ void Main::CalcTac(double xmin, double xmax, const size_t points,
         xmax = xmin;
         xmin = temp;
     }
-    if (channels.size() == 0) channels = MI.channelnames;
+    if (channels.size() == 0) channels = AA.channelnames;
     double step = (xmax - xmin) / ((double)points);
     double res;
     double beps_save = beps_eps;
@@ -266,7 +266,7 @@ void Main::InitMonteCarlo(const size_t Nbins, const double prandom,
 void Main::SetWeight() {
     VecDoub pars(generator_list.size());
     for (size_t i = 0; i < generator_list.size(); i++)
-        pars[i] = *MI.parmap[generator_list[i][0]];
+        pars[i] = *AA.parmap[generator_list[i][0]];
     MC->set_weight(pars, omega);
 }
 
@@ -290,7 +290,7 @@ double Main::CalcRelic(const int mechanism) {
 
 void Main::FindParameter(const std::string &par, const double target,
                          const double eps) {
-    MI.check_par_existence(par);
+    AA.check_par_existence(par);
     double a, b;
     for (auto it : generator_list)
         if (it.at(0) == par) {
@@ -298,9 +298,9 @@ void Main::FindParameter(const std::string &par, const double target,
             b = std::stod(it[2]);
             break;
         }
-    OmegaGoal OMG(MI, FO, {par}, bath_procs, target);
+    OmegaGoal OMG(AA, FO, {par}, bath_procs, target);
     FindRoot fr(a, b, eps, target);
-    fr.find(OMG, *MI.parmap[par]);
+    fr.find(OMG, *AA.parmap[par]);
     omega = OMG.get_omega();
     std::cout << "Omega full:\n" << omega << "\n\n";
     if (save_contribs) {
@@ -317,7 +317,7 @@ void Main::RWalk(const double target, const double eps) {
         lower[i] = std::stod(generator_list[i][1]);
         upper[i] = std::stod(generator_list[i][2]);
     }
-    OmegaGoal OMG(MI, FO, pars, bath_procs, target);
+    OmegaGoal OMG(AA, FO, pars, bath_procs, target);
     RandomWalk RW(lower, upper, eps);
     VecDoub xnew(RW.walk(OMG));
     OMG(xnew);
@@ -347,7 +347,7 @@ void Main::SaveData(const VecString &save_pars) {
         outfile << "Omega";
 
         for (auto it : save_pars) {
-            MI.check_par_existence(it);
+            AA.check_par_existence(it);
             outfile << "\t" << it;
         }
         if (save_contribs) {
@@ -359,7 +359,7 @@ void Main::SaveData(const VecString &save_pars) {
     }
     outfile << omega;
     for (auto it : save_pars) {
-        outfile << "\t" << *MI.parmap[it];
+        outfile << "\t" << *AA.parmap[it];
     }
     for (size_t i = 0; i < channel_frac.size(); i++) {
         outfile << "\t" << channel_frac[i];
@@ -377,6 +377,6 @@ Main::~Main() {
         }
         MC->save_best_bins(par_names, output_file);
     }
-    delete &MI;
+    delete &AA;
 }
 }  // namespace DT
