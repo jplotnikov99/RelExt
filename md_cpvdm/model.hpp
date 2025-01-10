@@ -489,16 +489,6 @@ namespace DT{
 	double HcHCDdfl(const double &cos_t, const double &s);
 	double HcHCSsfl(const double &cos_t, const double &s);
 	double HcHCBbfl(const double &cos_t, const double &s);
-	double H1H1(const double &cos_t, const double &s);
-	double H1H2(const double &cos_t, const double &s);
-	double H1H3(const double &cos_t, const double &s);
-	double H1Hc(const double &cos_t, const double &s);
-	double H2H2(const double &cos_t, const double &s);
-	double H2H3(const double &cos_t, const double &s);
-	double H2Hc(const double &cos_t, const double &s);
-	double H3H3(const double &cos_t, const double &s);
-	double H3Hc(const double &cos_t, const double &s);
-	double HcHc(const double &cos_t, const double &s);
 	double whhh();
 	double whH1H1();
 	double whH1H2();

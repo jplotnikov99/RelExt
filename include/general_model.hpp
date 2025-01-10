@@ -12,15 +12,15 @@
 
 namespace DT {
 #define ADDCHANNELINFO(name, m1, m2, m3, m4) \
-    channelnames.push_back(#name);           \
-    mass1s[#name] = &m1;                     \
-    mass2s[#name] = &m2;                     \
-    mass3s[#name] = &m3;                     \
-    mass4s[#name] = &m4;
+    channelnames.push_back(name);            \
+    mass1s[name] = &m1;                      \
+    mass2s[name] = &m2;                      \
+    mass3s[name] = &m3;                      \
+    mass4s[name] = &m4;
 
-#define ADDCHANNEL(name, namefl) \
-    amp2s[#name] = name;         \
-    amp2fls[#name] = namefl;
+#define ADDCHANNEL(name, amp, ampfl) \
+    amp2s[name] = amp;               \
+    amp2fls[name] = ampfl;
 
 #define CHECKCONDITION(condition) \
     if (!(condition)) return false;
@@ -37,6 +37,7 @@ struct ModelInfo {
     sMapDp mass2s;
     sMapDp mass3s;
     sMapDp mass4s;
+    sMapDp prtcls;
     std::vector<double *> neutraldsmasses;
     std::unordered_map<std::string, double> DSdof;
     std::map<std::string, double *> parmap;
@@ -48,6 +49,7 @@ struct ModelInfo {
 
     void init();
     void calc_widths_and_scale();
+    void load_prtcls();
     void load_parameters();
     void load_parameter_map();
     void load_tokens();

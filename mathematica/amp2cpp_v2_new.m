@@ -441,6 +441,13 @@ Select[particlelist, #[[1]]== templist2[[i, 4]]&][[1,3]],
 {i, Length[templist2]}];
 processname=Table[ToExpression[StringReplace[ToString[processname[[i]]], {"~"->""}]], {i,Length[processname]}];
 
+processID=Table[
+Select[particlelist, #[[1]]== templist2[[i, 1]]&][[1,3]]<>","<>
+Select[particlelist, #[[1]]== templist2[[i, 2]]&][[1,3]]<>","<>
+Select[particlelist, #[[1]]== templist2[[i, 3]]&][[1,3]]<>","<>
+Select[particlelist, #[[1]]== templist2[[i, 4]]&][[1,3]], 
+{i, Length[templist2]}];
+
 
 (*computation of the amplitudes^2 for all the 2to2 processes in foutlist*)
 calcAmp2s:=
@@ -886,9 +893,6 @@ Do[
 Do[
 	Write[sfile, "\tdouble " , ToString[inifunc[i][[j,1]]] , "fl(const double &cos_t, const double &s);"];
 ,{i,Length[possibleini]},{j,Length[inifunc[i]]}];
-Do[
-	Write[sfile, "\tdouble " , ToString[possibleini[[i]]] , "(const double &cos_t, const double &s);"];
-,{i,Length[possibleini]}];
 
 (*widths*)
 Do[
@@ -931,6 +935,33 @@ Do[
 	Write[sfile, "\tdouble", " ", ToString[tokenreverse[[i,1]]] , ";"]
 ,{i,Length[tokenreverse]}];
 
+Write[sfile, "}"];
+Close[sfile];
+
+
+(*particle info file*)
+sfile=OpenWrite[directory<>"sources/prtcls.cpp",FormatType->StandardForm,TotalWidth->Infinity, PageWidth->Infinity];
+Write[sfile, mathlabel];
+Write[sfile, "#include \"general_model.hpp\""]
+Write[sfile, "#include \"../model.hpp\"\n"]
+Write[sfile, "namespace DT{"];
+Write[sfile,"\tvoid ModelInfo::load_prtcls()"];
+Write[sfile,"\t{"];
+Do[
+	If[StringContainsQ[ToString[particlelist[[i,1]]],"-"],
+		Break[];
+	];
+	pmass=particlelist[[i,2]]/.subrule;
+	If[pmass===0,pmass="ZERO"];
+	pname=particlelist[[i,3]];
+	If[!SelfConjugate[particlelist[[i,1]]],
+		antipos=Position[particlelist,-particlelist[[i,1]]][[1,1]];
+		antipname=particlelist[[antipos,3]];
+		Write[sfile,"\t\tprtcls[\"",ToString[pname]<>","<>ToString[antipname]<>"\"] = &"<>ToString[pmass]<>";"],
+		Write[sfile,"\t\tprtcls[\"",ToString[pname]<>","<>ToString[pname]<>"\"] = &"<>ToString[pmass]<>";"];
+	]
+,{i,Length[particlelist]}]
+Write[sfile,"\t}"];
 Write[sfile, "}"];
 Close[sfile];
 

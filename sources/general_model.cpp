@@ -98,8 +98,8 @@ void ModelInfo::assign_masses(double &m1, double &m2,
 AnnihilationAmps::AnnihilationAmps() { init(); }
 
 bool AnnihilationAmps::check_channel_existence(const std::string &channel) {
-    for (auto it : channelnames) {
-        if (it == channel) {
+    for (auto it : amp2s) {
+        if (it.first == channel) {
             return true;
         }
     }
