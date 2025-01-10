@@ -7,26 +7,41 @@
 namespace DT{
 	void ModelInfo::load_prtcls()
 	{
-		prtcls["ve,VE"] = &Mnue;
-		prtcls["vm,VM"] = &Mnum;
-		prtcls["vt,VT"] = &Mnut;
-		prtcls["e,E"] = &Me;
-		prtcls["m,M"] = &MM;
-		prtcls["ta,TA"] = &MTA;
-		prtcls["u,U"] = &MU;
-		prtcls["c,C"] = &MC;
-		prtcls["t,T"] = &MT;
-		prtcls["d,D"] = &MD;
-		prtcls["s,S"] = &MS;
-		prtcls["b,B"] = &MB;
-		prtcls["A,A"] = &ZERO;
-		prtcls["Z,Z"] = &MZ;
-		prtcls["W,w"] = &MW;
-		prtcls["G,G"] = &ZERO;
-		prtcls["h,h"] = &mHsm;
-		prtcls["H1,H1"] = &mH1;
-		prtcls["H2,H2"] = &mH2;
-		prtcls["H3,H3"] = &mH3;
-		prtcls["Hc,HC"] = &mHc;
+		prtcls["ve"] = &Mnue;
+		prtcls["vm"] = &Mnum;
+		prtcls["vt"] = &Mnut;
+		prtcls["e"] = &Me;
+		prtcls["m"] = &MM;
+		prtcls["ta"] = &MTA;
+		prtcls["u"] = &MU;
+		prtcls["c"] = &MC;
+		prtcls["t"] = &MT;
+		prtcls["d"] = &MD;
+		prtcls["s"] = &MS;
+		prtcls["b"] = &MB;
+		prtcls["A"] = &ZERO;
+		prtcls["Z"] = &MZ;
+		prtcls["W"] = &MW;
+		prtcls["G"] = &ZERO;
+		prtcls["h"] = &mHsm;
+		prtcls["H1"] = &mH1;
+		prtcls["H2"] = &mH2;
+		prtcls["H3"] = &mH3;
+		prtcls["Hc"] = &mHc;
+
+		aprtcls["VE"] = &Mnue;
+		aprtcls["VM"] = &Mnum;
+		aprtcls["VT"] = &Mnut;
+		aprtcls["E"] = &Me;
+		aprtcls["M"] = &MM;
+		aprtcls["TA"] = &MTA;
+		aprtcls["U"] = &MU;
+		aprtcls["C"] = &MC;
+		aprtcls["T"] = &MT;
+		aprtcls["D"] = &MD;
+		aprtcls["S"] = &MS;
+		aprtcls["B"] = &MB;
+		aprtcls["w"] = &MW;
+		aprtcls["HC"] = &mHc;
 	}
 }

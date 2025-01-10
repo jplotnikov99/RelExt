@@ -33,11 +33,8 @@ typedef std::unordered_map<std::string, double *> sMapDp;
 struct ModelInfo {
     sMapDp DSmasses;
     VecString channelnames;
-    sMapDp mass1s;
-    sMapDp mass2s;
-    sMapDp mass3s;
-    sMapDp mass4s;
     sMapDp prtcls;
+    sMapDp aprtcls;
     std::vector<double *> neutraldsmasses;
     std::unordered_map<std::string, double> DSdof;
     std::map<std::string, double *> parmap;
@@ -55,14 +52,13 @@ struct ModelInfo {
     void load_tokens();
     bool check_conditions();
     bool load_everything();
+    double get_prtcl_mass(const std::string &prtcl);
     bool check_par_existence(const std::string &par);
     bool change_parameter(const std::string &par, const double newval,
                           const bool load = true);
 
     void assign_bath_masses(const VecString &prtcls = {});
-    VecString find_thermal_procs(const VecString &prtcls = {});
     void assigndm();
-    void assign_masses(double &m1, double &m2, const std::string &channel);
 
     ModelInfo();
 };
@@ -78,10 +74,14 @@ class AnnihilationAmps : public ModelInfo {
     AnnihilationAmps();
 
     void init();
-    bool check_channel_existence(const std::string &channel);
+    void channel_parity(int &p1, int &p2, const std::string &channel);
+    bool check_channel_existence(std::string &channel);
+    VecString get_channel_prtcls(const std::string &channel);
     void get_channel_masses(double &m1, double &m2, double &m3, double &m4,
                             const std::string &channel);
     VecString find_channels_by_particle(const std::string &particle);
+    void assign_masses(double &m1, double &m2, const std::string &channel);
+    VecString find_thermal_procs(const VecString &prtcls = {});
     void set_s(const double new_s);
     void set_channel(const VecString &ch_str, const bool flux = true);
     double operator()(const double cos_t);

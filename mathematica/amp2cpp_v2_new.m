@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
-directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_bmd5/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
+directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cpvdm/FR_modfiles" <> "/FA_modfiles";
 (*directory = "/home/rodrigo/Downloads/darktree_new/md_cpvdm/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
@@ -954,13 +954,24 @@ Do[
 	pmass=particlelist[[i,2]]/.subrule;
 	If[pmass===0,pmass="ZERO"];
 	pname=particlelist[[i,3]];
+	Write[sfile,"\t\tprtcls[\"",ToString[pname],"\"] = &"<>ToString[pmass]<>";"];
+	
+,{i,Length[particlelist]}]
+
+Do[
+	If[StringContainsQ[ToString[particlelist[[i,1]]],"-"],
+		Break[];
+	];
+	pmass=particlelist[[i,2]]/.subrule;
+	If[pmass===0,pmass="ZERO"];
+	pname=particlelist[[i,3]];
 	If[!SelfConjugate[particlelist[[i,1]]],
 		antipos=Position[particlelist,-particlelist[[i,1]]][[1,1]];
 		antipname=particlelist[[antipos,3]];
-		Write[sfile,"\t\tprtcls[\"",ToString[pname]<>","<>ToString[antipname]<>"\"] = &"<>ToString[pmass]<>";"],
-		Write[sfile,"\t\tprtcls[\"",ToString[pname]<>","<>ToString[pname]<>"\"] = &"<>ToString[pmass]<>";"];
+		Write[sfile,"\t\taprtcls[\"",ToString[antipname],"\"] = &"<>ToString[pmass]<>";"]
 	]
 ,{i,Length[particlelist]}]
+
 Write[sfile,"\t}"];
 Write[sfile, "}"];
 Close[sfile];
@@ -986,16 +997,6 @@ Do[
 	Write[sfile, "\t\tneutraldsmasses.push_back(&", neutraldsmasses[[i]],");"];
 ,{i,Length[neutraldsmasses]}]
 Do[
-Write[sfile, "\t\tADDCHANNELINFO(",ToString[processname[[i]]],", "
-, If[mi[[i]]===0, "ZERO", ToString[ReplaceAll[mi[[i]],subrule]]],
-", ",
-If[mj[[i]]===0, "ZERO", ToString[ReplaceAll[mj[[i]],subrule]]],", "
-,
-If[mk[[i]]===0, "ZERO", ToString[ReplaceAll[mk[[i]],subrule]]],
-", ",
-If[ml[[i]]===0, "ZERO", ToString[ReplaceAll[ml[[i]],subrule]]],")"];
-,{i,Length[processname]}]
-Do[
 	Write[sfile, "\t\tdenstructures.push_back(&", StringReplace[ToString[relevantWs[[i]]],{"FeynCalc`"->""}] ,");"];
 ,{i,Length[relevantWs]}]
 Write[sfile,"\t\tN_widths = ",ToString[Length[relevantWs]/2],";"];
@@ -1007,7 +1008,7 @@ Write[sfile,"\tvoid AnnihilationAmps::init()"];
 Write[sfile,"\t{"];
 
 Do[
-Write[sfile, "\t\tADDCHANNEL(",ToString[processname[[i]]],", ", ToString[processname[[i]]],"fl)"];
+Write[sfile, "\t\tADDCHANNEL(\"",processID[[i]],"\",",ToString[processname[[i]]],", ", ToString[processname[[i]]],"fl)"];
 ,{i,Length[processname]}]
 
 Write[sfile,"\t}"];

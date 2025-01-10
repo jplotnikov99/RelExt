@@ -109,9 +109,7 @@ double SigvInt::operator()(const double &u) {
 }
 
 Tac::Tac(AnnihilationAmps &AnAmps)
-    : AA(AnAmps),
-      sigv(AA),
-      boundaries(3 * AA.N_widths) {}
+    : AA(AnAmps), sigv(AA), boundaries(3 * AA.N_widths) {}
 
 bool Tac::sort_inimasses(const VecString &ch_str) {
     double temp;

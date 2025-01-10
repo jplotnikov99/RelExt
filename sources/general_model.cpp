@@ -4,13 +4,14 @@ namespace DT {
 
 ModelInfo::ModelInfo() {
     init();
+    load_prtcls();
     load_parameter_map();
 }
 
 bool ModelInfo::load_everything() {
     load_parameters();
     assigndm();
-    calc_widths_and_scale();
+    // calc_widths_and_scale();
     load_parameters();
     load_tokens();
     return check_conditions();
@@ -23,6 +24,13 @@ bool ModelInfo::check_par_existence(const std::string &par) {
         exit(1);
     }
     return exists;
+}
+
+double ModelInfo::get_prtcl_mass(const std::string &prtcl) {
+    std::string stemp;
+    size_t found;
+    if (aprtcls.count(prtcl) == 0) return *prtcls[prtcl];
+    return *aprtcls[prtcl];
 }
 
 bool ModelInfo::change_parameter(const std::string &par, const double newval,
@@ -45,20 +53,135 @@ void ModelInfo::assign_bath_masses(const VecString &prtcls) {
     }
 }
 
-VecString ModelInfo::find_thermal_procs(const VecString &prtcls) {
+void ModelInfo::assigndm() {
+    MDM = 1e16;
+
+    for (auto it : bath_masses) {
+        if (MDM > *DSmasses[it]) {
+            MDM = *DSmasses[it];
+        }
+    }
+}
+
+AnnihilationAmps::AnnihilationAmps() { init(); }
+
+void AnnihilationAmps::channel_parity(int &p1, int &p2,
+                                      const std::string &channel) {
+    VecString prs = get_channel_prtcls(channel);
+    int p[4];
+    for (size_t i = 0; i < 4; i++) {
+        if (aprtcls.count(prs[i]) == 0) {
+            if (prtcls.count(prs[i]) == 0) {
+                std::cout << prs[i]
+                          << " is not a valid particle of the model.\n";
+                exit(1);
+            }
+            p[i] = 1;
+        } else
+            p[i] = -1;
+    }
+    p1 = p[0] * p[1];
+    p2 = p[2] * p[3];
+}
+
+bool AnnihilationAmps::check_channel_existence(std::string &channel) {
+    VecString prs = get_channel_prtcls(channel);
+    for (size_t i = 0; i < 4; i++)
+        if (aprtcls.count(prs[i]) == 0)
+            if (prtcls.count(prs[i]) == 0) {
+                std::cout << prs[i]
+                          << " is not a valid particle of the model.\n";
+                exit(1);
+            }
+    VecString temp(4);
+    bool res;
+    for (auto &it : amp2s) {
+        temp = get_channel_prtcls(it.first);
+        if (temp[0] == prs[0]) {
+            if (temp[1] == prs[1]) res = true;
+        } else if (temp[0] == prs[1]) {
+            if (temp[1] == prs[0]) res = true;
+        } else
+            res = false;
+        if (res) {
+            if (temp[2] == prs[2]) {
+                if (temp[3] == prs[3]) {
+                    channel = it.first;
+                    return true;
+                }
+            } else if (temp[2] == prs[3])
+                if (temp[3] == prs[2]) {
+                    channel = it.first;
+                    return true;
+                }
+        }
+    }
+    return false;
+}
+
+VecString AnnihilationAmps::get_channel_prtcls(const std::string &channel) {
+    VecString res(4);
+    std::string prtcl;
+    std::stringstream temp(channel);
+    for (size_t i = 0; i < 4; i++) {
+        std::getline(temp, res[i], ',');
+    }
+    return res;
+}
+
+void AnnihilationAmps::get_channel_masses(double &m1, double &m2, double &m3,
+                                          double &m4,
+                                          const std::string &channel) {
+    VecString prs = get_channel_prtcls(channel);
+    m1 = get_prtcl_mass(prs[0]);
+    m2 = get_prtcl_mass(prs[1]);
+    m3 = get_prtcl_mass(prs[2]);
+    m4 = get_prtcl_mass(prs[3]);
+}
+
+VecString AnnihilationAmps::find_channels_by_particle(
+    const std::string &prtcl) {
+    VecString res = {};
+    VecString temp(4);
+    for (auto it : amp2s) {
+        temp = get_channel_prtcls(it.first);
+        for (auto &jt : temp)
+            if (jt == prtcl) {
+                res.push_back(it.first);
+                break;
+            }
+    }
+    return res;
+}
+
+void AnnihilationAmps::assign_masses(double &m1, double &m2,
+                                     const std::string &channel) {
+    double m11, m22, m33, m44;
+    VecString prs = get_channel_prtcls(channel);
+    get_channel_masses(m11, m22, m33, m44, channel);
+    if (m11 + m22 >= m33 + m44)
+        m1 = m11, m2 = m22;
+    else
+        m1 = m33, m2 = m44;
+}
+
+VecString AnnihilationAmps::find_thermal_procs(const VecString &prtcls) {
     bool existance = false;
     VecString res = {};
     size_t found;
-    if (prtcls.size() == 0) return channelnames;
+    if (prtcls.size() == 0) {
+        for (auto &it : amp2s) res.push_back(it.first);
+        return res;
+    }
     for (auto it : prtcls) {
         existance = false;
-        for (auto jt : channelnames) {
-            found = jt.find(it);
+        for (auto jt : amp2s) {
+            found = jt.first.find(it);
             if (found != std::string::npos) {
                 for (auto kt : prtcls) {
-                    if (jt.find(kt, found + 1) != std::string::npos) {
+                    if (jt.first.find(kt, found + 2) != std::string::npos) {
                         existance = true;
-                        res.push_back(jt);
+                        res.push_back(jt.first);
                     }
                 }
             }
@@ -72,60 +195,6 @@ VecString ModelInfo::find_thermal_procs(const VecString &prtcls) {
     }
     return res;
 }
-
-void ModelInfo::assigndm() {
-    MDM = 1e16;
-
-    for (auto it : bath_masses) {
-        if (MDM > *DSmasses[it]) {
-            MDM = *DSmasses[it];
-        }
-    }
-}
-
-void ModelInfo::assign_masses(double &m1, double &m2,
-                              const std::string &channel) {
-    if (*mass1s[channel] + *mass2s[channel] >=
-        *mass3s[channel] + *mass4s[channel]) {
-        m1 = *mass1s[channel];
-        m2 = *mass2s[channel];
-    } else {
-        m1 = *mass3s[channel];
-        m2 = *mass4s[channel];
-    }
-}
-
-AnnihilationAmps::AnnihilationAmps() { init(); }
-
-bool AnnihilationAmps::check_channel_existence(const std::string &channel) {
-    for (auto it : amp2s) {
-        if (it.first == channel) {
-            return true;
-        }
-    }
-    return false;
-}
-
-void AnnihilationAmps::get_channel_masses(double &m1, double &m2, double &m3,
-                                   double &m4, const std::string &channel) {
-    m1 = *mass1s.at(channel);
-    m2 = *mass2s.at(channel);
-    m3 = *mass3s.at(channel);
-    m4 = *mass4s.at(channel);
-}
-
-VecString AnnihilationAmps::find_channels_by_particle(const std::string &particle) {
-    VecString res = {};
-    size_t found;
-    for (auto it : channelnames) {
-        found = it.find(particle);
-        if (found != std::string::npos) {
-            res.push_back(it);
-        }
-    }
-    return res;
-}
-
 
 void AnnihilationAmps::set_s(const double new_s) { s = new_s; }
 
