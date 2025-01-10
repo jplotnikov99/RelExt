@@ -11,13 +11,6 @@
 #include "utils.hpp"
 
 namespace DT {
-#define ADDCHANNELINFO(name, m1, m2, m3, m4) \
-    channelnames.push_back(name);            \
-    mass1s[name] = &m1;                      \
-    mass2s[name] = &m2;                      \
-    mass3s[name] = &m3;                      \
-    mass4s[name] = &m4;
-
 #define ADDCHANNEL(name, amp, ampfl) \
     amp2s[name] = amp;               \
     amp2fls[name] = ampfl;

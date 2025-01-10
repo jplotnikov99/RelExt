@@ -259,9 +259,6 @@ namespace DT{
 	double PsiPsiDdfl(const double &cos_t, const double &s);
 	double PsiPsiSsfl(const double &cos_t, const double &s);
 	double PsiPsiBbfl(const double &cos_t, const double &s);
-	double ChiChi(const double &cos_t, const double &s);
-	double ChiPsi(const double &cos_t, const double &s);
-	double PsiPsi(const double &cos_t, const double &s);
 	double wHHH();
 	double wHChiChi();
 	double wHChiPsi();

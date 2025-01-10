@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
-(*directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";*)
-directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cpvdm/FR_modfiles" <> "/FA_modfiles";
+directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
+(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cpvdm/FR_modfiles" <> "/FA_modfiles";*)
 (*directory = "/home/rodrigo/Downloads/darktree_new/md_cpvdm/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
@@ -957,7 +957,7 @@ Do[
 	Write[sfile,"\t\tprtcls[\"",ToString[pname],"\"] = &"<>ToString[pmass]<>";"];
 	
 ,{i,Length[particlelist]}]
-
+Write[sfile,""];
 Do[
 	If[StringContainsQ[ToString[particlelist[[i,1]]],"-"],
 		Break[];

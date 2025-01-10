@@ -17,10 +17,10 @@ class OmegaGoal {
     const VecString pars;
     const VecString channels;
     FO1DM &FO;
-    ModelInfo &MI;
+    AnnihilationAmps &AA;
 
    public:
-    OmegaGoal(ModelInfo &model, FO1DM &fo, const VecString &parss,
+    OmegaGoal(AnnihilationAmps &AnAmps, FO1DM &fo, const VecString &parss,
               const VecString &channelss, const double goall);
     bool valid(VecDoub &x);
     double get_omega();

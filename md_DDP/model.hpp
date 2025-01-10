@@ -390,12 +390,6 @@ namespace DT{
 	double HchHCHDdfl(const double &cos_t, const double &s);
 	double HchHCHSsfl(const double &cos_t, const double &s);
 	double HchHCHBbfl(const double &cos_t, const double &s);
-	double H3H3(const double &cos_t, const double &s);
-	double H3A0(const double &cos_t, const double &s);
-	double H3Hch(const double &cos_t, const double &s);
-	double A0A0(const double &cos_t, const double &s);
-	double A0Hch(const double &cos_t, const double &s);
-	double HchHch(const double &cos_t, const double &s);
 	double wH1H1H1();
 	double wH1H1H2();
 	double wH1H2H2();

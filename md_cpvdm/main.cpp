@@ -26,7 +26,7 @@ static constexpr bool SAVECONTIRIBS = false;
 
 int main() {
     Main M(MODE, INPUTFILE, OUTPUTFILE, BEPS, XTODAY, FAST, SAVECONTIRIBS,
-           START, END);
+           START);
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 
     clock_t begin_time = clock();

@@ -11,7 +11,7 @@ ModelInfo::ModelInfo() {
 bool ModelInfo::load_everything() {
     load_parameters();
     assigndm();
-    // calc_widths_and_scale();
+    calc_widths_and_scale();
     load_parameters();
     load_tokens();
     return check_conditions();

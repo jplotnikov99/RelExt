@@ -185,7 +185,6 @@ namespace DT{
 	double A1A1Ddfl(const double &cos_t, const double &s);
 	double A1A1Ssfl(const double &cos_t, const double &s);
 	double A1A1Bbfl(const double &cos_t, const double &s);
-	double A1A1(const double &cos_t, const double &s);
 	double wHHH();
 	double wHHS1();
 	double wHS1S1();
