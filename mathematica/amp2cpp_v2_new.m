@@ -476,7 +476,7 @@ Do[
 			
 			TheMass[foutlist[[i,3]]] === 0 && TheMass[foutlist[[i,4]]] === 0,
 			sub=tamp2[[i1]]/prefac// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
-			// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2] &// DoPolarizationSums[#, p3,0] & // DoPolarizationSums[#, p4,0] & 
+			// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2] &// DoPolarizationSums[#, p3, p4] & // DoPolarizationSums[#, p4, p3] & 
 			// DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify,
 			
 			True,
