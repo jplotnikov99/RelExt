@@ -96,24 +96,16 @@ bool AnnihilationAmps::check_channel_existence(std::string &channel) {
     VecString temp(4);
     bool res;
     for (auto &it : amp2s) {
+        res = false;
         temp = get_channel_prtcls(it.first);
-        if (temp[0] == prs[0]) {
-            if (temp[1] == prs[1]) res = true;
-        } else if (temp[0] == prs[1]) {
-            if (temp[1] == prs[0]) res = true;
-        } else
-            res = false;
-        if (res) {
-            if (temp[2] == prs[2]) {
-                if (temp[3] == prs[3]) {
-                    channel = it.first;
-                    return true;
-                }
-            } else if (temp[2] == prs[3])
-                if (temp[3] == prs[2]) {
-                    channel = it.first;
-                    return true;
-                }
+        if (((temp[0] == prs[0]) && (temp[1] == prs[1])) ||
+            ((temp[0] == prs[1]) && (temp[1] == prs[0])))
+            res = true;
+        if ((((temp[2] == prs[2]) && (temp[3] == prs[3])) ||
+             ((temp[2] == prs[3]) && (temp[3] == prs[2]))) &&
+            res) {
+            channel = it.first;
+            return true;
         }
     }
     return false;
@@ -213,9 +205,7 @@ void AnnihilationAmps::set_channel(const VecString &ch_str, const bool flux) {
 
 double AnnihilationAmps::operator()(const double cos_t) {
     double res = 0.;
-    for (auto it : cur_channel) {
-        res += it(cos_t, s);
-    }
+    for (auto it : cur_channel) res += it(cos_t, s);
     return res;
 }
 

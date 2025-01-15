@@ -215,10 +215,15 @@ void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
 
     double step = (sqsmax - sqsmin) / ((double)points);
     double res;
+    VecString prs;
+    double dof1, dof2;
     for (double sqs = sqsmin; sqs <= sqsmax; sqs += step) {
         res = 0;
         for (auto it : channels) {
-            res += sigv->xsec(sqs * sqs, it);
+            prs = AA.get_channel_prtcls(it);
+            dof1 = AA.DSdof[prs[0]];
+            dof2 = AA.DSdof[prs[1]];
+            res += sigv->xsec(sqs * sqs, it) / (dof1 * dof2);
         }
         xsr->save_data({"sqrts", "xsec"}, {sqs, res});
     }
