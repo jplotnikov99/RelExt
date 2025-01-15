@@ -17,15 +17,11 @@ double SigvInt::xsec(const double &s, const std::string &channel) {
     AA.set_channel({channel}, false);
     AA.assign_masses(m1, m2, channel);
     AA.set_s(s);
-    if (sqrt(s) < m1 + m2) {
-        return 0.;
-    }
+    if (sqrt(s) < m1 + m2) return 0.;
     AA.get_channel_masses(m1, m2, m3, m4, channel);
 
     double f_est[10];
-    for (size_t i = 0; i < 10; i++) {
-        f_est[i] = AA(-1 + 0.2222222222222222 * i);
-    }
+    for (size_t i = 0; i < 10; i++) f_est[i] = AA(-1 + 0.2222222222222222 * i);
     double est = simpson_est(-1, 1, f_est);
     double f[4];
     f[0] = f_est[0];
@@ -41,9 +37,8 @@ double SigvInt::wij(const double &s) {
     if (sig_s.count(s) == 0) {
         AA.set_s(s);
         double f_est[10];
-        for (size_t i = 0; i < 10; i++) {
+        for (size_t i = 0; i < 10; i++)
             f_est[i] = AA(-1 + 0.2222222222222222 * i);
-        }
         double est = simpson_est(-1, 1, f_est);
         double f[4];
         f[0] = f_est[0];
@@ -138,9 +133,7 @@ double Tac::peak_relevance(const double &peakpos) {
 double *Tac::peak_bounds(const double &peakpos, const double &width) {
     static double bounds[3];
     double n = 0.1;
-    while (peakpos - 2 * width / n < sigv.lower_bound) {
-        n *= 2;
-    }
+    while (peakpos - 2 * width / n < sigv.lower_bound) n *= 2;
 
     bounds[0] = 1 / ((peakpos - 2 * width / n) * (peakpos - 2 * width / n) -
                      sigv.lower_bound * sigv.lower_bound + 1);
@@ -165,7 +158,6 @@ void Tac::i_sort_boundaries() {
             boundaries[3 * l] = boundaries[3 * (l - 1)];
             boundaries[3 * l + 1] = boundaries[3 * (l - 1) + 1];
             boundaries[3 * l + 2] = boundaries[3 * (l - 1) + 2];
-
             l--;
         }
         boundaries[3 * l] = current[0];
@@ -175,11 +167,9 @@ void Tac::i_sort_boundaries() {
 }
 
 void Tac::check_boundaries() {
-    for (size_t i = 0; i < boundaries.size() - 1; i++) {
-        if (boundaries[i] < boundaries[i + 1]) {
+    for (size_t i = 0; i < boundaries.size() - 1; i++)
+        if (boundaries[i] < boundaries[i + 1])
             boundaries[i + 1] = boundaries[i];
-        }
-    }
 }
 
 void Tac::set_boundaries(const double &x) {
@@ -226,10 +216,9 @@ void Tac::estimate_integrate_s(const double &x, double &res, double &estimate) {
         res = res + integrate_peaks(x);
         estimate += res;
 
-        for (size_t i = 1; i < N_relevant_peaks; i++) {
+        for (size_t i = 1; i < N_relevant_peaks; i++)
             estimate += kronrod_61(sigv, boundaries[3 * i],
                                    boundaries[3 * i - 1], error);
-        }
 
         estimate +=
             (kronrod_61(sigv, 0, boundaries[3 * N_relevant_peaks - 1], error) +

@@ -1194,6 +1194,9 @@ Do[
 		Write[sfile, "double DT::ww" , ToString[possibleiniDecays[[i]]] , "(const double QCDaS){"];
 		Write[sfile, "\tdouble width = 0;"];
 		Write[sfile, "\tstd::unique_ptr<Width> w = std::make_unique<Width>(", inifuncDecays[i][[1,2]],");"];
+		If[determineType[inifuncDecays[1][[1]],5]=="pseudoscalar",
+			Write[sfile, "\tw->set_pseudo();"]
+		] 
 		Write[sfile, "\tw->set_alphaS(QCDaS);"];
 		m2vect="( { ";
 		m3vect="( { ";

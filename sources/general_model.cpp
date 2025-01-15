@@ -42,25 +42,16 @@ bool ModelInfo::change_parameter(const std::string &par, const double newval,
 
 void ModelInfo::assign_bath_masses(const VecString &prtcls) {
     bath_masses.clear();
-    if (prtcls.size() == 0) {
-        for (auto it : DSmasses) {
-            bath_masses.push_back(it.first);
-        }
-    } else {
-        for (auto it : prtcls) {
-            bath_masses = prtcls;
-        }
-    }
+    if (prtcls.size() == 0)
+        for (auto it : DSmasses) bath_masses.push_back(it.first);
+    else
+        for (auto it : prtcls) bath_masses = prtcls;
 }
 
 void ModelInfo::assigndm() {
     MDM = 1e16;
-
-    for (auto it : bath_masses) {
-        if (MDM > *DSmasses[it]) {
-            MDM = *DSmasses[it];
-        }
-    }
+    for (auto it : bath_masses)
+        if (MDM > *DSmasses[it]) MDM = *DSmasses[it];
 }
 
 AnnihilationAmps::AnnihilationAmps() { init(); }
@@ -115,9 +106,7 @@ VecString AnnihilationAmps::get_channel_prtcls(const std::string &channel) {
     VecString res(4);
     std::string prtcl;
     std::stringstream temp(channel);
-    for (size_t i = 0; i < 4; i++) {
-        std::getline(temp, res[i], ',');
-    }
+    for (size_t i = 0; i < 4; i++) std::getline(temp, res[i], ',');
     return res;
 }
 
@@ -192,15 +181,10 @@ void AnnihilationAmps::set_s(const double new_s) { s = new_s; }
 
 void AnnihilationAmps::set_channel(const VecString &ch_str, const bool flux) {
     cur_channel.clear();
-    if (flux) {
-        for (auto it : ch_str) {
-            cur_channel.push_back(amp2fls[it]);
-        }
-    } else {
-        for (auto it : ch_str) {
-            cur_channel.push_back(amp2s[it]);
-        }
-    }
+    if (flux)
+        for (auto it : ch_str) cur_channel.push_back(amp2fls[it]);
+    else
+        for (auto it : ch_str) cur_channel.push_back(amp2s[it]);
 }
 
 double AnnihilationAmps::operator()(const double cos_t) {

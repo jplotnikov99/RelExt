@@ -37,6 +37,7 @@ class Width {
    public:
     // formulas and expression taken from [1612.07651] and [2106.05038]
     Width(const double m) : mh(m) {};
+    void set_pseudo();
     void set_alphaS(const double x);
     double Li2(const double x);
     double R_T(const double x);

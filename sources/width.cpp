@@ -1,6 +1,9 @@
 #include "../include/width.hpp"
 
 namespace DT {
+
+void Width::set_pseudo() { is_pseudo = true; }
+
 void Width::set_alphaS(const double x) { aS = x; }
 
 double Width::Li2(const double x) {
