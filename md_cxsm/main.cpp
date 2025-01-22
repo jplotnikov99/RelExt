@@ -19,24 +19,24 @@ static const VecString NEGLECTPARTICLES = {"u", "d", "e", "mu"};
 static constexpr double BEPS = 1e-6;
 static constexpr double XTODAY = 1e6;
 static constexpr bool FAST = true;
-static constexpr bool SAVECONTIRIBS = false;
+static constexpr bool SAVECONTRIBS = false;
 /*
  ***********************************************
  Until here */
 
 int main() {
-    Main M(MODE, INPUTFILE, OUTPUTFILE, BEPS, XTODAY, FAST, SAVECONTIRIBS,
+    Main M(MODE, INPUTFILE, OUTPUTFILE, BEPS, XTODAY, FAST, SAVECONTRIBS,
            START, END);
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 
     clock_t begin_time = clock();
     double sav;
     for (size_t i = M.start_point; i < M.end_point; i++) {
-        M.load_parameters(i);
-        sav = M.get_parameter("MA1");
+        M.LoadParameters(i);
+        sav = M.GetParameter("MA1");
         M.FindParameter("svev", 0.12, 0.001);
         M.SaveData(SAVEPARS);
-        M.change_parameter("MA1", sav + 1.);
+        M.ChangeParameter("MA1", sav + 1.);
     }
 
     std::cout << "Computation time:\n"

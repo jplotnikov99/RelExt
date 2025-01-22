@@ -46,12 +46,12 @@ class Main {
     void load_user_operations();
 
     // loads parameter point and assigns DM mass
-    void load_parameters(const size_t i = 0);
+    void LoadParameters(const size_t i = 0);
 
     // returns the value of the parameter
-    double get_parameter(const std::string &par);
+    double GetParameter(const std::string &par);
 
-    void change_parameter(const std::string &par, const double newval);
+    void ChangeParameter(const std::string &par, const double newval);
 
     // defines which particles are in the DS bath via the particle names
     VecString def_thermal_bath(const VecString bath_particles = {});

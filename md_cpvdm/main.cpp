@@ -19,20 +19,20 @@ static const VecString NEGLECTPARTICLES = {"u", "d", "e", "mu"};
 static constexpr double BEPS = 1e-6;
 static constexpr double XTODAY = 1e6;
 static constexpr bool FAST = true;
-static constexpr bool SAVECONTIRIBS = false;
+static constexpr bool SAVECONTRIBS = false;
 /*
  ***********************************************
  Until here */
 
 int main() {
-    Main M(MODE, INPUTFILE, OUTPUTFILE, BEPS, XTODAY, FAST, SAVECONTIRIBS,
+    Main M(MODE, INPUTFILE, OUTPUTFILE, BEPS, XTODAY, FAST, SAVECONTRIBS,
            START);
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 
     clock_t begin_time = clock();
     // M.InitMonteCarlo(100, 1, 0.12);
     for (size_t i = M.start_point; i < M.end_point; i++) {
-        M.load_parameters(i);
+        M.LoadParameters(i);
         M.CalcRelic();
         // M.SetWeight();
         M.SaveData(SAVEPARS);

@@ -85,14 +85,13 @@ void Main::load_read_file() {
     rdr->scanpars = rdr->assignHeaders(AA.parmap);
 }
 
-void Main::load_parameters(const size_t i) {
+void Main::LoadParameters(const size_t i) {
     do {
         switch (mode) {
             case 1:
-                if (first_run)
-                    for (auto it : generator_list) {
-                        *AA.parmap[it.at(0)] = std::stod(it.at(3));
-                    }
+                for (auto it : generator_list) {
+                    *AA.parmap[it.at(0)] = std::stod(it.at(3));
+                }
                 break;
             case 2: {
                 do {
@@ -123,12 +122,12 @@ void Main::load_parameters(const size_t i) {
     std::cout << "Parameter point: " << i << std::endl;
 }
 
-double Main::get_parameter(const std::string &par) {
+double Main::GetParameter(const std::string &par) {
     AA.check_par_existence(par);
     return *AA.parmap[par];
 }
 
-void Main::change_parameter(const std::string &par, const double newval) {
+void Main::ChangeParameter(const std::string &par, const double newval) {
     AA.check_par_existence(par);
     AA.change_parameter(par, newval);
 }
