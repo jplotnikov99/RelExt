@@ -3,14 +3,11 @@
 namespace DT {
 Main::Main(const int modee, const std::string &inputfile,
            const std::string &outputfile, double beps, const double xtoday,
-           const bool fast, const bool savecontribs, const int start,
-           const int end)
+           const bool fast, const bool savecontribs)
     : AA(*new AnnihilationAmps),
       mode(modee),
       output_file(outputfile),
       save_contribs(savecontribs),
-      start_point(start),
-      end_point(end + 1),
       FO(AA, fast) {
     srand((unsigned)time(NULL));
 
@@ -21,14 +18,11 @@ Main::Main(const int modee, const std::string &inputfile,
 
     if (inputfile != "") {
         rdr = std::make_unique<DataReader>(inputfile, 1);
-        ASSERT(start_point >= 1, "StartPoint must be 1 or larger")
         switch (mode) {
             case 1:
-                check_start_end_points();
                 load_generation_file();
                 break;
             case 2:
-                check_start_end_points();
                 load_generation_file();
                 break;
             case 3:
@@ -42,13 +36,6 @@ Main::Main(const int modee, const std::string &inputfile,
         }
     }
     bath_procs = def_thermal_bath();
-}
-
-void Main::check_start_end_points() {
-    ASSERT((end_point - 1) >= 1,
-           "StartPoint and/or EndPoint cannot be smaller than 1")
-    ASSERT((end_point - 1) >= start_point,
-           "StartPoint cannot be larger than EndPoint")
 }
 
 void Main::load_generation_file() {
@@ -70,18 +57,6 @@ void Main::load_generation_file() {
 
 void Main::load_read_file() {
     size_t N_par_points = rdr->datalines();
-    ASSERT(
-        N_par_points > 1,
-        "It appears. Your InputFile is either empty or not correctly formatted")
-    if ((end_point - 1) <= 0) end_point = N_par_points;
-    if (end_point > N_par_points) {
-        std::cout << "EndPoint is out of range and is set to"
-                  << N_par_points - 1 << ".\n";
-        end_point = N_par_points;
-    }
-    ASSERT((end_point - 1) >= start_point,
-           "StartPoint cannot be larger than EndPoint")
-
     rdr->scanpars = rdr->assignHeaders(AA.parmap);
 }
 

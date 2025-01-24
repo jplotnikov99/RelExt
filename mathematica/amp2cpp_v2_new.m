@@ -577,17 +577,16 @@ Block[{numerator,denominator,coefficient={},temp1,temp2},
 	Do[
 		temp1 = 1;
 		temp2 = 1;
-		Do[
-			If[And[Length[placeholder*numerator[[it]]]===2,Length[numerator[[it]]]>=2],
-				temp1*=(numerator[[it]]);
-				Break[],
+		If[And[Length[placeholder*numerator[[it]]]===2,Length[numerator[[it]]]>=2],
+				temp1*=(numerator[[it]]),
+			Do[
 				If[FreeQ[numerator[[it,jt]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__],SUNDelta[__,__]
 				   , SUNTF[__,__,__], SUNFIndex[__], SUNIndex[__], List[__], SUNF[__,__,__]}],
 					temp1*=(numerator[[it,jt]]),
 					temp2*=numerator[[it,jt]];
 				];
-			]
-		,{jt,Length[numerator[[it]]]}];
+			,{jt,Length[numerator[[it]]]}];
+		];
 		AppendTo[coefficient, temp1];
 	,{it,Length[numerator]}];
 	

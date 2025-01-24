@@ -32,12 +32,7 @@ class Main {
    public:
     Main(const int modee, const std::string &inputfile,
          const std::string &outputfile, double beps, const double xtoday,
-         const bool fast, const bool savecontribs, const int start,
-         const int end = 0);
-
-    int start_point = 1, end_point = 0;
-
-    void check_start_end_points();
+         const bool fast, const bool savecontribs);
 
     void load_generation_file();
 

@@ -8,10 +8,8 @@ using namespace DT;
  ***********************************************
  */
 static constexpr int MODE = 1;
-static const std::string INPUTFILE = "examples/cxsm_example1.dat";
-static const std::string OUTPUTFILE = "cxsm_fast.csv";
-static constexpr int START = 1;
-static constexpr int END = 300;
+static const std::string INPUTFILE = "examples/cxsm_example.dat";
+static const std::string OUTPUTFILE = "cxsm_scan.dat";
 static const VecString SAVEPARS = {"MA1", "MS1", "alpha", "svev"};
 static const VecString CONSIDERCHANNELS = {};
 VecString NEGLECTCHANNELS = {};
@@ -25,20 +23,18 @@ static constexpr bool SAVECONTRIBS = false;
  Until here */
 
 int main() {
-    Main M(MODE, INPUTFILE, OUTPUTFILE, BEPS, XTODAY, FAST, SAVECONTRIBS,
-           START, END);
+    clock_t begin_time = clock();
+    Main M(MODE, INPUTFILE, OUTPUTFILE, BEPS, XTODAY, FAST, SAVECONTRIBS);
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 
-    clock_t begin_time = clock();
-    double sav;
-    for (size_t i = M.start_point; i < M.end_point; i++) {
-        M.LoadParameters(i);
-        sav = M.GetParameter("MA1");
+    M.LoadParameters();
+    double sav = M.GetParameter("MA1");
+    for (size_t i = 0; i < 150; i++) {
         M.FindParameter("svev", 0.12, 0.001);
         M.SaveData(SAVEPARS);
-        M.ChangeParameter("MA1", sav + 1.);
+        M.ChangeParameter("MA1", ++sav);
     }
 
     std::cout << "Computation time:\n"
-              << float(clock() - begin_time) / CLOCKS_PER_SEC << std::endl;
+              << float(clock() - begin_time) / CLOCKS_PER_SEC << "\n";
 }
