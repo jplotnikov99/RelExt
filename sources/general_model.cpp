@@ -56,6 +56,12 @@ void ModelInfo::assigndm() {
 
 AnnihilationAmps::AnnihilationAmps() { init(); }
 
+void AnnihilationAmps::print_channels()
+{
+    for(auto &it : amp2s)
+        std::cout << it.first << "\n";
+}
+
 void AnnihilationAmps::channel_parity(int &p1, int &p2,
                                       const std::string &channel) {
     VecString prs = get_channel_prtcls(channel);

@@ -235,7 +235,6 @@ MatString DataReader::get_generation_slist() {
     getline(datafile, line);
     if (line.find("--- Bin Info ---") != std::string::npos) {
         is_binned = true;
-        N_bins = (size_t)get_val_of("Bins");
         line = get_line_at("--- Parameter Info ---");
     } else {
         datafile.clear();

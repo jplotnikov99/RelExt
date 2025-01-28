@@ -60,6 +60,10 @@ void Main::load_read_file() {
     rdr->scanpars = rdr->assignHeaders(AA.parmap);
 }
 
+void Main::PrintChannels(){
+    AA.print_channels();
+}
+
 void Main::LoadParameters(const size_t i) {
     do {
         switch (mode) {
@@ -94,7 +98,6 @@ void Main::LoadParameters(const size_t i) {
                 break;
         }
     } while (!AA.load_everything());
-    std::cout << "Parameter point: " << i << std::endl;
 }
 
 double Main::GetParameter(const std::string &par) {
@@ -227,11 +230,14 @@ void Main::CalcTac(double xmin, double xmax, const size_t points,
     beps_eps = beps_save;
 }
 
-void Main::InitMonteCarlo(const size_t Nbins, const double prandom,
-                          const double target) {
+void Main::InitMonteCarlo(size_t Nbins, const size_t Nbest,
+                          const double prandom, const double target) {
     ASSERT(mode == 1 || mode == 2, "Monte Carlo works only in mode 1 and 2")
     std::unordered_map<std::string, double> best;
-    if (rdr->is_binned) best = rdr->get_best_bins();
+    if (rdr->is_binned) {
+        best = rdr->get_best_bins();
+        Nbins = (size_t)rdr->get_val_of("Bins");
+    }
     size_t Npars = generator_list.size();
     VecDoub lower(Npars);
     VecDoub upper(Npars);
@@ -239,7 +245,8 @@ void Main::InitMonteCarlo(const size_t Nbins, const double prandom,
         lower[i] = std::stod(generator_list[i][1]);
         upper[i] = std::stod(generator_list[i][2]);
     }
-    MC = std::make_unique<MonteCarlo>(Npars, lower, upper, target, best);
+    MC = std::make_unique<MonteCarlo>(Npars, lower, upper, Nbins, Nbest,
+                                      prandom, target, best);
 }
 
 void Main::SetWeight() {

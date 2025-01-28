@@ -67,6 +67,7 @@ class AnnihilationAmps : public ModelInfo {
     AnnihilationAmps();
 
     void init();
+    void print_channels();
     void channel_parity(int &p1, int &p2, const std::string &channel);
     bool check_channel_existence(std::string &channel);
     VecString get_channel_prtcls(const std::string &channel);

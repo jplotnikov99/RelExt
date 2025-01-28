@@ -25,9 +25,6 @@ extern double dopr_eps;
 extern double rk4_y_factor;
 
 // parameter search parameters
-extern size_t N_bins;
-extern size_t N_best;
-extern double p_random;
 extern double vanguard_step_size;
 extern double descent_rate;
 extern double max_N_bisections;

@@ -20,6 +20,9 @@ typedef std::vector<dvec1> dvec2;
 class MonteCarlo {
    private:
     const size_t N_pars;
+    size_t N_best;
+    size_t N_bins;
+    const double p_random;
     const double target;
     double worst_bin = 2.;
     std::string worst_bin_ID = "";
@@ -30,9 +33,14 @@ class MonteCarlo {
 
    public:
     MonteCarlo(const size_t Np, VecDoub &lower, VecDoub &upper,
+               const size_t Nbins, const size_t Nbest, const double prandom,
                const double targett,
                std::unordered_map<std::string, double> &best)
-        : N_pars(Np), target(targett) {
+        : N_pars(Np),
+          N_bins(Nbins),
+          N_best(Nbest),
+          p_random(prandom),
+          target(targett) {
         best_bins = best;
         lbounds = lower;
         ubounds = upper;

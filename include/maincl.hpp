@@ -40,6 +40,8 @@ class Main {
 
     void load_user_operations();
 
+    void PrintChannels();
+
     // loads parameter point and assigns DM mass
     void LoadParameters(const size_t i = 0);
 
@@ -59,8 +61,8 @@ class Main {
     void ChangeThermalBath(const VecString &args);
 
     // initialize MonteCarlo
-    void InitMonteCarlo(const size_t Nbins, const double prandom,
-                        const double target);
+    void InitMonteCarlo(size_t Nbins, const size_t Nbest,
+                        const double prandom, const double target);
 
     // set weight in the Montecarlo method
     void SetWeight();

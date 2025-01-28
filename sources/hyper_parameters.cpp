@@ -19,9 +19,6 @@ double secant_eps = 0.01;
 double dopr_eps = 1e-6;
 double secant_maxiter = 100;
 
-size_t N_bins = 100;
-size_t N_best = 500;
-double p_random = 1.;
 double vanguard_step_size = 0.5;
 double descent_rate = 0.1;
 double max_N_bisections = 50;
