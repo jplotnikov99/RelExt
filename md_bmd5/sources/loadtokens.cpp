@@ -6,6 +6,7 @@
 
 namespace DT{
 	void ModelInfo::load_tokens(){
+		using namespace PAR;
 		token1 = 0.25;
 		token2 = pow(ymmD,2);
 		token3 = -0.25;

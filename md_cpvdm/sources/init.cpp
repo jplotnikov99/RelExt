@@ -7,6 +7,7 @@
 namespace DT{
 	void ModelInfo::init()
 	{
+		using namespace PAR;
 		DSmasses["H1"]=&mH1;
 		DSmasses["H2"]=&mH2;
 		DSmasses["H3"]=&mH3;

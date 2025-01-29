@@ -1,19 +1,19 @@
 #include <iostream>
 
-#include "hyper_parameters.hpp"
+#include "model.hpp"
 #include "maincl.hpp"
 
 using namespace DT;
 /* Change to desired settings starting from here
  ***********************************************
  */
-static constexpr int MODE = 2;
-static const std::string INPUTFILE = "examples/cpvdm_example.dat";
-static const std::string OUTPUTFILE = "cpvdm_h_neglect.dat";
+static constexpr int MODE = 3;
+static const std::string INPUTFILE = "CPVDMTest.csv";
+static const std::string OUTPUTFILE = "our_cpvdm.csv";
 static const VecString SAVEPARS = {"mH1", "mH2", "mHc"};
 static const VecString CONSIDERCHANNELS = {};
 VecString NEGLECTCHANNELS = {};
-static const VecString NEGLECTPARTICLES = {"u", "d", "e", "mu", "h"};
+static const VecString NEGLECTPARTICLES = {"u", "d", "e", "mu"};
 static constexpr double BEPS = 1e-6;
 static constexpr double XTODAY = 1e6;
 static constexpr bool FAST = true;
@@ -27,12 +27,12 @@ int main() {
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 
     clock_t begin_time = clock();
-    M.InitMonteCarlo(100, 2000, 0, 0.12);
-    for (size_t i = 0; i < 1e5; i++) {
+    //M.InitMonteCarlo(100, 2000, 0, 0.12);
+    for (size_t i = 1; i < 1e4; i++) {
         std::cout << i << "\n";
-        M.LoadParameters();
+        M.LoadParameters(i);
         M.CalcRelic();
-        M.SetWeight();
+        //M.SetWeight();
         M.SaveData(SAVEPARS);
     }
 

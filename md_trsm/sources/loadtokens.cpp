@@ -6,6 +6,7 @@
 
 namespace DT{
 	void ModelInfo::load_tokens(){
+		using namespace PAR;
 		token1 = -(lam12*pow(cos(alpha),2)) - lam123*cos(alpha)*sin(alpha) - lam13*pow(sin(alpha),2);
 		token2 = -6;
 		token3 = lam;

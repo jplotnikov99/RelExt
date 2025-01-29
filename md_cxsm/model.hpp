@@ -6,6 +6,7 @@
 #include <cmath>
 
 namespace DT{
+namespace PAR{
 	extern double aEWM1;
 	extern double Gf;
 	extern double aS;
@@ -156,7 +157,7 @@ namespace DT{
 	extern double gs;
 	extern double G;
 	extern double FAGS;
-
+}
 	double A1A1HH(const double &cos_t, const double &s);
 	double A1A1HS1(const double &cos_t, const double &s);
 	double A1A1S1S1(const double &cos_t, const double &s);

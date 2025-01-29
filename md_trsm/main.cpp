@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "hyper_parameters.hpp"
 #include "maincl.hpp"
+#include "model.hpp"
 
 using namespace DT;
 /* Change to desired settings starting from here
@@ -16,7 +16,7 @@ static const VecString SAVEPARS = {"mMChi", "mMPsi", "lam12", "lam13",
                                    "lam123"};
 static const VecString CONSIDERCHANNELS = {};
 VecString NEGLECTCHANNELS = {};
-static const VecString NEGLECTPARTICLES = {"u","d","e","mu"};
+static const VecString NEGLECTPARTICLES = {"u", "d", "e", "mu"};
 static constexpr double BEPS = 1e-6;
 static constexpr double XTODAY = 1e6;
 static constexpr bool FAST = true;
@@ -35,25 +35,21 @@ int main() {
     M.LoadParameters();
     M.FindParameter("lam12", target, eps);
     M.SaveData(SAVEPARS);
-    double save12 = M.GetParameter("lam12");
-    double save13, save123 = 1e-3;
-    double temp;
+    double save13, save123 = PAR::lam123;
+    double temp = save123;
     for (size_t i = 0; i < 30; i++) {
-        save12 *= 0.9;
-        M.ChangeParameter("lam12", save12);
+        PAR::lam12 *= 0.9;
         M.FindParameter("lam13", target, eps);
-        save13 = M.GetParameter("lam13");
-        temp = save13;
-        M.ChangeParameter("lam123", save123);
+        save13 = PAR::lam13;
+        PAR::lam123 = save123;
         for (size_t j = 0; j < 30; j++) {
-            temp *= 0.9;
-            M.ChangeParameter("lam13", temp);
+            PAR::lam13 *= 0.9;
             M.FindParameter("lam123", target, eps);
             M.SaveData(SAVEPARS);
         }
-        save123 = M.GetParameter("lam123");
-        M.ChangeParameter("lam123", 1e-3);
-        M.ChangeParameter("lam13", save13);
+        save123 = PAR::lam123;
+        PAR::lam13 = save13;
+        PAR::lam123 = temp;
     }
 
     std::cout << "Computation time:\n"

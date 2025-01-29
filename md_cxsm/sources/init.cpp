@@ -7,6 +7,7 @@
 namespace DT{
 	void ModelInfo::init()
 	{
+		using namespace PAR;
 		DSmasses["A1"]=&MA1;
 		DSdof["A1"]=1;
 		neutraldsmasses.push_back(&MA1);

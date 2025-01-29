@@ -6,6 +6,7 @@
 
 namespace DT{
 	void ModelInfo::load_parameter_map(){
+		using namespace PAR;
 		parmap["aEWM1"] = &aEWM1;
 		parmap["Gf"] = &Gf;
 		parmap["aS"] = &aS;

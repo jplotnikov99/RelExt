@@ -7,6 +7,7 @@
 #include <memory>
 
 double DT::wwH1(const double QCDaS){
+	using namespace PAR;
 	double width = 0;
 	std::unique_ptr<Width> w = std::make_unique<Width>(MH1);
 	w->set_alphaS(QCDaS);

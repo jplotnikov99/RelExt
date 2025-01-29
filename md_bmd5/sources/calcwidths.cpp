@@ -7,6 +7,7 @@
 
 namespace DT{
 	void ModelInfo::calc_widths_and_scale(){
+		using namespace PAR;
 		std::unique_ptr<Mrun> Run = std::make_unique<Mrun>();
 		double *quark_masses[4] = {&MS, &MC, &MB, &MT};
 		double scale;

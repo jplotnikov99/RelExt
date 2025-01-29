@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cpvdm/FR_modfiles" <> "/FA_modfiles";*)
+(*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
 (*directory = "/home/rodrigo/Downloads/darktree_new/md_cpvdm/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
@@ -864,7 +864,7 @@ Write[sfile, mathlabel];
 Write[sfile, "#pragma once\n"];
 Write[sfile, "#include <cmath>\n"]
 Write[sfile, "namespace DT{"];
-
+Write[sfile, "namespace PAR{"];
 (*external and internal declarations*)
 Do[
 	Write[sfile, "\textern double", " ", external[[i,1]] ,";"]
@@ -883,8 +883,8 @@ Write[sfile, "\textern double EL;"];
 Write[sfile, "\textern double ee;"];
 Write[sfile, "\textern double gs;"];
 Write[sfile, "\textern double G;"];
-Write[sfile, "\textern double FAGS;\n"];
-
+Write[sfile, "\textern double FAGS;"];
+Write[sfile, "}"];
 (*amplitudes and fluxes functions*)
 Do[
 	Write[sfile, "\tdouble " , ToString[inifunc[i][[j,1]]] , "(const double &cos_t, const double &s);"];
@@ -911,7 +911,7 @@ sfile=OpenWrite[directory<>"sources/model.cpp",FormatType->StandardForm, TotalWi
 Write[sfile, mathlabel];
 Write[sfile, "#include <cmath>\n"]
 Write[sfile, "namespace DT{"];
-
+Write[sfile, "namespace PAR{"];
 (*external declarations*)
 Do[
 	Write[sfile, "\tdouble ", external[[i,1]] ," = ", external[[i,2]],";"]
@@ -933,7 +933,7 @@ Do[
 Do[
 	Write[sfile, "\tdouble", " ", ToString[tokenreverse[[i,1]]] , ";"]
 ,{i,Length[tokenreverse]}];
-
+Write[sfile, "}"];
 Write[sfile, "}"];
 Close[sfile];
 
@@ -946,6 +946,7 @@ Write[sfile, "#include \"../model.hpp\"\n"]
 Write[sfile, "namespace DT{"];
 Write[sfile,"\tvoid ModelInfo::load_prtcls()"];
 Write[sfile,"\t{"];
+Write[sfile,"\t\tusing namespace PAR;"];
 Do[
 	If[StringContainsQ[ToString[particlelist[[i,1]]],"-"],
 		Break[];
@@ -985,7 +986,7 @@ Write[sfile, "#include \"../model.hpp\"\n"]
 Write[sfile, "namespace DT{"];
 Write[sfile,"\tvoid ModelInfo::init()"];
 Write[sfile,"\t{"];
-
+Write[sfile,"\t\tusing namespace PAR;"];
 Do[
 	Write[sfile, "\t\tDSmasses[\"",ToString[dsnames[[i]]],"\"]=&",ToString[dsmass[[i]]],";"]
 ,{i,Length[dsmass]}]
@@ -1024,6 +1025,7 @@ Write[sfile, "#include \"general_model.hpp\""]
 Write[sfile, "#include \"../model.hpp\"\n"]
 Write[sfile, "namespace DT{"];
 Write[sfile, "\tvoid ModelInfo::load_parameter_map(){"];
+Write[sfile,"\t\tusing namespace PAR;"];
 Do[
 	Write[sfile, "\t\tparmap[\"", external[[i,1]] ,"\"] = &", external[[i,1]],";"]
 ,{i,Length[external]}]
@@ -1044,6 +1046,7 @@ Write[sfile, "#include \"../model.hpp\""]
 Write[sfile, "namespace DT{"]
 
 Write[sfile, "\tvoid ModelInfo::load_parameters(){"]
+Write[sfile,"\t\tusing namespace PAR;"];
 Write[sfile, "\t\tFAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;"];
 If[ContainsAll[external[[All,1]], {"yms", "ymb", "ymt", "ymc"}],
 	Write[sfile, "\t\tyms = ", ToString[runMasses[[1]]], ";"];
@@ -1071,6 +1074,7 @@ Write[sfile, "#include \"mass_run.hpp\"\n"]
 Write[sfile, "namespace DT{"]
 
 Write[sfile, "\tvoid ModelInfo::calc_widths_and_scale(){"]
+Write[sfile,"\t\tusing namespace PAR;"];
 (*running masses for widths*)
 Write[sfile, "\t\tstd::unique_ptr<Mrun> Run = std::make_unique<Mrun>();"];
 Write[sfile, "\t\tdouble *quark_masses[4] = {&",ToString[runMasses[[1]]],", &",ToString[runMasses[[2]]],", &",ToString[runMasses[[3]]],", &",ToString[runMasses[[4]]],"};"];
@@ -1099,6 +1103,7 @@ Write[sfile, "#include \"../model.hpp\"\n"]
 Write[sfile, "namespace DT{"]
 
 Write[sfile, "\tvoid ModelInfo::load_tokens(){"]
+Write[sfile,"\t\tusing namespace PAR;"];
 Do[
 	toksub=StringReplace[ToString[CForm[tokenreverse[[i,2]]]],{"Power"->"pow","Cos"->"cos","Sin"->"sin","Conjugate"->"", "Sqrt"-> "sqrt", "Defer"-> " ", "FeynCalc_MT"->"MT", "FeynCalc`"->"", "SMP(\"g_s\")"->"gs"}];
 	Write[sfile, "\t\t", ToString[tokenreverse[[i,1]]] ," = ", toksub,";"],{i,Length[tokenreverse]}]
@@ -1131,6 +1136,7 @@ Do[
 		subsamp2=StringReplace[subsamp2,{"Sqrt"-> "sqrt","Defer"->" ","Cos("->"cos( ","Sin"->"sin", "Tan"->"tan"}];
 		tsub="";
 		Write[sfile, "double DT::" , ToString[inifunc[i][[j,1]]] , "(const double &cos_t, const double &s){"];
+		Write[sfile,"\tusing namespace PAR;"];
 		If[bool || boolu,
 			tsub=Replace[ttoct[inifunc[i][[j,2]],inifunc[i][[j,3]],inifunc[i][[j,4]],inifunc[i][[j,5]]]/.subrule,defer,All];
 			tsub=ToString[ToString[CForm[tsub],StandardForm]];
@@ -1168,6 +1174,7 @@ Do[
 			]
 		];
 		Write[sfile, "double DT::" , ToString[inifunc[i][[j,1]]] , "fl(const double &cos_t, const double &s){"];
+		Write[sfile,"\tusing namespace PAR;"];
 		Write[sfile, "\treturn " , symfac , "flux(s, " , ToString[inifunc[i][[j,2]]] , "," , ToString[inifunc[i][[j,3]]] , "," , ToString[inifunc[i][[j,4]]] , "," , ToString[inifunc[i][[j,5]]] , ")*",
 					 inifunc[i][[j,1]] , "(cos_t, s);"];
 		Write[sfile, "}"]
@@ -1191,6 +1198,7 @@ Do[
 	(*if decaying particle is a scalar:*)
 	If[ inifuncDecays[i][[1,8]] === 0,
 		Write[sfile, "double DT::ww" , ToString[possibleiniDecays[[i]]] , "(const double QCDaS){"];
+		Write[sfile,"\tusing namespace PAR;"];
 		Write[sfile, "\tdouble width = 0;"];
 		Write[sfile, "\tstd::unique_ptr<Width> w = std::make_unique<Width>(", inifuncDecays[i][[1,2]],");"];
 		If[determineType[inifuncDecays[1][[1]],5]=="pseudoscalar",
@@ -1242,6 +1250,7 @@ Do[
 			subsDecays=ToString[ToString[CForm[subsDecays],StandardForm]];
 			subsDecays=StringReplace[subsDecays,{"Sqrt"-> "sqrt","Defer"->" ","Cos("->"cos( ","Sin"->"sin", "Tan"->"tan", "Power"->"pow"}];
 			Write[sfile, "double DT::w" , ToString[inifuncDecays[i][[j,1]]] , "(){"];
+			Write[sfile,"\tusing namespace PAR;"];
 			symfac="";
 			If[inifuncDecays[i][[j,6]]===inifuncDecays[i][[j,7]],symfac="0.5*"];	
 			Write[sfile, "\tif(heaviDecays(" , ToString[inifuncDecays[i][[j,2]]] , "," , ToString[inifuncDecays[i][[j,3]]], "," , ToString[inifuncDecays[i][[j,4]]] , ")){"];

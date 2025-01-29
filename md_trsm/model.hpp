@@ -6,6 +6,7 @@
 #include <cmath>
 
 namespace DT{
+namespace PAR{
 	extern double aEWM1;
 	extern double Gf;
 	extern double aS;
@@ -174,7 +175,7 @@ namespace DT{
 	extern double gs;
 	extern double G;
 	extern double FAGS;
-
+}
 	double ChiChiHH(const double &cos_t, const double &s);
 	double ChiChiAA(const double &cos_t, const double &s);
 	double ChiChiZZ(const double &cos_t, const double &s);

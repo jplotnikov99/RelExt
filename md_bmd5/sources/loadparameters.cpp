@@ -5,6 +5,7 @@
 #include "../model.hpp"
 namespace DT{
 	void ModelInfo::load_parameters(){
+		using namespace PAR;
 		FAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;
 		yms = MS;
 		ymc = MC;

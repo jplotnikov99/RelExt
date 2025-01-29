@@ -7,6 +7,7 @@
 namespace DT{
 	void ModelInfo::load_prtcls()
 	{
+		using namespace PAR;
 		prtcls["ve"] = &ZERO;
 		prtcls["vm"] = &ZERO;
 		prtcls["vt"] = &ZERO;
