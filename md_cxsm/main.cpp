@@ -28,10 +28,11 @@ int main() {
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 
     M.LoadParameters();
+    double sav = M.GetParameter("MA1");
     for (size_t i = 0; i < 150; i++) {
         M.FindParameter("svev", 0.12, 0.001);
         M.SaveData(SAVEPARS);
-        PAR::MA1++;
+        M.ChangeParameter("MA1", ++sav);
     }
 
     std::cout << "Computation time:\n"

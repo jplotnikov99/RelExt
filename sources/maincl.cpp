@@ -60,9 +60,7 @@ void Main::load_read_file() {
     rdr->scanpars = rdr->assignHeaders(AA.parmap);
 }
 
-void Main::PrintChannels(){
-    AA.print_channels();
-}
+void Main::PrintChannels() { AA.print_channels(); }
 
 void Main::LoadParameters(const size_t i) {
     do {
@@ -107,7 +105,10 @@ double Main::GetParameter(const std::string &par) {
 
 void Main::ChangeParameter(const std::string &par, const double newval) {
     AA.check_par_existence(par);
-    AA.change_parameter(par, newval);
+    double temp = *AA.parmap[par];
+    if (!AA.change_parameter(par, newval))
+        std::cout << "Warning in: " << __func__ << ". " << par
+                  << " does not fulfill the imposed CONDITIONS.\n";
 }
 
 VecString Main::def_thermal_bath(const VecString bath_particles) {
@@ -129,8 +130,8 @@ void Main::set_channels(const VecString &consider, VecString &subtract,
     if (subtract.size() != 0) {
         for (auto it : subtract) {
             ASSERT(AA.check_channel_existence(it),
-                   "Error in SubtractChannels: " << it
-                                                 << " is not a valid channel.")
+                   "Error in NEGLECTCHANNELS: " << it
+                                                << " is not a valid channel.")
             for (size_t i = 0; i < bath_procs.size(); i++) {
                 if (it == bath_procs.at(i)) {
                     bath_procs.erase(bath_procs.begin() + i);
