@@ -8,10 +8,6 @@ using namespace DT;
  ***********************************************
  */
 static constexpr int MODE = 1;
-static const std::string INPUTFILE = "";
-static const std::string OUTPUTFILE = "";
-static constexpr int START = 1;
-static constexpr int END = 1;
 static const VecString SAVEPARS = {};
 static const VecString CONSIDERCHANNELS = {};
 VecString NEGLECTCHANNELS = {};
@@ -24,13 +20,12 @@ static constexpr bool SAVECONTRIBS = false;
  ***********************************************
  Until here */
 
-int main() {
-    Main M(MODE, INPUTFILE, OUTPUTFILE, BEPS, XTODAY, FAST, SAVECONTRIBS,
-           START, END);
+int main(int argc, char **argv) {
+    Main M(argv, MODE, BEPS, XTODAY, FAST, SAVECONTRIBS);
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 
     clock_t begin_time = clock();
-    for (size_t i = M.start_point; i < M.end_point; i++) {
+    for (size_t i = 1; i < 2; i++) {
         M.LoadParameters(i);
         M.CalcRelic();
         M.SaveData(SAVEPARS);

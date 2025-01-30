@@ -1,21 +1,19 @@
 #include "../include/maincl.hpp"
 
 namespace DT {
-Main::Main(const int modee, const std::string &inputfile,
-           const std::string &outputfile, double beps, const double xtoday,
+Main::Main(char *argv[], const int modee, double beps, const double xtoday,
            const bool fast, const bool savecontribs)
     : AA(*new AnnihilationAmps),
       mode(modee),
-      output_file(outputfile),
+      output_file(std::string(argv[2])),
       save_contribs(savecontribs),
       FO(AA, fast) {
     srand((unsigned)time(NULL));
-
+    std::string inputfile = std::string(argv[1]);
     if (beps >= 1.) beps = 0.99;
     if (beps == 0.) beps = 1e-100;
     beps_eps = std::log(beps);
     FO.set_xtoday(xtoday);
-
     if (inputfile != "") {
         rdr = std::make_unique<DataReader>(inputfile, 1);
         switch (mode) {

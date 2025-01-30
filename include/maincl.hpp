@@ -30,8 +30,7 @@ class Main {
     std::unique_ptr<MonteCarlo> MC;
 
    public:
-    Main(const int modee, const std::string &inputfile,
-         const std::string &outputfile, double beps, const double xtoday,
+    Main(char *argv[], const int modee, double beps, const double xtoday,
          const bool fast, const bool savecontribs);
 
     void load_generation_file();

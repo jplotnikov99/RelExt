@@ -8,8 +8,6 @@ using namespace DT;
  ***********************************************
  */
 static constexpr int MODE = 1;
-static const std::string INPUTFILE = "examples/trsm_example.dat";
-static const std::string OUTPUTFILE = "trsm_scan.dat";
 static constexpr int START = 1;
 static constexpr int END = 1;
 static const VecString SAVEPARS = {"mMChi", "mMPsi", "lam12", "lam13",
@@ -25,10 +23,10 @@ static constexpr bool SAVECONTRIBS = false;
  ***********************************************
  Until here */
 
-int main() {
+int main(int argc, char **argv) {
     clock_t begin_time = clock();
 
-    Main M(MODE, INPUTFILE, OUTPUTFILE, BEPS, XTODAY, FAST, SAVECONTRIBS);
+    Main M(argv, MODE, BEPS, XTODAY, FAST, SAVECONTRIBS);
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 
     double target = 0.12, eps = 0.001;

@@ -8,8 +8,6 @@ using namespace DT;
  ***********************************************
  */
 static constexpr int MODE = 3;
-static const std::string INPUTFILE = "CPVDMTest.csv";
-static const std::string OUTPUTFILE = "our_cpvdm.csv";
 static const VecString SAVEPARS = {"mH1", "mH2", "mHc"};
 static const VecString CONSIDERCHANNELS = {};
 VecString NEGLECTCHANNELS = {};
@@ -22,8 +20,8 @@ static constexpr bool SAVECONTRIBS = false;
  ***********************************************
  Until here */
 
-int main() {
-    Main M(MODE, INPUTFILE, OUTPUTFILE, BEPS, XTODAY, FAST, SAVECONTRIBS);
+int main(int argc, char **argv) {
+    Main M(argv, MODE, BEPS, XTODAY, FAST, SAVECONTRIBS);
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 
     clock_t begin_time = clock();
