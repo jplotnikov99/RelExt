@@ -2,7 +2,7 @@
 
 directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
 (*directory = "/home/johann/Documents/Projects/DM/darktree_new/md_cxsm/FR_modfiles" <> "/FA_modfiles";*)
-(*directory = "/home/rodrigo/Downloads/darktree_new/md_cpvdm/FR_modfiles"<>"/FA_modfiles";*)
+(*directory = "/home/rodrigo/Downloads/RelExt-master/md_DDP/FR_modfiles"<>"/FA_modfiles";*)
 (*directory ="/users/tp/kelyaouti/Desktop/WorkInProgress/darktree_new/md_BDM/FR_modfiles/"<>"FA_modfiles";*)
 Print[directory]
 
@@ -204,8 +204,8 @@ removeDuplicate[];
 
 breakdownAmp[proccess_, amp_]:=
 Block[{numerator,denominator,coefficient={},mandels={},temp1,temp2},
-	numerator = Table[FullSimplify[Numerator[amp[[it]]]],{it,Length[amp]}];
-	denominator =Table[Denominator[amp[[it]]],{it,Length[amp]}];
+	numerator = Table[Factor[FullSimplify[Numerator[amp[[it]]]]],{it,Length[amp]}];
+	denominator =Table[Factor[Denominator[amp[[it]]]],{it,Length[amp]}];
 	Do[
 		temp1 = 1;
 		temp2 = 1;
@@ -571,14 +571,16 @@ removeDuplicateDecays[];
 
 breakdownAmpDecays[proccess_, amp_]:=
 Block[{numerator,denominator,coefficient={},temp1,temp2},
-	numerator = Table[FullSimplify[Numerator[amp[[it]]]],{it,Length[amp]}];
+	numerator = Table[Factor[FullSimplify[Numerator[amp[[it]]]]],{it,Length[amp]}];
 	denominator=Denominator[amp[[1]]];
 	
 	Do[
 		temp1 = 1;
 		temp2 = 1;
+		
 		If[And[Length[placeholder*numerator[[it]]]===2,Length[numerator[[it]]]>=2],
-				temp1*=(numerator[[it]]),
+				temp1*=(numerator[[it]]);
+				,
 			Do[
 				If[FreeQ[numerator[[it,jt]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__],SUNDelta[__,__]
 				   , SUNTF[__,__,__], SUNFIndex[__], SUNIndex[__], List[__], SUNF[__,__,__]}],
@@ -739,7 +741,7 @@ Do[
 		
 		TheMass[foutlistDecays[[i,2]]] === 0 && TheMass[foutlistDecays[[i,3]]] === 0,
 		sub=tamp2[[1]]/prefac/dof// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
-		// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2,0] &// DoPolarizationSums[#, p3,0] & //DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify,
+		// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2,p3] &// DoPolarizationSums[#, p3,p2] & //DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify,
 			
 		True,
 		sub=tamp2[[1]]/prefac/dof// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
