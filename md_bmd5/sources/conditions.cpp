@@ -2,5 +2,6 @@
 #include "../model.hpp"
 
 bool DT::ModelInfo::check_conditions(){
+    using namespace PAR;
     return true;
 }
