@@ -300,7 +300,6 @@ double Width::partial_width(const ParticleType ptype1,
             }
             break;
         case gluon + gluon: {
-            // TODO: Pseudoscalar case
             const double tau = 4 * mt_pole * mt_pole / (mh * mh);
             double AQ2;
             if (tau < 1) {
