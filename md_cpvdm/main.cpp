@@ -1,13 +1,13 @@
 #include <iostream>
 
-#include "model.hpp"
 #include "maincl.hpp"
+#include "model.hpp"
 
 using namespace DT;
 /* Change to desired settings starting from here
  ***********************************************
  */
-static constexpr int MODE = 3;
+static constexpr int MODE = 2;
 static const VecString SAVEPARS = {"mH1", "mH2", "mHc"};
 static const VecString CONSIDERCHANNELS = {};
 VecString NEGLECTCHANNELS = {};
@@ -25,11 +25,11 @@ int main(int argc, char **argv) {
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 
     clock_t begin_time = clock();
-    //M.InitMonteCarlo(100, 2000, 0, 0.12);
-    for (size_t i = 1; i <= 1e2; i++) {
+    // M.InitMonteCarlo(100, 2000, 0, 0.12);
+    for (size_t i = 1; i <= 1; i++) {
         M.LoadParameters(i);
-        M.CalcRelic();
-        //M.SetWeight();
+        M.RWalk(0.12, 0.002, 0.01, 300);
+        // M.SetWeight();
         M.SaveData(SAVEPARS);
     }
 

@@ -60,8 +60,8 @@ class Main {
     void ChangeThermalBath(const VecString &args);
 
     // initialize MonteCarlo
-    void InitMonteCarlo(size_t Nbins, const size_t Nbest,
-                        const double prandom, const double target);
+    void InitMonteCarlo(size_t Nbins, const size_t Nbest, const double prandom,
+                        const double target);
 
     // set weight in the Montecarlo method
     void SetWeight();
@@ -83,7 +83,8 @@ class Main {
                        const double eps);
 
     // args are: mechanism, relic target, relic error, parameters
-    void RWalk(const double target, const double eps);
+    void RWalk(const double target, const double eps, const double gam,
+               const size_t maxit);
 
     // saves the scanned data
     void SaveData(const VecString &args);

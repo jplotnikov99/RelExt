@@ -126,16 +126,23 @@ double FindRoot::find(FUNC &f, double xstart) {
 class RandomWalk {
    private:
     const double eps;
-    const size_t max_steps = 400;
+    const size_t maxit;
+    const double gammax;
     bool is_good = false;
     double ynew, yold;
     VecDoub xold, cur_step;
     const VecDoub x1, x2;
 
    public:
-    RandomWalk(VecDoub &xx1, VecDoub xx2, const double epss)
-        : xold(xx1.size()), cur_step(xx1.size()), x1(xx1), x2(xx2), eps(epss) {
-          };
+    RandomWalk(VecDoub &xx1, VecDoub xx2, const double epss,
+               const double gammaxx, const size_t maxitt)
+        : xold(xx1.size()),
+          cur_step(xx1.size()),
+          x1(xx1),
+          x2(xx2),
+          eps(epss),
+          gammax(gammaxx),
+          maxit(maxitt) {};
 
     void random_step(VecDoub &x);
 
@@ -173,7 +180,7 @@ VecDoub RandomWalk::walk(FUNC &f) {
                       << " Omega: " << f.get_omega() << "\n";
         }
         cur_step++;
-    } while (std::abs(ynew) > eps && (cur_step < max_steps));
+    } while (std::abs(ynew) > eps && (cur_step < maxit));
     std::cout << "Steps taken: " << cur_step << std::endl;
     return xnew;
 }

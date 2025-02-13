@@ -77,7 +77,6 @@ void Main::LoadParameters(const size_t i) {
                                                 new_pars[j], false);
                         }
                     } else {
-                        std::cout << "test\n";
                         double a;
                         for (auto it : generator_list) {
                             a = generate_random(std::stod(it[1]),
@@ -294,7 +293,8 @@ void Main::FindParameter(const std::string &par, const double target,
     }
 }
 
-void Main::RWalk(const double target, const double eps) {
+void Main::RWalk(const double target, const double eps, const double gam,
+                 const size_t maxit) {
     VecDoub lower(generator_list.size()), upper(generator_list.size());
     VecString pars(generator_list.size());
     for (size_t i = 0; i < generator_list.size(); i++) {
@@ -303,7 +303,7 @@ void Main::RWalk(const double target, const double eps) {
         upper[i] = std::stod(generator_list[i][2]);
     }
     OmegaGoal OMG(AA, FO, pars, bath_procs, target);
-    RandomWalk RW(lower, upper, eps);
+    RandomWalk RW(lower, upper, eps, gam, maxit);
     VecDoub xnew(RW.walk(OMG));
     OMG(xnew);
     omega = OMG.get_omega();
