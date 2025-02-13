@@ -13,8 +13,6 @@ double peak_eps = 1e-6;
 double gauss_kronrod_eps = 1e-4;
 
 double xtoday_FO = 1e6;
-double xtoday_FI = 100;
-double x_reheating = 0.0001;
 double secant_eps = 0.01;
 double dopr_eps = 1e-6;
 double secant_maxiter = 100;
@@ -22,6 +20,5 @@ double secant_maxiter = 100;
 double vanguard_step_size = 0.5;
 double descent_rate = 0.1;
 double max_N_bisections = 50;
-double random_walk_rate = 0.01;
 
 }  // namespace DT

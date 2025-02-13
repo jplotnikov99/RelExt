@@ -17,18 +17,14 @@ extern double gauss_kronrod_eps;
 
 // Beq solver parameters
 extern double xtoday_FO;
-extern double xtoday_FI;
-extern double x_reheating;
 extern double secant_eps;
 extern double secant_maxiter;
 extern double dopr_eps;
-extern double rk4_y_factor;
 
 // parameter search parameters
 extern double vanguard_step_size;
 extern double descent_rate;
 extern double max_N_bisections;
-extern double random_walk_rate;
 
 static const double kronx_15[15] = {
     0.991455371120812639206854697526329,  0.949107912342758524526189684047851,
