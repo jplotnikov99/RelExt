@@ -26,8 +26,7 @@ int main(int argc, char **argv) {
 
     clock_t begin_time = clock();
     //M.InitMonteCarlo(100, 2000, 0, 0.12);
-    for (size_t i = 1; i < 1e4; i++) {
-        std::cout << i << "\n";
+    for (size_t i = 1; i <= 1e2; i++) {
         M.LoadParameters(i);
         M.CalcRelic();
         //M.SetWeight();
