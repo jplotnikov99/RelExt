@@ -28,6 +28,7 @@ class Width {
     const double ww = 2.091;
     const double thetaw = 0.49169738195642276;
     const double g2 = 0.6613384415493881;
+    const double Gf = 1.1663787e-5;
     bool is_pseudo = false;
     double NF = 5;
     double aS = 0.119;

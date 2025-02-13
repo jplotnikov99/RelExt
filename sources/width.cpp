@@ -268,8 +268,11 @@ double Width::partial_width(const ParticleType ptype1,
             break;
         case z_boson + z_boson:
             if (heaviDecays(mh, m1, m2)) {
+                double xt =
+                    Gf * mt_pole * mt_pole / (8. * sqrt(2.) * M_PI * M_PI);
                 res *= (3 + kaellen(mh * mh, m1 * m1, m2 * m2) /
-                                (4 * m1 * m1 * m2 * m2));
+                                (4 * m1 * m1 * m2 * m2)) *
+                       (1 - xt * (5. - 13.35506593315177 * aS / M_PI));
             } else if (heaviDecays(mh, m1, 0)) {
                 // times two of the literature formula since we multiply the
                 // coupling by 0.5
@@ -288,8 +291,11 @@ double Width::partial_width(const ParticleType ptype1,
             break;
         case w_boson + w_boson:
             if (heaviDecays(mh, m1, m2)) {
+                double xt =
+                    Gf * mt_pole * mt_pole / (8. * sqrt(2.) * M_PI * M_PI);
                 res *= (3 + kaellen(mh * mh, m1 * m1, m2 * m2) /
-                                (4. * m1 * m1 * m2 * m2));
+                                (4. * m1 * m1 * m2 * m2)) *
+                       (1 - xt * (5. - 7.355065933151774 * aS / M_PI));
             } else if (heaviDecays(mh, m1, 0)) {
                 return 3 * mh / (512 * M_PI * M_PI * M_PI * m1 * m1) * g2 * g2 *
                        R_T(m1 * m1 / (mh * mh)) * coupling;
