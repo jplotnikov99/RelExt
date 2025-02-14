@@ -28,8 +28,8 @@ typedef std::unordered_map<std::string, double *> sMapDp;
 struct ModelInfo {
     sMapDp DSmasses;
     VecString channelnames;
-    sMapDp prtcls;
-    sMapDp aprtcls;
+    std::map<std::string, double *> prtcls;
+    std::map<std::string, double *> aprtcls;
     std::vector<double *> neutraldsmasses;
     std::unordered_map<std::string, double> DSdof;
     std::map<std::string, double *> parmap;
