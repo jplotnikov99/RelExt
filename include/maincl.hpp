@@ -68,7 +68,7 @@ class Main {
 
     // args are: min sqrt(s), max sqrt(s), number of points, channel names
     void CalcXsec(double sqsmin, double sqsmax, const size_t points,
-                  const std::string outfile, const VecString channels);
+                  const std::string outfile, VecString channels);
 
     // args are: min x, max x, number of points, channel names
     void CalcTac(double xmin, double xmax, const size_t points,

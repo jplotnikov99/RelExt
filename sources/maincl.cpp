@@ -174,8 +174,11 @@ void Main::ChangeThermalBath(const VecString &args) {
 }
 
 void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
-                    const std::string outfile, const VecString channels) {
+                    const std::string outfile, VecString channels) {
     AnnihilationAmps AA;
+    for (auto &it : channels)
+        ASSERT(AA.check_channel_existence(it),
+               "Error in NEGLECTCHANNELS: " << it << " is not a valid channel.")
     std::unique_ptr<SigvInt> sigv = std::make_unique<SigvInt>(AA);
     std::unique_ptr<DataReader> xsr =
         std::make_unique<DataReader>(output_file, 2);
@@ -206,6 +209,9 @@ void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
 
 void Main::CalcTac(double xmin, double xmax, const size_t points,
                    const std::string outfile, VecString channels) {
+    for (auto &it : channels)
+        ASSERT(AA.check_channel_existence(it),
+               "Error in NEGLECTCHANNELS: " << it << " is not a valid channel.")
     Tac tac(AA);
     std::unique_ptr<DataReader> TAR = std::make_unique<DataReader>(outfile, 2);
     ASSERT((xmin > 0) && (xmax > 0),
