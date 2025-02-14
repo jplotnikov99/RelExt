@@ -58,6 +58,8 @@ void Main::load_read_file() {
     rdr->scanpars = rdr->assignHeaders(AA.parmap);
 }
 
+void Main::PrintParticles() { AA.print_prtcls(); }
+
 void Main::PrintChannels() { AA.print_channels(); }
 
 void Main::LoadParameters(const size_t i) {

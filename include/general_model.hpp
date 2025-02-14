@@ -1,6 +1,8 @@
 #pragma once
 
+#include <algorithm>
 #include <cassert>
+#include <cctype>
 #include <functional>
 #include <iostream>
 #include <map>
@@ -38,6 +40,7 @@ struct ModelInfo {
     double MDM = 0.;
 
     void init();
+    void print_prtcls();
     void calc_widths_and_scale();
     void load_prtcls();
     void load_parameters();

@@ -8,6 +8,26 @@ ModelInfo::ModelInfo() {
     load_parameter_map();
 }
 
+void ModelInfo::print_prtcls() {
+    std::string p1, p2, ptemp1, ptemp2;
+    for (auto &it : prtcls) {
+        p1 = it.first;
+        ptemp1 = str_tolower(p1);
+        bool found = false;
+        std::cout << p1 << "\t";
+        for (auto &jt : aprtcls) {
+            p2 = jt.first;
+            ptemp2 = str_tolower(p2);
+            if (ptemp1 == ptemp2) {
+                std::cout << p2 << "\n";
+                found = true;
+                break;
+            }
+        }
+        if (!found) std::cout << p1 << "\n";
+    }
+}
+
 bool ModelInfo::load_everything() {
     load_parameters();
     assigndm();
@@ -56,10 +76,8 @@ void ModelInfo::assigndm() {
 
 AnnihilationAmps::AnnihilationAmps() { init(); }
 
-void AnnihilationAmps::print_channels()
-{
-    for(auto &it : amp2s)
-        std::cout << it.first << "\n";
+void AnnihilationAmps::print_channels() {
+    for (auto &it : amp2s) std::cout << it.first << "\n";
 }
 
 void AnnihilationAmps::channel_parity(int &p1, int &p2,

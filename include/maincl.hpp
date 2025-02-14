@@ -39,6 +39,8 @@ class Main {
 
     void load_user_operations();
 
+    void PrintParticles();
+
     void PrintChannels();
 
     // loads parameter point and assigns DM mass

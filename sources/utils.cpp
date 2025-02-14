@@ -92,6 +92,13 @@ void check_arguments_number(const bool exact, const size_t needs,
     }
 }
 
+std::string str_tolower(std::string s) {
+    std::transform(s.begin(), s.end(), s.begin(),
+                   [](unsigned char c) { return std::tolower(c); }  // correct
+    );
+    return s;
+}
+
 double linint(const double x, const double x1, const double x2, const double y1,
               const double y2) {
     return ((y2 - y1) / (x2 - x1)) * (x - x1) + y1;
