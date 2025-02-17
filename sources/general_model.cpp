@@ -80,6 +80,16 @@ void AnnihilationAmps::print_channels() {
     for (auto &it : amp2s) std::cout << it.first << "\n";
 }
 
+VecString AnnihilationAmps::get_all_channels() {
+    VecString res(amp2s.size());
+    size_t i = 0;
+    for (auto &it : amp2s) {
+        res[i] = it.first;
+        i++;
+    }
+    return res;
+}
+
 void AnnihilationAmps::channel_parity(int &p1, int &p2,
                                       const std::string &channel) {
     VecString prs = get_channel_prtcls(channel);

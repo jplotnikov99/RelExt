@@ -27,7 +27,6 @@ typedef std::unordered_map<std::string, double *> sMapDp;
 
 struct ModelInfo {
     sMapDp DSmasses;
-    VecString channelnames;
     std::map<std::string, double *> prtcls;
     std::map<std::string, double *> aprtcls;
     std::vector<double *> neutraldsmasses;
@@ -71,6 +70,7 @@ class AnnihilationAmps : public ModelInfo {
 
     void init();
     void print_channels();
+    VecString get_all_channels();
     void channel_parity(int &p1, int &p2, const std::string &channel);
     bool check_channel_existence(std::string &channel);
     VecString get_channel_prtcls(const std::string &channel);
