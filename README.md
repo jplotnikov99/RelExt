@@ -25,7 +25,7 @@ The models implemented so far are
   - Complex Singlet Extension (CxSM) ([arXiv 1301.2599](https://arxiv.org/abs/1301.2599))
   - N2HDM Dark doublet Phase (DDP) ([arXiv 2004.05382](https://arxiv.org/abs/2004.05382), [arXiv 2104.03184](http://arxiv.org/abs/2104.03184))
   - Two Real Singlet Model (TRSM) ([arXiv 1501.00206](https://arxiv.org/abs/1501.00206), [arXiv 1908.08554](https://arxiv.org/abs/1908.08554))
-  - BDM5 ([arXiv 2007.05082](https://arxiv.org/abs/2007.05082),[arXiv 2207.11556](https://arxiv.org/abs/2207.11556))
+  - BDM5 ([arXiv 2007.05082](https://arxiv.org/abs/2007.05082), [arXiv 2207.11556](https://arxiv.org/abs/2207.11556))
 
     
 The code is structured such that users can add their own models.
