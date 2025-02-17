@@ -4,10 +4,10 @@ Released by: Rodrigo Capucha, Karim Elyaouti, Margarete Mühlleitner, Johann Plo
 
 Manual: version 1.0
 
-[TODO]
-We present the C++ program `RelExt` for Standard Model (SM) extensions that feature
-a Dark Matter (DM) candidate. The tool allows to efficiently scan the parameter spaces
-of these models to find parameter combinations that lead to relic density values which are
+RelExt - Relic Density Calculator for Extended Models:
+
+The C++ program `RelExt` allows to efficiently scan the parameter spaces
+of these beyond the Standardmodel models to find parameter combinations that lead to relic density values which are
 compatible with the measured value within the uncertainty specified by the user. The code
 computes the relic density for freeze-out (co-)annihilation processes. The user can choose
 between several pre-installed models or any arbitrary other model featuring a discrete Z2
