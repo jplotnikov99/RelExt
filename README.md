@@ -76,8 +76,8 @@ To run the code for a specific model, type
     cd build 
     ./[ModelName] [InputFile] [OutputFile]
 where:
--`[InputFile]`: Path to the input file containing the necessary model parameters. 
--`[OutPutfile]`  Path where `RelExt` will generate and store the output results.
+  - `[InputFile]`: Path to the input file containing the necessary model parameters. 
+  - `[OutPutfile]`  Path where `RelExt` will generate and store the output results.
 
 ### Main File [ToDo]
 
