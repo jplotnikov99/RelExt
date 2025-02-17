@@ -6,18 +6,11 @@ Manual: version 1.0
 
 RelExt - Relic Density Calculator for Extended Models:
 
-The C++ program `RelExt` allows to efficiently scan the parameter spaces
-of these beyond the Standardmodel models to find parameter combinations that lead to relic density values which are
-compatible with the measured value within the uncertainty specified by the user. The code
-computes the relic density for freeze-out (co-)annihilation processes. The user can choose
-between several pre-installed models or any arbitrary other model featuring a discrete Z2
-symmetry, by solely providing the corresponding FeynRules model files. The code auto-
-matically generates the required (co-)annihilation amplitudes and thermally averaged cross
-sections, including the total widths in the s-channel mediators, and solves the Boltzmann
-equation to determine the relic density. It can easily be linked to other tools like e.g. [ScannerS](https://gitlab.com/jonaswittbrodt/ScannerS/-/tree/HiggsTools?ref_type=heads)
-to check for the relevant theoretical and experimental constraints, or to [BSMPT](https://github.com/phbasler/BSMPT) to investigate
-the phase history of the model and possibly related gravitational waves signals.
+RelExt is a C++ program designed to efficiently scan the parameter spaces of beyond-the-Standard-Model (BSM) scenarios to identify parameter combinations that yield a relic density compatible with the measured value, within a user-specified uncertainty.
 
+The code computes the relic density for freeze-out (co-)annihilation processes and supports multiple pre-installed models as well as any other model featuring a discrete Z2 symmetry, simply by providing the corresponding FeynRules model files. It automatically generates the required (co-)annihilation amplitudes and thermally averaged cross-sections, including total widths in s-channel mediators, and solves the Boltzmann equation to determine the relic density.
+
+RelExt can be easily linked to external tools such as [ScannerS](https://gitlab.com/jonaswittbrodt/ScannerS/-/tree/HiggsTools?ref_type=heads) for theoretical and experimental constraints or [BSMPT](https://github.com/phbasler/BSMPT) to analyze the phase history of the model and potential gravitational wave signals.
 
 The models implemented so far are
 
