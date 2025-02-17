@@ -183,7 +183,7 @@ void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
                "Error in NEGLECTCHANNELS: " << it << " is not a valid channel.")
     std::unique_ptr<SigvInt> sigv = std::make_unique<SigvInt>(AA);
     std::unique_ptr<DataReader> xsr =
-        std::make_unique<DataReader>(output_file, 2);
+        std::make_unique<DataReader>(outfile, 2);
 
     ASSERT((sqsmin > 0) && (sqsmax > 0),
            "Boundaries in " << __func__ << "can not have negative values.")
