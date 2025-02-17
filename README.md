@@ -1,26 +1,36 @@
-Program: DarkTree version 1.0
+Program: RelExt version 1.0
 
 Released by: Rodrigo Capucha, Karim Elyaouti, Margarete Mühlleitner, Johann Plotnikov, Rui Santos
 
 Manual: version 1.0
 
 [TODO]
-DarkTree: The C++ program DarkTree is a tool to efficiently search parameter spaces of extension of the Standard Model. 
-calculates the dark matter relic density in extensions of the Standard Model. For this the annihillation amplitudes, cross sections and thermal average cross sections are calculated and the boltzmann equation is solved. 
+We present the C++ program `RelExt` for Standard Model (SM) extensions that feature
+a Dark Matter (DM) candidate. The tool allows to efficiently scan the parameter spaces
+of these models to find parameter combinations that lead to relic density values which are
+compatible with the measured value within the uncertainty specified by the user. The code
+computes the relic density for freeze-out (co-)annihilation processes. The user can choose
+between several pre-installed models or any arbitrary other model featuring a discrete Z2
+symmetry, by solely providing the corresponding FeynRules model files. The code auto-
+matically generates the required (co-)annihilation amplitudes and thermally averaged cross
+sections, including the total widths in the s-channel mediators, and solves the Boltzmann
+equation to determine the relic density. It can easily be linked to other tools like e.g. [ScannerS](https://gitlab.com/jonaswittbrodt/ScannerS/-/tree/HiggsTools?ref_type=heads)
+to check for the relevant theoretical and experimental constraints, or to [BSMPT](https://github.com/phbasler/BSMPT) to investigate
+the phase history of the model and possibly related gravitational waves signals.
 
 
 The models implemented so far are
 
   - CP in the Dark ([arXiv 1807.10322](https://arxiv.org/abs/1807.10322), [arXiv 2204.13425](https://arxiv.org/abs/2204.13425))
-  - Complex Singlet Extension (CxSM)
-  - N2HDM Dark doublet Phase (DDP)
-  - Two Real Singlet Model (TRSM)
-  - BDM5
+  - Complex Singlet Extension (CxSM)[arXiv 1301.2599](https://arxiv.org/abs/1301.2599)
+  - N2HDM Dark doublet Phase (DDP) [arXiv 2004.05382](https://arxiv.org/abs/2004.05382), [arXiv 2104.03184](http://arxiv.org/abs/2104.03184)
+  - Two Real Singlet Model (TRSM) [arXiv 1501.00206](https://arxiv.org/abs/1501.00206), [arXiv 1908.08554](https://arxiv.org/abs/1908.08554)
+  - BDM5 [arXiv 2007.05082](https://arxiv.org/abs/2007.05082),[arXiv 2207.11556](https://arxiv.org/abs/2207.11556)
 
     
 The code is structured such that users can add their own models.
 
-The programm can be downladed at: https://github.com/jplotnikov99/darktree_new/
+The programm can be downladed at: https://github.com/jplotnikov99/RelExt_new/
 
 Sample input and output files are provided.
 
@@ -37,8 +47,8 @@ If you use this program for your work please cite
 
 ### Dependencies
 
-DarkTree uses cmake as build tool for the C++ source code. 
-To implement new models in RelExt, it is required to have Mathematica with the packages FeynRules [citation] and FeynCalc[citation]/FeynArts[citation] installed.
+RelExt uses cmake as build tool for the C++ source code. 
+To implement new models in RelExt, it is required to have `Mathematica v12` or higher with the packages FeynRules [citation] and FeynCalc v9.3.1 [arXiv 2001.04407](https://arxiv.org/abs/2001.04407),[arXiv 2312.14089](https://arxiv.org/abs/2312.14089)/FeynArts v3.11 [arXiv 0012260](http://arxiv.org/abs/hep-ph/0012260) installed.
 
 ### build
 
