@@ -204,8 +204,10 @@ removeDuplicate[];
 
 breakdownAmp[proccess_, amp_]:=
 Block[{numerator,denominator,coefficient={},mandels={},temp1,temp2},
-	numerator = Table[Factor[FullSimplify[Numerator[amp[[it]]]]],{it,Length[amp]}];
-	denominator =Table[Factor[Denominator[amp[[it]]]],{it,Length[amp]}];
+	(*numerator = Table[Factor[FullSimplify[Numerator[amp[[it]]]]],{it,Length[amp]}];
+	denominator =Table[Factor[Denominator[amp[[it]]]],{it,Length[amp]}];*)
+ 	numerator = Table[FullSimplify[Numerator[amp[[it]]]],{it,Length[amp]}];
+	denominator =Table[Denominator[amp[[it]]],{it,Length[amp]}];
 	Do[
 		temp1 = 1;
 		temp2 = 1;
