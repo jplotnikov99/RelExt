@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
     M.LoadParameters();
     double sav = M.GetParameter("MA1");
     for (size_t i = 0; i < 150; i++) {
-        M.FindParameter("svev", 0.06, 0.06);
+        M.FindParameter("svev", 0.12, 0.001);
         M.SaveData(SAVEPARS);
         M.ChangeParameter("MA1", ++sav);
     }

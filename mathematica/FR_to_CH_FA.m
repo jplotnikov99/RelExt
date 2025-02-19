@@ -134,7 +134,7 @@ Do[
 		Print["\n"]; ,
 		Print["\n"];
 		Print["%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"];
-		Print["There are no dark sector particles in your model. Please change your model.fr file and include in the ParticleName option a ~ before the name of the particles that belong to this sector."];
+		Print["There are no dark sector particles in your model. Please change your model.fr file and include in the ParticleName and AntiParticleName options a ~ before the name of the particles that belong to this sector."];
 		Print["%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"];
 		Print["\n"];
 		Quit[];
