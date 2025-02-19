@@ -1,9 +1,9 @@
 (* ::Package:: *)
 
-FRpath = ToString[$CommandLine[[4]]](*"/home/johann/Documents/feynrules-current"*);
-ModelName = ToString[$CommandLine[[5]]](*"DDP.fr"*);
+FRpath = ToString[$CommandLine[[4]]];
+ModelName = ToString[$CommandLine[[5]]];
 lagname = ToExpression[$CommandLine[[6]]];
-MDpath = ToString[$CommandLine[[7]]](*"/home/johann/Documents/Projects/DM/darktree_new/md_DDP/FR_modfiles"*);
+MDpath = ToString[$CommandLine[[7]]];
 
 $FeynRulesPath=FRpath;
 SetDirectory[$FeynRulesPath];
@@ -13,7 +13,7 @@ SetDirectory[$FeynRulesPath];
 parentPath = $InputFileName /. "" :> NotebookFileName[]
 parentDir = DirectoryName @ parentPath
 directory = ParentDirectory[parentDir];
-$ModelPath= MDpath;(*directory<>"/FR_modfiles";*)
+$ModelPath= MDpath;
 SetDirectory[$ModelPath];
 LoadModel[ModelName]
 
@@ -108,10 +108,47 @@ Block[{current={},external={},internal={},definitions={},type,val},
 ]
 
 
+checkDarkSector[]:=
+Block[{darkSector={}},
+Do[
+  Do[
+    If[StringMatchQ[ToString[subEntry], "~" ~~ __], AppendTo[darkSector, subEntry]],
+    {subEntry, Flatten@{ParticleName /. M$ClassesDescription[[i, 2]]}}
+  ],
+{i, Length[M$ClassesDescription]}];
+Do[
+  Do[
+    If[StringMatchQ[ToString[subEntry], "~" ~~ __], AppendTo[darkSector, subEntry]],
+    {subEntry, Flatten@{AntiParticleName /. M$ClassesDescription[[i, 2]]}}
+  ],
+{i, Length[M$ClassesDescription]}];
+ 
+	If[Length[darkSector]!=0,
+		Print["\n"];
+		Print["%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"];
+		Print["The dark sector particles from the model file are:"];
+		Do[
+			Print[darkSector[[i]]];
+		,{i,Length[darkSector]}];
+		Print["%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"];
+		Print["\n"]; ,
+		Print["\n"];
+		Print["%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"];
+		Print["There are no dark sector particles in your model. Please change your model.fr file and include in the ParticleName option a ~ before the name of the particles that belong to this sector."];
+		Print["%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"];
+		Print["\n"];
+		Quit[];
+	];
+]
+
+
 checkPDGs[]
 
 
 checkParameters[]
+
+
+checkDarkSector[]
 
 
 ofile= MDpath <> "/passed.txt";
