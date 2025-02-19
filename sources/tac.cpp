@@ -126,7 +126,7 @@ bool Tac::beps(const double &x) {
 
 double Tac::peak_relevance(const double &peakpos) {
     if (peakpos == sigv.lower_bound) return -1.;
-    return -(beps_eps - 4.6051701859880) * AA.MDM /
+    return -(beps_eps /* - 4.6051701859880 */) * AA.MDM /
            (peakpos - sigv.lower_bound);
 }
 
