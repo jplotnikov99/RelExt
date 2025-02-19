@@ -10,7 +10,7 @@ double mt_pole = 172.5;
 double theta_eps = 1e-6;
 double beps_eps = 1e-6;
 double peak_eps = 1e-6;
-double gauss_kronrod_eps = 1e-4;
+double gauss_kronrod_eps = 1e-5;
 
 double xtoday_FO = 1e6;
 double secant_eps = 0.01;
