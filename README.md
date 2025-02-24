@@ -1,23 +1,29 @@
-Program: DarkTree version 1.0
+Program: RelExt version 1.0
 
 Released by: Rodrigo Capucha, Karim Elyaouti, Margarete Mühlleitner, Johann Plotnikov, Rui Santos
 
 Manual: version 1.0
 
-[TODO]
-DarkTree: The C++ program DarkTree is a tool to efficiently search parameter spaces of extension of the Standard Model. 
-calculates the dark matter relic density in extensions of the Standard Model. For this the annihillation amplitudes, cross sections and thermal average cross sections are calculated and the boltzmann equation is solved. 
+RelExt - Relic Density Calculator for Extended Models:
 
+RelExt is a C++ program designed to efficiently scan the parameter spaces of beyond-the-Standard-Model (BSM) scenarios to identify parameter combinations that yield a relic density compatible with the measured value, within a user-specified uncertainty.
+
+The code computes the relic density for freeze-out (co-)annihilation processes and supports multiple pre-installed models as well as any other model featuring a discrete Z2 symmetry, simply by providing the corresponding FeynRules model files. It automatically generates the required (co-)annihilation amplitudes and thermally averaged cross-sections, including total widths in s-channel mediators, and solves the Boltzmann equation to determine the relic density.
+
+RelExt can be easily linked to external tools such as [ScannerS](https://gitlab.com/jonaswittbrodt/ScannerS/-/tree/HiggsTools?ref_type=heads) for theoretical and experimental constraints or [BSMPT](https://github.com/phbasler/BSMPT) to analyze the phase history of the model and potential gravitational wave signals.
 
 The models implemented so far are
 
   - CP in the Dark ([arXiv 1807.10322](https://arxiv.org/abs/1807.10322), [arXiv 2204.13425](https://arxiv.org/abs/2204.13425))
-  - Complex Singlet Extension (CxSM)
+  - Complex Singlet Extension (CxSM) ([arXiv 1301.2599](https://arxiv.org/abs/1301.2599))
+  - N2HDM Dark doublet Phase (DDP) ([arXiv 2004.05382](https://arxiv.org/abs/2004.05382), [arXiv 2104.03184](http://arxiv.org/abs/2104.03184))
+  - Two Real Singlet Model (TRSM) ([arXiv 1501.00206](https://arxiv.org/abs/1501.00206), [arXiv 1908.08554](https://arxiv.org/abs/1908.08554))
+  - BDM5 ([arXiv 2007.05082](https://arxiv.org/abs/2007.05082), [arXiv 2207.11556](https://arxiv.org/abs/2207.11556))
 
     
 The code is structured such that users can add their own models.
 
-The programm can be downladed at: https://github.com/jplotnikov99/darktree_new/
+The programm can be downladed at: https://github.com/jplotnikov99/RelExt_new/
 
 Sample input and output files are provided.
 
@@ -34,8 +40,8 @@ If you use this program for your work please cite
 
 ### Dependencies
 
-DarkTree uses cmake as build tool for the C++ source code. 
-To implement new models in RelExt, it is required to have Mathematica with the packages FeynRules [citation] and FeynCalc[citation]/FeynArts[citation] installed.
+RelExt uses cmake as build tool for the C++ source code. 
+To implement new models in RelExt, it is required to have `Mathematica v12` or higher with the packages FeynRules [citation] and FeynCalc v9.3.1 [arXiv 2001.04407](https://arxiv.org/abs/2001.04407),[arXiv 2312.14089](https://arxiv.org/abs/2312.14089)/FeynArts v3.11 [arXiv 0012260](http://arxiv.org/abs/hep-ph/0012260) installed.
 
 ### build
 
@@ -51,32 +57,34 @@ You can build the program with
 
 To add a new model you have to:
 
-1. Go to the source directory path/to/DarkTree.
+1. Navigate to the source directory
+        `path/to/RelExt`.
 
-2. Generate a new model folder via
-       `make [ ModelName ]`
-This will generate you a folder called md_YourModel and creates a new entry in the CMakeLists.txt .
+2. Run the following command, replacing [ModelName] with your desired model name:
+       `make [ModelName]`
+This will create a folder named `md_YourModel` and automatically add an entry to `CMakeLists.txt`.
 
-3. Put your FeynRules modelfiles.fr into the directory /md_YourModel/FR_modfiles.
+3. Place your FeynRules model file (modelfiles.fr) in the directory /md_YourModel/FR_modfiles.
 
-4. From the source directory run
-    `./model -l Path/To/FeynRules [ModelName].fr NameOfTheLagrangian`,
-where `NameOfTheLagrangian` is given by the name of the full Lagrangian in your FeynRules file. This will generate the necessary FeynArts files to calculated the Dark Matter annihilation amplitudes squared.
+4. From the source directory execute
+    `./model -l Path/To/FeynRules [ModelName].fr NameOfTheLagrangian`.
+Here, `NameOfTheLagrangian`corresponds to the full Lagrangian name defined in your FeynRules file. This will generate the necessary FeynArts files to calculated the Dark Matter annihilation amplitudes squared.
 
-5. To complete the implementation of the new model, build your project again.
+5. To complete the implementation of the new model, recompile your project again.
 
 
 ## Running the Code
 To run the code for a specific model, type
 
     cd build 
-    ./[ ModelName ] [ InputFile ] [ OutputFile ]
+    ./[ModelName] [InputFile] [OutputFile]
+where:
+  - `[InputFile]`: Path to the input file containing the necessary model parameters. 
+  - `[OutPutfile]`  Path where `RelExt` will generate and store the output results.
 
-, where `[InputFile]` is the path to your inputfile, which provides all the necessary parameters of your model and `[OutPutfile]` is the path of your outputfile which are generated by `RelExt` and where your results will be stored.
+### Main File
 
-### Main File [ToDo]
-
-- 
+Each model folder contains a main.cpp file that can be modified as needed. A table of available functions can be found in the [Manual](google.com) of RelExt.
 
 
 
