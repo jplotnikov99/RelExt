@@ -8,7 +8,7 @@ using namespace DT;
  ***********************************************
  */
 static constexpr int MODE = 3;
-static const VecString SAVEPARS = {"mmH3"};
+static const VecString SAVEPARS = {"mmH1","mmH2","mmH3","mmA0","mmHch","aDM","lam2","lam8","m22","vs","WH1","WH2"};
 static const VecString CONSIDERCHANNELS = {};
 VecString NEGLECTCHANNELS = {};
 static const VecString NEGLECTPARTICLES = {};
@@ -26,6 +26,7 @@ int main(int argc, char **argv) {
 
     clock_t begin_time = clock();
     for (size_t i = 1; i < 1e5; i++) {
+        std::cout << i << std::endl;
         M.LoadParameters(i);
         M.CalcRelic();
         M.SaveData(SAVEPARS);

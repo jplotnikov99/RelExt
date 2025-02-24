@@ -314,29 +314,29 @@ TheLabel[ U[5, {__}] ] := TheLabel[U[5]];
 
 M$CouplingMatrices = {
 
-C[ S[6] , S[6] , S[6] , S[6] ] == {{(-3*I)*lam1, 0}},
+C[ S[6] , S[6] , S[6] , S[6] ] == {{(-3*I)*lam2, 0}},
 
-C[ S[6] , S[6] , S[3] , S[3] ] == {{(-I)*lam1, 0}},
+C[ S[6] , S[6] , S[3] , S[3] ] == {{(-I)*lam2, 0}},
 
-C[ S[3] , S[3] , S[3] , S[3] ] == {{(-3*I)*lam1, 0}},
+C[ S[3] , S[3] , S[3] , S[3] ] == {{(-3*I)*lam2, 0}},
 
-C[ S[6] , S[6] , S[7] , -S[7] ] == {{(-I)*lam1, 0}},
+C[ S[6] , S[6] , S[7] , -S[7] ] == {{(-I)*lam2, 0}},
 
-C[ S[3] , S[3] , S[7] , -S[7] ] == {{(-I)*lam1, 0}},
+C[ S[3] , S[3] , S[7] , -S[7] ] == {{(-I)*lam2, 0}},
 
-C[ S[7] , S[7] , -S[7] , -S[7] ] == {{(-2*I)*lam1, 0}},
+C[ S[7] , S[7] , -S[7] , -S[7] ] == {{(-2*I)*lam2, 0}},
 
-C[ S[6] , S[6] , S[4] , S[4] ] == {{(I*(2*m11^2 - 2*MH3^2 + lam7*vs^2))/v^2, 0}},
+C[ S[6] , S[6] , S[4] , S[4] ] == {{(I*(2*m22^2 - 2*MH3^2 + lam8*vs^2))/v^2, 0}},
 
-C[ S[6] , S[6] , S[5] , -S[5] ] == {{(I*(2*m11^2 - 2*MHch^2 + lam7*vs^2))/v^2, 0}},
+C[ S[6] , S[6] , S[5] , -S[5] ] == {{(I*(2*m22^2 - 2*MHch^2 + lam8*vs^2))/v^2, 0}},
 
-C[ S[4] , S[4] , S[3] , S[3] ] == {{(I*(2*m11^2 - 2*MA0^2 + lam7*vs^2))/v^2, 0}},
+C[ S[4] , S[4] , S[3] , S[3] ] == {{(I*(2*m22^2 - 2*MA0^2 + lam8*vs^2))/v^2, 0}},
 
-C[ S[5] , -S[5] , S[3] , S[3] ] == {{(I*(2*m11^2 - 2*MHch^2 + lam7*vs^2))/v^2, 0}},
+C[ S[5] , -S[5] , S[3] , S[3] ] == {{(I*(2*m22^2 - 2*MHch^2 + lam8*vs^2))/v^2, 0}},
 
-C[ S[4] , S[4] , S[7] , -S[7] ] == {{(I*(2*m11^2 - 2*MHch^2 + lam7*vs^2))/v^2, 0}},
+C[ S[4] , S[4] , S[7] , -S[7] ] == {{(I*(2*m22^2 - 2*MHch^2 + lam8*vs^2))/v^2, 0}},
 
-C[ S[5] , -S[5] , S[7] , -S[7] ] == {{(I*(2*m11^2 - MA0^2 - MH3^2 + lam7*vs^2))/v^2, 0}},
+C[ S[5] , -S[5] , S[7] , -S[7] ] == {{(I*(2*m22^2 - MA0^2 - MH3^2 + lam8*vs^2))/v^2, 0}},
 
 C[ S[4] , -S[5] , S[3] , S[7] ] == {{(-MA0^2 + MHch^2)/v^2, 0}},
 
@@ -374,29 +374,29 @@ C[ -S[5] , S[1] , S[3] , S[7] ] == {{(I*(MH3 - MHch)*(MH3 + MHch)*Cos[aDM])/v^2,
 
 C[ S[5] , S[1] , S[3] , -S[7] ] == {{(I*(MH3 - MHch)*(MH3 + MHch)*Cos[aDM])/v^2, 0}},
 
-C[ S[6] , S[6] , S[1] ] == {{(I*((2*m11^2 - 2*MA0^2 + lam7*vs^2)*Cos[aDM] - lam7*v*vs*Sin[aDM]))/v, 0}},
+C[ S[6] , S[6] , S[1] ] == {{(I*((2*m22^2 - 2*MA0^2 + lam8*vs^2)*Cos[aDM] - lam8*v*vs*Sin[aDM]))/v, 0}},
 
-C[ S[1] , S[3] , S[3] ] == {{(I*((2*m11^2 - 2*MH3^2 + lam7*vs^2)*Cos[aDM] - lam7*v*vs*Sin[aDM]))/v, 0}},
+C[ S[1] , S[3] , S[3] ] == {{(I*((2*m22^2 - 2*MH3^2 + lam8*vs^2)*Cos[aDM] - lam8*v*vs*Sin[aDM]))/v, 0}},
 
-C[ S[1] , S[7] , -S[7] ] == {{(I*((2*m11^2 - 2*MHch^2 + lam7*vs^2)*Cos[aDM] - lam7*v*vs*Sin[aDM]))/v, 0}},
+C[ S[1] , S[7] , -S[7] ] == {{(I*((2*m22^2 - 2*MHch^2 + lam8*vs^2)*Cos[aDM] - lam8*v*vs*Sin[aDM]))/v, 0}},
 
-C[ S[6] , S[6] , S[2] ] == {{((-I)*(lam7*v*vs*Cos[aDM] + (2*m11^2 - 2*MA0^2 + lam7*vs^2)*Sin[aDM]))/v, 0}},
+C[ S[6] , S[6] , S[2] ] == {{((-I)*(lam8*v*vs*Cos[aDM] + (2*m22^2 - 2*MA0^2 + lam8*vs^2)*Sin[aDM]))/v, 0}},
 
-C[ S[2] , S[3] , S[3] ] == {{((-I)*(lam7*v*vs*Cos[aDM] + (2*m11^2 - 2*MH3^2 + lam7*vs^2)*Sin[aDM]))/v, 0}},
+C[ S[2] , S[3] , S[3] ] == {{((-I)*(lam8*v*vs*Cos[aDM] + (2*m22^2 - 2*MH3^2 + lam8*vs^2)*Sin[aDM]))/v, 0}},
 
-C[ S[2] , S[7] , -S[7] ] == {{((-I)*(lam7*v*vs*Cos[aDM] + (2*m11^2 - 2*MHch^2 + lam7*vs^2)*Sin[aDM]))/v, 0}},
+C[ S[2] , S[7] , -S[7] ] == {{((-I)*(lam8*v*vs*Cos[aDM] + (2*m22^2 - 2*MHch^2 + lam8*vs^2)*Sin[aDM]))/v, 0}},
 
-C[ S[6] , S[6] , S[2] , S[2] ] == {{(-I)*lam7*Cos[aDM]^2 + (I*(2*m11^2 - 2*MA0^2 + lam7*vs^2)*Sin[aDM]^2)/v^2, 0}},
+C[ S[6] , S[6] , S[2] , S[2] ] == {{(-I)*lam8*Cos[aDM]^2 + (I*(2*m22^2 - 2*MA0^2 + lam8*vs^2)*Sin[aDM]^2)/v^2, 0}},
 
-C[ S[2] , S[2] , S[3] , S[3] ] == {{(-I)*lam7*Cos[aDM]^2 + (I*(2*m11^2 - 2*MH3^2 + lam7*vs^2)*Sin[aDM]^2)/v^2, 0}},
+C[ S[2] , S[2] , S[3] , S[3] ] == {{(-I)*lam8*Cos[aDM]^2 + (I*(2*m22^2 - 2*MH3^2 + lam8*vs^2)*Sin[aDM]^2)/v^2, 0}},
 
-C[ S[2] , S[2] , S[7] , -S[7] ] == {{(-I)*lam7*Cos[aDM]^2 + (I*(2*m11^2 - 2*MHch^2 + lam7*vs^2)*Sin[aDM]^2)/v^2, 0}},
+C[ S[2] , S[2] , S[7] , -S[7] ] == {{(-I)*lam8*Cos[aDM]^2 + (I*(2*m22^2 - 2*MHch^2 + lam8*vs^2)*Sin[aDM]^2)/v^2, 0}},
 
-C[ S[6] , S[6] , S[1] , S[1] ] == {{I*(((2*m11^2 - 2*MA0^2 + lam7*vs^2)*Cos[aDM]^2)/v^2 - lam7*Sin[aDM]^2), 0}},
+C[ S[6] , S[6] , S[1] , S[1] ] == {{I*(((2*m22^2 - 2*MA0^2 + lam8*vs^2)*Cos[aDM]^2)/v^2 - lam8*Sin[aDM]^2), 0}},
 
-C[ S[1] , S[1] , S[3] , S[3] ] == {{I*(((2*m11^2 - 2*MH3^2 + lam7*vs^2)*Cos[aDM]^2)/v^2 - lam7*Sin[aDM]^2), 0}},
+C[ S[1] , S[1] , S[3] , S[3] ] == {{I*(((2*m22^2 - 2*MH3^2 + lam8*vs^2)*Cos[aDM]^2)/v^2 - lam8*Sin[aDM]^2), 0}},
 
-C[ S[1] , S[1] , S[7] , -S[7] ] == {{I*(((2*m11^2 - 2*MHch^2 + lam7*vs^2)*Cos[aDM]^2)/v^2 - lam7*Sin[aDM]^2), 0}},
+C[ S[1] , S[1] , S[7] , -S[7] ] == {{I*(((2*m22^2 - 2*MHch^2 + lam8*vs^2)*Cos[aDM]^2)/v^2 - lam8*Sin[aDM]^2), 0}},
 
 C[ S[4] , S[4] , S[4] , S[4] ] == {{((-3*I)*(MH1^2*Cos[aDM]^2 + MH2^2*Sin[aDM]^2))/v^2, 0}},
 
@@ -416,7 +416,7 @@ C[ S[1] , S[1] , S[1] ] == {{((-3*I)*MH1^2*(vs*Cos[aDM]^3 + v*Sin[aDM]^3))/(v*vs
 
 C[ S[2] , S[2] , S[2] ] == {{((-3*I)*MH2^2*(v*Cos[aDM]^3 - vs*Sin[aDM]^3))/(v*vs), 0}},
 
-C[ S[1] , S[1] , S[1] , S[1] ] == {{((-3*I)*(MH1^2*vs^2*Cos[aDM]^6 + MH2^2*vs^2*Cos[aDM]^4*Sin[aDM]^2 + 2*(MH1^2 - MH2^2)*v*vs*Cos[aDM]^3*Sin[aDM]^3 + MH2^2*v^2*Cos[aDM]^2*Sin[aDM]^4 + MH1^2*v^2*Sin[aDM]^6))/(v^2*vs^2), 0}},
+C[ S[1] , S[1] , S[1] , S[1] ] == {{((-3*I)*(MH1^2*vs^2*Cos[aDM]^6 + MH2^2*vs^2*Cos[aDM]^4*Sin[aDM]^2 + 2*MH1^2*v*vs*Cos[aDM]^3*Sin[aDM]^3 - 2*MH2^2*v*vs*Cos[aDM]^3*Sin[aDM]^3 + MH2^2*v^2*Cos[aDM]^2*Sin[aDM]^4 + MH1^2*v^2*Sin[aDM]^6))/(v^2*vs^2), 0}},
 
 C[ S[2] , S[2] , S[2] , S[2] ] == {{((-3*I)*(MH2^2*v^2*Cos[aDM]^6 + MH1^2*v^2*Cos[aDM]^4*Sin[aDM]^2 + 2*(MH1^2 - MH2^2)*v*vs*Cos[aDM]^3*Sin[aDM]^3 + MH1^2*vs^2*Cos[aDM]^2*Sin[aDM]^4 + MH2^2*vs^2*Sin[aDM]^6))/(v^2*vs^2), 0}},
 
@@ -576,11 +576,11 @@ C[ -S[5] , S[2] , S[3] , S[7] ] == {{((-I)*(MH3 - MHch)*(MH3 + MHch)*Sin[aDM])/v
 
 C[ S[5] , S[2] , S[3] , -S[7] ] == {{((-I)*(MH3 - MHch)*(MH3 + MHch)*Sin[aDM])/v^2, 0}},
 
-C[ S[6] , S[6] , S[1] , S[2] ] == {{((-I)*(2*m11^2 - 2*MA0^2 + lam7*(v^2 + vs^2))*Cos[aDM]*Sin[aDM])/v^2, 0}},
+C[ S[6] , S[6] , S[1] , S[2] ] == {{((-I)*(2*m22^2 - 2*MA0^2 + lam8*(v^2 + vs^2))*Cos[aDM]*Sin[aDM])/v^2, 0}},
 
-C[ S[1] , S[2] , S[3] , S[3] ] == {{((-I)*(2*m11^2 - 2*MH3^2 + lam7*(v^2 + vs^2))*Cos[aDM]*Sin[aDM])/v^2, 0}},
+C[ S[1] , S[2] , S[3] , S[3] ] == {{((-I)*(2*m22^2 - 2*MH3^2 + lam8*(v^2 + vs^2))*Cos[aDM]*Sin[aDM])/v^2, 0}},
 
-C[ S[1] , S[2] , S[7] , -S[7] ] == {{((-I)*(2*m11^2 - 2*MHch^2 + lam7*(v^2 + vs^2))*Cos[aDM]*Sin[aDM])/v^2, 0}},
+C[ S[1] , S[2] , S[7] , -S[7] ] == {{((-I)*(2*m22^2 - 2*MHch^2 + lam8*(v^2 + vs^2))*Cos[aDM]*Sin[aDM])/v^2, 0}},
 
 C[ S[4] , S[4] , S[2] ] == {{(I*MH2^2*Sin[aDM])/v, 0}},
 

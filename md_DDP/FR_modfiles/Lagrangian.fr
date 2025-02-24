@@ -116,13 +116,13 @@ LScalar := Block[{PMVec, WVec, Dc, Dcbar, Vphi},
 	HC[del[PhiS, mu]].del[PhiS, mu]/2;
 
 (* Scalar potential *)
-Vscalar := m11^2 Phi1bar.Phi1 + m22^2 Phi2bar.Phi2 +
- lam1/2 (Phi1bar.Phi1)^2 +
- lam2/2 (Phi2bar.Phi2)^2 + lam3 (Phi1bar.Phi1) (Phi2bar.Phi2) +
+Vscalar := m22^2 Phi1bar.Phi1 + m11^2 Phi2bar.Phi2 +
+ lam2/2 (Phi1bar.Phi1)^2 +
+ lam1/2 (Phi2bar.Phi2)^2 + lam3 (Phi1bar.Phi1) (Phi2bar.Phi2) +
  lam4 (Phi1bar.Phi2) (Phi2bar.Phi1) +
  lam5/2 ((Phi1bar.Phi2)^2 + (Phi2bar.Phi1)^2) + ms^2/2 PhiS^2 +
- lam6/8 PhiS^4 + lam7/2 (Phi1bar.Phi1) PhiS^2 +
- lam8/2 (Phi2bar.Phi2) PhiS^2;
+ lam6/8 PhiS^4 + lam8/2 (Phi1bar.Phi1) PhiS^2 +
+ lam7/2 (Phi2bar.Phi2) PhiS^2;
 
 	Lcov - Vscalar];
 
