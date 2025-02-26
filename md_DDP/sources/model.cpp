@@ -4,7 +4,6 @@
 #include <cmath>
 
 namespace DT{
-namespace PAR{
 	double aEWM1 = 0.00775795;
 	double Gf = 0.0000116637;
 	double MMZ = 91.1876;
@@ -20,10 +19,9 @@ namespace PAR{
 	double mmH3 = 70000;
 	double mmA0 = 120000;
 	double mmHch = 200000;
-	double m22 = 0.5;
-	double lam2 = 0.5;
-	double lam8 = 0.5;
-	double vs = 0.5;
+	double m11 = 0.5;
+	double lam1 = 0.5;
+	double lam7 = 0.5;
 	double GG = 1.21358;
 	double Mnue = 0.;
 	double Mnum = 0.;
@@ -77,15 +75,16 @@ namespace PAR{
 	double MH3;
 	double MA0;
 	double MHch;
-	double lam1;
+	double lam2;
 	double lam3;
 	double lam4;
 	double lam5;
 	double lam6;
-	double lam7;
-	double m11;
+	double lam8;
+	double m22;
 	double ms;
 	double GH;
+	double vs;
 	double token1;
 	double token2;
 	double token3;
@@ -185,5 +184,4 @@ namespace PAR{
 	double token97;
 	double token98;
 	double token99;
-}
 }

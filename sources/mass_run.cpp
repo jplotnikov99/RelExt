@@ -1,4 +1,4 @@
-#include "../include/mass_run.hpp"
+#include "mass_run.hpp"
 
 namespace DT {
 Mrun::Mrun() {
@@ -328,7 +328,7 @@ void Mrun::calc_quark_masses(const double q, double *masses[], double &aS) {
     *masses[0] = RunM(q, 3, 0);
     *masses[1] = RunM(q, 4, 0);
     *masses[2] = RunM(q, 5, 1);
-    //*masses[3] = RunM(q, 6, 1);
+    *masses[3] = RunM(q, 6, 1);
 }
 
 }  // namespace DT

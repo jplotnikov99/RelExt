@@ -1,52 +1,100 @@
-#include "../include/tac.hpp"
+#include "tac.hpp"
 
 namespace DT {
-
-void SigvInt::set_x(const double new_x) { x = new_x; }
-
-void SigvInt::set_lower_bound(const double new_lower) {
-    lower_bound = new_lower;
+Tac::Tac(std::shared_ptr<Model> model) {
+    mod = model;
+    for (size_t i = 0; i < mod->N_widths; i++) {
+        boundaries.push_back(0);
+        boundaries.push_back(0);
+        boundaries.push_back(0);
+    }
 }
 
-void SigvInt::set_dsmasses(const std::vector<double> &masses) {
-    polK2s.resize(masses.size());
+bool Tac::sort_inimasses(const vstring &ch_str) {
+    double temp;
+    for (auto it : ch_str) {
+        mod->set_channel(m1, m2, {it});
+        temp = mod->eval(0.5, (m1 + m2) * (m1 + m2) * 100).res;
+        if (std::isnan(temp)) return false;
+        inimap[m1 + m2].push_back(it);
+    }
+    dsmasses.clear();
+    for(auto it : mod->bath_masses){
+        dsmasses.push_back(mod->the_mass(it));
+    }
+    return true;
 }
 
-double SigvInt::xsec(const double &s, const std::string &channel) {
+ResError Tac::simpson38_adap_cos_t(const double l, const double r,
+                                   const double &s, ResError *f,
+                                   const double &est, const size_t depth) {
+    ResError I1, I2, I3, f1[4];
+    double m = (r + l) / 2.;
+    double h = (r - l) / 8.;
+    ResError I = h * (f[0] + 3 * f[1] + 3 * f[2] + f[3]);
+    f1[0] = mod->eval(m, s);
+    f1[1] = f[2];
+    f1[2] = mod->eval((l + 5 * r) / 6, s);
+    f1[3] = f[3];
+    f[3] = f1[0];
+    f[2] = f[1];
+    f[1] = mod->eval((5 * l + r) / 6, s);
+    I1 = h / 2 * (f[0] + 3 * f[1] + 3 * f[2] + f[3]);
+    I2 = h / 2 * (f1[0] + 3 * f1[1] + 3 * f1[2] + f1[3]);
+    I3 = I1 + I2;
+
+    if (fabs(I.res - I3.res) < theta_eps * fabs(est) || (depth > 10)) {
+        I3.err = fabs(I.res - I3.res);
+        return I3;
+    }
+    return simpson38_adap_cos_t(l, m, s, f, est, depth + 1) +
+           simpson38_adap_cos_t(m, r, s, f1, est, depth + 1);
+}
+
+ResError Tac::xsec(const double &s, const std::string &channel) {
     double m1, m2, m3, m4;
-    AA.set_channel({channel}, false);
-    AA.assign_masses(m1, m2, channel);
-    AA.set_s(s);
-    if (sqrt(s) < m1 + m2) return 0.;
-    AA.get_channel_masses(m1, m2, m3, m4, channel);
+    mod->set_channel(m1, m2, {channel}, false);
+    if (sqrt(s) < m1 + m2) {
+        return {0., 0.};
+    }
+    mod->get_channel_masses(m1, m2, m3, m4, channel);
 
     double f_est[10];
-    for (size_t i = 0; i < 10; i++) f_est[i] = AA(-1 + 0.2222222222222222 * i);
+    for (size_t i = 0; i < 10; i++) {
+        f_est[i] = mod->eval(-1 + 0.2222222222222222 * i, s).res;
+    }
     double est = simpson_est(-1, 1, f_est);
-    double f[4];
-    f[0] = f_est[0];
-    f[1] = f_est[3];
-    f[2] = f_est[6];
-    f[3] = f_est[9];
+    ResError f[4];
+    f[0] = {f_est[0], 0.};
+    f[1] = {f_est[3], 0.};
+    f[2] = {f_est[6], 0.};
+    f[3] = {f_est[9], 0.};
     return 1 / (32 * M_PI * s) *
            sqrt(kaellen(s, m3 * m3, m4 * m4) / kaellen(s, m1 * m1, m2 * m2)) *
-           h_adap_simpson38(AA, -1, 1, f, est, theta_eps);
+           simpson38_adap_cos_t(-1, 1, s, f, est);
 }
 
-double SigvInt::wij(const double &s) {
+ResError Tac::wij(const double &s) {
     if (sig_s.count(s) == 0) {
-        AA.set_s(s);
         double f_est[10];
-        for (size_t i = 0; i < 10; i++)
-            f_est[i] = AA(-1 + 0.2222222222222222 * i);
+        for (size_t i = 0; i < 10; i++) {
+            f_est[i] = mod->eval(-1 + 0.2222222222222222 * i, s).res;
+        }
         double est = simpson_est(-1, 1, f_est);
-        double f[4];
-        f[0] = f_est[0];
-        f[1] = f_est[3];
-        f[2] = f_est[6];
-        f[3] = f_est[9];
-        double crs = 1 / (256 * M_PI * s * sqrt(s)) *
-                     h_adap_simpson38(AA, -1, 1, f, est, theta_eps);
+        ResError f[4];
+        f[0] = {f_est[0], 0.};
+        f[1] = {f_est[3], 0.};
+        f[2] = {f_est[6], 0.};
+        f[3] = {f_est[9], 0.};
+
+        
+
+        ResError crs = 1 / (256 * M_PI * s * sqrt(s)) *
+                       simpson38_adap_cos_t(-1, 1, s, f, est);
+
+        // std::cout << std::endl << "\tsimpson38_adap_cos_t: " << simpson38_adap_cos_t(-1, 1, s, f, est) << std::endl;
+        // std::cout << "\tsimpson38_adap_cos_t / (256 * M_PI * s * sqrt(s)): " << 1 / (256 * M_PI * s * sqrt(s)) * simpson38_adap_cos_t(-1, 1, s, f, est) << std::endl << std::endl;
+        
         sig_s[s] = crs;
         return crs;
     } else {
@@ -54,42 +102,39 @@ double SigvInt::wij(const double &s) {
     }
 }
 
-void SigvInt::calc_polK2() {
-    double Tinv = x / AA.MDM;
+void Tac::calc_polK2(const double &x) {
+    double Tinv = x / mod->MDM;
     double mtemp, cur;
-    size_t i = 0;
-    for (auto it : AA.bath_masses) {
-        mtemp = *AA.DSmasses[it];
-        cur = AA.DSdof[it] * mtemp * mtemp * polK2(Tinv * mtemp);
-        polK2s[i] = cur;
-        i++;
+    polK2s.clear();
+    for (size_t i = 0; i < dsmasses.size(); i++) {
+        mtemp = dsmasses[i];
+        cur = mod->the_dof(mod->bath_masses[i]) * mtemp * mtemp * polK2(Tinv * mtemp);
+        polK2s.push_back(cur);
     }
 }
 
-double SigvInt::lipsv(const double &s) {
-    size_t i = 0;
+double Tac::lipsv(const double &s, const double &x) {
     double num = 0.;
     double den = 0.;
     double mtemp;
     double sqs = sqrt(s);
-    double Tinv = x / AA.MDM;
+    double Tinv = x / mod->MDM;
 
     if (x > 5) {
         num += Tinv * polK1(sqs * Tinv);
-        for (auto it : AA.bath_masses) {
-            mtemp = *AA.DSmasses[it];
-            den += exp(-Tinv * (mtemp - sqs / 2)) * polK2s[i];
-            i++;
+        for (size_t i = 0; i < dsmasses.size(); i++) {
+            mtemp = dsmasses[i];
+            den += exp(-Tinv * (mtemp - sqs / 2)) * polK2s.at(i);
         }
         den *= den;
     } else {
-        // if (sqs * Tinv > 5) {
-        num += Tinv * polK1(sqs * Tinv) * exp(-sqs * Tinv);
-        // } else {
-        //     num += Tinv * bessel::cyl_k(1, sqs * Tinv);
-        // }
-        for (auto it : AA.bath_masses) {
-            mtemp = *AA.DSmasses[it];
+        if (sqs * Tinv > 10) {
+            num += Tinv * polK1(sqs * Tinv) * exp(-sqs * Tinv);
+        } else {
+            num += Tinv * std::cyl_bessel_k(1, sqs * Tinv);
+        }
+        for (auto it : dsmasses) {
+            mtemp = it;
             den += mtemp * mtemp * besselK2(Tinv * mtemp);
         }
         den *= den;
@@ -98,49 +143,43 @@ double SigvInt::lipsv(const double &s) {
     return num / den;
 }
 
-double SigvInt::operator()(const double &u) {
+ResError Tac::sigv(const double &u, const double &x) {
     double s = lower_bound * lower_bound + (1 - u) / u;
-    return wij(s) * lipsv(s) * 1 / (u * u);
-}
 
-Tac::Tac(AnnihilationAmps &AnAmps)
-    : AA(AnAmps), sigv(AA), boundaries(3 * AA.N_widths) {}
+    // std::cout << "lower_bound/2: " << lower_bound/2 << std::endl;
+    // std::cout << "u: " << u << std::endl;
+    // std::cout << "s: " << s << std::endl;
+    // std::cout << "x: " << x << std::endl;
+    // std::cout << "wij: " << wij(s) << std::endl;
+    // std::cout << "lipsv: " << lipsv(s,x) << std::endl;
+    // std::cout << "sigv: " << wij(s) * lipsv(s, x) * 1 / (u * u) << std::endl;
 
-bool Tac::sort_inimasses(const VecString &ch_str) {
-    double temp;
-    sigv.polK2s.resize(AA.bath_masses.size());
-    for (auto it : ch_str) {
-        AA.set_channel({it});
-        AA.assign_masses(m1, m2, it);
-        AA.set_s((m1 + m2) * (m1 + m2) * 100);
-        temp = AA(0.5);
-        if (std::isnan(temp)) return false;
-        inimap[m1 + m2].push_back(it);
-    }
-    return true;
+    // exit(0);
+
+    return wij(s) * lipsv(s, x) * 1 / (u * u);     
 }
 
 bool Tac::beps(const double &x) {
-    return (x * (sigv.lower_bound - 2 * AA.MDM) / AA.MDM <= -beps_eps);
+    return (x * (lower_bound - 2 * mod->MDM) / mod->MDM <= -beps_eps);
 }
 
 double Tac::peak_relevance(const double &peakpos) {
-    if (peakpos == sigv.lower_bound) return -1.;
-    return -(beps_eps /* - 4.6051701859880 */) * AA.MDM /
-           (peakpos - sigv.lower_bound);
+    if (peakpos == lower_bound) return -1.;
+    return -(beps_eps - 4.6051701859880) * mod->MDM / (peakpos - lower_bound);
 }
 
 double *Tac::peak_bounds(const double &peakpos, const double &width) {
     static double bounds[3];
     double n = 0.1;
-    while (peakpos - 2 * width / n < sigv.lower_bound) n *= 2;
+    while (peakpos - 2 * width / n < lower_bound) {
+        n *= 2;
+    }
 
     bounds[0] = 1 / ((peakpos - 2 * width / n) * (peakpos - 2 * width / n) -
-                     sigv.lower_bound * sigv.lower_bound + 1);
-    bounds[1] =
-        1 / (peakpos * peakpos - sigv.lower_bound * sigv.lower_bound + 1);
+                     lower_bound * lower_bound + 1);
+    bounds[1] = 1 / (peakpos * peakpos - lower_bound * lower_bound + 1);
     bounds[2] = 1 / ((peakpos + 2 * width / n) * (peakpos + 2 * width / n) -
-                     sigv.lower_bound * sigv.lower_bound + 1);
+                     lower_bound * lower_bound + 1);
 
     return bounds;
 }
@@ -149,27 +188,30 @@ void Tac::i_sort_boundaries() {
     double current[3];
     int l;
     for (int i = 1; i < N_relevant_peaks; i++) {
-        current[0] = boundaries[3 * i];
-        current[1] = boundaries[3 * i + 1];
-        current[2] = boundaries[3 * i + 2];
+        current[0] = boundaries.at(3 * i);
+        current[1] = boundaries.at(3 * i + 1);
+        current[2] = boundaries.at(3 * i + 2);
 
         l = i;
-        while ((l > 0) && (boundaries[3 * (l - 1) + 1] < current[1])) {
-            boundaries[3 * l] = boundaries[3 * (l - 1)];
-            boundaries[3 * l + 1] = boundaries[3 * (l - 1) + 1];
-            boundaries[3 * l + 2] = boundaries[3 * (l - 1) + 2];
+        while ((l > 0) && (boundaries.at(3 * (l - 1) + 1) < current[1])) {
+            boundaries.at(3 * l) = boundaries.at(3 * (l - 1));
+            boundaries.at(3 * l + 1) = boundaries.at(3 * (l - 1) + 1);
+            boundaries.at(3 * l + 2) = boundaries.at(3 * (l - 1) + 2);
+
             l--;
         }
-        boundaries[3 * l] = current[0];
-        boundaries[3 * l + 1] = current[1];
-        boundaries[3 * l + 2] = current[2];
+        boundaries.at(3 * l) = current[0];
+        boundaries.at(3 * l + 1) = current[1];
+        boundaries.at(3 * l + 2) = current[2];
     }
 }
 
 void Tac::check_boundaries() {
-    for (size_t i = 0; i < boundaries.size() - 1; i++)
-        if (boundaries[i] < boundaries[i + 1])
-            boundaries[i + 1] = boundaries[i];
+    for (size_t i = 0; i < boundaries.size() - 1; i++) {
+        if (boundaries.at(i) < boundaries.at(i + 1)) {
+            boundaries.at(i + 1) = boundaries.at(i);
+        }
+    }
 }
 
 void Tac::set_boundaries(const double &x) {
@@ -178,15 +220,15 @@ void Tac::set_boundaries(const double &x) {
 
     N_relevant_peaks = 0;
 
-    for (int j = 0; j < AA.N_widths; j++) {
-        peak_xf = peak_relevance(*AA.denstructures.at(2 * j));
+    for (int j = 0; j < mod->N_widths; j++) {
+        peak_xf = peak_relevance(*mod->denstructures.at(2 * j));
 
         if (peak_xf > 0 && x < peak_xf) {
-            b = peak_bounds(*AA.denstructures.at(2 * j),
-                            *AA.denstructures.at(2 * j + 1));
-            boundaries[3 * N_relevant_peaks] = *b;
-            boundaries[3 * N_relevant_peaks + 1] = *(b + 1);
-            boundaries[3 * N_relevant_peaks + 2] = *(b + 2);
+            b = peak_bounds(*mod->denstructures.at(2 * j),
+                            *mod->denstructures.at(2 * j + 1));
+            boundaries.at(3 * N_relevant_peaks) = *b;
+            boundaries.at(3 * N_relevant_peaks + 1) = *(b + 1);
+            boundaries.at(3 * N_relevant_peaks + 2) = *(b + 2);
             N_relevant_peaks++;
         }
     }
@@ -194,104 +236,182 @@ void Tac::set_boundaries(const double &x) {
     check_boundaries();
 }
 
-double Tac::integrate_peaks(const double &x) {
-    double res = 0.;
+ResError Tac::simpson38_peak(const double l, const double r, const double &x) {
+    return (r - l) / 8 *
+           (sigv(l, x) + 3 * sigv((2 * l + r) / 3, x) +
+            3 * sigv((l + 2 * r) / 3, x) + sigv(r, x));
+}
+
+ResError Tac::simpson38_adap_peak(const double l, const double r,
+                                  const double &x, const ResError &ans,
+                                  size_t depth) {
+    if (ans.res == 0) return ans;
+    double m = (l + r) / 2;
+    ResError I1 = simpson38_peak(l, m, x), I2 = simpson38_peak(m, r, x);
+    ResError I = I1 + I2;
+    if ((fabs(I.res / ans.res - 1) < peak_eps) || (depth == 18)) {
+        I.err += fabs(I.res - ans.res);
+        return I;
+    }
+    return simpson38_adap_peak(l, m, x, I1, depth + 1) +
+           simpson38_adap_peak(m, r, x, I2, depth + 1);
+}
+
+double Tac::kronrod_61(const double l, const double r, const double &x) {
+
+    // std::cout << "----------- kronrod_61 -----------" << std::endl;
+    // std::cout << "l: " << l << std::endl;
+    // std::cout << "r: " << r << std::endl;
+    // std::cout << "x: " << x << std::endl;
+    // std::cout << "----------------------------------" << std::endl;
+
+    double m = 0.5 * (r + l);
+    double h = 0.5 * (r - l);
+
+    double res = 0;
+    for (size_t i = 0; i < 30; i++) {
+        double dx = h * kronx_61[i];
+
+        // std::cout << "\tm + dx: " << m + dx << std::endl;
+        // std::cout << "\tm - dx: " << m - dx << std::endl;
+
+        res += wkron_61[i] * (sigv(m + dx, x).res + sigv(m - dx, x).res);
+    }
+    res += wkron_61[30] * (sigv(m, x).res);
+    res *= h;
+
+    return res;
+}
+
+ResError Tac::adap_gauss_kronrod(const double l, const double r,
+                                 const double &x, const double &est,
+                                 size_t depth) {
+    ResError I1, I2, y[15];
+    double h = (r - l) / 2;
+    for (int i = 0; i < 15; i++) {
+        y[i] = sigv((kronx_15[i] + 1) * h + l, x);
+    }
+
+    I1 = h * (0.022935322010529224963732008058970 * (y[0] + y[14]) +
+              0.063092092629978553290700663189204 * (y[1] + y[13]) +
+              0.104790010322250183839876322541518 * (y[2] + y[12]) +
+              0.140653259715525918745189590510238 * (y[3] + y[11]) +
+              0.169004726639267902826583426598550 * (y[4] + y[10]) +
+              0.190350578064785409913256402421014 * (y[5] + y[9]) +
+              0.204432940075298892414161999234649 * (y[6] + y[8]) +
+              0.209482141084727828012999174891714 * y[7]);
+    if (I1.res == 0) {
+        return I1;
+    }
+    I2 = h * (0.129484966168869693270611432679082 * (y[1] + y[13]) +
+              0.279705391489276667901467771423780 * (y[3] + y[11]) +
+              0.381830050505118944950369775488975 * (y[5] + y[9]) +
+              0.417959183673469387755102040816327 * y[7]);
+    double err = fabs(I1.res - I2.res);
+    if ((err < gauss_kronrod_eps * fabs(est)) || (depth > 18)) {
+        I1.err += err;
+        return I1;
+    }
+    double m = (2 * l + r) / 3;
+    return adap_gauss_kronrod(l, m, x, est, depth + 1) +
+           adap_gauss_kronrod(m, r, x, est, depth + 1);
+}
+
+ResError Tac::integrate_peaks(const double &x) {
+    ResError res{0., 0.};
     double b[3];
     for (size_t i = 0; i < N_relevant_peaks; i++) {
-        b[0] = boundaries[3 * i];
-        b[1] = boundaries[3 * i + 1];
-        b[2] = boundaries[3 * i + 2];
-        double f0[4];
-        simpson38_vals(sigv, b[2], b[1], f0);
-        res = res + adap_simpson38(sigv, b[2], b[1], f0, peak_eps);
-        simpson38_vals(sigv, b[1], b[0], f0);
-        res = res + adap_simpson38(sigv, b[1], b[0], f0, peak_eps);
+        b[0] = boundaries.at(3 * i);
+        b[1] = boundaries.at(3 * i + 1);
+        b[2] = boundaries.at(3 * i + 2);
+        res = res +
+              simpson38_adap_peak(b[2], b[1], x, simpson38_peak(b[2], b[1], x));
+        res = res +
+              simpson38_adap_peak(b[1], b[0], x, simpson38_peak(b[1], b[0], x));
     }
     return res;
 }
 
-void Tac::estimate_integrate_s(const double &x, double &res, double &estimate) {
-    double error;
+void Tac::estimate_integrate_s(const double &x, ResError &res,
+                               double &estimate) {
     if (N_relevant_peaks > 0) {
         res = res + integrate_peaks(x);
-        estimate += res;
-
-        for (size_t i = 1; i < N_relevant_peaks; i++)
-            estimate += kronrod_61(sigv, boundaries[3 * i],
-                                   boundaries[3 * i - 1], error);
-
-        estimate +=
-            (kronrod_61(sigv, 0, boundaries[3 * N_relevant_peaks - 1], error) +
-             kronrod_61(sigv, boundaries[0], 1, error));
-    } else {
-        double temp;
-        double a = 1., b;
-        size_t i, imax = 1;
-        do {
-            error = 0;
-            temp = 0;
-            b = 1.;
-            for (i = 1; i < imax; i++) {
-                a = (double)i * 1e-3 * b;
-                temp += kronrod_61(sigv, a, b, error);
-                b = a;
-            }
-            temp += kronrod_61(sigv, 0., a, error);
-            imax++;
-        } while ((error > 0.5 * std::abs(temp)) && (imax < 4));
-        estimate += temp;
-    }
-}
-
-void Tac::integrate_s(const double &x, double &res, double &estimate) {
-    if (N_relevant_peaks > 0) {
-        res += h_adap_gauss_kronrod_15(sigv, 0,
-                                       boundaries[3 * N_relevant_peaks - 1],
-                                       estimate, gauss_kronrod_eps) +
-               h_adap_gauss_kronrod_15(sigv, boundaries[0], 1, estimate,
-                                       gauss_kronrod_eps);
+        estimate += res.res;
 
         for (size_t i = 1; i < N_relevant_peaks; i++) {
-            res += h_adap_gauss_kronrod_15(sigv, boundaries[3 * i],
-                                           boundaries[3 * i - 1], estimate,
-                                           gauss_kronrod_eps);
+            estimate +=
+                kronrod_61(boundaries.at(3 * i), boundaries.at(3 * i - 1), x);
         }
+
+        estimate += (kronrod_61(0, boundaries.at(3 * N_relevant_peaks - 1), x) +
+                     kronrod_61(boundaries.at(0), 1, x));
     } else {
-        res +=
-            h_adap_gauss_kronrod_15(sigv, 0, 1e-3, estimate, gauss_kronrod_eps);
-        res +=
-            h_adap_gauss_kronrod_15(sigv, 1e-3, 1, estimate, gauss_kronrod_eps);
+        estimate += kronrod_61(0, 1e-6, x);
+        std::cout << "test1" << std::endl;
+        estimate += kronrod_61(1e-6, 1e-3, x);
+        std::cout << "test2" << std::endl;
+        estimate += kronrod_61(1e-3, 1, x);
+        std::cout << "test3" << std::endl;
     }
 }
 
-double Tac::operator()(const double &x) {
-    double res = 0.;
+void Tac::integrate_s(const double &x, ResError &res, double &estimate) {
+    if (N_relevant_peaks > 0) {
+        res = res +
+              (adap_gauss_kronrod(0, boundaries.at(3 * N_relevant_peaks - 1), x,
+                                  estimate) +
+               adap_gauss_kronrod(boundaries.at(0), 1, x, estimate));
+
+        for (size_t i = 1; i < N_relevant_peaks; i++) {
+            res =
+                res + adap_gauss_kronrod(boundaries.at(3 * i),
+                                         boundaries.at(3 * i - 1), x, estimate);
+        }
+    } else {
+        res = res + adap_gauss_kronrod(0, 1e-3, x, estimate);
+        res = res + adap_gauss_kronrod(1e-3, 1, x, estimate);
+    }
+}
+
+ResError Tac::tac(const double &x) {
+
+    // double x = 14.72442094441484;
+
+    // std::cout << "\tx: " << x << std::endl << std::endl;
+
+    ResError res{0., 0.};
     double estimate = 0.;
-    sigv.set_x(x);
-    sigv.calc_polK2();
+    calc_polK2(x);
     for (auto &it : inimap) {
-        AA.set_channel(it.second);
-        AA.assign_masses(m1, m2, it.second[0]);
-        sigv.set_lower_bound(m1 + m2);
+        std::cout << it.second[0] << std::endl;
+        mod->set_channel(m1, m2, it.second);
+        lower_bound = m1 + m2;
         if (beps(x)) {
             set_boundaries(x);
             estimate_integrate_s(x, res, estimate);
         }
     }
     for (auto &it : inimap) {
-        AA.set_channel(it.second);
-        AA.assign_masses(m1, m2, it.second[0]);
-        sigv.set_lower_bound(m1 + m2);
+        mod->set_channel(m1, m2, it.second);
+        lower_bound = m1 + m2;
         if (beps(x)) {
             set_boundaries(x);
             integrate_s(x, res, estimate);
         }
     }
+
+    
+
+    std::cout << "TAC: " << res << std::endl;
+
+    // exit(0);
+
     return res;
 }
 
 void Tac::clear_state(const bool full) {
-    sigv.sig_s.clear();
+    tac_error_reached = false;
+    sig_s.clear();
     if (full) inimap.clear();
 }
 

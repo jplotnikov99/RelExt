@@ -6,7 +6,6 @@
 #include <cmath>
 
 namespace DT{
-namespace PAR{
 	extern double aEWM1;
 	extern double Gf;
 	extern double MMZ;
@@ -22,10 +21,9 @@ namespace PAR{
 	extern double mmH3;
 	extern double mmA0;
 	extern double mmHch;
-	extern double m22;
-	extern double lam2;
-	extern double lam8;
-	extern double vs;
+	extern double m11;
+	extern double lam1;
+	extern double lam7;
 	extern double GG;
 	extern double Mnue;
 	extern double Mnum;
@@ -73,15 +71,16 @@ namespace PAR{
 	extern double MH3;
 	extern double MA0;
 	extern double MHch;
-	extern double lam1;
+	extern double lam2;
 	extern double lam3;
 	extern double lam4;
 	extern double lam5;
 	extern double lam6;
-	extern double lam7;
-	extern double m11;
+	extern double lam8;
+	extern double m22;
 	extern double ms;
 	extern double GH;
+	extern double vs;
 	extern double token1;
 	extern double token2;
 	extern double token3;
@@ -186,7 +185,7 @@ namespace PAR{
 	extern double gs;
 	extern double G;
 	extern double FAGS;
-}
+
 	double H3H3H1H1(const double &cos_t, const double &s);
 	double H3H3H1H2(const double &cos_t, const double &s);
 	double H3H3H2H2(const double &cos_t, const double &s);
@@ -391,6 +390,12 @@ namespace PAR{
 	double HchHCHDdfl(const double &cos_t, const double &s);
 	double HchHCHSsfl(const double &cos_t, const double &s);
 	double HchHCHBbfl(const double &cos_t, const double &s);
+	double H3H3(const double &cos_t, const double &s);
+	double H3A0(const double &cos_t, const double &s);
+	double H3Hch(const double &cos_t, const double &s);
+	double A0A0(const double &cos_t, const double &s);
+	double A0Hch(const double &cos_t, const double &s);
+	double HchHch(const double &cos_t, const double &s);
 	double wH1H1H1();
 	double wH1H1H2();
 	double wH1H2H2();

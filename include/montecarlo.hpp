@@ -7,7 +7,6 @@
 #include <sstream>
 #include <vector>
 
-#include "data_structures.hpp"
 #include "hyper_parameters.hpp"
 #include "utils.hpp"
 
@@ -17,52 +16,48 @@ typedef std::vector<int> ivec1;
 typedef std::vector<double> dvec1;
 typedef std::vector<dvec1> dvec2;
 
-class MonteCarlo {
+class MC {
    private:
     const size_t N_pars;
-    size_t N_best;
-    size_t N_bins;
-    const double p_random;
-    const double target;
     double worst_bin = 2.;
     std::string worst_bin_ID = "";
     size_t points = 1;
-    VecDoub lbounds;
-    VecDoub ubounds;
+    dvec1 lbounds;
+    dvec1 ubounds;
     std::unordered_map<std::string, double> best_bins;
+    std::map<std::string, int> excluded_bins;
 
    public:
-    MonteCarlo(const size_t Np, VecDoub &lower, VecDoub &upper,
-               const size_t Nbins, const size_t Nbest, const double prandom,
-               const double targett,
-               std::unordered_map<std::string, double> &best)
-        : N_pars(Np),
-          N_bins(Nbins),
-          N_best(Nbest),
-          p_random(prandom),
-          target(targett) {
+    MC(const size_t Np, const dvec1 &lower, const dvec1 &upper,
+       std::unordered_map<std::string, double> &best)
+        : N_pars(Np) {
         best_bins = best;
         lbounds = lower;
         ubounds = upper;
     };
 
-    ivec1 get_bins(const VecDoub &pars);
+    ivec1 get_bins(const dvec1 &pars);
 
     std::string bins_to_ID(const ivec1 &bins);
 
     ivec1 ID_to_bins(const std::string &ID);
 
-    void set_weight(const VecDoub &pars, const double x);
+    int get_bin_distance(const ivec1 &a, const ivec1 &b);
+
+    int get_bin_distance(const std::string &a, const std::string &b);
+
+    bool is_excluded(const ivec1 &bins);
+
+    void set_weight(const dvec1 &pars, const double x);
 
     std::string get_random_bin_ID();
 
-    VecDoub generate_new_pars();
+    dvec1 generate_new_pars();
 
     void print_best_bins();
 
-    void save_best_bins(const VecString &par_names,
-                        const std::string &filename);
+    void save_best_bins(const vstring &par_names, const std::string &filename);
 
-    ~MonteCarlo() {};
+    ~MC() {};
 };
 }  // namespace DT

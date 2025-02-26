@@ -6,7 +6,6 @@
 #include <cmath>
 
 namespace DT{
-namespace PAR{
 	extern double aEWM1;
 	extern double Gf;
 	extern double aS;
@@ -175,7 +174,7 @@ namespace PAR{
 	extern double gs;
 	extern double G;
 	extern double FAGS;
-}
+
 	double ChiChiHH(const double &cos_t, const double &s);
 	double ChiChiAA(const double &cos_t, const double &s);
 	double ChiChiZZ(const double &cos_t, const double &s);
@@ -260,6 +259,9 @@ namespace PAR{
 	double PsiPsiDdfl(const double &cos_t, const double &s);
 	double PsiPsiSsfl(const double &cos_t, const double &s);
 	double PsiPsiBbfl(const double &cos_t, const double &s);
+	double ChiChi(const double &cos_t, const double &s);
+	double ChiPsi(const double &cos_t, const double &s);
+	double PsiPsi(const double &cos_t, const double &s);
 	double wHHH();
 	double wHChiChi();
 	double wHChiPsi();

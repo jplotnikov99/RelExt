@@ -4,8 +4,7 @@
 #include "general_model.hpp"
 #include "../model.hpp"
 namespace DT{
-	void ModelInfo::load_parameters(){
-		using namespace PAR;
+	void Model::load_parameters(){
 		FAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;
 		MZ = MMZ;
 		MW = MMW;
@@ -34,14 +33,15 @@ namespace DT{
 		MH3 = mmH3;
 		MA0 = mmA0;
 		MHch = mmHch;
-		lam1 = pow(v,-2)*(pow(MH1,2)*pow(cos(aDM),2)+pow(MH2,2)*pow(sin(aDM),2));
-		lam3 = pow(v,-2)*(2*(-pow(m22,2)+pow(MHch,2))-lam8*pow(vs,2));
+		vs = 100;
+		lam2 = pow(v,-2)*(pow(MH1,2)*pow(cos(aDM),2)+pow(MH2,2)*pow(sin(aDM),2));
+		lam3 = pow(v,-2)*(2*(-pow(m11,2)+pow(MHch,2))-lam7*pow(vs,2));
 		lam4 = (pow(MA0,2)+pow(MH3,2)-2*pow(MHch,2))*pow(v,-2);
 		lam5 = (-pow(MA0,2)+pow(MH3,2))*pow(v,-2);
 		lam6 = pow(vs,-2)*(pow(MH2,2)*pow(cos(aDM),2)+pow(MH1,2)*pow(sin(aDM),2));
-		lam7 = cos(aDM)*(pow(MH1,2)-pow(MH2,2))*pow(v,-1)*pow(vs,-1)*sin(aDM);
-		m11 = pow(2,-0.5)*pow(-(lam1*pow(v,2))-lam7*pow(vs,2),0.5);
-		ms = pow(2,-0.5)*pow(-(lam7*pow(v,2))-lam6*pow(vs,2),0.5);
+		lam8 = cos(aDM)*(pow(MH1,2)-pow(MH2,2))*pow(v,-1)*pow(vs,-1)*sin(aDM);
+		m22 = pow(2,-0.5)*pow(-(lam2*pow(v,2))-lam8*pow(vs,2),0.5);
+		ms = pow(2,-0.5)*pow(-(lam8*pow(v,2))-lam6*pow(vs,2),0.5);
 		GH = -0.08333333333333333*(pow(G,2)*(1+(13*pow(mmH1,6)*pow(MMT,-6))/16800.+(pow(mmH1,4)*pow(MMT,-4))/168.+(7*pow(mmH1,2)*pow(MMT,-2))/120.)*pow(Pi,-2)*pow(v,-1));
 		EL = EE;
 	}

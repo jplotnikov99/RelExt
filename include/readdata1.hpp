@@ -27,16 +27,16 @@ class DataReader {
     double datalines();
     std::string get_line_at(const std::string name);
     void rmv_spaces(std::string &str);
-    VecString line_to_strings(const std::string line, const char delimiter);
+    vstring line_to_strings(const std::string line, const char delimiter);
     double get_val_of(const std::string name);
     std::string get_name_of(const std::string name);
-    VecString get_slist_of(const std::string name);
-    VecString get_full_line(const std::string line);
-    MatString get_operation_slist();
+    vstring get_slist_of(const std::string name);
+    vstring get_full_line(const std::string line);
+    vvstring get_operation_slist();
     std::unordered_map<std::string, double> get_best_bins();
     std::vector<double *> assignHeaders(std::map<std::string, double *> pars);
     void read_parameter(const size_t row);
-    MatString get_generation_slist();
+    vvstring get_generation_slist();
     void save_data(std::vector<std::string> yourheader,
                    std::vector<double> yourlist);
     ~DataReader();

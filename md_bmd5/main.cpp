@@ -1,34 +1,18 @@
 #include <iostream>
-
-#include "hyper_parameters.hpp"
 #include "maincl.hpp"
 
 using namespace DT;
-/* Change to desired settings starting from here
- ***********************************************
- */
-static constexpr int MODE = 1;
-static const VecString SAVEPARS = {};
-static const VecString CONSIDERCHANNELS = {};
-VecString NEGLECTCHANNELS = {};
-static const VecString NEGLECTPARTICLES = {};
-static constexpr double BEPS = 1e-6;
-static constexpr double XTODAY = 1e6;
-static constexpr bool FAST = true;
-static constexpr bool SAVECONTRIBS = false;
-/*
- ***********************************************
- Until here */
 
-int main(int argc, char **argv) {
-    Main M(argv, MODE, BEPS, XTODAY, FAST, SAVECONTRIBS);
-    M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
+int main(int argc, char **argv)
+{
+    Main main(argc, argv);
 
     clock_t begin_time = clock();
-    for (size_t i = 1; i < 2; i++) {
-        M.LoadParameters(i);
-        M.CalcRelic();
-        M.SaveData(SAVEPARS);
+
+    for (size_t i = main.start_point; i < main.end_point; i++)
+    {
+        main.load_parameters(i);
+        main.do_user_operations();
     }
 
     std::cout << "Computation time:\n"

@@ -44,6 +44,10 @@ if [ -n "$new_file" ]; then
       	#copy the base_model with the given model name
       	echo "A new folder has been created where you can implement your model called md_$2."
       	cp -r base_model md_$2
+        cd settings
+        cp -r model.sg $2.sg
+        sed -i "s/placeholder/$2/g" $2.sg
+        cd .. 
 
       	#change the names of libraries accordingly
       	sed -i "s/placeholder/$2/g" md_$2/sources/CMakeLists.txt
@@ -82,7 +86,7 @@ if [ -n "$load" ]; then
       if [ -f "$fr_full_dir/passed.txt" ]
       then
         rm "$fr_full_dir/passed.txt"
-        math -script mathematica/amp2cpp_v2_new.m $fr_full_dir
+        math -script mathematica/amp2cpp_v2.m $fr_full_dir
       fi
       exit 0
       ;;
@@ -146,6 +150,10 @@ if [ -n "$delete" ]; then
       done < .newmod
 
   		rm -r md_$2
+      cd settings
+      rm -r $2.sg
+      cd ..
+
   	else
   		echo "This model does not exist."
   		exit 1

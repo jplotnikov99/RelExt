@@ -4,7 +4,6 @@
 #include <cmath>
 
 namespace DT{
-namespace PAR{
 	double aEWM1 = 127.9;
 	double Gf = 0.0000116637;
 	double aS = 0.1184;
@@ -202,5 +201,4 @@ namespace PAR{
 	double token97;
 	double token98;
 	double token99;
-}
 }

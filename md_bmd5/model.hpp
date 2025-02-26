@@ -6,7 +6,6 @@
 #include <cmath>
 
 namespace DT{
-namespace PAR{
 	extern double aEWM1;
 	extern double Gf;
 	extern double aS;
@@ -203,7 +202,7 @@ namespace PAR{
 	extern double gs;
 	extern double G;
 	extern double FAGS;
-}
+
 	double chiMchiMmumu(const double &cos_t, const double &s);
 	double chiMCHIMHZ(const double &cos_t, const double &s);
 	double chiMCHIMAA(const double &cos_t, const double &s);
@@ -538,14 +537,21 @@ namespace PAR{
 	double pQPQSbfl(const double &cos_t, const double &s);
 	double pQPQsBfl(const double &cos_t, const double &s);
 	double pQPQBbfl(const double &cos_t, const double &s);
-	double wtHt();
-	double wtpQchi0();
-	double wtAt();
-	double wtZt();
-	double wtWd();
-	double wtWs();
-	double wtWb();
-	double wtGt();
+	double chiMchiM(const double &cos_t, const double &s);
+	double chiMchi0(const double &cos_t, const double &s);
+	double chiMS0(const double &cos_t, const double &s);
+	double chiMA0(const double &cos_t, const double &s);
+	double chiMpQ(const double &cos_t, const double &s);
+	double chi0chi0(const double &cos_t, const double &s);
+	double chi0S0(const double &cos_t, const double &s);
+	double chi0A0(const double &cos_t, const double &s);
+	double chi0pQ(const double &cos_t, const double &s);
+	double S0S0(const double &cos_t, const double &s);
+	double S0A0(const double &cos_t, const double &s);
+	double S0pQ(const double &cos_t, const double &s);
+	double A0A0(const double &cos_t, const double &s);
+	double A0pQ(const double &cos_t, const double &s);
+	double pQpQ(const double &cos_t, const double &s);
 	double wHHH();
 	double wHS0S0();
 	double wHA0A0();
@@ -561,6 +567,5 @@ namespace PAR{
 	double wHDd();
 	double wHSs();
 	double wHBb();
-	double wwt(const double QCDaS);
 	double wwH(const double QCDaS);
 }

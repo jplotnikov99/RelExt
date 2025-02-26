@@ -4,8 +4,7 @@
 #include "general_model.hpp"
 #include "../model.hpp"
 namespace DT{
-	void ModelInfo::load_parameters(){
-		using namespace PAR;
+	void Model::load_parameters(){
 		FAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;
 		MW = pow(pow(MZ,2)/2.+pow(-(aEWM1*Pi*pow(2,-0.5)*pow(Gf,-1)*pow(MZ,2))+pow(MZ,4)/4.,0.5),0.5);
 		EE = 2*pow(aEWM1,0.5)*pow(Pi,0.5);

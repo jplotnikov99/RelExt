@@ -16,10 +16,9 @@ mmH2           |100          |Dark scalar H2 mass                               
 mmH3           |70000        |Dark scalar H3 mass                                                       |
 mmA0           |120000       |Pseudoscalar mass                                                         |
 mmHch          |200000       |Charged scalar mass                                                       |
-m22            |0.5          |Phi1 doublet mass parameter                                               |
-lam2           |0.5          |Phi1 doublet quartic self-coupling                                        |
-lam8           |0.5          |lambda8                                                                   |
-vs             |0.5          |Singlet VEV                                                               |
+m11            |0.5          |Phi1 doublet mass parameter                                               |
+lam1           |0.5          |Phi1 doublet quartic self-coupling                                        |
+lam7           |0.5          |lambda7                                                                   |
 GG             |1.21358091448|Strong coupling constant   This value will be ignored and calculated from |
 Mnue           |0.           |Mass of ve.                                                               |
 Mnum           |0.           |Mass of vm.                                                               |

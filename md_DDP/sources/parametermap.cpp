@@ -5,8 +5,7 @@
 #include "../model.hpp"
 
 namespace DT{
-	void ModelInfo::load_parameter_map(){
-		using namespace PAR;
+	void Model::load_parameter_map(){
 		parmap["aEWM1"] = &aEWM1;
 		parmap["Gf"] = &Gf;
 		parmap["MMZ"] = &MMZ;
@@ -22,10 +21,9 @@ namespace DT{
 		parmap["mmH3"] = &mmH3;
 		parmap["mmA0"] = &mmA0;
 		parmap["mmHch"] = &mmHch;
-		parmap["m22"] = &m22;
-		parmap["lam2"] = &lam2;
-		parmap["lam8"] = &lam8;
-		parmap["vs"] = &vs;
+		parmap["m11"] = &m11;
+		parmap["lam1"] = &lam1;
+		parmap["lam7"] = &lam7;
 		parmap["GG"] = &GG;
 		parmap["Mnue"] = &Mnue;
 		parmap["Mnum"] = &Mnum;

@@ -6,7 +6,6 @@
 #include <cmath>
 
 namespace DT{
-namespace PAR{
 	extern double MZ;
 	extern double aEWM1;
 	extern double Gf;
@@ -185,7 +184,7 @@ namespace PAR{
 	extern double gs;
 	extern double G;
 	extern double FAGS;
-}
+
 	double H1H1hh(const double &cos_t, const double &s);
 	double H1H1hZ(const double &cos_t, const double &s);
 	double H1H1ZZ(const double &cos_t, const double &s);
@@ -490,6 +489,16 @@ namespace PAR{
 	double HcHCDdfl(const double &cos_t, const double &s);
 	double HcHCSsfl(const double &cos_t, const double &s);
 	double HcHCBbfl(const double &cos_t, const double &s);
+	double H1H1(const double &cos_t, const double &s);
+	double H1H2(const double &cos_t, const double &s);
+	double H1H3(const double &cos_t, const double &s);
+	double H1Hc(const double &cos_t, const double &s);
+	double H2H2(const double &cos_t, const double &s);
+	double H2H3(const double &cos_t, const double &s);
+	double H2Hc(const double &cos_t, const double &s);
+	double H3H3(const double &cos_t, const double &s);
+	double H3Hc(const double &cos_t, const double &s);
+	double HcHc(const double &cos_t, const double &s);
 	double whhh();
 	double whH1H1();
 	double whH1H2();

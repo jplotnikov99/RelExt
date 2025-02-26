@@ -204,12 +204,12 @@ MHch == {
 	Description      -> "Charged scalar mass internal"},
 
 
-lam1 == {
-	TeX              -> Subscript[\[Lambda], 1],
+lam2 == {
+	TeX              -> Subscript[\[Lambda], 2],
   InteractionOrder -> {QED,2},
 	ParameterType    -> Internal,
 	ComplexParameter -> False,
-	Definitions      -> {lam1 -> (MH1^2 Cos[aDM]^2 + MH2^2 Sin[aDM]^2)/(v^2)},
+	Definitions      -> {lam2 -> (MH1^2 Cos[aDM]^2 + MH2^2 Sin[aDM]^2)/(v^2)},
 	Description      -> "Phi2 doublet quartic self-coupling"},
 
 lam3 == {
@@ -217,7 +217,7 @@ lam3 == {
   InteractionOrder -> {QED,2},
 	ParameterType    -> Internal,
 	ComplexParameter -> False,
-	Definitions      -> {lam3 -> (2 (MHch^2 - m22^2) - vs^2 lam8)/v^2},
+	Definitions      -> {lam3 -> (2 (MHch^2 - m11^2) - vs^2 lam7)/v^2},
 	Description      -> "lambda 3"},
 
 lam4 == {
@@ -244,25 +244,25 @@ lam6 == {
 	Definitions      -> {lam6 -> (MH1^2 Sin[aDM]^2 + MH2^2 Cos[aDM]^2)/(vs^2)},
 	Description      -> "PhiS quartic self-coupling"},
 
-lam7 == {
-	TeX              -> Subscript[\[Lambda], 7],
+lam8 == {
+	TeX              -> Subscript[\[Lambda], 1],
   InteractionOrder -> {QED,2},
 	ParameterType    -> Internal,
 	ComplexParameter -> False,
-	Definitions      -> {lam7 -> ((MH1^2 - MH2^2) Cos[aDM] Sin[aDM])/(v vs)},
+	Definitions      -> {lam8 -> ((MH1^2 - MH2^2) Cos[aDM] Sin[aDM])/(v vs)},
 	Description      -> "PhiS quartic self-coupling"},
-m11 == {
-	TeX              -> Subscript[m, 11],
+m22 == {
+	TeX              -> Subscript[m, 22],
 	ParameterType    -> Internal,
 	ComplexParameter -> False,
-	Definitions      -> {m11 -> Sqrt[1/2 (-v^2 lam1 - vs^2 lam7)]},
+	Definitions      -> {m22 -> Sqrt[1/2 (-v^2 lam2 - vs^2 lam8)]},
 	Description      -> "Phi2 doublet mass parameter"},
 
 ms == {
 	TeX              -> Subscript[m, s],
 	ParameterType    -> Internal,
 	ComplexParameter -> False,
-	Definitions      -> {ms -> Sqrt[1/2 (-vs^2 lam6 - v^2 lam7)]},
+	Definitions      -> {ms -> Sqrt[1/2 (-vs^2 lam6 - v^2 lam8)]},
 	Description      -> "Singlet mass parameter"},
 
 
@@ -389,30 +389,30 @@ mmHch == {
 	Value		 -> 200000,
 	Description      -> "Charged scalar mass"},
 
-m22 == {
-	TeX              -> Subscript[m, 22],
+m11 == {
+	TeX              -> Subscript[m, 11],
 	ParameterType    -> External,
 	ComplexParameter -> False,
 	Value      			 -> 0.5,
 	Description      -> "Phi1 doublet mass parameter"},
 
-lam2 == {
-	TeX              -> Subscript[\[Lambda], 2],
+lam1 == {
+	TeX              -> Subscript[\[Lambda], 1],
 	ParameterType    -> External,
 	ComplexParameter -> False,
 	Value		 -> 0.5,
 	Description      -> "Phi1 doublet quartic self-coupling"},
 
-lam8 == {
-	TeX              -> Subscript[\[Lambda], 8],
+lam7 == {
+	TeX              -> Subscript[\[Lambda], 7],
 	ParameterType    -> External,
 	ComplexParameter -> False,
 	Value		 -> 0.5,
-	Description      -> "lambda8"},
+	Description      -> "lambda7"},
 
 vs == {
 	TeX              -> Subscript[v, s],
-	ParameterType		 -> External,
+	ParameterType		 -> Internal,
 	Value 					 -> 0.5,
 	Description 		 -> "Singlet VEV"}
 

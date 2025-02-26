@@ -5,33 +5,41 @@
 #include <unordered_map>
 #include <vector>
 
-#include "beq_solver.hpp"
 #include "general_model.hpp"
 #include "hyper_parameters.hpp"
 #include "macros.hpp"
-#include "montecarlo.hpp"
 #include "readdata1.hpp"
 #include "relic_ops.hpp"
 
 namespace DT {
 class Main {
    private:
-    double omega;
+    ResError omega;
     size_t mode;
+    std::string input_file;
     std::string output_file;
+    std::string setting_file;
+    vstring saved_pars = {};
     bool first_run = true;
-    const bool save_contribs;
-    VecDoub channel_frac;
-    VecString bath_procs;
-    MatString generator_list;
-    AnnihilationAmps &AA;
-    FO1DM FO;
+    double channel_contrib = 1.;
+    dvec1 channel_percent;
+    std::unordered_map<std::string, std::function<void(const vstring)>>
+        operations_map;
+    std::unordered_map<std::string, ResError> variable_map;
+    vvstring user_operations;
+    vvstring generator_list;
     std::unique_ptr<DataReader> rdr;
-    std::unique_ptr<MonteCarlo> MC;
+    std::unique_ptr<DataReader> sgr;
+    std::shared_ptr<Model> mod;
+    std::unique_ptr<RelicOps> relops;
 
    public:
-    Main(char *argv[], const int modee, double beps, const double xtoday,
-         const bool fast, const bool savecontribs);
+    Main(int argc, char **argv);
+
+    int start_point = 1, end_point = 0;
+    void load_setting();
+
+    void check_start_end_points();
 
     void load_generation_file();
 
@@ -39,57 +47,67 @@ class Main {
 
     void load_user_operations();
 
-    void PrintParticles();
-
-    void PrintChannels();
-
     // loads parameter point and assigns DM mass
-    void LoadParameters(const size_t i = 0);
+    void load_parameters(const size_t i);
 
     // returns the value of the parameter
-    double GetParameter(const std::string &par);
-
-    void ChangeParameter(const std::string &par, const double newval);
+    double get_parameter_val(const std::string &par);
 
     // defines which particles are in the DS bath via the particle names
-    VecString def_thermal_bath(const VecString bath_particles = {});
+    vstring def_thermal_bath(const vstring bath_particles = {});
 
     // sets the channels which contribute to the relic density
-    void set_channels(const VecString &consider, VecString &subtract,
-                      const VecString &neglect);
+    void set_channels(vstring bath_procs);
+
+    // checks if the thermal bath particles and the input channels match
+    void check_procs(const vstring &ch_str, const vstring &bath_procs);
+
+    int check_var_existence(const std::string &var,
+                            const std::string func = "");
+
+    double get_number(const std::string &arg, const std::string &func = "");
+
+    // args are: variable name, value
+    void Def(const vstring &args);
+
+    // args are: variable name, value (can be variable or number)
+    void Set(const vstring &args);
+
+    // args are: variable name, value (can be variable or number)
+    void Add(const vstring &args);
+
+    // args are: variable name, value (can be variable or number)
+    void Sub(const vstring &args);
+
+    // args are: variable name, value (can be variable or number)
+    void Mult(const vstring &args);
+
+    // args are: variable name, value (can be variable or number)
+    void Div(const vstring &args);
 
     // args are: particle names of DS particles included in the thermal bath
-    void ChangeThermalBath(const VecString &args);
-
-    // initialize MonteCarlo
-    void InitMonteCarlo(size_t Nbins, const size_t Nbest, const double prandom,
-                        const double target);
-
-    // set weight in the Montecarlo method
-    void SetWeight();
+    void ChangeThermalBath(const vstring &args);
 
     // args are: min sqrt(s), max sqrt(s), number of points, channel names
-    void CalcXsec(double sqsmin, double sqsmax, const size_t points,
-                  const std::string outfile, VecString channels);
+    void CalcXsec(const vstring &args);
 
     // args are: min x, max x, number of points, channel names
-    void CalcTac(double xmin, double xmax, const size_t points,
-                 const std::string outfile, VecString channels = {});
+    void CalcTac(const vstring &args);
 
     // args are: mechanism type
-    double CalcRelic(const int mechanism = 0);
+    void CalcRelic(const vstring &args);
 
     // args are: name of parameter, mechanism, relic target, relic error,
     // variable to save into
-    void FindParameter(const std::string &par, const double target,
-                       const double eps);
+    void FindParameter(const vstring &args);
 
     // args are: mechanism, relic target, relic error, parameters
-    void RWalk(const double target, const double eps, const double gam,
-               const size_t maxit);
+    void RandomWalk(const vstring &args);
 
     // saves the scanned data
-    void SaveData(const VecString &args);
+    void SaveData(const vstring &args);
+
+    void do_user_operations();
 
     ~Main();
 };

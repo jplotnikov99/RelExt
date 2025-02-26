@@ -1,4 +1,4 @@
-#include "../include/readdata1.hpp"
+#include "readdata1.hpp"
 
 namespace DT {
 DataReader::DataReader(const std::string file, const size_t mode) {
@@ -62,9 +62,9 @@ void DataReader::rmv_spaces(std::string &str) {
     str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
 }
 
-VecString DataReader::line_to_strings(const std::string line,
+vstring DataReader::line_to_strings(const std::string line,
                                     const char delimiter) {
-    VecString res;
+    vstring res;
     std::string temp;
     std::stringstream ss(line);
 
@@ -105,7 +105,7 @@ std::string DataReader::get_name_of(const std::string name) {
     return line;
 }
 
-VecString DataReader::get_slist_of(const std::string name) {
+vstring DataReader::get_slist_of(const std::string name) {
     std::string line;
     line = get_line_at(name);
     std::stringstream ss(line);
@@ -115,8 +115,8 @@ VecString DataReader::get_slist_of(const std::string name) {
     return line_to_strings(line, ',');
 }
 
-VecString DataReader::get_full_line(const std::string line) {
-    VecString res = {};
+vstring DataReader::get_full_line(const std::string line) {
+    vstring res = {};
     std::string hold;
     res = line_to_strings(line, '|');
     if (res.size() != 1) {
@@ -127,9 +127,9 @@ VecString DataReader::get_full_line(const std::string line) {
     return res;
 }
 
-MatString DataReader::get_operation_slist() {
-    std::vector<VecString> res = {};
-    VecString temp;
+vvstring DataReader::get_operation_slist() {
+    std::vector<vstring> res = {};
+    vstring temp;
     std::string line;
     line = get_line_at("START");
     while (getline(datafile, line)) {
@@ -227,14 +227,15 @@ void DataReader::read_parameter(const size_t row) {
     }
 }
 
-MatString DataReader::get_generation_slist() {
-    MatString res = {};
+vvstring DataReader::get_generation_slist() {
+    vvstring res = {};
     std::string line;
-    VecString temp;
+    vstring temp;
 
     getline(datafile, line);
     if (line.find("--- Bin Info ---") != std::string::npos) {
         is_binned = true;
+        N_bins = (size_t)get_val_of("Bins");
         line = get_line_at("--- Parameter Info ---");
     } else {
         datafile.clear();
@@ -254,7 +255,7 @@ MatString DataReader::get_generation_slist() {
 
 std::unordered_map<std::string, double> DataReader::get_best_bins() {
     std::unordered_map<std::string, double> res;
-    VecString temp;
+    vstring temp;
     std::string line;
     line = get_line_at("--- Best Bins ---");
     while (getline(datafile, line)) {
