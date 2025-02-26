@@ -1,0 +1,34 @@
+########  Setting file for the CPVDM model ########
+
+######## Standard settings ########
+
+Mode                |2
+InputFile           |examples/cpvdm_example1.dat
+OutputFile          |cpvdm_random.dat
+StartPoint          |1
+EndPoint            |2e5
+SavedParameters     |mH1, mH2, mHc, alph1, alph2, alph3, m22sq, mssq
+ConsideredChannels  |
+SubtractChannels    |
+NeglectParticles    |u,d,e,mu
+ChannelContributions|1
+Fast                |1
+
+######## Operations on scan ########
+START
+
+CalcRelic           |0
+SaveData            | 
+
+END
+######## Advanced settings ########
+
+BepsEps             |1e-6
+xTodayFO            |1e6
+ThetaIntEps         |1e-6
+PeakIntEps          |1e-6
+sIntEps             |1e-4
+DoPrEps             |1e-6
+Bins                |500
+BestBins            |1000
+Prandom             |1

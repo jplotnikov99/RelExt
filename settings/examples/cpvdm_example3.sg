@@ -1,0 +1,35 @@
+########  Setting file for the CPVDM model ########
+
+######## Standard settings ########
+
+Mode                |2
+InputFile           |../dataOutput/cells_cpvdm_random.dat
+OutputFile          |cpvdm_best_cells_rwalk.dat
+StartPoint          |1
+EndPoint            |1e4
+SavedParameters     |mH1, mH2, mHc, alph1, alph2, alph3, m22sq, mssq
+ConsideredChannels  |
+SubtractChannels    |
+NeglectParticles    |u,d,e,mu
+ChannelContributions|1
+Fast                |1
+
+######## Operations on scan ########
+START
+
+RandomWalk          |0, 0.12, 0.002
+SaveData            | 
+
+END
+######## Advanced settings ########
+
+BepsEps             |1e-6
+xTodayFO            |1e6
+ThetaIntEps         |1e-6
+PeakIntEps          |1e-6
+sIntEps             |1e-4
+DoPrEps             |1e-6
+Bins                |500
+BestBins            |1000
+RandomWalkRate      |0.01
+Prandom             |0

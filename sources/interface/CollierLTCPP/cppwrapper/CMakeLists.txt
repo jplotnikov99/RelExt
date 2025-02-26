@@ -1,0 +1,2 @@
+add_library(CollierLTCPP cpp_wrapper.cpp)
+target_link_libraries(CollierLTCPP CollierInterface)

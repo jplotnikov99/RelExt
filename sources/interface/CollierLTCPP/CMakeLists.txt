@@ -1,0 +1,2 @@
+add_subdirectory(collier_interface)
+add_subdirectory(cppwrapper)
