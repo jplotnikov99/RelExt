@@ -82,7 +82,7 @@ if [ -n "$load" ]; then
       if [ -f "$fr_full_dir/passed.txt" ]
       then
         rm "$fr_full_dir/passed.txt"
-        math -script mathematica/amp2cpp_v2_new.m $fr_full_dir
+        math -script mathematica/amp2cpp.m $fr_full_dir
       fi
       exit 0
       ;;
