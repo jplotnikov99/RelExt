@@ -27,7 +27,7 @@ while getopts ":hnldc" opt; do
       confirm=true
       ;;
     \?)
-      echo "Invalid option. Type \"./model.sh -h\" for help."
+      echo "Invalid option. Type \"./model -h\" for help."
       exit 1
       ;;
   esac
@@ -66,7 +66,7 @@ if [ -n "$new_file" ]; then
       fi
       ;;
     *)
-      echo "Not the right amount of arguments given. Type \"./model.sh -h\" for help."
+      echo "Not the right amount of arguments given. Type \"./model -h\" for help."
       exit 1
   esac
 fi
@@ -82,7 +82,7 @@ if [ -n "$load" ]; then
       if [ -f "$fr_full_dir/passed.txt" ]
       then
         rm "$fr_full_dir/passed.txt"
-        math -script mathematica/amp2cpp_v2_new.m $fr_full_dir
+        math -script mathematica/amp2cpp.m $fr_full_dir
       fi
       exit 0
       ;;
@@ -152,7 +152,7 @@ if [ -n "$delete" ]; then
   	fi
 	  ;;
 	*)	
-		echo "Not the right amount of arguments given. Type \"./model.sh -h\" for help."
+		echo "Not the right amount of arguments given. Type \"./model -h\" for help."
   esac
 fi
 
@@ -176,7 +176,7 @@ if [ -n "$confirm" ]; then
     echo "The model $2 has been confirmed."
     ;;
   *)  
-    echo "Not the right amount of arguments given. Type \"./model.sh -h\" for help."
+    echo "Not the right amount of arguments given. Type \"./model -h\" for help."
   esac
   
 fi

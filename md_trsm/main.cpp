@@ -8,8 +8,6 @@ using namespace DT;
  ***********************************************
  */
 static constexpr int MODE = 1;
-static constexpr int START = 1;
-static constexpr int END = 1;
 static const VecString SAVEPARS = {"mMChi", "mMPsi", "lam12", "lam13",
                                    "lam123"};
 static const VecString CONSIDERCHANNELS = {};

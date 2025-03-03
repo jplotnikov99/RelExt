@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "maincl.hpp"
 #include "model.hpp"
+#include "maincl.hpp"
 
 using namespace DT;
 /* Change to desired settings starting from here
@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
 
     clock_t begin_time = clock();
     M.InitMonteCarlo(100, 500, 1, 0.12);
-    for (size_t i = 1; i <= 1e3; i++) {
+    for (size_t i = 1; i <= 1e5; i++) {
         M.LoadParameters();
         M.CalcRelic();
         M.SetWeight();
