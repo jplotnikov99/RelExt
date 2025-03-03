@@ -1,9 +1,0 @@
-M$ModelName<>
- Parameters
-  Name         | Value       |> Comment                                                                <|
-MassList[[2,1,1|MassList[2][1|Mass of PRIVATE`MassToPart[MassList[[2,1,1]]].                            |
-MassList[[2,2,1|MassList[2][2|Mass of PRIVATE`MassToPart[MassList[[2,2,1]]].                            |
-%WidthList[[2,1|WidthList[2][|Width of PRIVATE`WidthToPart[WidthList[[2,1,1]]].                         |
-%WidthList[[2,2|WidthList[2][|Width of PRIVATE`WidthToPart[WidthList[[2,2,1]]].                         |
-E              |2.71828182845|The base of the natural logarithm.                                        |
-Pi             |3.14159265358|The circumference of a circle divided by the diameter.                    |
