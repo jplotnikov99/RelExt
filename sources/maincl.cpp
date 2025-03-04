@@ -2,10 +2,11 @@
 
 namespace DT {
 Main::Main(char *argv[], const int modee, double beps, const double xtoday,
-           const bool fast, const bool savecontribs)
-    : AA(*new AnnihilationAmps),
+           const bool fast, const bool calcwidths, const bool savecontribs)
+    : AA(*new AnnihilationAmps(calc_widths)),
       mode(modee),
       output_file(std::string(argv[2])),
+      calc_widths(calcwidths),
       save_contribs(savecontribs),
       FO(AA, fast) {
     srand((unsigned)time(NULL));
@@ -71,22 +72,19 @@ void Main::LoadParameters(const size_t i) {
                 }
                 break;
             case 2: {
-                do {
-                    if (MC) {
-                        VecDoub new_pars = MC->generate_new_pars();
-                        for (size_t j = 0; j < generator_list.size(); j++) {
-                            AA.change_parameter(generator_list[j][0],
-                                                new_pars[j], false);
-                        }
-                    } else {
-                        double a;
-                        for (auto it : generator_list) {
-                            a = generate_random(std::stod(it[1]),
-                                                std::stod(it[2]));
-                            AA.change_parameter(it[0], a, false);
-                        }
+                if (MC) {
+                    VecDoub new_pars = MC->generate_new_pars();
+                    for (size_t j = 0; j < generator_list.size(); j++) {
+                        AA.change_parameter(generator_list[j][0], new_pars[j],
+                                            false);
                     }
-                } while (!AA.load_everything());
+                } else {
+                    double a;
+                    for (auto it : generator_list) {
+                        a = generate_random(std::stod(it[1]), std::stod(it[2]));
+                        AA.change_parameter(it[0], a, false);
+                    }
+                }
             } break;
             case 3:
                 rdr->read_parameter(i);
@@ -177,13 +175,12 @@ void Main::ChangeThermalBath(const VecString &args) {
 
 void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
                     const std::string outfile, VecString channels) {
-    AnnihilationAmps AA;
+    AnnihilationAmps AA(calc_widths);
     for (auto &it : channels)
         ASSERT(AA.check_channel_existence(it),
                "Error in NEGLECTCHANNELS: " << it << " is not a valid channel.")
     std::unique_ptr<SigvInt> sigv = std::make_unique<SigvInt>(AA);
-    std::unique_ptr<DataReader> xsr =
-        std::make_unique<DataReader>(outfile, 2);
+    std::unique_ptr<DataReader> xsr = std::make_unique<DataReader>(outfile, 2);
 
     ASSERT((sqsmin > 0) && (sqsmax > 0),
            "Boundaries in " << __func__ << "can not have negative values.")

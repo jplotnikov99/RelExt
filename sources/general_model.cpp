@@ -2,8 +2,8 @@
 
 namespace DT {
 
-ModelInfo::ModelInfo() {
-    init();
+ModelInfo::ModelInfo(const bool calcwidths) : calc_widths(calcwidths) {
+    ModelInfo::init();
     load_prtcls();
     load_parameter_map();
 }
@@ -31,8 +31,10 @@ void ModelInfo::print_prtcls() {
 bool ModelInfo::load_everything() {
     load_parameters();
     assigndm();
-    calc_widths_and_scale();
-    load_parameters();
+    if (calc_widths) {
+        calc_widths_and_scale();
+        load_parameters();
+    }
     load_tokens();
     return check_conditions();
 }
@@ -74,7 +76,10 @@ void ModelInfo::assigndm() {
         if (MDM > *DSmasses[it]) MDM = *DSmasses[it];
 }
 
-AnnihilationAmps::AnnihilationAmps() { init(); }
+AnnihilationAmps::AnnihilationAmps(const bool calc_widths)
+    : ModelInfo(calc_widths) {
+    AnnihilationAmps::init();
+}
 
 void AnnihilationAmps::print_channels() {
     for (auto &it : amp2s) std::cout << it.first << "\n";

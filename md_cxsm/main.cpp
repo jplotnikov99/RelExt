@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "model.hpp"
 #include "maincl.hpp"
+#include "model.hpp"
 
 using namespace DT;
 /* Change to desired settings starting from here
@@ -15,6 +15,7 @@ static const VecString NEGLECTPARTICLES = {"u", "d", "e", "mu"};
 static constexpr double BEPS = 1e-6;
 static constexpr double XTODAY = 1e6;
 static constexpr bool FAST = true;
+static constexpr bool CALCWIDTHS = false;
 static constexpr bool SAVECONTRIBS = false;
 /*
  ***********************************************
@@ -22,7 +23,7 @@ static constexpr bool SAVECONTRIBS = false;
 
 int main(int argc, char **argv) {
     clock_t begin_time = clock();
-    Main M(argv, MODE, BEPS, XTODAY, FAST, SAVECONTRIBS);
+    Main M(argv, MODE, BEPS, XTODAY, FAST, CALCWIDTHS, SAVECONTRIBS);
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 
     M.LoadParameters();

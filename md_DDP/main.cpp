@@ -8,20 +8,23 @@ using namespace DT;
  ***********************************************
  */
 static constexpr int MODE = 3;
-static const VecString SAVEPARS = {"mmH1","mmH2","mmH3","mmA0","mmHch","aDM","lam2","lam8","m22","vs","WH1","WH2"};
+static const VecString SAVEPARS = {"mmH1",  "mmH2", "mmH3", "mmA0",
+                                   "mmHch", "aDM",  "lam2", "lam8",
+                                   "m22",   "vs",   "WH1",  "WH2"};
 static const VecString CONSIDERCHANNELS = {};
 VecString NEGLECTCHANNELS = {};
 static const VecString NEGLECTPARTICLES = {};
 static constexpr double BEPS = 1e-6;
 static constexpr double XTODAY = 1e6;
 static constexpr bool FAST = true;
+static constexpr bool CALCWIDTHS = false;
 static constexpr bool SAVECONTRIBS = false;
 /*
  ***********************************************
  Until here */
 
 int main(int argc, char **argv) {
-    Main M(argv, MODE, BEPS, XTODAY, FAST, SAVECONTRIBS);
+    Main M(argv, MODE, BEPS, XTODAY, FAST, CALCWIDTHS, SAVECONTRIBS);
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 
     clock_t begin_time = clock();

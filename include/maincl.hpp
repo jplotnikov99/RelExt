@@ -20,6 +20,7 @@ class Main {
     size_t mode;
     std::string output_file;
     bool first_run = true;
+    const bool calc_widths;
     const bool save_contribs;
     VecDoub channel_frac;
     VecString bath_procs;
@@ -31,7 +32,7 @@ class Main {
 
    public:
     Main(char *argv[], const int modee, double beps, const double xtoday,
-         const bool fast, const bool savecontribs);
+         const bool fast, const bool calcwidths, const bool savecontribs);
 
     void load_generation_file();
 

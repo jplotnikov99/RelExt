@@ -35,6 +35,7 @@ struct ModelInfo {
     std::vector<double *> denstructures;
     size_t N_widths;
     VecString bath_masses;
+    const bool calc_widths;
     double ZERO = 0;
     double MDM = 0.;
 
@@ -55,7 +56,7 @@ struct ModelInfo {
     void assign_bath_masses(const VecString &prtcls = {});
     void assigndm();
 
-    ModelInfo();
+    ModelInfo(const bool calcwidths);
 };
 
 class AnnihilationAmps : public ModelInfo {
@@ -66,7 +67,7 @@ class AnnihilationAmps : public ModelInfo {
     vamp2 cur_channel;
 
    public:
-    AnnihilationAmps();
+    AnnihilationAmps(const bool calcwidths);
 
     void init();
     void print_channels();
