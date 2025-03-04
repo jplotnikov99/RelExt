@@ -1,14 +1,16 @@
 #include <iostream>
 
-#include "model.hpp"
 #include "maincl.hpp"
+#include "model.hpp"
 
 using namespace DT;
 /* Change to desired settings starting from here
  ***********************************************
  */
 static constexpr int MODE = 2;
-static const VecString SAVEPARS = {"mH1", "mH2", "mHc"};
+static const VecString SAVEPARS = {"mH1",   "mH2",   "mHc",   "alph1",
+                                   "alph2", "alph3", "m22sq", "mssq",
+                                   "L2",    "L6",    "L8"};
 static const VecString CONSIDERCHANNELS = {};
 VecString NEGLECTCHANNELS = {};
 static const VecString NEGLECTPARTICLES = {"u", "d", "e", "mu"};
