@@ -17,7 +17,7 @@ static const VecString NEGLECTPARTICLES = {};
 static constexpr double BEPS = 1e-6;
 static constexpr double XTODAY = 1e6;
 static constexpr bool FAST = true;
-static constexpr bool CALCWIDTHS = false;
+static constexpr bool CALCWIDTHS = true;
 static constexpr bool SAVECONTRIBS = false;
 /*
  ***********************************************
