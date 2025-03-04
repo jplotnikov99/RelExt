@@ -301,7 +301,7 @@ void Main::FindParameter(const std::string &par, const double target,
 
 void Main::RWalk(const double target, const double eps, const double gam,
                  const size_t maxit) {
-    ASSERT(mode == 1 || mode == 2, "FindParameter works only in mode 1 and 2")
+    ASSERT(mode == 1 || mode == 2, "RWalk works only in mode 1 and 2")
     VecDoub lower(generator_list.size()), upper(generator_list.size());
     VecString pars(generator_list.size());
     for (size_t i = 0; i < generator_list.size(); i++) {

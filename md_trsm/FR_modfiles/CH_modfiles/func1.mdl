@@ -42,8 +42,8 @@ TRSM
 %WZ            |if(slhaFound,if(1+slhaDecayExists(23),slhaWidth(23),WZDef),WZDef)                                              %Width of ghZ.                                     
 %WW            |if(slhaFound,if(1+slhaDecayExists(24),slhaWidth(24),WWDef),WWDef)                                              %Width of GP.                                      
 %WH            |if(slhaFound,if(1+slhaDecayExists(25),slhaWidth(25),WHDef),WHDef)                                              %Width of H.                                       
-%WChi          |if(slhaFound,if(1+slhaDecayExists(350),slhaWidth(350),WChiDef),WChiDef)                                        %Width of Chi.                                     
-%WPsi          |if(slhaFound,if(1+slhaDecayExists(360),slhaWidth(360),WPsiDef),WPsiDef)                                        %Width of Psi.                                     
+%WChi          |if(slhaFound,if(1+slhaDecayExists(450),slhaWidth(450),WChiDef),WChiDef)                                        %Width of Chi.                                     
+%WPsi          |if(slhaFound,if(1+slhaDecayExists(460),slhaWidth(460),WPsiDef),WPsiDef)                                        %Width of Psi.                                     
 aEW            |pow(aEWM1,-1)                                                                                                  % Electroweak coupling contant                      
 MW             |pow(pow(MZ,2)/2.+pow(-(aEW*Pi*pow(2,-0.5)*pow(Gf,-1)*pow(MZ,2))+pow(MZ,4)/4.,0.5),0.5)                         % W mass                                            
 sw2            |1-pow(MW,2)*pow(MZ,-2)                                                                                         % Squared Sin of the Weinberg angle                 

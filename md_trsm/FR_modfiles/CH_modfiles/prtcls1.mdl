@@ -18,5 +18,5 @@ Z            |Z          |Z          |23      |2     |MZ             |!WZ       
 W            |W+         |W-         |24      |2     |MW             |!WW            |1    |G  |W+        |W-            |
 G            |g          |g          |21      |2     |0              |0              |8    |G  |g         |g             |
 H            |H          |H          |25      |0     |MH             |!WH            |1    |0  |H         |H             |
-Chi          |~Chi       |~Chi       |350     |0     |MChi           |!WChi          |1    |0  |~Chi      |~Chi          |
-Psi          |~Psi       |~Psi       |360     |0     |MPsi           |!WPsi          |1    |0  |~Psi      |~Psi          |
+Chi          |~Chi       |~Chi       |450     |0     |MChi           |!WChi          |1    |0  |~Chi      |~Chi          |
+Psi          |~Psi       |~Psi       |460     |0     |MPsi           |!WPsi          |1    |0  |~Psi      |~Psi          |

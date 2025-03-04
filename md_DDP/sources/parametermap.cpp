@@ -7,13 +7,13 @@
 namespace DT{
 	void ModelInfo::load_parameter_map(){
 		using namespace PAR;
+		parmap["MC"] = &MC;
+		parmap["MB"] = &MB;
+		parmap["MT"] = &MT;
 		parmap["aEWM1"] = &aEWM1;
 		parmap["Gf"] = &Gf;
 		parmap["MMZ"] = &MMZ;
 		parmap["MMW"] = &MMW;
-		parmap["MMC"] = &MMC;
-		parmap["MMB"] = &MMB;
-		parmap["MMT"] = &MMT;
 		parmap["aS"] = &aS;
 		parmap["QS"] = &QS;
 		parmap["aDM"] = &aDM;

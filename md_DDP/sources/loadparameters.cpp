@@ -9,9 +9,6 @@ namespace DT{
 		FAGS = sqrt(4*M_PI*aS); gs = FAGS; G = FAGS;
 		MZ = MMZ;
 		MW = MMW;
-		MC = MMC;
-		MB = MMB;
-		MT = MMT;
 		EE = 2*pow(aEWM1,0.5)*pow(Pi,0.5);
 		CW2 = pow(MW,2)*pow(MZ,-2);
 		SW2 = 1-CW2;
@@ -42,7 +39,7 @@ namespace DT{
 		lam7 = cos(aDM)*(pow(MH1,2)-pow(MH2,2))*pow(v,-1)*pow(vs,-1)*sin(aDM);
 		m11 = pow(2,-0.5)*pow(-(lam1*pow(v,2))-lam7*pow(vs,2),0.5);
 		ms = pow(2,-0.5)*pow(-(lam7*pow(v,2))-lam6*pow(vs,2),0.5);
-		GH = -0.08333333333333333*(pow(G,2)*(1+(13*pow(mmH1,6)*pow(MMT,-6))/16800.+(pow(mmH1,4)*pow(MMT,-4))/168.+(7*pow(mmH1,2)*pow(MMT,-2))/120.)*pow(Pi,-2)*pow(v,-1));
+		GH = -0.08333333333333333*(pow(G,2)*(1+(13*pow(mmH1,6)*pow(MT,-6))/16800.+(pow(mmH1,4)*pow(MT,-4))/168.+(7*pow(mmH1,2)*pow(MT,-2))/120.)*pow(Pi,-2)*pow(v,-1));
 		EL = EE;
 	}
 }

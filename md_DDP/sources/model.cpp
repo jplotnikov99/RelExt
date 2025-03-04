@@ -5,13 +5,13 @@
 
 namespace DT{
 namespace PAR{
+	double MC = 1.2;
+	double MB = 4.23;
+	double MT = 172.5;
 	double aEWM1 = 0.00775795;
 	double Gf = 0.0000116637;
 	double MMZ = 91.1876;
 	double MMW = 79.947;
-	double MMC = 1.2;
-	double MMB = 4.23;
-	double MMT = 175;
 	double aS = 0.1172;
 	double QS = 100.;
 	double aDM = 0.5;
@@ -52,9 +52,6 @@ namespace PAR{
 
 	double MZ;
 	double MW;
-	double MC;
-	double MB;
-	double MT;
 	double EE;
 	double CW2;
 	double SW2;

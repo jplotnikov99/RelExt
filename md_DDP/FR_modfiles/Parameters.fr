@@ -28,23 +28,23 @@ MW == {
 
 MC == {
 	TeX              -> Subscript[m, c],
-	ParameterType    -> Internal,
+	ParameterType    -> External,
 	ComplexParameter -> False,
-	Value            -> MMC,
+	Value            -> 1.2,
 	Description      -> "c mass"},
 
 MB == {
 	TeX              -> Subscript[m, b],
-	ParameterType    -> Internal,
+	ParameterType    -> External,
 	ComplexParameter -> False,
-	Value            -> MMB,
+	Value            -> 4.23,
 	Description      -> "b mass"},
 
 MT == {
 	TeX              -> Subscript[m, t],
-	ParameterType    -> Internal,
+	ParameterType    -> External,
 	ComplexParameter -> False,
-	Value            -> MMT,
+	Value            -> 172.5,
 	Description      -> "t mass"},
 
 
@@ -272,7 +272,7 @@ GH == {
  TeX              -> Subscript[G, H],
 	ParameterType    -> Internal,
 	InteractionOrder -> {HIG, 1},
-	Value            -> -gs^2/(4*Pi(3*Pi*v)) sert[(mmH1/2/MMT)^2] }
+	Value            -> -gs^2/(4*Pi(3*Pi*v)) sert[(mmH1/2/MT)^2] }
 
 }
 
@@ -310,25 +310,6 @@ MMW == {
 	ComplexParameter -> False,
 	Value		 -> 79.947,
 	Description      -> "W pole mass"},
-MMC == {
-	TeX              -> Subscript[m,c],
-	ParameterType    -> External,
-	ComplexParameter -> False,
-	Value		 -> 1.2,
-	Description      -> "c mass at mc, MSbar"},
-
-MMB == {
-	TeX              -> Subscript[m,b],
-	ParameterType    -> External,
-	ComplexParameter -> False,
-	Value		 -> 4.23,
-	Description      -> "b mass at mb, MSbar"},
-MMT == {
-	TeX              -> Subscript[m,t],
-	ParameterType    -> External,
-	ComplexParameter -> False,
-	Value		 -> 175,
-	Description      -> "t pole mass"},
 
 (*** Strong  interaction ***)
 

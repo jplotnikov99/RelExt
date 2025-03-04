@@ -7,13 +7,13 @@
 
 namespace DT{
 namespace PAR{
+	extern double MC;
+	extern double MB;
+	extern double MT;
 	extern double aEWM1;
 	extern double Gf;
 	extern double MMZ;
 	extern double MMW;
-	extern double MMC;
-	extern double MMB;
-	extern double MMT;
 	extern double aS;
 	extern double QS;
 	extern double aDM;
@@ -48,9 +48,6 @@ namespace PAR{
 	extern double Pi;
 	extern double MZ;
 	extern double MW;
-	extern double MC;
-	extern double MB;
-	extern double MT;
 	extern double EE;
 	extern double CW2;
 	extern double SW2;

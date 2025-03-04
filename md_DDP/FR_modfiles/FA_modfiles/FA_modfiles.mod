@@ -416,7 +416,7 @@ C[ S[1] , S[1] , S[1] ] == {{((-3*I)*MH1^2*(vs*Cos[aDM]^3 + v*Sin[aDM]^3))/(v*vs
 
 C[ S[2] , S[2] , S[2] ] == {{((-3*I)*MH2^2*(v*Cos[aDM]^3 - vs*Sin[aDM]^3))/(v*vs), 0}},
 
-C[ S[1] , S[1] , S[1] , S[1] ] == {{((-3*I)*(MH1^2*vs^2*Cos[aDM]^6 + MH2^2*vs^2*Cos[aDM]^4*Sin[aDM]^2 + 2*MH1^2*v*vs*Cos[aDM]^3*Sin[aDM]^3 - 2*MH2^2*v*vs*Cos[aDM]^3*Sin[aDM]^3 + MH2^2*v^2*Cos[aDM]^2*Sin[aDM]^4 + MH1^2*v^2*Sin[aDM]^6))/(v^2*vs^2), 0}},
+C[ S[1] , S[1] , S[1] , S[1] ] == {{((-3*I)*(MH1^2*vs^2*Cos[aDM]^6 + MH2^2*vs^2*Cos[aDM]^4*Sin[aDM]^2 + 2*(MH1^2 - MH2^2)*v*vs*Cos[aDM]^3*Sin[aDM]^3 + MH2^2*v^2*Cos[aDM]^2*Sin[aDM]^4 + MH1^2*v^2*Sin[aDM]^6))/(v^2*vs^2), 0}},
 
 C[ S[2] , S[2] , S[2] , S[2] ] == {{((-3*I)*(MH2^2*v^2*Cos[aDM]^6 + MH1^2*v^2*Cos[aDM]^4*Sin[aDM]^2 + 2*(MH1^2 - MH2^2)*v*vs*Cos[aDM]^3*Sin[aDM]^3 + MH1^2*vs^2*Cos[aDM]^2*Sin[aDM]^4 + MH2^2*vs^2*Sin[aDM]^6))/(v^2*vs^2), 0}},
 

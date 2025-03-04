@@ -1,13 +1,13 @@
 Dark Doublet Phase (N2HDM)
  Parameters
   Name         | Value       |> Comment                                                                <|
+MC             |1.2          |c mass                                                                    |
+MB             |4.23         |b mass                                                                    |
+MT             |172.5        |t mass                                                                    |
 aEWM1          |0.00775795190|EW coupling constant at the Z pole                                        |
 Gf             |0.0000116637 |Fermi constant                                                            |
 MMZ            |91.1876      |Z pole mass                                                               |
 MMW            |79.947       |W pole mass                                                               |
-MMC            |1.2          |c mass at mc, MSbar                                                       |
-MMB            |4.23         |b mass at mb, MSbar                                                       |
-MMT            |175          |t pole mass                                                               |
 aS             |0.1172       |Strong coupling constant at the Z pole.                                   |
 QS             |100.         |QCD scale for running quark masses in CalcHEP                             |
 aDM            |0.5          |Dark sector CP-even mixing angle                                          |

@@ -3,16 +3,6 @@
 namespace DT {
 DataReader::DataReader(const std::string file, const size_t mode) {
     switch (mode) {
-        case 0:
-            filename = "../settings/" + file;
-            datafile.open(filename);
-            if (!datafile) {
-                std::cerr << "Unable to open file " << filename
-                          << ". Check if the name of the file is correct and "
-                             "if it is stored in the setting directory.\n";
-                exit(1);
-            }
-            break;
         case 1:
             filename = "../dataInput/" + file;
             datafile.open(filename);
