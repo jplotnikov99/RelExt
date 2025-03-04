@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "hyper_parameters.hpp"
+#include "model.hpp"
 #include "maincl.hpp"
 
 using namespace DT;
@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 
     clock_t begin_time = clock();
     for (size_t i = 1; i < 2; i++) {
-        M.LoadParameters(i);
+        M.LoadParameters();
         M.CalcRelic();
         M.SaveData(SAVEPARS);
     }

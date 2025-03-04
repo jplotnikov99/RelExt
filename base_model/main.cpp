@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "hyper_parameters.hpp"
+#include "model.hpp"
 #include "maincl.hpp"
 
 using namespace DT;
