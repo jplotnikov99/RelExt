@@ -44,6 +44,8 @@ class Main {
 
     void PrintChannels();
 
+    void PrintDM();
+
     // loads parameter point and assigns DM mass
     void LoadParameters(const size_t i = 0);
 

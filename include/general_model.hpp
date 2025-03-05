@@ -40,13 +40,14 @@ struct ModelInfo {
     double MDM = 0.;
 
     void init();
-    void print_prtcls();
     void calc_widths_and_scale();
     void load_prtcls();
     void load_parameters();
     void load_parameter_map();
     void load_tokens();
     bool check_conditions();
+    void print_prtcls();
+    void print_DM();
     bool load_everything();
     double get_prtcl_mass(const std::string &prtcl);
     bool check_par_existence(const std::string &par);

@@ -63,6 +63,8 @@ void Main::PrintParticles() { AA.print_prtcls(); }
 
 void Main::PrintChannels() { AA.print_channels(); }
 
+void Main::PrintDM() { AA.print_DM(); }
+
 void Main::LoadParameters(const size_t i) {
     do {
         switch (mode) {

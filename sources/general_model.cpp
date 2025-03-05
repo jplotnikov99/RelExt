@@ -28,6 +28,13 @@ void ModelInfo::print_prtcls() {
     }
 }
 
+void ModelInfo::print_DM() {
+    for (auto &it : DSmasses)
+        if (MDM == *it.second)
+            std::cout << "Dark Matter Candidate: " << it.first << " " << MDM
+                      << "\n";
+}
+
 bool ModelInfo::load_everything() {
     load_parameters();
     assigndm();
