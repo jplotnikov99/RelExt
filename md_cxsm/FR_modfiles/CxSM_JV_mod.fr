@@ -435,10 +435,11 @@ M$ClassesDescription = {
     },
   S[5] == {
         ClassName       -> A1,
-    	Mass            -> {MA1,Internal},
+    	  Mass            -> {MA1,Internal},
         SelfConjugate   -> True,
         ParticleName    -> "~A1",
-        FullName        -> "~A1"
+        FullName        -> "~A1",
+        PDG             -> 36
     },
   S[12] == {
         ClassName       -> s1,

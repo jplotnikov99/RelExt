@@ -41,7 +41,7 @@ bdm5_lamhs
 %MS            |if(slhaFound,if(slhaValExists("MASS",1,3),slhaVal("MASS",0,1,3),MSDef),MSDef)                                                 %Mass of s.                                        
 %MB            |if(slhaFound,if(slhaValExists("MASS",1,5),slhaVal("MASS",0,1,5),MBDef),MBDef)                                                 %Mass of b.                                        
 %MH            |if(slhaFound,if(slhaValExists("MASS",1,25),slhaVal("MASS",0,1,25),MHDef),MHDef)                                               %Mass of H.                                        
-%MS0           |if(slhaFound,if(slhaValExists("MASS",1,350),slhaVal("MASS",0,1,350),MS0Def),MS0Def)                                           %Mass of S0.                                       
+%MS0           |if(slhaFound,if(slhaValExists("MASS",1,450),slhaVal("MASS",0,1,450),MS0Def),MS0Def)                                           %Mass of S0.                                       
 %MA0           |if(slhaFound,if(slhaValExists("MASS",1,351),slhaVal("MASS",0,1,351),MA0Def),MA0Def)                                           %Mass of A0.                                       
 %MphiQ         |if(slhaFound,if(slhaValExists("MASS",1,1510),slhaVal("MASS",0,1,1510),MphiQDef),MphiQDef)                                     %Mass of pQ.                                       
 %WZ            |if(slhaFound,if(1+slhaDecayExists(23),slhaWidth(23),WZDef),WZDef)                                                             %Width of G0.                                      
@@ -50,7 +50,7 @@ bdm5_lamhs
 %WH            |if(slhaFound,if(1+slhaDecayExists(25),slhaWidth(25),WHDef),WHDef)                                                             %Width of H.                                       
 %WchiM         |if(slhaFound,if(1+slhaDecayExists(1500),slhaWidth(1500),WchiMDef),WchiMDef)                                                   %Width of chiM.                                    
 %Wchi0         |if(slhaFound,if(1+slhaDecayExists(1501),slhaWidth(1501),Wchi0Def),Wchi0Def)                                                   %Width of chi0.                                    
-%WS0           |if(slhaFound,if(1+slhaDecayExists(350),slhaWidth(350),WS0Def),WS0Def)                                                         %Width of S0.                                      
+%WS0           |if(slhaFound,if(1+slhaDecayExists(450),slhaWidth(450),WS0Def),WS0Def)                                                         %Width of S0.                                      
 %WA0           |if(slhaFound,if(1+slhaDecayExists(351),slhaWidth(351),WA0Def),WA0Def)                                                         %Width of A0.                                      
 %WphiQ         |if(slhaFound,if(1+slhaDecayExists(1510),slhaWidth(1510),WphiQDef),WphiQDef)                                                   %Width of pQ.                                      
 aEW            |pow(aEWM1,-1)                                                                                                                 % Electroweak coupling contant                      

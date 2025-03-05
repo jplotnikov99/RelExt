@@ -54,7 +54,7 @@ M$FieldsDark = {
 	PropagatorLabel -> "S0",
 	PropagatorType  -> ScalarDash,
 	PropagatorArrow -> None,
-	PDG             -> 350,
+	PDG             -> 450,
 	ParticleName    -> "~S0"
 	},
   S[22] == {
