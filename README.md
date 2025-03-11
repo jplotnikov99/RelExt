@@ -41,7 +41,7 @@ If you use this program for your work please cite
 ### Dependencies
 
 RelExt uses cmake as build tool for the C++ source code. 
-To implement new models in RelExt, it is required to have `Mathematica v12` or higher with the packages FeynRules [arXiv 1310.1921](https://arxiv.org/abs/1310.1921), FeynCalc v9.3.1 ([arXiv 2001.04407](https://arxiv.org/abs/2001.04407),[arXiv 2312.14089](https://arxiv.org/abs/2312.14089)) and FeynArts v3.11 ([arXiv 0012260](http://arxiv.org/abs/hep-ph/0012260)) installed.
+To implement new models in RelExt, it is required to have `Mathematica v12` or higher with the packages FeynRules ([arXiv 1310.1921](https://arxiv.org/abs/1310.1921)), FeynCalc v9.3.1 ([arXiv 2001.04407](https://arxiv.org/abs/2001.04407),[arXiv 2312.14089](https://arxiv.org/abs/2312.14089)) and FeynArts v3.11 ([arXiv 0012260](http://arxiv.org/abs/hep-ph/0012260)) installed.
 
 ### Build
 
