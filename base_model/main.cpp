@@ -29,6 +29,8 @@ int main(int argc, char **argv) {
     M.LoadParameters();
     M.CalcRelic();
     M.SaveData(SAVEPARS);
+    //M.PrintDM();
+    //M.CalcTac(6, 1e2, 1000, "tac_all_channels.dat");
 
     std::cout << "Computation time:\n"
               << float(clock() - begin_time) / CLOCKS_PER_SEC << std::endl;

@@ -1,13 +1,13 @@
 #include <iostream>
 
-#include "hyper_parameters.hpp"
+#include "model.hpp"
 #include "maincl.hpp"
 
 using namespace DT;
 /* Change to desired settings starting from here
  ***********************************************
  */
-static constexpr int MODE = 3;
+static constexpr int MODE = 1;
 static const VecString SAVEPARS = {"mmH1",  "mmH2", "mmH3", "mmA0",
                                    "mmHch", "aDM",  "lam2", "lam8",
                                    "m22",   "vs",   "WH1",  "WH2"};
@@ -28,12 +28,10 @@ int main(int argc, char **argv) {
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 
     clock_t begin_time = clock();
-    for (size_t i = 1; i < 1e5; i++) {
-        std::cout << i << std::endl;
-        M.LoadParameters(i);
-        M.CalcRelic();
-        M.SaveData(SAVEPARS);
-    }
+    M.LoadParameters();
+    M.CalcRelic();
+    M.SaveData(SAVEPARS);
+
 
     std::cout << "Computation time:\n"
               << float(clock() - begin_time) / CLOCKS_PER_SEC << std::endl;
