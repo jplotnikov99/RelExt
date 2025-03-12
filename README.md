@@ -60,19 +60,21 @@ To add a new model you have to:
 1. Navigate to the source directory
         `path/to/RelExt`.
 
-2. Run the following command, replacing [ModelName] with your desired model name:
+2. Run the following command, replacing `[ModelName]` with your desired model name:
        `./model -n [ModelName]`.
 This will create a folder named `md_[ModelName]` and automatically add an entry to `CMakeLists.txt`.
 
-3. Place your FeynRules model file (ModelFile.fr) in the directory /md_[ModelName]/FR_modfiles.
+3. Place your FeynRules model file, `ModelFile.fr`, in the directory `/md_[ModelName]/FR_modfiles`.
 
 4. In the source directory execute
     `./model -l Path/To/FeynRules ModelFile.fr NameOfTheLagrangian`.
 Here, `NameOfTheLagrangian`corresponds to the name of the Lagrangian defined in your FeynRules file, `ModelFile.fr`. This will generate the necessary FeynArts and CalcHEP files to calculate the Dark Matter annihilation amplitudes squared.
 
-5. To complete the implementation of the new model, recompile your project again:
-     `cmake ..`
-     `make [ModelName]`
+5. To complete the implementation of the new model, recompile your project again from the `build` directory:
+```sh
+   cmake .. 
+   make [ModelName]
+```
 
 
 ## Running the Code
