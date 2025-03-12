@@ -23,11 +23,11 @@ The models implemented so far are
     
 The code is structured such that users can add their own models.
 
-The programm can be downladed at https://github.com/jplotnikov99/RelExt_new/
+The programm can be downloaded at https://github.com/jplotnikov99/RelExt/
 
 Sample input and output files are provided there as well.
 
-For additional information, comments, complaints or suggestions please e-mail to: relext@lists.kit.edu, open a corresponding issue or start a discussion.
+For additional information, comments, complaints or suggestions please send an e-mail to: relext@lists.kit.edu, open a corresponding issue or start a discussion.
 
 
 ## Citation:
@@ -40,7 +40,7 @@ If you use this program for your work please cite
 
 ### Dependencies
 
-RelExt uses cmake as build tool for the C++ source code. 
+RelExt uses cmake as a build tool for the C++ source code. 
 To implement new models in RelExt, it is required to have `Mathematica v12` or higher with the packages FeynRules ([arXiv 1310.1921](https://arxiv.org/abs/1310.1921)), FeynCalc v9.3.1 ([arXiv 2001.04407](https://arxiv.org/abs/2001.04407),[arXiv 2312.14089](https://arxiv.org/abs/2312.14089)) and FeynArts v3.11 ([arXiv 0012260](http://arxiv.org/abs/hep-ph/0012260)) installed.
 
 ### Build
@@ -50,7 +50,7 @@ You can build the program with
         cd path/to/RelExt
         mkdir build && cd build  
         cmake ..  
-        make (-j)
+        make 
 
 
 ## How to add a new model (for further details, also see the manual):
@@ -61,16 +61,18 @@ To add a new model you have to:
         `path/to/RelExt`.
 
 2. Run the following command, replacing [ModelName] with your desired model name:
-       `make [ModelName]`.
-This will create a folder named `md_YourModel` and automatically add an entry to `CMakeLists.txt`.
+       `./model -n [ModelName]`.
+This will create a folder named `md_[ModelName]` and automatically add an entry to `CMakeLists.txt`.
 
-3. Place your FeynRules model file (modelfiles.fr) in the directory /md_YourModel/FR_modfiles.
+3. Place your FeynRules model file (ModelFile.fr) in the directory /md_[ModelName]/FR_modfiles.
 
 4. In the source directory execute
-    `./model -l Path/To/FeynRules [ModelName].fr NameOfTheLagrangian`.
-Here, `NameOfTheLagrangian`corresponds to the name of the Lagrangian defined in your FeynRules file. This will generate the necessary FeynArts files to calculate the Dark Matter annihilation amplitudes squared.
+    `./model -l Path/To/FeynRules ModelFile.fr NameOfTheLagrangian`.
+Here, `NameOfTheLagrangian`corresponds to the name of the Lagrangian defined in your FeynRules file, `ModelFile.fr`. This will generate the necessary FeynArts and CalcHEP files to calculate the Dark Matter annihilation amplitudes squared.
 
-5. To complete the implementation of the new model, recompile your project again.
+5. To complete the implementation of the new model, recompile your project again:
+     `cmake ..`
+     `make [ModelName]`
 
 
 ## Running the Code
@@ -80,7 +82,7 @@ To run the code for a specific model, type
     ./[ModelName] [InputFile] [OutputFile]
 where:
   - `[InputFile]`: Path to the input file containing the necessary model parameters. 
-  - `[OutPutfile]`  Path to the directory where `RelExt` will generate and store the output results.
+  - `[OutputFile]`: Path to the directory where `RelExt` will generate and store the output results.
 
 ### Main File
 
