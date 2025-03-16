@@ -1,0 +1,38 @@
+Names of Particles in SARAH and FeynArts for Model-fileEWSB.mod
+ 
+Scalars: 
+ 
+Sd: S[14] 
+Su: S[13] 
+Sv: S[11] 
+Se: S[12] 
+hh: S[1] 
+Hpm: S[3] 
+
+ 
+Fermions: 
+ 
+Glu: F[15] 
+Fv: F[1] 
+Chi: F[11] 
+Cha: F[12] 
+Fe: F[2] 
+Fd: F[4] 
+Fu: F[3] 
+
+ 
+Vector Bosons: 
+ 
+VG: V[5] 
+VP: V[1] 
+VZ: V[2] 
+VWm: V[3] 
+
+ 
+Ghosts: 
+ 
+gG: U[5] 
+gP: U[1] 
+gZ: U[2] 
+gWm: U[3] 
+gWmC: U[4] 

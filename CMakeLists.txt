@@ -63,4 +63,11 @@ target_include_directories(bmd5_amp2s PRIVATE ${include_dir})
 target_include_directories(bmd5_sources PRIVATE ${include_dir})
 target_link_libraries(bmd5 PRIVATE sources bmd5_sources bmd5_amp2s)
 
-# Optional: Clean build to ensure everything is rebuilt from scratch 
+# Optional: Clean build to ensure everything is rebuilt from scratch  
+add_executable(NMSSM md_NMSSM/main.cpp)
+add_subdirectory(md_NMSSM/sources)
+target_include_directories(NMSSM_amp2s PRIVATE ${include_dir})
+target_include_directories(NMSSM_sources PRIVATE ${include_dir})
+target_include_directories(NMSSM PRIVATE ${include_dir})
+target_include_directories(sources PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/md_NMSSM/include)
+target_link_libraries(NMSSM PRIVATE sources NMSSM_sources NMSSM_amp2s)
