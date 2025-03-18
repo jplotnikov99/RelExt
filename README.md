@@ -87,7 +87,7 @@ where:
 
 ### Main File
 
-Each model folder contains a main.cpp file that can be modified as needed. A table of available functions can be found in the [manual]() of RelExt.
+Each model folder contains a main.cpp file that can be modified as needed. A table of available functions can be found in the [manual](https://arxiv.org/abs/2503.13087) of RelExt.
 
 
 
