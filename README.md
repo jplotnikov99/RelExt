@@ -33,7 +33,7 @@ For additional information, comments, complaints or suggestions please send an e
 ## Citation:
 
 If you use this program for your work please cite
-[arXiv 2503.13087](https://arxiv.org/abs/2503.13087).
+   - [arXiv 2503.13087](https://arxiv.org/abs/2503.13087)
 
 ## Installation:
 
