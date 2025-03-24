@@ -359,7 +359,6 @@ void ModelInfo::load_tokens() {
                        2 * std::exp(2 * I * etaS) * kap * vd * ZH[1][4] *
                            ZH[1][5] * ZH[i][5]))) /
             (4. * std::exp(I * (eta + 3 * etaS)));
-        std::cout << coup3[i] << "\n";
     }
     for (size_t i = 0; i < 5; i++) {
         coup4[i] =

@@ -227,7 +227,7 @@ void AnnihilationAmps::set_s(const double new_s) { s = new_s; }
 
 void AnnihilationAmps::set_channel(const VecString &ch_str, const bool flux) {
     cur_channel.clear();
-    if (flux)
+    if (false)
         for (auto it : ch_str) cur_channel.push_back(amp2fls[it]);
     else
         for (auto it : ch_str) cur_channel.push_back(amp2s[it]);
