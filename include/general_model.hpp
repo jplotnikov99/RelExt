@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cctype>
+#include <complex>
 #include <functional>
 #include <iostream>
 #include <map>
@@ -23,14 +24,15 @@ namespace DT {
 typedef std::function<double(const double &, const double &)> f;
 typedef std::vector<f> vamp2;
 typedef std::unordered_map<std::string, f> fmap;
-typedef std::unordered_map<std::string, double *> sMapDp;
+typedef std::unordered_map<std::string, std::complex<double> *> sMapDp;
 
 struct ModelInfo {
     sMapDp DSmasses;
-    std::map<std::string, double *> prtcls;
-    std::map<std::string, double *> aprtcls;
+    sMapDp prtcls;
+    sMapDp aprtcls;
     std::vector<double *> neutraldsmasses;
     std::unordered_map<std::string, double> DSdof;
+    std::map<std::string, std::complex<double> *> parmapc;
     std::map<std::string, double *> parmap;
     std::vector<double *> denstructures;
     size_t N_widths;

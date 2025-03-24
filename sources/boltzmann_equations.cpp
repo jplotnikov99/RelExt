@@ -30,7 +30,7 @@ double BeqInfo::yeq(const double &x) {
     double Tinv = x / AA.MDM;
 
     for (auto it : AA.bath_masses) {
-        mtemp = *AA.DSmasses[it];
+        mtemp = AA.DSmasses[it]->real();
         yeq += AA.DSdof[it] * mtemp * mtemp * a * besselK2(Tinv * mtemp);
     }
     yeq *= 45 * x * x / (4 * dof.heff(1 / Tinv) * M_PI * M_PI * M_PI * M_PI);

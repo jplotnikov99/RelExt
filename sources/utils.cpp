@@ -116,4 +116,17 @@ double generate_random(const double a, const double b) {
     return a + (b - a) * random;
 }
 
+std::complex<double> cplx(const double a, const double b) {
+    std::complex<double> i(0., 1.);
+    return a + b * i;
+}
+
+std::complex<double> operator*(int a, std::complex<double> b) {
+    return (double)a * b;
+}
+
+std::complex<double> operator*(std::complex<double> a, int b) {
+    return (double)b * a;
+}
+
 }  // namespace DT

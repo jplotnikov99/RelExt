@@ -59,7 +59,7 @@ void SigvInt::calc_polK2() {
     double mtemp, cur;
     size_t i = 0;
     for (auto it : AA.bath_masses) {
-        mtemp = *AA.DSmasses[it];
+        mtemp = AA.DSmasses[it]->real();
         cur = AA.DSdof[it] * mtemp * mtemp * polK2(Tinv * mtemp);
         polK2s[i] = cur;
         i++;
@@ -77,7 +77,7 @@ double SigvInt::lipsv(const double &s) {
     if (x > 5) {
         num += Tinv * polK1(sqs * Tinv);
         for (auto it : AA.bath_masses) {
-            mtemp = *AA.DSmasses[it];
+            mtemp = AA.DSmasses[it]->real();
             den += exp(-Tinv * (mtemp - sqs / 2)) * polK2s[i];
             i++;
         }
@@ -89,7 +89,7 @@ double SigvInt::lipsv(const double &s) {
         //     num += Tinv * bessel::cyl_k(1, sqs * Tinv);
         // }
         for (auto it : AA.bath_masses) {
-            mtemp = *AA.DSmasses[it];
+            mtemp = AA.DSmasses[it]->real();
             den += mtemp * mtemp * besselK2(Tinv * mtemp);
         }
         den *= den;

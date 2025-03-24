@@ -58,8 +58,8 @@ bool ModelInfo::check_par_existence(const std::string &par) {
 double ModelInfo::get_prtcl_mass(const std::string &prtcl) {
     std::string stemp;
     size_t found;
-    if (aprtcls.count(prtcl) == 0) return *prtcls[prtcl];
-    return *aprtcls[prtcl];
+    if (aprtcls.count(prtcl) == 0) return prtcls[prtcl]->real();
+    return aprtcls[prtcl]->real();
 }
 
 bool ModelInfo::change_parameter(const std::string &par, const double newval,
@@ -80,7 +80,7 @@ void ModelInfo::assign_bath_masses(const VecString &prtcls) {
 void ModelInfo::assigndm() {
     MDM = 1e16;
     for (auto it : bath_masses)
-        if (MDM > *DSmasses[it]) MDM = *DSmasses[it];
+        if (MDM > DSmasses[it]->real()) MDM = DSmasses[it]->real();
 }
 
 AnnihilationAmps::AnnihilationAmps(const bool calc_widths)
@@ -235,7 +235,12 @@ void AnnihilationAmps::set_channel(const VecString &ch_str, const bool flux) {
 
 double AnnihilationAmps::operator()(const double cos_t) {
     double res = 0.;
-    for (auto it : cur_channel) res += it(cos_t, s);
+    for (auto it : cur_channel) {
+        res += it(cos_t, s);
+        std::cout << "test2\n";
+        std::cout << it(0.1, 4000. * 4000.) << "\n";
+        exit(1);
+    }
     return res;
 }
 
