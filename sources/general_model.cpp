@@ -227,7 +227,7 @@ void AnnihilationAmps::set_s(const double new_s) { s = new_s; }
 
 void AnnihilationAmps::set_channel(const VecString &ch_str, const bool flux) {
     cur_channel.clear();
-    if (false)
+    if (flux)
         for (auto it : ch_str) cur_channel.push_back(amp2fls[it]);
     else
         for (auto it : ch_str) cur_channel.push_back(amp2s[it]);
@@ -237,9 +237,8 @@ double AnnihilationAmps::operator()(const double cos_t) {
     double res = 0.;
     for (auto it : cur_channel) {
         res += it(cos_t, s);
-        std::cout << "test2\n";
-        std::cout << it(0.1, 4000. * 4000.) << "\n";
-        exit(1);
+        //std::cout << it(0.1, 4000. * 4000.) << "\n";
+        //exit(1);
     }
     return res;
 }

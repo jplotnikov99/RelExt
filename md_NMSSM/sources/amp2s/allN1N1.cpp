@@ -9,8 +9,6 @@ double DT::N1N1h2h2(const double &cos_t, const double &s){
 	std::complex<double> res;
 	std::complex<double> t = -0.5*s +  (Mh[1]*Mh[1]) + (cos_t*sqrt(s - 4* (Mh[1]*Mh[1]))*sqrt(s - 4* (MN[0]*MN[0])))/2. +  (MN[0]*MN[0]);
 	std::complex<double> u = -s - t + MN[0]*MN[0] + MN[0]*MN[0] + Mh[1]*Mh[1] + Mh[1]*Mh[1];
-	std::cout << t << "\n";
-	std::cout << u << "\n";
 	SUM((coup3[i1]*coup3[j1]*(coup2[i1]*(coup2[j1]*(s - 2* (MN[0]*MN[0])) - 2*coup1[j1]* (MN[0]*MN[0])) + coup1[i1]*(coup1[j1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[j1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
 
 	SUM((2*coup3[i1]*(coup2[i1]*(coup4[j1]*coup5[j1]*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (coup5[j1]*coup5[j1])*(s - 2* (MN[0]*MN[0]))*MN[j1] - 2* (coup4[j1]*coup4[j1])* (MN[0]*MN[0])*MN[j1]) + coup1[i1]*(coup4[j1]*coup5[j1]*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (coup4[j1]*coup4[j1])*(s - 2* (MN[0]*MN[0]))*MN[j1] - 2* (coup5[j1]*coup5[j1])* (MN[0]*MN[0])*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))) + (2*coup3[i1]*(coup2[i1]*(coup4[j1]*coup5[j1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup5[j1]*coup5[j1])*(s - 2* (MN[0]*MN[0]))*MN[j1] - 2* (coup4[j1]*coup4[j1])* (MN[0]*MN[0])*MN[j1]) + coup1[i1]*(coup4[j1]*coup5[j1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup4[j1]*coup4[j1])*(s - 2* (MN[0]*MN[0]))*MN[j1] - 2* (coup5[j1]*coup5[j1])* (MN[0]*MN[0])*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))),i1,6,j1,5)

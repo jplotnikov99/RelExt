@@ -196,16 +196,16 @@ void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
     double res;
     VecString prs;
     double dof1, dof2;
-    for (double sqs = sqsmin; sqs <= sqsmax; sqs += step) {
-        res = 0;
-        for (auto it : channels) {
-            prs = AA.get_channel_prtcls(it);
-            dof1 = AA.DSdof[prs[0]];
-            dof2 = AA.DSdof[prs[1]];
-            res += sigv->xsec(sqs * sqs, it) / (dof1 * dof2);
-        }
-        xsr->save_data({"sqrts", "xsec"}, {sqs, res});
+    // for (double sqs = sqsmin; sqs <= sqsmax; sqs += step) {
+    res = 0;
+    for (auto it : channels) {
+        prs = AA.get_channel_prtcls(it);
+        dof1 = AA.DSdof[prs[0]];
+        dof2 = AA.DSdof[prs[1]];
+        res += sigv->xsec(sqsmin * sqsmin, it) / (dof1 * dof2);
     }
+    xsr->save_data({"sqrts", "xsec"}, {sqsmin, res});
+    //}
 }
 
 void Main::CalcTac(double xmin, double xmax, const size_t points,
@@ -228,10 +228,14 @@ void Main::CalcTac(double xmin, double xmax, const size_t points,
     double beps_save = beps_eps;
     beps_eps = log(1e-100);
     tac.sort_inimasses(channels);
-    for (double i = xmin; i <= xmax; i += step) {
-        res = tac(i);
-        TAR->save_data({"x", "tac"}, {i, res});
-    }
+    if (xmin == xmax) {
+        res = tac(xmin);
+        TAR->save_data({"x", "tac"}, {xmin, res});
+    } else
+        for (double i = xmin; i <= xmax; i += step) {
+            res = tac(i);
+            TAR->save_data({"x", "tac"}, {i, res});
+        }
     beps_eps = beps_save;
 }
 

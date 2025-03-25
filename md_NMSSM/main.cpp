@@ -15,7 +15,7 @@ static const VecString NEGLECTPARTICLES = {};
 static constexpr double BEPS = 1e-6;
 static constexpr double XTODAY = 1e6;
 static constexpr bool FAST = true;
-static constexpr bool CALCWIDTHS = true;
+static constexpr bool CALCWIDTHS = false;
 static constexpr bool SAVECONTRIBS = false;
 /*
  ***********************************************
@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 
     clock_t begin_time = clock();
     M.LoadParameters();
-    M.CalcRelic();
+    M.CalcTac(15,15,1,"not.dat");
     M.SaveData(SAVEPARS);
 
     std::cout << "Computation time:\n"

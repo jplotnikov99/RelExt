@@ -19,7 +19,6 @@ double SigvInt::xsec(const double &s, const std::string &channel) {
     AA.set_s(s);
     if (sqrt(s) < m1 + m2) return 0.;
     AA.get_channel_masses(m1, m2, m3, m4, channel);
-
     double f_est[10];
     for (size_t i = 0; i < 10; i++) f_est[i] = AA(-1 + 0.2222222222222222 * i);
     double est = simpson_est(-1, 1, f_est);
@@ -167,9 +166,10 @@ void Tac::i_sort_boundaries() {
 }
 
 void Tac::check_boundaries() {
-    for (size_t i = 0; i < boundaries.size() - 1; i++)
-        if (boundaries[i] < boundaries[i + 1])
-            boundaries[i + 1] = boundaries[i];
+    if (boundaries.size() != 0)
+        for (int i = 0; i < boundaries.size() - 1; i++)
+            if (boundaries[i] < boundaries[i + 1])
+                boundaries[i + 1] = boundaries[i];
 }
 
 void Tac::set_boundaries(const double &x) {
@@ -279,6 +279,7 @@ double Tac::operator()(const double &x) {
         }
     }
     for (auto &it : inimap) {
+        std::cout << x << "\n";
         AA.set_channel(it.second);
         AA.assign_masses(m1, m2, it.second[0]);
         sigv.set_lower_bound(m1 + m2);
