@@ -27,6 +27,7 @@ void ModelInfo::init() {
 
 void AnnihilationAmps::init() {
     ADDCHANNEL("N1,N1,h2,h2", N1N1h2h2, N1N1h2h2fl)
+    ADDCHANNEL("N1,N1,h2,h3", N1N1h2h3, N1N1h2h3fl)
 }
 
 }  // namespace DT

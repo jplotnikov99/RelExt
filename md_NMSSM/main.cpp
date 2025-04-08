@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "model.hpp"
 #include "maincl.hpp"
+#include "model.hpp"
 
 using namespace DT;
 /* Change to desired settings starting from here
@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 
     clock_t begin_time = clock();
     M.LoadParameters();
-    M.CalcTac(15,15,1,"not.dat");
+    M.CalcAmp(4000. * 4000., 0.1, {"N1,N1,h2,h2","N1,N1,h2,h3"});
     M.SaveData(SAVEPARS);
 
     std::cout << "Computation time:\n"

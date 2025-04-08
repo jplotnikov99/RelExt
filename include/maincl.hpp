@@ -71,6 +71,8 @@ class Main {
     // set weight in the Montecarlo method
     void SetWeight();
 
+    void CalcAmp(const double s, const double cos_t, VecString channels);
+
     // args are: min sqrt(s), max sqrt(s), number of points, channel names
     void CalcXsec(double sqsmin, double sqsmax, const size_t points,
                   const std::string outfile, VecString channels);

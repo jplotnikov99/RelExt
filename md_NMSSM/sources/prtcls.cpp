@@ -15,6 +15,7 @@ namespace DT{
 		prtcls["N4"] = &MN[4];
 		prtcls["N5"] = &MN[5];
 		prtcls["h2"] = &Mh[1];
+		prtcls["h3"] = &Mh[2];
 		prtcls["C1"] = &MC[1];
 		prtcls["C2"] = &MC[2];
 

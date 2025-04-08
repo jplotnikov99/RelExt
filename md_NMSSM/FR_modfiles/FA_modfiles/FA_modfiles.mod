@@ -51,32 +51,32 @@ LambdaProd[a_,b_][c_,d_]:=4*FASUNT[a,b,c,d];
 M$ClassesDescription= {
 S[14] == {SelfConjugate -> False,
 Indices -> {Index[I6Gen], Index[Colour]},
-Mass -> MassSd,
-PropagatorLabel->ComposedChar["d",Index[I6Gen],Index[Colour],"\\tilde"],
+Mass -> Msd,
+PropagatorLabel->ComposedChar["sd",Index[I6Gen]],
 PropagatorType -> ScalarDash,
 PropagatorArrow -> Forward},
 
  
 S[13] == {SelfConjugate -> False,
 Indices -> {Index[I6Gen], Index[Colour]},
-Mass -> MassSu,
-PropagatorLabel->ComposedChar["u",Index[I6Gen],Index[Colour],"\\tilde"],
+Mass -> Msu,
+PropagatorLabel->ComposedChar["su",Index[I6Gen]],
 PropagatorType -> ScalarDash,
 PropagatorArrow -> Forward},
 
  
 S[11] == {SelfConjugate -> False,
 Indices -> {Index[I3Gen]},
-Mass -> MassSv,
-PropagatorLabel->ComposedChar["\\nu",Index[I3Gen],"\\tilde"],
+Mass -> Msv,
+PropagatorLabel->ComposedChar["sv",Index[I3Gen]],
 PropagatorType -> ScalarDash,
 PropagatorArrow -> Forward},
 
  
 S[12] == {SelfConjugate -> False,
 Indices -> {Index[I6Gen]},
-Mass -> MassSe,
-PropagatorLabel->ComposedChar["e",Index[I6Gen],"\\tilde"],
+Mass -> Mse,
+PropagatorLabel->ComposedChar["se",Index[I6Gen]],
 PropagatorType -> ScalarDash,
 PropagatorArrow -> Forward},
 
@@ -91,15 +91,15 @@ PropagatorArrow -> None},
  
 S[3] == {SelfConjugate -> False,
 Indices -> {Index[I2Gen]},
-Mass -> MassHpm,
-PropagatorLabel->ComposedChar["H",Index[I2Gen],"-"],
+Mass -> MHm,
+PropagatorLabel->ComposedChar["Hpm",Index[I2Gen]],
 PropagatorType -> ScalarDash,
 PropagatorArrow -> Forward},
 
  
 F[15] == {SelfConjugate -> True,
 Indices -> {Index[Gluon]},
-Mass -> MassGlu,
+Mass -> Mgo,
 PropagatorLabel->ComposedChar["g",Index[Gluon],"\\tilde"],
 PropagatorType -> Straight,
 PropagatorArrow -> None},
@@ -107,8 +107,8 @@ PropagatorArrow -> None},
  
 F[1] == {SelfConjugate -> False,
 Indices -> {Index[I3Gen]},
-Mass -> MassFv,
-PropagatorLabel->ComposedChar["\\nu",Index[I3Gen]],
+Mass -> 0,
+PropagatorLabel->ComposedChar["v",Index[I3Gen]],
 PropagatorType -> Straight,
 PropagatorArrow -> Forward},
 
@@ -116,7 +116,7 @@ PropagatorArrow -> Forward},
 F[11] == {SelfConjugate -> True,
 Indices -> {Index[I5Gen]},
 Mass -> MN,
-PropagatorLabel->ComposedChar["\\chi",Index[I5Gen],"0","\\tilde"],
+PropagatorLabel->ComposedChar["N",Index[I5Gen]],
 PropagatorType -> Straight,
 PropagatorArrow -> None},
 
@@ -124,14 +124,14 @@ PropagatorArrow -> None},
 F[12] == {SelfConjugate -> False,
 Indices -> {Index[I2Gen]},
 Mass -> MC,
-PropagatorLabel->ComposedChar["\\chi",Index[I2Gen],"-","\\tilde"],
+PropagatorLabel->ComposedChar["C",Index[I2Gen]],
 PropagatorType -> Straight,
 PropagatorArrow -> Forward},
 
  
 F[2] == {SelfConjugate -> False,
 Indices -> {Index[I3Gen]},
-Mass -> MassFe,
+Mass -> Me,
 PropagatorLabel->ComposedChar["e",Index[I3Gen]],
 PropagatorType -> Straight,
 PropagatorArrow -> Forward},
@@ -139,16 +139,16 @@ PropagatorArrow -> Forward},
  
 F[4] == {SelfConjugate -> False,
 Indices -> {Index[I3Gen], Index[Colour]},
-Mass -> MassFd,
-PropagatorLabel->ComposedChar["d",Index[I3Gen],Index[Colour]],
+Mass -> Md,
+PropagatorLabel->ComposedChar["d",Index[I3Gen]],
 PropagatorType -> Straight,
 PropagatorArrow -> Forward},
 
  
 F[3] == {SelfConjugate -> False,
 Indices -> {Index[I3Gen], Index[Colour]},
-Mass -> MassFu,
-PropagatorLabel->ComposedChar["u",Index[I3Gen],Index[Colour]],
+Mass -> Mu,
+PropagatorLabel->ComposedChar["u",Index[I3Gen]],
 PropagatorType -> Straight,
 PropagatorArrow -> Forward},
 
@@ -156,7 +156,7 @@ PropagatorArrow -> Forward},
 V[5] == {SelfConjugate -> True,
 Indices -> {Index[Gluon]},
 Mass -> 0,
-PropagatorLabel->ComposedChar["g",Index[Gluon]],
+PropagatorLabel->ComposedChar["g"],
 PropagatorType -> Sine,
 PropagatorArrow -> None},
 
@@ -164,14 +164,14 @@ PropagatorArrow -> None},
 V[1] == {SelfConjugate -> True,
 Indices -> {},
 Mass -> 0,
-PropagatorLabel->ComposedChar["\\gamma"],
+PropagatorLabel->ComposedChar["A"],
 PropagatorType -> Sine,
 PropagatorArrow -> None},
 
  
 V[2] == {SelfConjugate -> True,
 Indices -> {},
-Mass -> MassVZ,
+Mass -> MZ,
 PropagatorLabel->ComposedChar["Z"],
 PropagatorType -> Sine,
 PropagatorArrow -> None},
@@ -179,8 +179,8 @@ PropagatorArrow -> None},
  
 V[3] == {SelfConjugate -> False,
 Indices -> {},
-Mass -> MassVWm,
-PropagatorLabel->ComposedChar["W","-"],
+Mass -> MWm,
+PropagatorLabel->ComposedChar["W"],
 PropagatorType -> Sine,
 PropagatorArrow -> Forward},
 
@@ -203,7 +203,7 @@ PropagatorArrow -> Forward},
  
 U[2] == {SelfConjugate -> False,
 Indices -> {},
-Mass -> MassVZ,
+Mass -> 0,
 PropagatorLabel->ComposedChar["\\eta","Z"],
 PropagatorType -> GhostDash,
 PropagatorArrow -> Forward},
@@ -227,11 +227,11 @@ PropagatorArrow -> Forward}
 }
 
  
-MassSd[gen_, y_] = MassSd[gen]
-MassSu[gen_, y_] = MassSu[gen]
-MassGlu[gen_, y_] = MassGlu[gen]
-MassFd[gen_, y_] = MassFd[gen]
-MassFu[gen_, y_] = MassFu[gen]
+Msd[gen_, y_] = Msd[gen]
+Msu[gen_, y_] = Msu[gen]
+Mgo[gen_, y_] = Mgo[gen]
+Md[gen_, y_] = Md[gen]
+Mu[gen_, y_] = Mu[gen]
 
 
 FAGaugeXi[S[14,___]] = 1 

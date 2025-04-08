@@ -175,6 +175,17 @@ void Main::ChangeThermalBath(const VecString &args) {
     AA.load_tokens();
 }
 
+void Main::CalcAmp(const double s, const double cos_t, VecString channels) {
+    for (auto &it : channels)
+        ASSERT(AA.check_channel_existence(it),
+               "Error in NEGLECTCHANNELS: " << it << " is not a valid channel.")
+    AA.set_s(s);
+    for (auto it : channels) {
+        AA.set_channel({it}, false);
+        std::cout << std::setprecision(16) << it << ": " << AA(cos_t) << "\n";
+    }
+}
+
 void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
                     const std::string outfile, VecString channels) {
     AnnihilationAmps AA(calc_widths);
