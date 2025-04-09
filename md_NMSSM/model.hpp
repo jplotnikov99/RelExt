@@ -5,11 +5,15 @@
 #include <cmath>
 #include <complex>
 
-#define SUM1(arg, i, ni) \
-    for (size_t i = 0; i < ni; i++) res += arg;
-#define SUM2(arg, i, ni, j, nj)     \
-    for (size_t i = 0; i < ni; i++) \
-        for (size_t j = 0; j < nj; j++) res += arg;
+#define SUM1(arg, i, ni)              \
+    for (size_t i = 0; i < ni; i++) { \
+        res += arg;                   \
+    }
+#define SUM2(arg, i, ni, j, nj)           \
+    for (size_t i = 0; i < ni; i++)       \
+        for (size_t j = 0; j < nj; j++) { \
+            res += arg;                   \
+        }
 
 namespace DT {
 namespace PAR {
@@ -113,10 +117,174 @@ extern std::complex<double> coup8;
 extern std::complex<double> coup9;
 extern std::complex<double> coup10[5];
 extern std::complex<double> coup11[5];
+extern std::complex<double> coup12[6];
+extern std::complex<double> coup13;
+extern std::complex<double> coup14[5];
+extern std::complex<double> coup15[5];
+extern std::complex<double> coup16[6];
+extern std::complex<double> coup17;
+extern std::complex<double> coup18[5];
+extern std::complex<double> coup19[5];
+extern std::complex<double> coup20[6];
+extern std::complex<double> coup21;
+extern std::complex<double> coup22[5];
+extern std::complex<double> coup23[5];
+extern std::complex<double> coup24[6];
+extern std::complex<double> coup25[6];
+extern std::complex<double> coup26;
+extern std::complex<double> coup27[6];
+extern std::complex<double> coup28;
+extern std::complex<double> coup29[6];
+extern std::complex<double> coup30;
+extern std::complex<double> coup31[6];
+extern std::complex<double> coup32[6];
+extern std::complex<double> coup33;
+extern std::complex<double> coup34[6];
+extern std::complex<double> coup35;
+extern std::complex<double> coup36[6];
+extern std::complex<double> coup37[6];
+extern std::complex<double> coup38;
+extern std::complex<double> coup39[6];
+extern std::complex<double> coup40[6];
+extern std::complex<double> coup41;
+extern std::complex<double> coup42[2];
+extern std::complex<double> coup43[2];
+extern std::complex<double> coup44[2];
+extern std::complex<double> coup45[2];
+extern std::complex<double> coup46[6];
+extern std::complex<double> coup47;
+extern std::complex<double> coup48[2];
+extern std::complex<double> coup49[2];
+extern std::complex<double> coup50[6];
+extern std::complex<double> coup51;
+extern std::complex<double> coup52[2];
+extern std::complex<double> coup53[2];
+extern std::complex<double> coup54[6];
+extern std::complex<double> coup55;
+extern std::complex<double> coup56;
+extern std::complex<double> coup57[5];
+extern std::complex<double> coup58[5];
+extern std::complex<double> coup59[5];
+extern std::complex<double> coup60[5];
+extern std::complex<double> coup61[6];
+extern std::complex<double> coup62;
+extern std::complex<double> coup63[6];
+extern std::complex<double> coup64;
+extern std::complex<double> coup65[6];
+extern std::complex<double> coup66;
+extern std::complex<double> coup67[6];
+extern std::complex<double> coup68;
+extern std::complex<double> coup69[6];
+extern std::complex<double> coup70;
+extern std::complex<double> coup71[2];
+extern std::complex<double> coup72[2];
+extern std::complex<double> coup73[2];
+extern std::complex<double> coup74[2];
+extern std::complex<double> coup75[6];
+extern std::complex<double> coup76;
+extern std::complex<double> coup77[6];
+extern std::complex<double> coup78[6];
+extern std::complex<double> coup79[2];
+extern std::complex<double> coup80[2];
+extern std::complex<double> coup81[2];
+extern std::complex<double> coup82[2];
+extern std::complex<double> coup83;
+extern std::complex<double> coup84[3];
+extern std::complex<double> coup85[3];
+extern std::complex<double> coup86[3];
+extern std::complex<double> coup87[3];
+extern std::complex<double> coup88[3];
+extern std::complex<double> coup89[3];
+extern std::complex<double> coup90[6];
+extern std::complex<double> coup91[6];
+extern std::complex<double> coup92;
+extern std::complex<double> coup93;
+extern std::complex<double> coup94[6];
+extern std::complex<double> coup95[6];
+extern std::complex<double> coup96[6];
+extern std::complex<double> coup97[6];
+extern std::complex<double> coup98[6];
+extern std::complex<double> coup99[6];
+extern std::complex<double> coup100[6];
+extern std::complex<double> coup101[6];
+extern std::complex<double> coup102[6];
+extern std::complex<double> coup103[6];
+extern std::complex<double> coup104[6];
+extern std::complex<double> coup105[6];
+extern std::complex<double> coup106[6];
+extern std::complex<double> coup107[6];
+extern std::complex<double> coup108[6];
+extern std::complex<double> coup109[6];
+extern std::complex<double> coup110[6];
+extern std::complex<double> coup111[6];
+extern std::complex<double> coup112;
+extern std::complex<double> coup113;
+extern std::complex<double> coup114[6];
+extern std::complex<double> coup115[6];
+extern std::complex<double> coup116[6];
+extern std::complex<double> coup117[6];
+extern std::complex<double> coup118[6];
+extern std::complex<double> coup119[6];
+extern std::complex<double> coup120[6];
+extern std::complex<double> coup121[6];
+extern std::complex<double> coup122[6];
+extern std::complex<double> coup123[6];
+extern std::complex<double> coup124[6];
+extern std::complex<double> coup125[6];
+extern std::complex<double> coup126[6];
+extern std::complex<double> coup127[6];
+extern std::complex<double> coup128[6];
+extern std::complex<double> coup129[6];
+extern std::complex<double> coup130[6];
+extern std::complex<double> coup131[6];
+extern std::complex<double> coup132;
+extern std::complex<double> coup133;
+extern std::complex<double> coup134[6];
+extern std::complex<double> coup135[6];
+extern std::complex<double> coup136[6];
+extern std::complex<double> coup137[6];
+extern std::complex<double> coup138[6];
+extern std::complex<double> coup139[6];
+extern std::complex<double> coup140[6];
+extern std::complex<double> coup141[6];
+extern std::complex<double> coup142[6];
+extern std::complex<double> coup143[6];
+extern std::complex<double> coup144[6];
+extern std::complex<double> coup145[6];
+extern std::complex<double> coup146[6];
+extern std::complex<double> coup147[6];
+extern std::complex<double> coup148[6];
+extern std::complex<double> coup149[6];
 
 }  // namespace PAR
 double N1N1h2h2(const double &cos_t, const double &s);
 double N1N1h2h2fl(const double &cos_t, const double &s);
 double N1N1h2h3(const double &cos_t, const double &s);
 double N1N1h2h3fl(const double &cos_t, const double &s);
+double N1N1h2h4(const double &cos_t, const double &s);
+double N1N1h2h4fl(const double &cos_t, const double &s);
+double N1N1h2h5(const double &cos_t, const double &s);
+double N1N1h2h5fl(const double &cos_t, const double &s);
+double N1N1h2h6(const double &cos_t, const double &s);
+double N1N1h2h6fl(const double &cos_t, const double &s);
+double N1N1h3h3(const double &cos_t, const double &s);
+double N1N1h3h3fl(const double &cos_t, const double &s);
+double N1N1h3h4(const double &cos_t, const double &s);
+double N1N1h3h4fl(const double &cos_t, const double &s);
+double N1N1h3h5(const double &cos_t, const double &s);
+double N1N1h3h5fl(const double &cos_t, const double &s);
+double N1N1h3h6(const double &cos_t, const double &s);
+double N1N1h3h6fl(const double &cos_t, const double &s);
+double N1N1h4h4(const double &cos_t, const double &s);
+double N1N1h4h4fl(const double &cos_t, const double &s);
+double N1N1h4h5(const double &cos_t, const double &s);
+double N1N1h4h5fl(const double &cos_t, const double &s);
+double N1N1h4h6(const double &cos_t, const double &s);
+double N1N1h4h6fl(const double &cos_t, const double &s);
+double N1N1h5h5(const double &cos_t, const double &s);
+double N1N1h5h5fl(const double &cos_t, const double &s);
+double N1N1h5h6(const double &cos_t, const double &s);
+double N1N1h5h6fl(const double &cos_t, const double &s);
+double N1N1h6h6(const double &cos_t, const double &s);
+double N1N1h6h6fl(const double &cos_t, const double &s);
 }  // namespace DT

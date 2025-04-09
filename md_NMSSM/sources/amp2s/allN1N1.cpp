@@ -1,516 +1,261 @@
 ///////////////////CODE GENERATED VIA MATHEMATICA///////////////////
 
-#include "../../model.hpp"
+
 #include "utils.hpp"
+#include "../../model.hpp"
 
-double DT::N1N1h2h2(const double &cos_t, const double &s) {
-    using namespace PAR;
-    std::complex<double> res;
-    std::complex<double> t = -0.5 * s + (Mh[1] * Mh[1]) +
-                             (cos_t * sqrt(s - 4 * (Mh[1] * Mh[1])) *
-                              sqrt(s - 4 * (MN[0] * MN[0]))) /
-                                 2. +
-                             (MN[0] * MN[0]);
-    std::complex<double> u = -s - t + 2 * (Mh[1] * Mh[1]) + 2 * (MN[0] * MN[0]);
-    SUM2((std::conj(coup1[j1]) * coup1[i1] *
-          (std::conj(coup3[j1]) * (coup3[i1] * (s - 2 * (MN[0] * MN[0])) -
-                                   2 * coup2[i1] * (MN[0] * MN[0])) +
-           std::conj(coup2[j1]) * (coup2[i1] * (s - 2 * (MN[0] * MN[0])) -
-                                   2 * coup3[i1] * (MN[0] * MN[0])))) /
-             ((s - (Mh[i1] * Mh[i1])) * (s - (Mh[j1] * Mh[j1]))),
-         i1, 6, j1, 6)
+double DT::N1N1h2h2(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = -0.5*s +  (Mh[1]*Mh[1]) + (cos_t*sqrt(s - 4* (Mh[1]*Mh[1]))*sqrt(s - 4* (MN[0]*MN[0])))/2. +  (MN[0]*MN[0]);
+	std::complex<double> u = -s - t + 2* (Mh[1]*Mh[1]) + 2* (MN[0]*MN[0]);
+	SUM2((std::conj(coup1[j1])*coup1[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
 
-    SUM2((2 * coup1[i1] *
-          (std::conj(coup4[j1]) * std::conj(coup5[j1]) *
-               (coup2[i1] + coup3[i1]) * (s + t - u - 4 * (MN[0] * MN[0])) *
-               MN[0] +
-           (std::conj(coup5[j1]) * std::conj(coup5[j1])) *
-               (coup3[i1] * (s - 2 * (MN[0] * MN[0])) -
-                2 * coup2[i1] * (MN[0] * MN[0])) *
-               MN[j1] +
-           (std::conj(coup4[j1]) * std::conj(coup4[j1])) *
-               (coup2[i1] * (s - 2 * (MN[0] * MN[0])) -
-                2 * coup3[i1] * (MN[0] * MN[0])) *
-               MN[j1])) /
-                 ((s - (Mh[i1] * Mh[i1])) * (u - (MN[j1] * MN[j1]))) +
-             (2 * coup1[i1] *
-              (std::conj(coup4[j1]) * std::conj(coup5[j1]) *
-                   (coup2[i1] + coup3[i1]) * (s - t + u - 4 * (MN[0] * MN[0])) *
-                   MN[0] +
-               (std::conj(coup5[j1]) * std::conj(coup5[j1])) *
-                   (coup3[i1] * (s - 2 * (MN[0] * MN[0])) -
-                    2 * coup2[i1] * (MN[0] * MN[0])) *
-                   MN[j1] +
-               (std::conj(coup4[j1]) * std::conj(coup4[j1])) *
-                   (coup2[i1] * (s - 2 * (MN[0] * MN[0])) -
-                    2 * coup3[i1] * (MN[0] * MN[0])) *
-                   MN[j1])) /
-                 ((s - (Mh[i1] * Mh[i1])) * (t - (MN[j1] * MN[j1]))),
-         i1, 6, j1, 5)
+	SUM2((2*coup1[i1]*(std::conj(coup4[j1])*std::conj(coup5[j1])*(coup2[i1] + coup3[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (std::conj(coup5[j1])*std::conj(coup5[j1]))*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1] +  (std::conj(coup4[j1])*std::conj(coup4[j1]))*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1]))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))) + (2*coup1[i1]*(std::conj(coup4[j1])*std::conj(coup5[j1])*(coup2[i1] + coup3[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (std::conj(coup5[j1])*std::conj(coup5[j1]))*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1] +  (std::conj(coup4[j1])*std::conj(coup4[j1]))*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1]))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))),i1,6,j1,5)
 
-    SUM2(
-        (std::conj(coup4[j1]) * std::conj(coup5[j1]) *
-             (2 * coup4[i1] * coup5[i1] *
-                  (s * (-(Mh[1] * Mh[1]) + (MN[0] * MN[0])) +
-                   t * (u - (Mh[1] * Mh[1]) + (MN[0] * MN[0])) -
-                   (u - (Mh[1] * Mh[1]) + (MN[0] * MN[0])) *
-                       ((Mh[1] * Mh[1]) + 3 * (MN[0] * MN[0]))) +
-              (coup4[i1] * coup4[i1]) * (s + t - u - 4 * (MN[0] * MN[0])) *
-                  MN[0] * MN[i1] +
-              (coup5[i1] * coup5[i1]) * (s + t - u - 4 * (MN[0] * MN[0])) *
-                  MN[0] * MN[i1]) +
-         (std::conj(coup5[j1]) * std::conj(coup5[j1])) *
-             (coup4[i1] * coup5[i1] * (s + t - u - 4 * (MN[0] * MN[0])) *
-                  MN[0] +
-              (coup5[i1] * coup5[i1]) * (s - 2 * (MN[0] * MN[0])) * MN[i1] -
-              2 * (coup4[i1] * coup4[i1]) * (MN[0] * MN[0]) * MN[i1]) *
-             MN[j1] +
-         (std::conj(coup4[j1]) * std::conj(coup4[j1])) *
-             (coup4[i1] * coup5[i1] * (s + t - u - 4 * (MN[0] * MN[0])) *
-                  MN[0] +
-              (coup4[i1] * coup4[i1]) * (s - 2 * (MN[0] * MN[0])) * MN[i1] -
-              2 * (coup5[i1] * coup5[i1]) * (MN[0] * MN[0]) * MN[i1]) *
-             MN[j1]) /
-                ((u - (MN[i1] * MN[i1])) * (u - (MN[j1] * MN[j1]))) +
-            (2 *
-             (std::conj(coup4[j1]) * std::conj(coup5[j1]) *
-                  (coup4[i1] * coup5[i1] *
-                       (-(s * s) + (t * t) + (u * u) - 2 * u * (Mh[1] * Mh[1]) +
-                        2 * (Mh[1] * Mh[1] * Mh[1] * Mh[1]) -
-                        2 * u * (MN[0] * MN[0]) +
-                        4 * (Mh[1] * Mh[1]) * (MN[0] * MN[0]) +
-                        2 * s * ((Mh[1] * Mh[1]) + (MN[0] * MN[0])) -
-                        2 * t * ((Mh[1] * Mh[1]) + (MN[0] * MN[0])) -
-                        6 * (MN[0] * MN[0] * MN[0] * MN[0])) +
-                   (coup4[i1] * coup4[i1]) * (s + t - u - 4 * (MN[0] * MN[0])) *
-                       MN[0] * MN[i1] +
-                   (coup5[i1] * coup5[i1]) * (s + t - u - 4 * (MN[0] * MN[0])) *
-                       MN[0] * MN[i1]) +
-              (std::conj(coup5[j1]) * std::conj(coup5[j1])) *
-                  (coup4[i1] * coup5[i1] * (s - t + u - 4 * (MN[0] * MN[0])) *
-                       MN[0] +
-                   (coup5[i1] * coup5[i1]) * (s - 2 * (MN[0] * MN[0])) *
-                       MN[i1] -
-                   2 * (coup4[i1] * coup4[i1]) * (MN[0] * MN[0]) * MN[i1]) *
-                  MN[j1] +
-              (std::conj(coup4[j1]) * std::conj(coup4[j1])) *
-                  (coup4[i1] * coup5[i1] * (s - t + u - 4 * (MN[0] * MN[0])) *
-                       MN[0] +
-                   (coup4[i1] * coup4[i1]) * (s - 2 * (MN[0] * MN[0])) *
-                       MN[i1] -
-                   2 * (coup5[i1] * coup5[i1]) * (MN[0] * MN[0]) * MN[i1]) *
-                  MN[j1])) /
-                ((t - (MN[i1] * MN[i1])) * (u - (MN[j1] * MN[j1]))) +
-            (std::conj(coup4[j1]) * std::conj(coup5[j1]) *
-                 (2 * coup4[i1] * coup5[i1] *
-                      (t * (u - (Mh[1] * Mh[1]) - 3 * (MN[0] * MN[0])) -
-                       (s + u - (Mh[1] * Mh[1]) - 3 * (MN[0] * MN[0])) *
-                           ((Mh[1] * Mh[1]) - (MN[0] * MN[0]))) +
-                  (coup4[i1] * coup4[i1]) * (s - t + u - 4 * (MN[0] * MN[0])) *
-                      MN[0] * MN[i1] +
-                  (coup5[i1] * coup5[i1]) * (s - t + u - 4 * (MN[0] * MN[0])) *
-                      MN[0] * MN[i1]) +
-             (std::conj(coup5[j1]) * std::conj(coup5[j1])) *
-                 (coup4[i1] * coup5[i1] * (s - t + u - 4 * (MN[0] * MN[0])) *
-                      MN[0] +
-                  (coup5[i1] * coup5[i1]) * (s - 2 * (MN[0] * MN[0])) * MN[i1] -
-                  2 * (coup4[i1] * coup4[i1]) * (MN[0] * MN[0]) * MN[i1]) *
-                 MN[j1] +
-             (std::conj(coup4[j1]) * std::conj(coup4[j1])) *
-                 (coup4[i1] * coup5[i1] * (s - t + u - 4 * (MN[0] * MN[0])) *
-                      MN[0] +
-                  (coup4[i1] * coup4[i1]) * (s - 2 * (MN[0] * MN[0])) * MN[i1] -
-                  2 * (coup5[i1] * coup5[i1]) * (MN[0] * MN[0]) * MN[i1]) *
-                 MN[j1]) /
-                ((t - (MN[i1] * MN[i1])) * (t - (MN[j1] * MN[j1]))),
-        j1, 5, i1, 5)
+	SUM2((std::conj(coup4[j1])*std::conj(coup5[j1])*(2*coup4[i1]*coup5[i1]*(s*(- (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) + t*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) - (u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*( (Mh[1]*Mh[1]) + 3* (MN[0]*MN[0]))) +  (coup4[i1]*coup4[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup5[i1]*coup5[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup5[j1])*std::conj(coup5[j1]))*(coup4[i1]*coup5[i1]*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (coup5[i1]*coup5[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup4[i1]*coup4[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup4[j1])*std::conj(coup4[j1]))*(coup4[i1]*coup5[i1]*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (coup4[i1]*coup4[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup5[i1]*coup5[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1])/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (2*(std::conj(coup4[j1])*std::conj(coup5[j1])*(coup4[i1]*coup5[i1]*(- (s*s) +  (t*t) +  (u*u) - 2*u* (Mh[1]*Mh[1]) + 2* (Mh[1]*Mh[1]*Mh[1]*Mh[1]) - 2*u* (MN[0]*MN[0]) + 4* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2*s*( (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) - 2*t*( (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) - 6* (MN[0]*MN[0]*MN[0]*MN[0])) +  (coup4[i1]*coup4[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup5[i1]*coup5[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup5[j1])*std::conj(coup5[j1]))*(coup4[i1]*coup5[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup5[i1]*coup5[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup4[i1]*coup4[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup4[j1])*std::conj(coup4[j1]))*(coup4[i1]*coup5[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup4[i1]*coup4[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup5[i1]*coup5[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup4[j1])*std::conj(coup5[j1])*(2*coup4[i1]*coup5[i1]*(t*(u -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0])) - (s + u -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*( (Mh[1]*Mh[1]) -  (MN[0]*MN[0]))) +  (coup4[i1]*coup4[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup5[i1]*coup5[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup5[j1])*std::conj(coup5[j1]))*(coup4[i1]*coup5[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup5[i1]*coup5[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup4[i1]*coup4[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup4[j1])*std::conj(coup4[j1]))*(coup4[i1]*coup5[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup4[i1]*coup4[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup5[i1]*coup5[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1])/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))),j1,5,i1,5)
 
-    return res.real();
+	return res.real();
 }
-double DT::N1N1h2h3(const double &cos_t, const double &s) {
-    using namespace PAR;
-    std::complex<double> res;
-    std::complex<double> t =
-        (-s + (Mh[1] * Mh[1]) + (Mh[2] * Mh[2]) +
-         cos_t *
-             sqrt(s +
-                  (((Mh[1] * Mh[1]) - (Mh[2] * Mh[2])) *
-                   ((Mh[1] * Mh[1]) - (Mh[2] * Mh[2]))) /
-                      s -
-                  2 * ((Mh[1] * Mh[1]) + (Mh[2] * Mh[2]))) *
-             sqrt(s - 4 * (MN[0] * MN[0])) +
-         2 * (MN[0] * MN[0])) /
-        2.;
-    std::complex<double> u =
-        -s - t + (Mh[1] * Mh[1]) + (Mh[2] * Mh[2]) + 2 * (MN[0] * MN[0]);
-    res += (coup7 * std::conj(coup7) *
-            (std::conj(coup8) *
-                 (2 * coup9 * (s - 2 * ((Mh[1] * Mh[1]) + (Mh[2] * Mh[2]))) *
-                      (MN[0] * MN[0]) +
-                  coup8 * (2 * t * u + (s * s) - (t * t) - (u * u) +
-                           (Mh[1] * Mh[1] * Mh[1] * Mh[1]) -
-                           2 * (Mh[1] * Mh[1]) * (Mh[2] * Mh[2]) +
-                           (Mh[2] * Mh[2] * Mh[2] * Mh[2]) +
-                           4 * (Mh[1] * Mh[1]) * (MN[0] * MN[0]) +
-                           4 * (Mh[2] * Mh[2]) * (MN[0] * MN[0]) -
-                           2 * s *
-                               ((Mh[1] * Mh[1]) + (Mh[2] * Mh[2]) +
-                                (MN[0] * MN[0])))) +
-             std::conj(coup9) *
-                 (2 * coup8 * (s - 2 * ((Mh[1] * Mh[1]) + (Mh[2] * Mh[2]))) *
-                      (MN[0] * MN[0]) +
-                  coup9 * (2 * t * u + (s * s) - (t * t) - (u * u) +
-                           (Mh[1] * Mh[1] * Mh[1] * Mh[1]) -
-                           2 * (Mh[1] * Mh[1]) * (Mh[2] * Mh[2]) +
-                           (Mh[2] * Mh[2] * Mh[2] * Mh[2]) +
-                           4 * (Mh[1] * Mh[1]) * (MN[0] * MN[0]) +
-                           4 * (Mh[2] * Mh[2]) * (MN[0] * MN[0]) -
-                           2 * s *
-                               ((Mh[1] * Mh[1]) + (Mh[2] * Mh[2]) +
-                                (MN[0] * MN[0])))))) /
-           (((MZ * MZ) - s) * ((MZ * MZ) - s));
+double DT::N1N1h2h3(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = (-s +  (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2]) + cos_t*sqrt(s +  (( (Mh[1]*Mh[1]) -  (Mh[2]*Mh[2]))*( (Mh[1]*Mh[1]) -  (Mh[2]*Mh[2])))/s - 2*( (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2])))*sqrt(s - 4* (MN[0]*MN[0])) + 2* (MN[0]*MN[0]))/2.;
+	std::complex<double> u = -s - t +  (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2]) + 2* (MN[0]*MN[0]);
+	res += (coup7*std::conj(coup7)*(std::conj(coup8)*(2*coup9*(s - 2*( (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2])))* (MN[0]*MN[0]) + coup8*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) - 2* (Mh[1]*Mh[1])* (Mh[2]*Mh[2]) +  (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + 4* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 4* (Mh[2]*Mh[2])* (MN[0]*MN[0]) - 2*s*( (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])))) + std::conj(coup9)*(2*coup8*(s - 2*( (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2])))* (MN[0]*MN[0]) + coup9*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) - 2* (Mh[1]*Mh[1])* (Mh[2]*Mh[2]) +  (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + 4* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 4* (Mh[2]*Mh[2])* (MN[0]*MN[0]) - 2*s*( (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))))))/ (( (MZ*MZ) - s)*( (MZ*MZ) - s));
 
-    SUM1((-2 * std::conj(coup7) * coup6[i1] *
-          (std::conj(coup9) *
-               (coup3[i1] * (t - u + (Mh[1] * Mh[1]) - (Mh[2] * Mh[2])) +
-                coup2[i1] * (t - u - (Mh[1] * Mh[1]) + (Mh[2] * Mh[2]))) +
-           std::conj(coup8) *
-               (coup2[i1] * (t - u + (Mh[1] * Mh[1]) - (Mh[2] * Mh[2])) +
-                coup3[i1] * (t - u - (Mh[1] * Mh[1]) + (Mh[2] * Mh[2])))) *
-          MN[0]) /
-             ((-s + (MZ * MZ)) * (s - (Mh[i1] * Mh[i1]))),
-         i1, 6)
+	SUM1((-2*std::conj(coup7)*coup6[i1]*(std::conj(coup9)*(coup3[i1]*(t - u +  (Mh[1]*Mh[1]) -  (Mh[2]*Mh[2])) + coup2[i1]*(t - u -  (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2]))) + std::conj(coup8)*(coup2[i1]*(t - u +  (Mh[1]*Mh[1]) -  (Mh[2]*Mh[2])) + coup3[i1]*(t - u -  (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2]))))*MN[0])/((-s +  (MZ*MZ))*(s -  (Mh[i1]*Mh[i1]))),i1,6)
 
-    SUM1((coup7 *
-          (std::conj(coup11[j1]) *
-               (std::conj(coup4[j1]) *
-                    (2 * coup8 *
-                         (s - t + u - 2 * (Mh[1] * Mh[1]) -
-                          2 * (Mh[2] * Mh[2])) *
-                         (MN[0] * MN[0]) +
-                     coup9 * ((s * s) - (t * t) - (u * u) +
-                              u * (Mh[1] * Mh[1]) - u * (Mh[2] * Mh[2]) -
-                              2 * (Mh[1] * Mh[1]) * (Mh[2] * Mh[2]) +
-                              2 * (Mh[2] * Mh[2] * Mh[2] * Mh[2]) +
-                              t * (2 * u + (Mh[1] * Mh[1]) - (Mh[2] * Mh[2]) -
-                                   2 * (MN[0] * MN[0])) +
-                              2 * u * (MN[0] * MN[0]) +
-                              2 * (Mh[1] * Mh[1]) * (MN[0] * MN[0]) +
-                              6 * (Mh[2] * Mh[2]) * (MN[0] * MN[0]) -
-                              s * ((Mh[1] * Mh[1]) + 3 * (Mh[2] * Mh[2]) +
-                                   2 * (MN[0] * MN[0])))) -
-                2 * std::conj(coup5[j1]) *
-                    (coup9 * (t - u + (Mh[1] * Mh[1]) - (Mh[2] * Mh[2])) +
-                     coup8 * (t - u - (Mh[1] * Mh[1]) + (Mh[2] * Mh[2]))) *
-                    MN[0] * MN[j1]) +
-           std::conj(coup10[j1]) *
-               (std::conj(coup5[j1]) *
-                    (2 * coup9 *
-                         (s - t + u - 2 * (Mh[1] * Mh[1]) -
-                          2 * (Mh[2] * Mh[2])) *
-                         (MN[0] * MN[0]) +
-                     coup8 * ((s * s) - (t * t) - (u * u) +
-                              u * (Mh[1] * Mh[1]) - u * (Mh[2] * Mh[2]) -
-                              2 * (Mh[1] * Mh[1]) * (Mh[2] * Mh[2]) +
-                              2 * (Mh[2] * Mh[2] * Mh[2] * Mh[2]) +
-                              t * (2 * u + (Mh[1] * Mh[1]) - (Mh[2] * Mh[2]) -
-                                   2 * (MN[0] * MN[0])) +
-                              2 * u * (MN[0] * MN[0]) +
-                              2 * (Mh[1] * Mh[1]) * (MN[0] * MN[0]) +
-                              6 * (Mh[2] * Mh[2]) * (MN[0] * MN[0]) -
-                              s * ((Mh[1] * Mh[1]) + 3 * (Mh[2] * Mh[2]) +
-                                   2 * (MN[0] * MN[0])))) -
-                2 * std::conj(coup4[j1]) *
-                    (coup8 * (t - u + (Mh[1] * Mh[1]) - (Mh[2] * Mh[2])) +
-                     coup9 * (t - u - (Mh[1] * Mh[1]) + (Mh[2] * Mh[2]))) *
-                    MN[0] * MN[j1]))) /
-                 ((-s + (MZ * MZ)) * (t - (MN[j1] * MN[j1]))) -
-             (coup7 *
-              (std::conj(coup11[j1]) *
-                   (std::conj(coup4[j1]) *
-                        (2 * coup9 *
-                             (s + t - u - 2 * (Mh[1] * Mh[1]) -
-                              2 * (Mh[2] * Mh[2])) *
-                             (MN[0] * MN[0]) +
-                         coup8 * ((s * s) - (t * t) - (u * u) -
-                                  u * (Mh[1] * Mh[1]) +
-                                  2 * (Mh[1] * Mh[1] * Mh[1] * Mh[1]) +
-                                  u * (Mh[2] * Mh[2]) -
-                                  2 * (Mh[1] * Mh[1]) * (Mh[2] * Mh[2]) -
-                                  2 * u * (MN[0] * MN[0]) +
-                                  6 * (Mh[1] * Mh[1]) * (MN[0] * MN[0]) +
-                                  2 * (Mh[2] * Mh[2]) * (MN[0] * MN[0]) +
-                                  t * (2 * u - (Mh[1] * Mh[1]) +
-                                       (Mh[2] * Mh[2]) + 2 * (MN[0] * MN[0])) -
-                                  s * (3 * (Mh[1] * Mh[1]) + (Mh[2] * Mh[2]) +
-                                       2 * (MN[0] * MN[0])))) +
-                    2 * std::conj(coup5[j1]) *
-                        (coup9 * (t - u + (Mh[1] * Mh[1]) - (Mh[2] * Mh[2])) +
-                         coup8 * (t - u - (Mh[1] * Mh[1]) + (Mh[2] * Mh[2]))) *
-                        MN[0] * MN[j1]) +
-               std::conj(coup10[j1]) *
-                   (std::conj(coup5[j1]) *
-                        (2 * coup8 *
-                             (s + t - u - 2 * (Mh[1] * Mh[1]) -
-                              2 * (Mh[2] * Mh[2])) *
-                             (MN[0] * MN[0]) +
-                         coup9 * ((s * s) - (t * t) - (u * u) -
-                                  u * (Mh[1] * Mh[1]) +
-                                  2 * (Mh[1] * Mh[1] * Mh[1] * Mh[1]) +
-                                  u * (Mh[2] * Mh[2]) -
-                                  2 * (Mh[1] * Mh[1]) * (Mh[2] * Mh[2]) -
-                                  2 * u * (MN[0] * MN[0]) +
-                                  6 * (Mh[1] * Mh[1]) * (MN[0] * MN[0]) +
-                                  2 * (Mh[2] * Mh[2]) * (MN[0] * MN[0]) +
-                                  t * (2 * u - (Mh[1] * Mh[1]) +
-                                       (Mh[2] * Mh[2]) + 2 * (MN[0] * MN[0])) -
-                                  s * (3 * (Mh[1] * Mh[1]) + (Mh[2] * Mh[2]) +
-                                       2 * (MN[0] * MN[0])))) +
-                    2 * std::conj(coup4[j1]) *
-                        (coup8 * (t - u + (Mh[1] * Mh[1]) - (Mh[2] * Mh[2])) +
-                         coup9 * (t - u - (Mh[1] * Mh[1]) + (Mh[2] * Mh[2]))) *
-                        MN[0] * MN[j1]))) /
-                 ((-s + (MZ * MZ)) * (u - (MN[j1] * MN[j1]))),
-         j1, 5)
+	SUM1((coup7*(std::conj(coup11[j1])*(std::conj(coup4[j1])*(2*coup8*(s - t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[2]*Mh[2]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) - u* (Mh[2]*Mh[2]) - 2* (Mh[1]*Mh[1])* (Mh[2]*Mh[2]) + 2* (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + t*(2*u +  (Mh[1]*Mh[1]) -  (Mh[2]*Mh[2]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 6* (Mh[2]*Mh[2])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) + 3* (Mh[2]*Mh[2]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup5[j1])*(coup9*(t - u +  (Mh[1]*Mh[1]) -  (Mh[2]*Mh[2])) + coup8*(t - u -  (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2])))*MN[0]*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup5[j1])*(2*coup9*(s - t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[2]*Mh[2]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) - u* (Mh[2]*Mh[2]) - 2* (Mh[1]*Mh[1])* (Mh[2]*Mh[2]) + 2* (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + t*(2*u +  (Mh[1]*Mh[1]) -  (Mh[2]*Mh[2]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 6* (Mh[2]*Mh[2])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) + 3* (Mh[2]*Mh[2]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup4[j1])*(coup8*(t - u +  (Mh[1]*Mh[1]) -  (Mh[2]*Mh[2])) + coup9*(t - u -  (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(t -  (MN[j1]*MN[j1]))) - (coup7*(std::conj(coup11[j1])*(std::conj(coup4[j1])*(2*coup9*(s + t - u - 2* (Mh[1]*Mh[1]) - 2* (Mh[2]*Mh[2]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) - u* (Mh[1]*Mh[1]) + 2* (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + u* (Mh[2]*Mh[2]) - 2* (Mh[1]*Mh[1])* (Mh[2]*Mh[2]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + t*(2*u -  (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup5[j1])*(coup9*(t - u +  (Mh[1]*Mh[1]) -  (Mh[2]*Mh[2])) + coup8*(t - u -  (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2])))*MN[0]*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup5[j1])*(2*coup8*(s + t - u - 2* (Mh[1]*Mh[1]) - 2* (Mh[2]*Mh[2]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) - u* (Mh[1]*Mh[1]) + 2* (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + u* (Mh[2]*Mh[2]) - 2* (Mh[1]*Mh[1])* (Mh[2]*Mh[2]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + t*(2*u -  (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup4[j1])*(coup8*(t - u +  (Mh[1]*Mh[1]) -  (Mh[2]*Mh[2])) + coup9*(t - u -  (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(u -  (MN[j1]*MN[j1]))),j1,5)
 
-    SUM2((std::conj(coup6[j1]) * coup6[i1] *
-          (std::conj(coup3[j1]) * (coup3[i1] * (s - 2 * (MN[0] * MN[0])) -
-                                   2 * coup2[i1] * (MN[0] * MN[0])) +
-           std::conj(coup2[j1]) * (coup2[i1] * (s - 2 * (MN[0] * MN[0])) -
-                                   2 * coup3[i1] * (MN[0] * MN[0])))) /
-             ((s - (Mh[i1] * Mh[i1])) * (s - (Mh[j1] * Mh[j1]))),
-         i1, 6, j1, 6)
+	SUM2((std::conj(coup6[j1])*coup6[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
 
-    SUM2((2 * coup6[i1] *
-          (std::conj(coup11[j1]) *
-               (std::conj(coup4[j1]) *
-                    (coup2[i1] *
-                         (s + u - (Mh[2] * Mh[2]) - 3 * (MN[0] * MN[0])) -
-                     coup3[i1] * (t - (Mh[2] * Mh[2]) + (MN[0] * MN[0]))) *
-                    MN[0] +
-                std::conj(coup5[j1]) *
-                    (coup3[i1] * (s - 2 * (MN[0] * MN[0])) -
-                     2 * coup2[i1] * (MN[0] * MN[0])) *
-                    MN[j1]) +
-           std::conj(coup10[j1]) *
-               (std::conj(coup5[j1]) *
-                    (coup3[i1] *
-                         (s + u - (Mh[2] * Mh[2]) - 3 * (MN[0] * MN[0])) -
-                     coup2[i1] * (t - (Mh[2] * Mh[2]) + (MN[0] * MN[0]))) *
-                    MN[0] +
-                std::conj(coup4[j1]) *
-                    (coup2[i1] * (s - 2 * (MN[0] * MN[0])) -
-                     2 * coup3[i1] * (MN[0] * MN[0])) *
-                    MN[j1]))) /
-                 ((s - (Mh[i1] * Mh[i1])) * (t - (MN[j1] * MN[j1]))) -
-             (2 * coup6[i1] *
-              (std::conj(coup11[j1]) *
-                   (std::conj(coup4[j1]) *
-                        (-(coup3[i1] *
-                           (s + t - (Mh[1] * Mh[1]) - 3 * (MN[0] * MN[0]))) +
-                         coup2[i1] * (u - (Mh[1] * Mh[1]) + (MN[0] * MN[0]))) *
-                        MN[0] +
-                    std::conj(coup5[j1]) *
-                        (-(coup3[i1] * (s - 2 * (MN[0] * MN[0]))) +
-                         2 * coup2[i1] * (MN[0] * MN[0])) *
-                        MN[j1]) +
-               std::conj(coup10[j1]) *
-                   (std::conj(coup5[j1]) *
-                        (-(coup2[i1] *
-                           (s + t - (Mh[1] * Mh[1]) - 3 * (MN[0] * MN[0]))) +
-                         coup3[i1] * (u - (Mh[1] * Mh[1]) + (MN[0] * MN[0]))) *
-                        MN[0] +
-                    std::conj(coup4[j1]) *
-                        (-(coup2[i1] * (s - 2 * (MN[0] * MN[0]))) +
-                         2 * coup3[i1] * (MN[0] * MN[0])) *
-                        MN[j1]))) /
-                 ((s - (Mh[i1] * Mh[i1])) * (u - (MN[j1] * MN[j1]))),
-         i1, 6, j1, 5)
+	SUM2((2*coup6[i1]*(std::conj(coup11[j1])*(std::conj(coup4[j1])*(coup2[i1]*(s + u -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - coup3[i1]*(t -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup5[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup5[j1])*(coup3[i1]*(s + u -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - coup2[i1]*(t -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup4[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))) - (2*coup6[i1]*(std::conj(coup11[j1])*(std::conj(coup4[j1])*(-(coup3[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))) + coup2[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup5[j1])*(-(coup3[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup5[j1])*(-(coup2[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))) + coup3[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup4[j1])*(-(coup2[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))),i1,6,j1,5)
 
-    SUM2((std::conj(coup11[j1]) *
-              (std::conj(coup4[j1]) *
-                   (coup10[i1] * MN[0] *
-                        (-2 * t * coup5[i1] * MN[0] +
-                         coup4[i1] *
-                             (s + u - (Mh[2] * Mh[2]) - 3 * (MN[0] * MN[0])) *
-                             MN[i1]) +
-                    coup11[i1] *
-                        (coup4[i1] *
-                             (t * (u - (Mh[2] * Mh[2]) - (MN[0] * MN[0])) -
-                              (s + u - (Mh[2] * Mh[2]) - 3 * (MN[0] * MN[0])) *
-                                  ((Mh[2] * Mh[2]) - (MN[0] * MN[0]))) -
-                         coup5[i1] * (t - (Mh[2] * Mh[2]) + (MN[0] * MN[0])) *
-                             MN[0] * MN[i1])) +
-               std::conj(coup5[j1]) *
-                   (coup11[i1] *
-                        (-(coup4[i1] * (t - (Mh[2] * Mh[2]) + (MN[0] * MN[0])) *
-                           MN[0]) +
-                         coup5[i1] * (s - 2 * (MN[0] * MN[0])) * MN[i1]) +
-                    coup10[i1] * MN[0] *
-                        (coup5[i1] *
-                             (s + u - (Mh[2] * Mh[2]) - 3 * (MN[0] * MN[0])) -
-                         2 * coup4[i1] * MN[0] * MN[i1])) *
-                   MN[j1]) +
-          std::conj(coup10[j1]) *
-              (std::conj(coup5[j1]) *
-                   (coup11[i1] * MN[0] *
-                        (-2 * t * coup4[i1] * MN[0] +
-                         coup5[i1] *
-                             (s + u - (Mh[2] * Mh[2]) - 3 * (MN[0] * MN[0])) *
-                             MN[i1]) +
-                    coup10[i1] *
-                        (coup5[i1] *
-                             (t * (u - (Mh[2] * Mh[2]) - (MN[0] * MN[0])) -
-                              (s + u - (Mh[2] * Mh[2]) - 3 * (MN[0] * MN[0])) *
-                                  ((Mh[2] * Mh[2]) - (MN[0] * MN[0]))) -
-                         coup4[i1] * (t - (Mh[2] * Mh[2]) + (MN[0] * MN[0])) *
-                             MN[0] * MN[i1])) +
-               std::conj(coup4[j1]) *
-                   (coup10[i1] *
-                        (-(coup5[i1] * (t - (Mh[2] * Mh[2]) + (MN[0] * MN[0])) *
-                           MN[0]) +
-                         coup4[i1] * (s - 2 * (MN[0] * MN[0])) * MN[i1]) +
-                    coup11[i1] * MN[0] *
-                        (coup4[i1] *
-                             (s + u - (Mh[2] * Mh[2]) - 3 * (MN[0] * MN[0])) -
-                         2 * coup5[i1] * MN[0] * MN[i1])) *
-                   MN[j1])) /
-                 ((t - (MN[i1] * MN[i1])) * (t - (MN[j1] * MN[j1]))) -
-             (std::conj(coup11[j1]) *
-                  (std::conj(coup4[j1]) *
-                       (2 * coup11[i1] * MN[0] *
-                            (coup4[i1] *
-                                 (s + t + u - 2 * (Mh[1] * Mh[1]) -
-                                  2 * (Mh[2] * Mh[2])) *
-                                 MN[0] -
-                             coup5[i1] *
-                                 (s + t - (Mh[1] * Mh[1]) -
-                                  3 * (MN[0] * MN[0])) *
-                                 MN[i1]) +
-                        coup10[i1] *
-                            (coup5[i1] *
-                                 ((s * s) - (t * t) - (u * u) +
-                                  u * (Mh[1] * Mh[1]) + u * (Mh[2] * Mh[2]) -
-                                  2 * (Mh[1] * Mh[1]) * (Mh[2] * Mh[2]) +
-                                  t * ((Mh[1] * Mh[1]) + (Mh[2] * Mh[2])) +
-                                  2 * (Mh[1] * Mh[1]) * (MN[0] * MN[0]) +
-                                  2 * (Mh[2] * Mh[2]) * (MN[0] * MN[0]) -
-                                  s * ((Mh[1] * Mh[1]) + (Mh[2] * Mh[2]) +
-                                       4 * (MN[0] * MN[0])) +
-                                  6 * (MN[0] * MN[0] * MN[0] * MN[0])) +
-                             2 * coup4[i1] *
-                                 (u - (Mh[1] * Mh[1]) + (MN[0] * MN[0])) *
-                                 MN[0] * MN[i1])) +
-                   2 * std::conj(coup5[j1]) *
-                       (coup11[i1] *
-                            (coup4[i1] *
-                                 (t - (Mh[2] * Mh[2]) + (MN[0] * MN[0])) *
-                                 MN[0] -
-                             coup5[i1] * (s - 2 * (MN[0] * MN[0])) * MN[i1]) +
-                        coup10[i1] * MN[0] *
-                            (-(coup5[i1] * (s + u - (Mh[2] * Mh[2]) -
-                                            3 * (MN[0] * MN[0]))) +
-                             2 * coup4[i1] * MN[0] * MN[i1])) *
-                       MN[j1]) +
-              std::conj(coup10[j1]) *
-                  (std::conj(coup5[j1]) *
-                       (2 * coup10[i1] * MN[0] *
-                            (coup5[i1] *
-                                 (s + t + u - 2 * (Mh[1] * Mh[1]) -
-                                  2 * (Mh[2] * Mh[2])) *
-                                 MN[0] -
-                             coup4[i1] *
-                                 (s + t - (Mh[1] * Mh[1]) -
-                                  3 * (MN[0] * MN[0])) *
-                                 MN[i1]) +
-                        coup11[i1] *
-                            (coup4[i1] *
-                                 ((s * s) - (t * t) - (u * u) +
-                                  u * (Mh[1] * Mh[1]) + u * (Mh[2] * Mh[2]) -
-                                  2 * (Mh[1] * Mh[1]) * (Mh[2] * Mh[2]) +
-                                  t * ((Mh[1] * Mh[1]) + (Mh[2] * Mh[2])) +
-                                  2 * (Mh[1] * Mh[1]) * (MN[0] * MN[0]) +
-                                  2 * (Mh[2] * Mh[2]) * (MN[0] * MN[0]) -
-                                  s * ((Mh[1] * Mh[1]) + (Mh[2] * Mh[2]) +
-                                       4 * (MN[0] * MN[0])) +
-                                  6 * (MN[0] * MN[0] * MN[0] * MN[0])) +
-                             2 * coup5[i1] *
-                                 (u - (Mh[1] * Mh[1]) + (MN[0] * MN[0])) *
-                                 MN[0] * MN[i1])) +
-                   2 * std::conj(coup4[j1]) *
-                       (coup10[i1] *
-                            (coup5[i1] *
-                                 (t - (Mh[2] * Mh[2]) + (MN[0] * MN[0])) *
-                                 MN[0] -
-                             coup4[i1] * (s - 2 * (MN[0] * MN[0])) * MN[i1]) +
-                        coup11[i1] * MN[0] *
-                            (-(coup4[i1] * (s + u - (Mh[2] * Mh[2]) -
-                                            3 * (MN[0] * MN[0]))) +
-                             2 * coup5[i1] * MN[0] * MN[i1])) *
-                       MN[j1])) /
-                 ((t - (MN[i1] * MN[i1])) * (u - (MN[j1] * MN[j1]))) +
-             (std::conj(coup11[j1]) *
-                  (std::conj(coup4[j1]) *
-                       (-(coup10[i1] * MN[0] *
-                          (2 * u * coup5[i1] * MN[0] +
-                           coup4[i1] * (u - (Mh[1] * Mh[1]) + (MN[0] * MN[0])) *
-                               MN[i1])) +
-                        coup11[i1] *
-                            (coup4[i1] *
-                                 (-(s * (Mh[1] * Mh[1])) - u * (Mh[1] * Mh[1]) +
-                                  (Mh[1] * Mh[1] * Mh[1] * Mh[1]) +
-                                  s * (MN[0] * MN[0]) - u * (MN[0] * MN[0]) +
-                                  2 * (Mh[1] * Mh[1]) * (MN[0] * MN[0]) +
-                                  t * (u - (Mh[1] * Mh[1]) + (MN[0] * MN[0])) -
-                                  3 * (MN[0] * MN[0] * MN[0] * MN[0])) +
-                             coup5[i1] *
-                                 (s + t - (Mh[1] * Mh[1]) -
-                                  3 * (MN[0] * MN[0])) *
-                                 MN[0] * MN[i1])) +
-                   std::conj(coup5[j1]) *
-                       (coup11[i1] *
-                            (coup4[i1] *
-                                 (s + t - (Mh[1] * Mh[1]) -
-                                  3 * (MN[0] * MN[0])) *
-                                 MN[0] +
-                             coup5[i1] * (s - 2 * (MN[0] * MN[0])) * MN[i1]) -
-                        coup10[i1] * MN[0] *
-                            (coup5[i1] *
-                                 (u - (Mh[1] * Mh[1]) + (MN[0] * MN[0])) +
-                             2 * coup4[i1] * MN[0] * MN[i1])) *
-                       MN[j1]) +
-              std::conj(coup10[j1]) *
-                  (std::conj(coup5[j1]) *
-                       (-(coup11[i1] * MN[0] *
-                          (2 * u * coup4[i1] * MN[0] +
-                           coup5[i1] * (u - (Mh[1] * Mh[1]) + (MN[0] * MN[0])) *
-                               MN[i1])) +
-                        coup10[i1] *
-                            (coup5[i1] *
-                                 (-(s * (Mh[1] * Mh[1])) - u * (Mh[1] * Mh[1]) +
-                                  (Mh[1] * Mh[1] * Mh[1] * Mh[1]) +
-                                  s * (MN[0] * MN[0]) - u * (MN[0] * MN[0]) +
-                                  2 * (Mh[1] * Mh[1]) * (MN[0] * MN[0]) +
-                                  t * (u - (Mh[1] * Mh[1]) + (MN[0] * MN[0])) -
-                                  3 * (MN[0] * MN[0] * MN[0] * MN[0])) +
-                             coup4[i1] *
-                                 (s + t - (Mh[1] * Mh[1]) -
-                                  3 * (MN[0] * MN[0])) *
-                                 MN[0] * MN[i1])) +
-                   std::conj(coup4[j1]) *
-                       (coup10[i1] *
-                            (coup5[i1] *
-                                 (s + t - (Mh[1] * Mh[1]) -
-                                  3 * (MN[0] * MN[0])) *
-                                 MN[0] +
-                             coup4[i1] * (s - 2 * (MN[0] * MN[0])) * MN[i1]) -
-                        coup11[i1] * MN[0] *
-                            (coup4[i1] *
-                                 (u - (Mh[1] * Mh[1]) + (MN[0] * MN[0])) +
-                             2 * coup5[i1] * MN[0] * MN[i1])) *
-                       MN[j1])) /
-                 ((u - (MN[i1] * MN[i1])) * (u - (MN[j1] * MN[j1]))),
-         j1, 5, i1, 5)
+	SUM2((std::conj(coup11[j1])*(std::conj(coup4[j1])*(coup10[i1]*MN[0]*(-2*t*coup5[i1]*MN[0] + coup4[i1]*(s + u -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup11[i1]*(coup4[i1]*(t*(u -  (Mh[2]*Mh[2]) -  (MN[0]*MN[0])) - (s + u -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0]))*( (Mh[2]*Mh[2]) -  (MN[0]*MN[0]))) - coup5[i1]*(t -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup5[j1])*(coup11[i1]*(-(coup4[i1]*(t -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]) + coup5[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup10[i1]*MN[0]*(coup5[i1]*(s + u -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - 2*coup4[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup5[j1])*(coup11[i1]*MN[0]*(-2*t*coup4[i1]*MN[0] + coup5[i1]*(s + u -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup10[i1]*(coup5[i1]*(t*(u -  (Mh[2]*Mh[2]) -  (MN[0]*MN[0])) - (s + u -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0]))*( (Mh[2]*Mh[2]) -  (MN[0]*MN[0]))) - coup4[i1]*(t -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup4[j1])*(coup10[i1]*(-(coup5[i1]*(t -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]) + coup4[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup11[i1]*MN[0]*(coup4[i1]*(s + u -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - 2*coup5[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))) - (std::conj(coup11[j1])*(std::conj(coup4[j1])*(2*coup11[i1]*MN[0]*(coup4[i1]*(s + t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[2]*Mh[2]))*MN[0] - coup5[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup10[i1]*(coup5[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) + u* (Mh[2]*Mh[2]) - 2* (Mh[1]*Mh[1])* (Mh[2]*Mh[2]) + t*( (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2])) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup4[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup5[j1])*(coup11[i1]*(coup4[i1]*(t -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0] - coup5[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup10[i1]*MN[0]*(-(coup5[i1]*(s + u -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0]))) + 2*coup4[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup5[j1])*(2*coup10[i1]*MN[0]*(coup5[i1]*(s + t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[2]*Mh[2]))*MN[0] - coup4[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup11[i1]*(coup4[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) + u* (Mh[2]*Mh[2]) - 2* (Mh[1]*Mh[1])* (Mh[2]*Mh[2]) + t*( (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2])) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) +  (Mh[2]*Mh[2]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup5[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup4[j1])*(coup10[i1]*(coup5[i1]*(t -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0] - coup4[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup11[i1]*MN[0]*(-(coup4[i1]*(s + u -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0]))) + 2*coup5[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup11[j1])*(std::conj(coup4[j1])*(-(coup10[i1]*MN[0]*(2*u*coup5[i1]*MN[0] + coup4[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[i1])) + coup11[i1]*(coup4[i1]*(-(s* (Mh[1]*Mh[1])) - u* (Mh[1]*Mh[1]) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + t*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) + coup5[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup5[j1])*(coup11[i1]*(coup4[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0] + coup5[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup10[i1]*MN[0]*(coup5[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) + 2*coup4[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup5[j1])*(-(coup11[i1]*MN[0]*(2*u*coup4[i1]*MN[0] + coup5[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[i1])) + coup10[i1]*(coup5[i1]*(-(s* (Mh[1]*Mh[1])) - u* (Mh[1]*Mh[1]) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + t*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) + coup4[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup4[j1])*(coup10[i1]*(coup5[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0] + coup4[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup11[i1]*MN[0]*(coup4[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) + 2*coup5[i1]*MN[0]*MN[i1]))*MN[j1]))/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))),j1,5,i1,5)
 
-    return res.real();
+	return res.real();
+}
+double DT::N1N1h2h4(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = (-s +  (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3]) + cos_t*sqrt(s +  (( (Mh[1]*Mh[1]) -  (Mh[3]*Mh[3]))*( (Mh[1]*Mh[1]) -  (Mh[3]*Mh[3])))/s - 2*( (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3])))*sqrt(s - 4* (MN[0]*MN[0])) + 2* (MN[0]*MN[0]))/2.;
+	std::complex<double> u = -s - t +  (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0]);
+	res += (coup13*std::conj(coup13)*(std::conj(coup8)*(2*coup9*(s - 2*( (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3])))* (MN[0]*MN[0]) + coup8*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) - 2* (Mh[1]*Mh[1])* (Mh[3]*Mh[3]) +  (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + 4* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 4* (Mh[3]*Mh[3])* (MN[0]*MN[0]) - 2*s*( (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])))) + std::conj(coup9)*(2*coup8*(s - 2*( (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3])))* (MN[0]*MN[0]) + coup9*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) - 2* (Mh[1]*Mh[1])* (Mh[3]*Mh[3]) +  (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + 4* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 4* (Mh[3]*Mh[3])* (MN[0]*MN[0]) - 2*s*( (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))))))/ (( (MZ*MZ) - s)*( (MZ*MZ) - s));
+
+	SUM1((-2*std::conj(coup13)*coup12[i1]*(std::conj(coup9)*(coup3[i1]*(t - u +  (Mh[1]*Mh[1]) -  (Mh[3]*Mh[3])) + coup2[i1]*(t - u -  (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3]))) + std::conj(coup8)*(coup2[i1]*(t - u +  (Mh[1]*Mh[1]) -  (Mh[3]*Mh[3])) + coup3[i1]*(t - u -  (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3]))))*MN[0])/((-s +  (MZ*MZ))*(s -  (Mh[i1]*Mh[i1]))),i1,6)
+
+	SUM1((coup13*(std::conj(coup15[j1])*(std::conj(coup4[j1])*(2*coup8*(s - t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[3]*Mh[3]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) - u* (Mh[3]*Mh[3]) - 2* (Mh[1]*Mh[1])* (Mh[3]*Mh[3]) + 2* (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + t*(2*u +  (Mh[1]*Mh[1]) -  (Mh[3]*Mh[3]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 6* (Mh[3]*Mh[3])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) + 3* (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup5[j1])*(coup9*(t - u +  (Mh[1]*Mh[1]) -  (Mh[3]*Mh[3])) + coup8*(t - u -  (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3])))*MN[0]*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup5[j1])*(2*coup9*(s - t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[3]*Mh[3]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) - u* (Mh[3]*Mh[3]) - 2* (Mh[1]*Mh[1])* (Mh[3]*Mh[3]) + 2* (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + t*(2*u +  (Mh[1]*Mh[1]) -  (Mh[3]*Mh[3]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 6* (Mh[3]*Mh[3])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) + 3* (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup4[j1])*(coup8*(t - u +  (Mh[1]*Mh[1]) -  (Mh[3]*Mh[3])) + coup9*(t - u -  (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(t -  (MN[j1]*MN[j1]))) - (coup13*(std::conj(coup15[j1])*(std::conj(coup4[j1])*(2*coup9*(s + t - u - 2* (Mh[1]*Mh[1]) - 2* (Mh[3]*Mh[3]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) - u* (Mh[1]*Mh[1]) + 2* (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + u* (Mh[3]*Mh[3]) - 2* (Mh[1]*Mh[1])* (Mh[3]*Mh[3]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + t*(2*u -  (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup5[j1])*(coup9*(t - u +  (Mh[1]*Mh[1]) -  (Mh[3]*Mh[3])) + coup8*(t - u -  (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3])))*MN[0]*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup5[j1])*(2*coup8*(s + t - u - 2* (Mh[1]*Mh[1]) - 2* (Mh[3]*Mh[3]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) - u* (Mh[1]*Mh[1]) + 2* (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + u* (Mh[3]*Mh[3]) - 2* (Mh[1]*Mh[1])* (Mh[3]*Mh[3]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + t*(2*u -  (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup4[j1])*(coup8*(t - u +  (Mh[1]*Mh[1]) -  (Mh[3]*Mh[3])) + coup9*(t - u -  (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(u -  (MN[j1]*MN[j1]))),j1,5)
+
+	SUM2((std::conj(coup12[j1])*coup12[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
+
+	SUM2((2*coup12[i1]*(std::conj(coup15[j1])*(std::conj(coup4[j1])*(coup2[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0])) - coup3[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup5[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup5[j1])*(coup3[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0])) - coup2[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup4[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))) - (2*coup12[i1]*(std::conj(coup15[j1])*(std::conj(coup4[j1])*(-(coup3[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))) + coup2[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup5[j1])*(-(coup3[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup5[j1])*(-(coup2[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))) + coup3[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup4[j1])*(-(coup2[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))),i1,6,j1,5)
+
+	SUM2((std::conj(coup15[j1])*(std::conj(coup4[j1])*(coup14[i1]*MN[0]*(-2*t*coup5[i1]*MN[0] + coup4[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup15[i1]*(coup4[i1]*(t*(u -  (Mh[3]*Mh[3]) -  (MN[0]*MN[0])) - (s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*( (Mh[3]*Mh[3]) -  (MN[0]*MN[0]))) - coup5[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup5[j1])*(coup15[i1]*(-(coup4[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[0]) + coup5[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup14[i1]*MN[0]*(coup5[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0])) - 2*coup4[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup5[j1])*(coup15[i1]*MN[0]*(-2*t*coup4[i1]*MN[0] + coup5[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup14[i1]*(coup5[i1]*(t*(u -  (Mh[3]*Mh[3]) -  (MN[0]*MN[0])) - (s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*( (Mh[3]*Mh[3]) -  (MN[0]*MN[0]))) - coup4[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup4[j1])*(coup14[i1]*(-(coup5[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[0]) + coup4[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup15[i1]*MN[0]*(coup4[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0])) - 2*coup5[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))) - (std::conj(coup15[j1])*(std::conj(coup4[j1])*(2*coup15[i1]*MN[0]*(coup4[i1]*(s + t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[3]*Mh[3]))*MN[0] - coup5[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup14[i1]*(coup5[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) + u* (Mh[3]*Mh[3]) - 2* (Mh[1]*Mh[1])* (Mh[3]*Mh[3]) + t*( (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3])) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup4[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup5[j1])*(coup15[i1]*(coup4[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[0] - coup5[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup14[i1]*MN[0]*(-(coup5[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))) + 2*coup4[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup5[j1])*(2*coup14[i1]*MN[0]*(coup5[i1]*(s + t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[3]*Mh[3]))*MN[0] - coup4[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup15[i1]*(coup4[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) + u* (Mh[3]*Mh[3]) - 2* (Mh[1]*Mh[1])* (Mh[3]*Mh[3]) + t*( (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3])) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) +  (Mh[3]*Mh[3]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup5[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup4[j1])*(coup14[i1]*(coup5[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[0] - coup4[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup15[i1]*MN[0]*(-(coup4[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))) + 2*coup5[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup15[j1])*(std::conj(coup4[j1])*(-(coup14[i1]*MN[0]*(2*u*coup5[i1]*MN[0] + coup4[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[i1])) + coup15[i1]*(coup4[i1]*(-(s* (Mh[1]*Mh[1])) - u* (Mh[1]*Mh[1]) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + t*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) + coup5[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup5[j1])*(coup15[i1]*(coup4[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0] + coup5[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup14[i1]*MN[0]*(coup5[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) + 2*coup4[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup5[j1])*(-(coup15[i1]*MN[0]*(2*u*coup4[i1]*MN[0] + coup5[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[i1])) + coup14[i1]*(coup5[i1]*(-(s* (Mh[1]*Mh[1])) - u* (Mh[1]*Mh[1]) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + t*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) + coup4[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup4[j1])*(coup14[i1]*(coup5[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0] + coup4[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup15[i1]*MN[0]*(coup4[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) + 2*coup5[i1]*MN[0]*MN[i1]))*MN[j1]))/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))),j1,5,i1,5)
+
+	return res.real();
+}
+double DT::N1N1h2h5(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = (-s +  (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4]) + cos_t*sqrt(s +  (( (Mh[1]*Mh[1]) -  (Mh[4]*Mh[4]))*( (Mh[1]*Mh[1]) -  (Mh[4]*Mh[4])))/s - 2*( (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4])))*sqrt(s - 4* (MN[0]*MN[0])) + 2* (MN[0]*MN[0]))/2.;
+	std::complex<double> u = -s - t +  (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0]);
+	res += (coup17*std::conj(coup17)*(std::conj(coup8)*(2*coup9*(s - 2*( (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4])))* (MN[0]*MN[0]) + coup8*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) - 2* (Mh[1]*Mh[1])* (Mh[4]*Mh[4]) +  (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + 4* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 4* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - 2*s*( (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])))) + std::conj(coup9)*(2*coup8*(s - 2*( (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4])))* (MN[0]*MN[0]) + coup9*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) - 2* (Mh[1]*Mh[1])* (Mh[4]*Mh[4]) +  (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + 4* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 4* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - 2*s*( (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))))))/ (( (MZ*MZ) - s)*( (MZ*MZ) - s));
+
+	SUM1((-2*std::conj(coup17)*coup16[i1]*(std::conj(coup9)*(coup3[i1]*(t - u +  (Mh[1]*Mh[1]) -  (Mh[4]*Mh[4])) + coup2[i1]*(t - u -  (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4]))) + std::conj(coup8)*(coup2[i1]*(t - u +  (Mh[1]*Mh[1]) -  (Mh[4]*Mh[4])) + coup3[i1]*(t - u -  (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4]))))*MN[0])/((-s +  (MZ*MZ))*(s -  (Mh[i1]*Mh[i1]))),i1,6)
+
+	SUM1((coup17*(std::conj(coup19[j1])*(std::conj(coup4[j1])*(2*coup8*(s - t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[4]*Mh[4]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) - u* (Mh[4]*Mh[4]) - 2* (Mh[1]*Mh[1])* (Mh[4]*Mh[4]) + 2* (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + t*(2*u +  (Mh[1]*Mh[1]) -  (Mh[4]*Mh[4]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 6* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) + 3* (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup5[j1])*(coup9*(t - u +  (Mh[1]*Mh[1]) -  (Mh[4]*Mh[4])) + coup8*(t - u -  (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4])))*MN[0]*MN[j1]) + std::conj(coup18[j1])*(std::conj(coup5[j1])*(2*coup9*(s - t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[4]*Mh[4]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) - u* (Mh[4]*Mh[4]) - 2* (Mh[1]*Mh[1])* (Mh[4]*Mh[4]) + 2* (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + t*(2*u +  (Mh[1]*Mh[1]) -  (Mh[4]*Mh[4]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 6* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) + 3* (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup4[j1])*(coup8*(t - u +  (Mh[1]*Mh[1]) -  (Mh[4]*Mh[4])) + coup9*(t - u -  (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(t -  (MN[j1]*MN[j1]))) - (coup17*(std::conj(coup19[j1])*(std::conj(coup4[j1])*(2*coup9*(s + t - u - 2* (Mh[1]*Mh[1]) - 2* (Mh[4]*Mh[4]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) - u* (Mh[1]*Mh[1]) + 2* (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + u* (Mh[4]*Mh[4]) - 2* (Mh[1]*Mh[1])* (Mh[4]*Mh[4]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + t*(2*u -  (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup5[j1])*(coup9*(t - u +  (Mh[1]*Mh[1]) -  (Mh[4]*Mh[4])) + coup8*(t - u -  (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4])))*MN[0]*MN[j1]) + std::conj(coup18[j1])*(std::conj(coup5[j1])*(2*coup8*(s + t - u - 2* (Mh[1]*Mh[1]) - 2* (Mh[4]*Mh[4]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) - u* (Mh[1]*Mh[1]) + 2* (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + u* (Mh[4]*Mh[4]) - 2* (Mh[1]*Mh[1])* (Mh[4]*Mh[4]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + t*(2*u -  (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup4[j1])*(coup8*(t - u +  (Mh[1]*Mh[1]) -  (Mh[4]*Mh[4])) + coup9*(t - u -  (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(u -  (MN[j1]*MN[j1]))),j1,5)
+
+	SUM2((std::conj(coup16[j1])*coup16[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
+
+	SUM2((2*coup16[i1]*(std::conj(coup19[j1])*(std::conj(coup4[j1])*(coup2[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0])) - coup3[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup5[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup18[j1])*(std::conj(coup5[j1])*(coup3[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0])) - coup2[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup4[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))) - (2*coup16[i1]*(std::conj(coup19[j1])*(std::conj(coup4[j1])*(-(coup3[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))) + coup2[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup5[j1])*(-(coup3[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup18[j1])*(std::conj(coup5[j1])*(-(coup2[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))) + coup3[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup4[j1])*(-(coup2[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))),i1,6,j1,5)
+
+	SUM2((std::conj(coup19[j1])*(std::conj(coup4[j1])*(coup18[i1]*MN[0]*(-2*t*coup5[i1]*MN[0] + coup4[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup19[i1]*(coup4[i1]*(t*(u -  (Mh[4]*Mh[4]) -  (MN[0]*MN[0])) - (s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*( (Mh[4]*Mh[4]) -  (MN[0]*MN[0]))) - coup5[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup5[j1])*(coup19[i1]*(-(coup4[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[0]) + coup5[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup18[i1]*MN[0]*(coup5[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0])) - 2*coup4[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup18[j1])*(std::conj(coup5[j1])*(coup19[i1]*MN[0]*(-2*t*coup4[i1]*MN[0] + coup5[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup18[i1]*(coup5[i1]*(t*(u -  (Mh[4]*Mh[4]) -  (MN[0]*MN[0])) - (s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*( (Mh[4]*Mh[4]) -  (MN[0]*MN[0]))) - coup4[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup4[j1])*(coup18[i1]*(-(coup5[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[0]) + coup4[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup19[i1]*MN[0]*(coup4[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0])) - 2*coup5[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))) - (std::conj(coup19[j1])*(std::conj(coup4[j1])*(2*coup19[i1]*MN[0]*(coup4[i1]*(s + t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[4]*Mh[4]))*MN[0] - coup5[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup18[i1]*(coup5[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) + u* (Mh[4]*Mh[4]) - 2* (Mh[1]*Mh[1])* (Mh[4]*Mh[4]) + t*( (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4])) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup4[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup5[j1])*(coup19[i1]*(coup4[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[0] - coup5[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup18[i1]*MN[0]*(-(coup5[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))) + 2*coup4[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup18[j1])*(std::conj(coup5[j1])*(2*coup18[i1]*MN[0]*(coup5[i1]*(s + t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[4]*Mh[4]))*MN[0] - coup4[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup19[i1]*(coup4[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) + u* (Mh[4]*Mh[4]) - 2* (Mh[1]*Mh[1])* (Mh[4]*Mh[4]) + t*( (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4])) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) +  (Mh[4]*Mh[4]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup5[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup4[j1])*(coup18[i1]*(coup5[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[0] - coup4[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup19[i1]*MN[0]*(-(coup4[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))) + 2*coup5[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup19[j1])*(std::conj(coup4[j1])*(-(coup18[i1]*MN[0]*(2*u*coup5[i1]*MN[0] + coup4[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[i1])) + coup19[i1]*(coup4[i1]*(-(s* (Mh[1]*Mh[1])) - u* (Mh[1]*Mh[1]) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + t*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) + coup5[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup5[j1])*(coup19[i1]*(coup4[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0] + coup5[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup18[i1]*MN[0]*(coup5[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) + 2*coup4[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup18[j1])*(std::conj(coup5[j1])*(-(coup19[i1]*MN[0]*(2*u*coup4[i1]*MN[0] + coup5[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[i1])) + coup18[i1]*(coup5[i1]*(-(s* (Mh[1]*Mh[1])) - u* (Mh[1]*Mh[1]) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + t*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) + coup4[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup4[j1])*(coup18[i1]*(coup5[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0] + coup4[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup19[i1]*MN[0]*(coup4[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) + 2*coup5[i1]*MN[0]*MN[i1]))*MN[j1]))/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))),j1,5,i1,5)
+
+	return res.real();
+}
+double DT::N1N1h2h6(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = (-s +  (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5]) + cos_t*sqrt(s +  (( (Mh[1]*Mh[1]) -  (Mh[5]*Mh[5]))*( (Mh[1]*Mh[1]) -  (Mh[5]*Mh[5])))/s - 2*( (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5])))*sqrt(s - 4* (MN[0]*MN[0])) + 2* (MN[0]*MN[0]))/2.;
+	std::complex<double> u = -s - t +  (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0]);
+	res += (coup21*std::conj(coup21)*(std::conj(coup8)*(2*coup9*(s - 2*( (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5])))* (MN[0]*MN[0]) + coup8*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) - 2* (Mh[1]*Mh[1])* (Mh[5]*Mh[5]) +  (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + 4* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 4* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - 2*s*( (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])))) + std::conj(coup9)*(2*coup8*(s - 2*( (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5])))* (MN[0]*MN[0]) + coup9*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) - 2* (Mh[1]*Mh[1])* (Mh[5]*Mh[5]) +  (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + 4* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 4* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - 2*s*( (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))))))/ (( (MZ*MZ) - s)*( (MZ*MZ) - s));
+
+	SUM1((-2*std::conj(coup21)*coup20[i1]*(std::conj(coup9)*(coup3[i1]*(t - u +  (Mh[1]*Mh[1]) -  (Mh[5]*Mh[5])) + coup2[i1]*(t - u -  (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5]))) + std::conj(coup8)*(coup2[i1]*(t - u +  (Mh[1]*Mh[1]) -  (Mh[5]*Mh[5])) + coup3[i1]*(t - u -  (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5]))))*MN[0])/((-s +  (MZ*MZ))*(s -  (Mh[i1]*Mh[i1]))),i1,6)
+
+	SUM1((coup21*(std::conj(coup23[j1])*(std::conj(coup4[j1])*(2*coup8*(s - t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) - u* (Mh[5]*Mh[5]) - 2* (Mh[1]*Mh[1])* (Mh[5]*Mh[5]) + 2* (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + t*(2*u +  (Mh[1]*Mh[1]) -  (Mh[5]*Mh[5]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 6* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) + 3* (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup5[j1])*(coup9*(t - u +  (Mh[1]*Mh[1]) -  (Mh[5]*Mh[5])) + coup8*(t - u -  (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1]) + std::conj(coup22[j1])*(std::conj(coup5[j1])*(2*coup9*(s - t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) - u* (Mh[5]*Mh[5]) - 2* (Mh[1]*Mh[1])* (Mh[5]*Mh[5]) + 2* (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + t*(2*u +  (Mh[1]*Mh[1]) -  (Mh[5]*Mh[5]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 6* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) + 3* (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup4[j1])*(coup8*(t - u +  (Mh[1]*Mh[1]) -  (Mh[5]*Mh[5])) + coup9*(t - u -  (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(t -  (MN[j1]*MN[j1]))) - (coup21*(std::conj(coup23[j1])*(std::conj(coup4[j1])*(2*coup9*(s + t - u - 2* (Mh[1]*Mh[1]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) - u* (Mh[1]*Mh[1]) + 2* (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + u* (Mh[5]*Mh[5]) - 2* (Mh[1]*Mh[1])* (Mh[5]*Mh[5]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) + t*(2*u -  (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup5[j1])*(coup9*(t - u +  (Mh[1]*Mh[1]) -  (Mh[5]*Mh[5])) + coup8*(t - u -  (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1]) + std::conj(coup22[j1])*(std::conj(coup5[j1])*(2*coup8*(s + t - u - 2* (Mh[1]*Mh[1]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) - u* (Mh[1]*Mh[1]) + 2* (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + u* (Mh[5]*Mh[5]) - 2* (Mh[1]*Mh[1])* (Mh[5]*Mh[5]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) + t*(2*u -  (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup4[j1])*(coup8*(t - u +  (Mh[1]*Mh[1]) -  (Mh[5]*Mh[5])) + coup9*(t - u -  (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(u -  (MN[j1]*MN[j1]))),j1,5)
+
+	SUM2((std::conj(coup20[j1])*coup20[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
+
+	SUM2((2*coup20[i1]*(std::conj(coup23[j1])*(std::conj(coup4[j1])*(coup2[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0])) - coup3[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup5[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup22[j1])*(std::conj(coup5[j1])*(coup3[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0])) - coup2[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup4[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))) - (2*coup20[i1]*(std::conj(coup23[j1])*(std::conj(coup4[j1])*(-(coup3[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))) + coup2[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup5[j1])*(-(coup3[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup22[j1])*(std::conj(coup5[j1])*(-(coup2[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))) + coup3[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup4[j1])*(-(coup2[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))),i1,6,j1,5)
+
+	SUM2((std::conj(coup23[j1])*(std::conj(coup4[j1])*(coup22[i1]*MN[0]*(-2*t*coup5[i1]*MN[0] + coup4[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup23[i1]*(coup4[i1]*(t*(u -  (Mh[5]*Mh[5]) -  (MN[0]*MN[0])) - (s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*( (Mh[5]*Mh[5]) -  (MN[0]*MN[0]))) - coup5[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup5[j1])*(coup23[i1]*(-(coup4[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))*MN[0]) + coup5[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup22[i1]*MN[0]*(coup5[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0])) - 2*coup4[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup22[j1])*(std::conj(coup5[j1])*(coup23[i1]*MN[0]*(-2*t*coup4[i1]*MN[0] + coup5[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup22[i1]*(coup5[i1]*(t*(u -  (Mh[5]*Mh[5]) -  (MN[0]*MN[0])) - (s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*( (Mh[5]*Mh[5]) -  (MN[0]*MN[0]))) - coup4[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup4[j1])*(coup22[i1]*(-(coup5[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))*MN[0]) + coup4[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup23[i1]*MN[0]*(coup4[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0])) - 2*coup5[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))) - (std::conj(coup23[j1])*(std::conj(coup4[j1])*(2*coup23[i1]*MN[0]*(coup4[i1]*(s + t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[5]*Mh[5]))*MN[0] - coup5[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup22[i1]*(coup5[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) + u* (Mh[5]*Mh[5]) - 2* (Mh[1]*Mh[1])* (Mh[5]*Mh[5]) + t*( (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5])) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup4[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup5[j1])*(coup23[i1]*(coup4[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))*MN[0] - coup5[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup22[i1]*MN[0]*(-(coup5[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))) + 2*coup4[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup22[j1])*(std::conj(coup5[j1])*(2*coup22[i1]*MN[0]*(coup5[i1]*(s + t + u - 2* (Mh[1]*Mh[1]) - 2* (Mh[5]*Mh[5]))*MN[0] - coup4[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup23[i1]*(coup4[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[1]*Mh[1]) + u* (Mh[5]*Mh[5]) - 2* (Mh[1]*Mh[1])* (Mh[5]*Mh[5]) + t*( (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5])) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[1]*Mh[1]) +  (Mh[5]*Mh[5]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup5[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup4[j1])*(coup22[i1]*(coup5[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))*MN[0] - coup4[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup23[i1]*MN[0]*(-(coup4[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))) + 2*coup5[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup23[j1])*(std::conj(coup4[j1])*(-(coup22[i1]*MN[0]*(2*u*coup5[i1]*MN[0] + coup4[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[i1])) + coup23[i1]*(coup4[i1]*(-(s* (Mh[1]*Mh[1])) - u* (Mh[1]*Mh[1]) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + t*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) + coup5[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup5[j1])*(coup23[i1]*(coup4[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0] + coup5[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup22[i1]*MN[0]*(coup5[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) + 2*coup4[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup22[j1])*(std::conj(coup5[j1])*(-(coup23[i1]*MN[0]*(2*u*coup4[i1]*MN[0] + coup5[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0]))*MN[i1])) + coup22[i1]*(coup5[i1]*(-(s* (Mh[1]*Mh[1])) - u* (Mh[1]*Mh[1]) +  (Mh[1]*Mh[1]*Mh[1]*Mh[1]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[1]*Mh[1])* (MN[0]*MN[0]) + t*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) + coup4[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup4[j1])*(coup22[i1]*(coup5[i1]*(s + t -  (Mh[1]*Mh[1]) - 3* (MN[0]*MN[0]))*MN[0] + coup4[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup23[i1]*MN[0]*(coup4[i1]*(u -  (Mh[1]*Mh[1]) +  (MN[0]*MN[0])) + 2*coup5[i1]*MN[0]*MN[i1]))*MN[j1]))/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))),j1,5,i1,5)
+
+	return res.real();
+}
+double DT::N1N1h3h3(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = -0.5*s +  (Mh[2]*Mh[2]) + (cos_t*sqrt(s - 4* (Mh[2]*Mh[2]))*sqrt(s - 4* (MN[0]*MN[0])))/2. +  (MN[0]*MN[0]);
+	std::complex<double> u = -s - t + 2* (Mh[2]*Mh[2]) + 2* (MN[0]*MN[0]);
+	SUM2((std::conj(coup24[j1])*coup24[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
+
+	SUM2((2*coup24[i1]*(std::conj(coup10[j1])*std::conj(coup11[j1])*(coup2[i1] + coup3[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (std::conj(coup11[j1])*std::conj(coup11[j1]))*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1] +  (std::conj(coup10[j1])*std::conj(coup10[j1]))*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1]))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))) + (2*coup24[i1]*(std::conj(coup10[j1])*std::conj(coup11[j1])*(coup2[i1] + coup3[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (std::conj(coup11[j1])*std::conj(coup11[j1]))*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1] +  (std::conj(coup10[j1])*std::conj(coup10[j1]))*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1]))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))),i1,6,j1,5)
+
+	SUM2((std::conj(coup10[j1])*std::conj(coup11[j1])*(2*coup10[i1]*coup11[i1]*(s*(- (Mh[2]*Mh[2]) +  (MN[0]*MN[0])) + t*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])) - (u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*( (Mh[2]*Mh[2]) + 3* (MN[0]*MN[0]))) +  (coup10[i1]*coup10[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup11[i1]*coup11[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup11[j1])*std::conj(coup11[j1]))*(coup10[i1]*coup11[i1]*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (coup11[i1]*coup11[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup10[i1]*coup10[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup10[j1])*std::conj(coup10[j1]))*(coup10[i1]*coup11[i1]*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (coup10[i1]*coup10[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup11[i1]*coup11[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1])/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (2*(std::conj(coup10[j1])*std::conj(coup11[j1])*(coup10[i1]*coup11[i1]*(- (s*s) +  (t*t) +  (u*u) - 2*u* (Mh[2]*Mh[2]) + 2* (Mh[2]*Mh[2]*Mh[2]*Mh[2]) - 2*u* (MN[0]*MN[0]) + 4* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 2*s*( (Mh[2]*Mh[2]) +  (MN[0]*MN[0])) - 2*t*( (Mh[2]*Mh[2]) +  (MN[0]*MN[0])) - 6* (MN[0]*MN[0]*MN[0]*MN[0])) +  (coup10[i1]*coup10[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup11[i1]*coup11[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup11[j1])*std::conj(coup11[j1]))*(coup10[i1]*coup11[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup11[i1]*coup11[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup10[i1]*coup10[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup10[j1])*std::conj(coup10[j1]))*(coup10[i1]*coup11[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup10[i1]*coup10[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup11[i1]*coup11[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup10[j1])*std::conj(coup11[j1])*(2*coup10[i1]*coup11[i1]*(t*(u -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - (s + u -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0]))*( (Mh[2]*Mh[2]) -  (MN[0]*MN[0]))) +  (coup10[i1]*coup10[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup11[i1]*coup11[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup11[j1])*std::conj(coup11[j1]))*(coup10[i1]*coup11[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup11[i1]*coup11[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup10[i1]*coup10[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup10[j1])*std::conj(coup10[j1]))*(coup10[i1]*coup11[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup10[i1]*coup10[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup11[i1]*coup11[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1])/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))),j1,5,i1,5)
+
+	return res.real();
+}
+double DT::N1N1h3h4(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = (-s +  (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3]) + cos_t*sqrt(s +  (( (Mh[2]*Mh[2]) -  (Mh[3]*Mh[3]))*( (Mh[2]*Mh[2]) -  (Mh[3]*Mh[3])))/s - 2*( (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3])))*sqrt(s - 4* (MN[0]*MN[0])) + 2* (MN[0]*MN[0]))/2.;
+	std::complex<double> u = -s - t +  (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0]);
+	res += (coup26*std::conj(coup26)*(std::conj(coup8)*(2*coup9*(s - 2*( (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3])))* (MN[0]*MN[0]) + coup8*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[2]*Mh[2]*Mh[2]*Mh[2]) - 2* (Mh[2]*Mh[2])* (Mh[3]*Mh[3]) +  (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + 4* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 4* (Mh[3]*Mh[3])* (MN[0]*MN[0]) - 2*s*( (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])))) + std::conj(coup9)*(2*coup8*(s - 2*( (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3])))* (MN[0]*MN[0]) + coup9*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[2]*Mh[2]*Mh[2]*Mh[2]) - 2* (Mh[2]*Mh[2])* (Mh[3]*Mh[3]) +  (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + 4* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 4* (Mh[3]*Mh[3])* (MN[0]*MN[0]) - 2*s*( (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))))))/ (( (MZ*MZ) - s)*( (MZ*MZ) - s));
+
+	SUM1((-2*std::conj(coup26)*coup25[i1]*(std::conj(coup9)*(coup3[i1]*(t - u +  (Mh[2]*Mh[2]) -  (Mh[3]*Mh[3])) + coup2[i1]*(t - u -  (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3]))) + std::conj(coup8)*(coup2[i1]*(t - u +  (Mh[2]*Mh[2]) -  (Mh[3]*Mh[3])) + coup3[i1]*(t - u -  (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3]))))*MN[0])/((-s +  (MZ*MZ))*(s -  (Mh[i1]*Mh[i1]))),i1,6)
+
+	SUM1((coup26*(std::conj(coup11[j1])*(std::conj(coup14[j1])*(2*coup9*(s - t + u - 2* (Mh[2]*Mh[2]) - 2* (Mh[3]*Mh[3]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) + u* (Mh[2]*Mh[2]) - u* (Mh[3]*Mh[3]) - 2* (Mh[2]*Mh[2])* (Mh[3]*Mh[3]) + 2* (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + t*(2*u +  (Mh[2]*Mh[2]) -  (Mh[3]*Mh[3]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 6* (Mh[3]*Mh[3])* (MN[0]*MN[0]) - s*( (Mh[2]*Mh[2]) + 3* (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup15[j1])*(coup9*(t - u +  (Mh[2]*Mh[2]) -  (Mh[3]*Mh[3])) + coup8*(t - u -  (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3])))*MN[0]*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup15[j1])*(2*coup8*(s - t + u - 2* (Mh[2]*Mh[2]) - 2* (Mh[3]*Mh[3]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) + u* (Mh[2]*Mh[2]) - u* (Mh[3]*Mh[3]) - 2* (Mh[2]*Mh[2])* (Mh[3]*Mh[3]) + 2* (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + t*(2*u +  (Mh[2]*Mh[2]) -  (Mh[3]*Mh[3]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 6* (Mh[3]*Mh[3])* (MN[0]*MN[0]) - s*( (Mh[2]*Mh[2]) + 3* (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup14[j1])*(coup8*(t - u +  (Mh[2]*Mh[2]) -  (Mh[3]*Mh[3])) + coup9*(t - u -  (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(t -  (MN[j1]*MN[j1]))) - (coup26*(std::conj(coup11[j1])*(std::conj(coup14[j1])*(2*coup8*(s + t - u - 2* (Mh[2]*Mh[2]) - 2* (Mh[3]*Mh[3]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) - u* (Mh[2]*Mh[2]) + 2* (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + u* (Mh[3]*Mh[3]) - 2* (Mh[2]*Mh[2])* (Mh[3]*Mh[3]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + t*(2*u -  (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup15[j1])*(coup9*(t - u +  (Mh[2]*Mh[2]) -  (Mh[3]*Mh[3])) + coup8*(t - u -  (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3])))*MN[0]*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup15[j1])*(2*coup9*(s + t - u - 2* (Mh[2]*Mh[2]) - 2* (Mh[3]*Mh[3]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) - u* (Mh[2]*Mh[2]) + 2* (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + u* (Mh[3]*Mh[3]) - 2* (Mh[2]*Mh[2])* (Mh[3]*Mh[3]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + t*(2*u -  (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup14[j1])*(coup8*(t - u +  (Mh[2]*Mh[2]) -  (Mh[3]*Mh[3])) + coup9*(t - u -  (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(u -  (MN[j1]*MN[j1]))),j1,5)
+
+	SUM2((std::conj(coup25[j1])*coup25[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
+
+	SUM2((2*coup25[i1]*(std::conj(coup11[j1])*(std::conj(coup14[j1])*(coup2[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - coup3[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup15[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup15[j1])*(coup3[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - coup2[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup14[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))) - (2*coup25[i1]*(std::conj(coup11[j1])*(std::conj(coup14[j1])*(-(coup3[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))) + coup2[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup15[j1])*(-(coup3[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup15[j1])*(-(coup2[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))) + coup3[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup14[j1])*(-(coup2[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))),i1,6,j1,5)
+
+	SUM2((std::conj(coup11[j1])*(std::conj(coup14[j1])*(coup10[i1]*MN[0]*(-2*u*coup15[i1]*MN[0] + coup14[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup11[i1]*(coup14[i1]*(-(s* (Mh[2]*Mh[2])) - u* (Mh[2]*Mh[2]) +  (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + t*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) - coup15[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup15[j1])*(coup11[i1]*(-(coup14[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]) + coup15[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup10[i1]*MN[0]*(coup15[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - 2*coup14[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup15[j1])*(coup11[i1]*MN[0]*(-2*u*coup14[i1]*MN[0] + coup15[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup10[i1]*(coup15[i1]*(-(s* (Mh[2]*Mh[2])) - u* (Mh[2]*Mh[2]) +  (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + t*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) - coup14[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup14[j1])*(coup10[i1]*(-(coup15[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]) + coup14[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup11[i1]*MN[0]*(coup14[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - 2*coup15[i1]*MN[0]*MN[i1]))*MN[j1]))/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup11[j1])*(std::conj(coup14[j1])*(-(coup10[i1]*MN[0]*(2*t*coup15[i1]*MN[0] + coup14[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[i1])) + coup11[i1]*(coup14[i1]*(t*(u -  (Mh[3]*Mh[3]) -  (MN[0]*MN[0])) - (s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*( (Mh[3]*Mh[3]) -  (MN[0]*MN[0]))) + coup15[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup15[j1])*(coup11[i1]*(coup14[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*MN[0] + coup15[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup10[i1]*MN[0]*(coup15[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])) + 2*coup14[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup15[j1])*(-(coup11[i1]*MN[0]*(2*t*coup14[i1]*MN[0] + coup15[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[i1])) + coup10[i1]*(coup15[i1]*(t*(u -  (Mh[3]*Mh[3]) -  (MN[0]*MN[0])) - (s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*( (Mh[3]*Mh[3]) -  (MN[0]*MN[0]))) + coup14[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup14[j1])*(coup10[i1]*(coup15[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*MN[0] + coup14[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup11[i1]*MN[0]*(coup14[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])) + 2*coup15[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))) - (std::conj(coup11[j1])*(std::conj(coup14[j1])*(2*coup11[i1]*MN[0]*(coup14[i1]*(s + t + u - 2* (Mh[2]*Mh[2]) - 2* (Mh[3]*Mh[3]))*MN[0] + coup15[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[i1]) + coup10[i1]*(coup15[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[2]*Mh[2]) + u* (Mh[3]*Mh[3]) - 2* (Mh[2]*Mh[2])* (Mh[3]*Mh[3]) + t*( (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3])) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) - s*( (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup14[i1]*(-s - t +  (Mh[2]*Mh[2]) + 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup15[j1])*(-(coup11[i1]*(coup14[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*MN[0] + coup15[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1])) + coup10[i1]*MN[0]*(coup15[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])) + 2*coup14[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup15[j1])*(2*coup10[i1]*MN[0]*(coup15[i1]*(s + t + u - 2* (Mh[2]*Mh[2]) - 2* (Mh[3]*Mh[3]))*MN[0] + coup14[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[i1]) + coup11[i1]*(coup14[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[2]*Mh[2]) + u* (Mh[3]*Mh[3]) - 2* (Mh[2]*Mh[2])* (Mh[3]*Mh[3]) + t*( (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3])) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) - s*( (Mh[2]*Mh[2]) +  (Mh[3]*Mh[3]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup15[i1]*(-s - t +  (Mh[2]*Mh[2]) + 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup14[j1])*(-(coup10[i1]*(coup15[i1]*(s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*MN[0] + coup14[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1])) + coup11[i1]*MN[0]*(coup14[i1]*(t -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])) + 2*coup15[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))),j1,5,i1,5)
+
+	return res.real();
+}
+double DT::N1N1h3h5(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = (-s +  (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4]) + cos_t*sqrt(s +  (( (Mh[2]*Mh[2]) -  (Mh[4]*Mh[4]))*( (Mh[2]*Mh[2]) -  (Mh[4]*Mh[4])))/s - 2*( (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4])))*sqrt(s - 4* (MN[0]*MN[0])) + 2* (MN[0]*MN[0]))/2.;
+	std::complex<double> u = -s - t +  (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0]);
+	res += (coup28*std::conj(coup28)*(std::conj(coup8)*(2*coup9*(s - 2*( (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4])))* (MN[0]*MN[0]) + coup8*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[2]*Mh[2]*Mh[2]*Mh[2]) - 2* (Mh[2]*Mh[2])* (Mh[4]*Mh[4]) +  (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + 4* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 4* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - 2*s*( (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])))) + std::conj(coup9)*(2*coup8*(s - 2*( (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4])))* (MN[0]*MN[0]) + coup9*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[2]*Mh[2]*Mh[2]*Mh[2]) - 2* (Mh[2]*Mh[2])* (Mh[4]*Mh[4]) +  (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + 4* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 4* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - 2*s*( (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))))))/ (( (MZ*MZ) - s)*( (MZ*MZ) - s));
+
+	SUM1((-2*std::conj(coup28)*coup27[i1]*(std::conj(coup9)*(coup3[i1]*(t - u +  (Mh[2]*Mh[2]) -  (Mh[4]*Mh[4])) + coup2[i1]*(t - u -  (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4]))) + std::conj(coup8)*(coup2[i1]*(t - u +  (Mh[2]*Mh[2]) -  (Mh[4]*Mh[4])) + coup3[i1]*(t - u -  (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4]))))*MN[0])/((-s +  (MZ*MZ))*(s -  (Mh[i1]*Mh[i1]))),i1,6)
+
+	SUM1((coup28*(std::conj(coup11[j1])*(std::conj(coup18[j1])*(2*coup9*(s - t + u - 2* (Mh[2]*Mh[2]) - 2* (Mh[4]*Mh[4]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) + u* (Mh[2]*Mh[2]) - u* (Mh[4]*Mh[4]) - 2* (Mh[2]*Mh[2])* (Mh[4]*Mh[4]) + 2* (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + t*(2*u +  (Mh[2]*Mh[2]) -  (Mh[4]*Mh[4]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 6* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - s*( (Mh[2]*Mh[2]) + 3* (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup19[j1])*(coup9*(t - u +  (Mh[2]*Mh[2]) -  (Mh[4]*Mh[4])) + coup8*(t - u -  (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4])))*MN[0]*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup19[j1])*(2*coup8*(s - t + u - 2* (Mh[2]*Mh[2]) - 2* (Mh[4]*Mh[4]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) + u* (Mh[2]*Mh[2]) - u* (Mh[4]*Mh[4]) - 2* (Mh[2]*Mh[2])* (Mh[4]*Mh[4]) + 2* (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + t*(2*u +  (Mh[2]*Mh[2]) -  (Mh[4]*Mh[4]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 6* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - s*( (Mh[2]*Mh[2]) + 3* (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup18[j1])*(coup8*(t - u +  (Mh[2]*Mh[2]) -  (Mh[4]*Mh[4])) + coup9*(t - u -  (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(t -  (MN[j1]*MN[j1]))) - (coup28*(std::conj(coup11[j1])*(std::conj(coup18[j1])*(2*coup8*(s + t - u - 2* (Mh[2]*Mh[2]) - 2* (Mh[4]*Mh[4]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) - u* (Mh[2]*Mh[2]) + 2* (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + u* (Mh[4]*Mh[4]) - 2* (Mh[2]*Mh[2])* (Mh[4]*Mh[4]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + t*(2*u -  (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup19[j1])*(coup9*(t - u +  (Mh[2]*Mh[2]) -  (Mh[4]*Mh[4])) + coup8*(t - u -  (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4])))*MN[0]*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup19[j1])*(2*coup9*(s + t - u - 2* (Mh[2]*Mh[2]) - 2* (Mh[4]*Mh[4]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) - u* (Mh[2]*Mh[2]) + 2* (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + u* (Mh[4]*Mh[4]) - 2* (Mh[2]*Mh[2])* (Mh[4]*Mh[4]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + t*(2*u -  (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup18[j1])*(coup8*(t - u +  (Mh[2]*Mh[2]) -  (Mh[4]*Mh[4])) + coup9*(t - u -  (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(u -  (MN[j1]*MN[j1]))),j1,5)
+
+	SUM2((std::conj(coup27[j1])*coup27[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
+
+	SUM2((2*coup27[i1]*(std::conj(coup11[j1])*(std::conj(coup18[j1])*(coup2[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - coup3[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup19[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup19[j1])*(coup3[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - coup2[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup18[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))) - (2*coup27[i1]*(std::conj(coup11[j1])*(std::conj(coup18[j1])*(-(coup3[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))) + coup2[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup19[j1])*(-(coup3[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup19[j1])*(-(coup2[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))) + coup3[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup18[j1])*(-(coup2[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))),i1,6,j1,5)
+
+	SUM2((std::conj(coup11[j1])*(std::conj(coup18[j1])*(coup10[i1]*MN[0]*(-2*u*coup19[i1]*MN[0] + coup18[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup11[i1]*(coup18[i1]*(-(s* (Mh[2]*Mh[2])) - u* (Mh[2]*Mh[2]) +  (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + t*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) - coup19[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup19[j1])*(coup11[i1]*(-(coup18[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]) + coup19[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup10[i1]*MN[0]*(coup19[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - 2*coup18[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup19[j1])*(coup11[i1]*MN[0]*(-2*u*coup18[i1]*MN[0] + coup19[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup10[i1]*(coup19[i1]*(-(s* (Mh[2]*Mh[2])) - u* (Mh[2]*Mh[2]) +  (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + t*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) - coup18[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup18[j1])*(coup10[i1]*(-(coup19[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]) + coup18[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup11[i1]*MN[0]*(coup18[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - 2*coup19[i1]*MN[0]*MN[i1]))*MN[j1]))/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup11[j1])*(std::conj(coup18[j1])*(-(coup10[i1]*MN[0]*(2*t*coup19[i1]*MN[0] + coup18[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[i1])) + coup11[i1]*(coup18[i1]*(t*(u -  (Mh[4]*Mh[4]) -  (MN[0]*MN[0])) - (s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*( (Mh[4]*Mh[4]) -  (MN[0]*MN[0]))) + coup19[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup19[j1])*(coup11[i1]*(coup18[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[0] + coup19[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup10[i1]*MN[0]*(coup19[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])) + 2*coup18[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup19[j1])*(-(coup11[i1]*MN[0]*(2*t*coup18[i1]*MN[0] + coup19[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[i1])) + coup10[i1]*(coup19[i1]*(t*(u -  (Mh[4]*Mh[4]) -  (MN[0]*MN[0])) - (s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*( (Mh[4]*Mh[4]) -  (MN[0]*MN[0]))) + coup18[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup18[j1])*(coup10[i1]*(coup19[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[0] + coup18[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup11[i1]*MN[0]*(coup18[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])) + 2*coup19[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))) - (std::conj(coup11[j1])*(std::conj(coup18[j1])*(2*coup11[i1]*MN[0]*(coup18[i1]*(s + t + u - 2* (Mh[2]*Mh[2]) - 2* (Mh[4]*Mh[4]))*MN[0] + coup19[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[i1]) + coup10[i1]*(coup19[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[2]*Mh[2]) + u* (Mh[4]*Mh[4]) - 2* (Mh[2]*Mh[2])* (Mh[4]*Mh[4]) + t*( (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4])) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - s*( (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup18[i1]*(-s - t +  (Mh[2]*Mh[2]) + 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup19[j1])*(-(coup11[i1]*(coup18[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[0] + coup19[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1])) + coup10[i1]*MN[0]*(coup19[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])) + 2*coup18[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup19[j1])*(2*coup10[i1]*MN[0]*(coup19[i1]*(s + t + u - 2* (Mh[2]*Mh[2]) - 2* (Mh[4]*Mh[4]))*MN[0] + coup18[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[i1]) + coup11[i1]*(coup18[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[2]*Mh[2]) + u* (Mh[4]*Mh[4]) - 2* (Mh[2]*Mh[2])* (Mh[4]*Mh[4]) + t*( (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4])) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - s*( (Mh[2]*Mh[2]) +  (Mh[4]*Mh[4]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup19[i1]*(-s - t +  (Mh[2]*Mh[2]) + 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup18[j1])*(-(coup10[i1]*(coup19[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[0] + coup18[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1])) + coup11[i1]*MN[0]*(coup18[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])) + 2*coup19[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))),j1,5,i1,5)
+
+	return res.real();
+}
+double DT::N1N1h3h6(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = (-s +  (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5]) + cos_t*sqrt(s +  (( (Mh[2]*Mh[2]) -  (Mh[5]*Mh[5]))*( (Mh[2]*Mh[2]) -  (Mh[5]*Mh[5])))/s - 2*( (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5])))*sqrt(s - 4* (MN[0]*MN[0])) + 2* (MN[0]*MN[0]))/2.;
+	std::complex<double> u = -s - t +  (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0]);
+	res += (coup30*std::conj(coup30)*(std::conj(coup8)*(2*coup9*(s - 2*( (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5])))* (MN[0]*MN[0]) + coup8*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[2]*Mh[2]*Mh[2]*Mh[2]) - 2* (Mh[2]*Mh[2])* (Mh[5]*Mh[5]) +  (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + 4* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 4* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - 2*s*( (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])))) + std::conj(coup9)*(2*coup8*(s - 2*( (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5])))* (MN[0]*MN[0]) + coup9*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[2]*Mh[2]*Mh[2]*Mh[2]) - 2* (Mh[2]*Mh[2])* (Mh[5]*Mh[5]) +  (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + 4* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 4* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - 2*s*( (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))))))/ (( (MZ*MZ) - s)*( (MZ*MZ) - s));
+
+	SUM1((-2*std::conj(coup30)*coup29[i1]*(std::conj(coup9)*(coup3[i1]*(t - u +  (Mh[2]*Mh[2]) -  (Mh[5]*Mh[5])) + coup2[i1]*(t - u -  (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5]))) + std::conj(coup8)*(coup2[i1]*(t - u +  (Mh[2]*Mh[2]) -  (Mh[5]*Mh[5])) + coup3[i1]*(t - u -  (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5]))))*MN[0])/((-s +  (MZ*MZ))*(s -  (Mh[i1]*Mh[i1]))),i1,6)
+
+	SUM1((coup30*(std::conj(coup11[j1])*(std::conj(coup22[j1])*(2*coup9*(s - t + u - 2* (Mh[2]*Mh[2]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) + u* (Mh[2]*Mh[2]) - u* (Mh[5]*Mh[5]) - 2* (Mh[2]*Mh[2])* (Mh[5]*Mh[5]) + 2* (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + t*(2*u +  (Mh[2]*Mh[2]) -  (Mh[5]*Mh[5]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 6* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[2]*Mh[2]) + 3* (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup23[j1])*(coup9*(t - u +  (Mh[2]*Mh[2]) -  (Mh[5]*Mh[5])) + coup8*(t - u -  (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup23[j1])*(2*coup8*(s - t + u - 2* (Mh[2]*Mh[2]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) + u* (Mh[2]*Mh[2]) - u* (Mh[5]*Mh[5]) - 2* (Mh[2]*Mh[2])* (Mh[5]*Mh[5]) + 2* (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + t*(2*u +  (Mh[2]*Mh[2]) -  (Mh[5]*Mh[5]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 6* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[2]*Mh[2]) + 3* (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup22[j1])*(coup8*(t - u +  (Mh[2]*Mh[2]) -  (Mh[5]*Mh[5])) + coup9*(t - u -  (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(t -  (MN[j1]*MN[j1]))) - (coup30*(std::conj(coup11[j1])*(std::conj(coup22[j1])*(2*coup8*(s + t - u - 2* (Mh[2]*Mh[2]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) - u* (Mh[2]*Mh[2]) + 2* (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + u* (Mh[5]*Mh[5]) - 2* (Mh[2]*Mh[2])* (Mh[5]*Mh[5]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) + t*(2*u -  (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup23[j1])*(coup9*(t - u +  (Mh[2]*Mh[2]) -  (Mh[5]*Mh[5])) + coup8*(t - u -  (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup23[j1])*(2*coup9*(s + t - u - 2* (Mh[2]*Mh[2]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) - u* (Mh[2]*Mh[2]) + 2* (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + u* (Mh[5]*Mh[5]) - 2* (Mh[2]*Mh[2])* (Mh[5]*Mh[5]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) + t*(2*u -  (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup22[j1])*(coup8*(t - u +  (Mh[2]*Mh[2]) -  (Mh[5]*Mh[5])) + coup9*(t - u -  (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(u -  (MN[j1]*MN[j1]))),j1,5)
+
+	SUM2((std::conj(coup29[j1])*coup29[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
+
+	SUM2((2*coup29[i1]*(std::conj(coup11[j1])*(std::conj(coup22[j1])*(coup2[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - coup3[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup23[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup23[j1])*(coup3[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - coup2[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup22[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))) - (2*coup29[i1]*(std::conj(coup11[j1])*(std::conj(coup22[j1])*(-(coup3[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))) + coup2[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup23[j1])*(-(coup3[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup23[j1])*(-(coup2[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))) + coup3[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup22[j1])*(-(coup2[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))),i1,6,j1,5)
+
+	SUM2((std::conj(coup11[j1])*(std::conj(coup22[j1])*(coup10[i1]*MN[0]*(-2*u*coup23[i1]*MN[0] + coup22[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup11[i1]*(coup22[i1]*(-(s* (Mh[2]*Mh[2])) - u* (Mh[2]*Mh[2]) +  (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + t*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) - coup23[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup23[j1])*(coup11[i1]*(-(coup22[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]) + coup23[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup10[i1]*MN[0]*(coup23[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - 2*coup22[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup23[j1])*(coup11[i1]*MN[0]*(-2*u*coup22[i1]*MN[0] + coup23[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup10[i1]*(coup23[i1]*(-(s* (Mh[2]*Mh[2])) - u* (Mh[2]*Mh[2]) +  (Mh[2]*Mh[2]*Mh[2]*Mh[2]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + t*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) - coup22[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup22[j1])*(coup10[i1]*(-(coup23[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[0]) + coup22[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup11[i1]*MN[0]*(coup22[i1]*(s + t -  (Mh[2]*Mh[2]) - 3* (MN[0]*MN[0])) - 2*coup23[i1]*MN[0]*MN[i1]))*MN[j1]))/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup11[j1])*(std::conj(coup22[j1])*(-(coup10[i1]*MN[0]*(2*t*coup23[i1]*MN[0] + coup22[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))*MN[i1])) + coup11[i1]*(coup22[i1]*(t*(u -  (Mh[5]*Mh[5]) -  (MN[0]*MN[0])) - (s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*( (Mh[5]*Mh[5]) -  (MN[0]*MN[0]))) + coup23[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup23[j1])*(coup11[i1]*(coup22[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0] + coup23[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup10[i1]*MN[0]*(coup23[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) + 2*coup22[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup23[j1])*(-(coup11[i1]*MN[0]*(2*t*coup22[i1]*MN[0] + coup23[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))*MN[i1])) + coup10[i1]*(coup23[i1]*(t*(u -  (Mh[5]*Mh[5]) -  (MN[0]*MN[0])) - (s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*( (Mh[5]*Mh[5]) -  (MN[0]*MN[0]))) + coup22[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup22[j1])*(coup10[i1]*(coup23[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0] + coup22[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup11[i1]*MN[0]*(coup22[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) + 2*coup23[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))) - (std::conj(coup11[j1])*(std::conj(coup22[j1])*(2*coup11[i1]*MN[0]*(coup22[i1]*(s + t + u - 2* (Mh[2]*Mh[2]) - 2* (Mh[5]*Mh[5]))*MN[0] + coup23[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[i1]) + coup10[i1]*(coup23[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[2]*Mh[2]) + u* (Mh[5]*Mh[5]) - 2* (Mh[2]*Mh[2])* (Mh[5]*Mh[5]) + t*( (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5])) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup22[i1]*(-s - t +  (Mh[2]*Mh[2]) + 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup23[j1])*(-(coup11[i1]*(coup22[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0] + coup23[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1])) + coup10[i1]*MN[0]*(coup23[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) + 2*coup22[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup10[j1])*(std::conj(coup23[j1])*(2*coup10[i1]*MN[0]*(coup23[i1]*(s + t + u - 2* (Mh[2]*Mh[2]) - 2* (Mh[5]*Mh[5]))*MN[0] + coup22[i1]*(u -  (Mh[2]*Mh[2]) +  (MN[0]*MN[0]))*MN[i1]) + coup11[i1]*(coup22[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[2]*Mh[2]) + u* (Mh[5]*Mh[5]) - 2* (Mh[2]*Mh[2])* (Mh[5]*Mh[5]) + t*( (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5])) + 2* (Mh[2]*Mh[2])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[2]*Mh[2]) +  (Mh[5]*Mh[5]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup23[i1]*(-s - t +  (Mh[2]*Mh[2]) + 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup22[j1])*(-(coup10[i1]*(coup23[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0] + coup22[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1])) + coup11[i1]*MN[0]*(coup22[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) + 2*coup23[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))),j1,5,i1,5)
+
+	return res.real();
+}
+double DT::N1N1h4h4(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = -0.5*s +  (Mh[3]*Mh[3]) + (cos_t*sqrt(s - 4* (Mh[3]*Mh[3]))*sqrt(s - 4* (MN[0]*MN[0])))/2. +  (MN[0]*MN[0]);
+	std::complex<double> u = -s - t + 2* (Mh[3]*Mh[3]) + 2* (MN[0]*MN[0]);
+	SUM2((std::conj(coup31[j1])*coup31[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
+
+	SUM2((2*coup31[i1]*(std::conj(coup14[j1])*std::conj(coup15[j1])*(coup2[i1] + coup3[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (std::conj(coup15[j1])*std::conj(coup15[j1]))*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1] +  (std::conj(coup14[j1])*std::conj(coup14[j1]))*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1]))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))) + (2*coup31[i1]*(std::conj(coup14[j1])*std::conj(coup15[j1])*(coup2[i1] + coup3[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (std::conj(coup15[j1])*std::conj(coup15[j1]))*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1] +  (std::conj(coup14[j1])*std::conj(coup14[j1]))*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1]))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))),i1,6,j1,5)
+
+	SUM2((std::conj(coup14[j1])*std::conj(coup15[j1])*(2*coup14[i1]*coup15[i1]*(s*(- (Mh[3]*Mh[3]) +  (MN[0]*MN[0])) + t*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])) - (u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*( (Mh[3]*Mh[3]) + 3* (MN[0]*MN[0]))) +  (coup14[i1]*coup14[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup15[i1]*coup15[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup15[j1])*std::conj(coup15[j1]))*(coup14[i1]*coup15[i1]*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (coup15[i1]*coup15[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup14[i1]*coup14[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup14[j1])*std::conj(coup14[j1]))*(coup14[i1]*coup15[i1]*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (coup14[i1]*coup14[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup15[i1]*coup15[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1])/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (2*(std::conj(coup14[j1])*std::conj(coup15[j1])*(coup14[i1]*coup15[i1]*(- (s*s) +  (t*t) +  (u*u) - 2*u* (Mh[3]*Mh[3]) + 2* (Mh[3]*Mh[3]*Mh[3]*Mh[3]) - 2*u* (MN[0]*MN[0]) + 4* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 2*s*( (Mh[3]*Mh[3]) +  (MN[0]*MN[0])) - 2*t*( (Mh[3]*Mh[3]) +  (MN[0]*MN[0])) - 6* (MN[0]*MN[0]*MN[0]*MN[0])) +  (coup14[i1]*coup14[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup15[i1]*coup15[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup15[j1])*std::conj(coup15[j1]))*(coup14[i1]*coup15[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup15[i1]*coup15[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup14[i1]*coup14[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup14[j1])*std::conj(coup14[j1]))*(coup14[i1]*coup15[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup14[i1]*coup14[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup15[i1]*coup15[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup14[j1])*std::conj(coup15[j1])*(2*coup14[i1]*coup15[i1]*(t*(u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0])) - (s + u -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*( (Mh[3]*Mh[3]) -  (MN[0]*MN[0]))) +  (coup14[i1]*coup14[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup15[i1]*coup15[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup15[j1])*std::conj(coup15[j1]))*(coup14[i1]*coup15[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup15[i1]*coup15[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup14[i1]*coup14[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup14[j1])*std::conj(coup14[j1]))*(coup14[i1]*coup15[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup14[i1]*coup14[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup15[i1]*coup15[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1])/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))),j1,5,i1,5)
+
+	return res.real();
+}
+double DT::N1N1h4h5(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = (-s +  (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4]) + cos_t*sqrt(s +  (( (Mh[3]*Mh[3]) -  (Mh[4]*Mh[4]))*( (Mh[3]*Mh[3]) -  (Mh[4]*Mh[4])))/s - 2*( (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4])))*sqrt(s - 4* (MN[0]*MN[0])) + 2* (MN[0]*MN[0]))/2.;
+	std::complex<double> u = -s - t +  (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0]);
+	res += (coup33*std::conj(coup33)*(std::conj(coup8)*(2*coup9*(s - 2*( (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4])))* (MN[0]*MN[0]) + coup8*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[3]*Mh[3]*Mh[3]*Mh[3]) - 2* (Mh[3]*Mh[3])* (Mh[4]*Mh[4]) +  (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + 4* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 4* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - 2*s*( (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])))) + std::conj(coup9)*(2*coup8*(s - 2*( (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4])))* (MN[0]*MN[0]) + coup9*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[3]*Mh[3]*Mh[3]*Mh[3]) - 2* (Mh[3]*Mh[3])* (Mh[4]*Mh[4]) +  (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + 4* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 4* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - 2*s*( (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))))))/ (( (MZ*MZ) - s)*( (MZ*MZ) - s));
+
+	SUM1((-2*std::conj(coup33)*coup32[i1]*(std::conj(coup9)*(coup3[i1]*(t - u +  (Mh[3]*Mh[3]) -  (Mh[4]*Mh[4])) + coup2[i1]*(t - u -  (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4]))) + std::conj(coup8)*(coup2[i1]*(t - u +  (Mh[3]*Mh[3]) -  (Mh[4]*Mh[4])) + coup3[i1]*(t - u -  (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4]))))*MN[0])/((-s +  (MZ*MZ))*(s -  (Mh[i1]*Mh[i1]))),i1,6)
+
+	SUM1((coup33*(std::conj(coup15[j1])*(std::conj(coup18[j1])*(2*coup9*(s - t + u - 2* (Mh[3]*Mh[3]) - 2* (Mh[4]*Mh[4]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) + u* (Mh[3]*Mh[3]) - u* (Mh[4]*Mh[4]) - 2* (Mh[3]*Mh[3])* (Mh[4]*Mh[4]) + 2* (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + t*(2*u +  (Mh[3]*Mh[3]) -  (Mh[4]*Mh[4]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 6* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - s*( (Mh[3]*Mh[3]) + 3* (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup19[j1])*(coup9*(t - u +  (Mh[3]*Mh[3]) -  (Mh[4]*Mh[4])) + coup8*(t - u -  (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4])))*MN[0]*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup19[j1])*(2*coup8*(s - t + u - 2* (Mh[3]*Mh[3]) - 2* (Mh[4]*Mh[4]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) + u* (Mh[3]*Mh[3]) - u* (Mh[4]*Mh[4]) - 2* (Mh[3]*Mh[3])* (Mh[4]*Mh[4]) + 2* (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + t*(2*u +  (Mh[3]*Mh[3]) -  (Mh[4]*Mh[4]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 6* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - s*( (Mh[3]*Mh[3]) + 3* (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup18[j1])*(coup8*(t - u +  (Mh[3]*Mh[3]) -  (Mh[4]*Mh[4])) + coup9*(t - u -  (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(t -  (MN[j1]*MN[j1]))) - (coup33*(std::conj(coup15[j1])*(std::conj(coup18[j1])*(2*coup8*(s + t - u - 2* (Mh[3]*Mh[3]) - 2* (Mh[4]*Mh[4]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) - u* (Mh[3]*Mh[3]) + 2* (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + u* (Mh[4]*Mh[4]) - 2* (Mh[3]*Mh[3])* (Mh[4]*Mh[4]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + t*(2*u -  (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup19[j1])*(coup9*(t - u +  (Mh[3]*Mh[3]) -  (Mh[4]*Mh[4])) + coup8*(t - u -  (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4])))*MN[0]*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup19[j1])*(2*coup9*(s + t - u - 2* (Mh[3]*Mh[3]) - 2* (Mh[4]*Mh[4]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) - u* (Mh[3]*Mh[3]) + 2* (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + u* (Mh[4]*Mh[4]) - 2* (Mh[3]*Mh[3])* (Mh[4]*Mh[4]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + t*(2*u -  (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup18[j1])*(coup8*(t - u +  (Mh[3]*Mh[3]) -  (Mh[4]*Mh[4])) + coup9*(t - u -  (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(u -  (MN[j1]*MN[j1]))),j1,5)
+
+	SUM2((std::conj(coup32[j1])*coup32[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
+
+	SUM2((2*coup32[i1]*(std::conj(coup15[j1])*(std::conj(coup18[j1])*(coup2[i1]*(s + t -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0])) - coup3[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup19[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup19[j1])*(coup3[i1]*(s + t -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0])) - coup2[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup18[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))) - (2*coup32[i1]*(std::conj(coup15[j1])*(std::conj(coup18[j1])*(-(coup3[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))) + coup2[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup19[j1])*(-(coup3[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup19[j1])*(-(coup2[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))) + coup3[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup18[j1])*(-(coup2[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))),i1,6,j1,5)
+
+	SUM2((std::conj(coup15[j1])*(std::conj(coup18[j1])*(coup14[i1]*MN[0]*(-2*u*coup19[i1]*MN[0] + coup18[i1]*(s + t -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup15[i1]*(coup18[i1]*(-(s* (Mh[3]*Mh[3])) - u* (Mh[3]*Mh[3]) +  (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + t*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) - coup19[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup19[j1])*(coup15[i1]*(-(coup18[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[0]) + coup19[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup14[i1]*MN[0]*(coup19[i1]*(s + t -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0])) - 2*coup18[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup19[j1])*(coup15[i1]*MN[0]*(-2*u*coup18[i1]*MN[0] + coup19[i1]*(s + t -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup14[i1]*(coup19[i1]*(-(s* (Mh[3]*Mh[3])) - u* (Mh[3]*Mh[3]) +  (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + t*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) - coup18[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup18[j1])*(coup14[i1]*(-(coup19[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[0]) + coup18[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup15[i1]*MN[0]*(coup18[i1]*(s + t -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0])) - 2*coup19[i1]*MN[0]*MN[i1]))*MN[j1]))/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup15[j1])*(std::conj(coup18[j1])*(-(coup14[i1]*MN[0]*(2*t*coup19[i1]*MN[0] + coup18[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[i1])) + coup15[i1]*(coup18[i1]*(t*(u -  (Mh[4]*Mh[4]) -  (MN[0]*MN[0])) - (s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*( (Mh[4]*Mh[4]) -  (MN[0]*MN[0]))) + coup19[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup19[j1])*(coup15[i1]*(coup18[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[0] + coup19[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup14[i1]*MN[0]*(coup19[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])) + 2*coup18[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup19[j1])*(-(coup15[i1]*MN[0]*(2*t*coup18[i1]*MN[0] + coup19[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[i1])) + coup14[i1]*(coup19[i1]*(t*(u -  (Mh[4]*Mh[4]) -  (MN[0]*MN[0])) - (s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*( (Mh[4]*Mh[4]) -  (MN[0]*MN[0]))) + coup18[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup18[j1])*(coup14[i1]*(coup19[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[0] + coup18[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup15[i1]*MN[0]*(coup18[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])) + 2*coup19[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))) - (std::conj(coup15[j1])*(std::conj(coup18[j1])*(2*coup15[i1]*MN[0]*(coup18[i1]*(s + t + u - 2* (Mh[3]*Mh[3]) - 2* (Mh[4]*Mh[4]))*MN[0] + coup19[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[i1]) + coup14[i1]*(coup19[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[3]*Mh[3]) + u* (Mh[4]*Mh[4]) - 2* (Mh[3]*Mh[3])* (Mh[4]*Mh[4]) + t*( (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4])) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - s*( (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup18[i1]*(-s - t +  (Mh[3]*Mh[3]) + 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup19[j1])*(-(coup15[i1]*(coup18[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[0] + coup19[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1])) + coup14[i1]*MN[0]*(coup19[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])) + 2*coup18[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup19[j1])*(2*coup14[i1]*MN[0]*(coup19[i1]*(s + t + u - 2* (Mh[3]*Mh[3]) - 2* (Mh[4]*Mh[4]))*MN[0] + coup18[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[i1]) + coup15[i1]*(coup18[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[3]*Mh[3]) + u* (Mh[4]*Mh[4]) - 2* (Mh[3]*Mh[3])* (Mh[4]*Mh[4]) + t*( (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4])) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) - s*( (Mh[3]*Mh[3]) +  (Mh[4]*Mh[4]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup19[i1]*(-s - t +  (Mh[3]*Mh[3]) + 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup18[j1])*(-(coup14[i1]*(coup19[i1]*(s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[0] + coup18[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1])) + coup15[i1]*MN[0]*(coup18[i1]*(t -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])) + 2*coup19[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))),j1,5,i1,5)
+
+	return res.real();
+}
+double DT::N1N1h4h6(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = (-s +  (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5]) + cos_t*sqrt(s +  (( (Mh[3]*Mh[3]) -  (Mh[5]*Mh[5]))*( (Mh[3]*Mh[3]) -  (Mh[5]*Mh[5])))/s - 2*( (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5])))*sqrt(s - 4* (MN[0]*MN[0])) + 2* (MN[0]*MN[0]))/2.;
+	std::complex<double> u = -s - t +  (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0]);
+	res += (coup35*std::conj(coup35)*(std::conj(coup8)*(2*coup9*(s - 2*( (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5])))* (MN[0]*MN[0]) + coup8*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[3]*Mh[3]*Mh[3]*Mh[3]) - 2* (Mh[3]*Mh[3])* (Mh[5]*Mh[5]) +  (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + 4* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 4* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - 2*s*( (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])))) + std::conj(coup9)*(2*coup8*(s - 2*( (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5])))* (MN[0]*MN[0]) + coup9*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[3]*Mh[3]*Mh[3]*Mh[3]) - 2* (Mh[3]*Mh[3])* (Mh[5]*Mh[5]) +  (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + 4* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 4* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - 2*s*( (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))))))/ (( (MZ*MZ) - s)*( (MZ*MZ) - s));
+
+	SUM1((-2*std::conj(coup35)*coup34[i1]*(std::conj(coup9)*(coup3[i1]*(t - u +  (Mh[3]*Mh[3]) -  (Mh[5]*Mh[5])) + coup2[i1]*(t - u -  (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5]))) + std::conj(coup8)*(coup2[i1]*(t - u +  (Mh[3]*Mh[3]) -  (Mh[5]*Mh[5])) + coup3[i1]*(t - u -  (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5]))))*MN[0])/((-s +  (MZ*MZ))*(s -  (Mh[i1]*Mh[i1]))),i1,6)
+
+	SUM1((coup35*(std::conj(coup15[j1])*(std::conj(coup22[j1])*(2*coup9*(s - t + u - 2* (Mh[3]*Mh[3]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) + u* (Mh[3]*Mh[3]) - u* (Mh[5]*Mh[5]) - 2* (Mh[3]*Mh[3])* (Mh[5]*Mh[5]) + 2* (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + t*(2*u +  (Mh[3]*Mh[3]) -  (Mh[5]*Mh[5]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 6* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[3]*Mh[3]) + 3* (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup23[j1])*(coup9*(t - u +  (Mh[3]*Mh[3]) -  (Mh[5]*Mh[5])) + coup8*(t - u -  (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup23[j1])*(2*coup8*(s - t + u - 2* (Mh[3]*Mh[3]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) + u* (Mh[3]*Mh[3]) - u* (Mh[5]*Mh[5]) - 2* (Mh[3]*Mh[3])* (Mh[5]*Mh[5]) + 2* (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + t*(2*u +  (Mh[3]*Mh[3]) -  (Mh[5]*Mh[5]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 6* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[3]*Mh[3]) + 3* (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup22[j1])*(coup8*(t - u +  (Mh[3]*Mh[3]) -  (Mh[5]*Mh[5])) + coup9*(t - u -  (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(t -  (MN[j1]*MN[j1]))) - (coup35*(std::conj(coup15[j1])*(std::conj(coup22[j1])*(2*coup8*(s + t - u - 2* (Mh[3]*Mh[3]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) - u* (Mh[3]*Mh[3]) + 2* (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + u* (Mh[5]*Mh[5]) - 2* (Mh[3]*Mh[3])* (Mh[5]*Mh[5]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) + t*(2*u -  (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup23[j1])*(coup9*(t - u +  (Mh[3]*Mh[3]) -  (Mh[5]*Mh[5])) + coup8*(t - u -  (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup23[j1])*(2*coup9*(s + t - u - 2* (Mh[3]*Mh[3]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) - u* (Mh[3]*Mh[3]) + 2* (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + u* (Mh[5]*Mh[5]) - 2* (Mh[3]*Mh[3])* (Mh[5]*Mh[5]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) + t*(2*u -  (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup22[j1])*(coup8*(t - u +  (Mh[3]*Mh[3]) -  (Mh[5]*Mh[5])) + coup9*(t - u -  (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(u -  (MN[j1]*MN[j1]))),j1,5)
+
+	SUM2((std::conj(coup34[j1])*coup34[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
+
+	SUM2((2*coup34[i1]*(std::conj(coup15[j1])*(std::conj(coup22[j1])*(coup2[i1]*(s + t -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0])) - coup3[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup23[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup23[j1])*(coup3[i1]*(s + t -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0])) - coup2[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup22[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))) - (2*coup34[i1]*(std::conj(coup15[j1])*(std::conj(coup22[j1])*(-(coup3[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))) + coup2[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup23[j1])*(-(coup3[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup23[j1])*(-(coup2[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))) + coup3[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup22[j1])*(-(coup2[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))),i1,6,j1,5)
+
+	SUM2((std::conj(coup15[j1])*(std::conj(coup22[j1])*(coup14[i1]*MN[0]*(-2*u*coup23[i1]*MN[0] + coup22[i1]*(s + t -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup15[i1]*(coup22[i1]*(-(s* (Mh[3]*Mh[3])) - u* (Mh[3]*Mh[3]) +  (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + t*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) - coup23[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup23[j1])*(coup15[i1]*(-(coup22[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[0]) + coup23[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup14[i1]*MN[0]*(coup23[i1]*(s + t -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0])) - 2*coup22[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup23[j1])*(coup15[i1]*MN[0]*(-2*u*coup22[i1]*MN[0] + coup23[i1]*(s + t -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup14[i1]*(coup23[i1]*(-(s* (Mh[3]*Mh[3])) - u* (Mh[3]*Mh[3]) +  (Mh[3]*Mh[3]*Mh[3]*Mh[3]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + t*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) - coup22[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup22[j1])*(coup14[i1]*(-(coup23[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[0]) + coup22[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup15[i1]*MN[0]*(coup22[i1]*(s + t -  (Mh[3]*Mh[3]) - 3* (MN[0]*MN[0])) - 2*coup23[i1]*MN[0]*MN[i1]))*MN[j1]))/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup15[j1])*(std::conj(coup22[j1])*(-(coup14[i1]*MN[0]*(2*t*coup23[i1]*MN[0] + coup22[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))*MN[i1])) + coup15[i1]*(coup22[i1]*(t*(u -  (Mh[5]*Mh[5]) -  (MN[0]*MN[0])) - (s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*( (Mh[5]*Mh[5]) -  (MN[0]*MN[0]))) + coup23[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup23[j1])*(coup15[i1]*(coup22[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0] + coup23[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup14[i1]*MN[0]*(coup23[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) + 2*coup22[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup23[j1])*(-(coup15[i1]*MN[0]*(2*t*coup22[i1]*MN[0] + coup23[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))*MN[i1])) + coup14[i1]*(coup23[i1]*(t*(u -  (Mh[5]*Mh[5]) -  (MN[0]*MN[0])) - (s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*( (Mh[5]*Mh[5]) -  (MN[0]*MN[0]))) + coup22[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup22[j1])*(coup14[i1]*(coup23[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0] + coup22[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup15[i1]*MN[0]*(coup22[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) + 2*coup23[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))) - (std::conj(coup15[j1])*(std::conj(coup22[j1])*(2*coup15[i1]*MN[0]*(coup22[i1]*(s + t + u - 2* (Mh[3]*Mh[3]) - 2* (Mh[5]*Mh[5]))*MN[0] + coup23[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[i1]) + coup14[i1]*(coup23[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[3]*Mh[3]) + u* (Mh[5]*Mh[5]) - 2* (Mh[3]*Mh[3])* (Mh[5]*Mh[5]) + t*( (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5])) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup22[i1]*(-s - t +  (Mh[3]*Mh[3]) + 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup23[j1])*(-(coup15[i1]*(coup22[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0] + coup23[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1])) + coup14[i1]*MN[0]*(coup23[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) + 2*coup22[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup14[j1])*(std::conj(coup23[j1])*(2*coup14[i1]*MN[0]*(coup23[i1]*(s + t + u - 2* (Mh[3]*Mh[3]) - 2* (Mh[5]*Mh[5]))*MN[0] + coup22[i1]*(u -  (Mh[3]*Mh[3]) +  (MN[0]*MN[0]))*MN[i1]) + coup15[i1]*(coup22[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[3]*Mh[3]) + u* (Mh[5]*Mh[5]) - 2* (Mh[3]*Mh[3])* (Mh[5]*Mh[5]) + t*( (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5])) + 2* (Mh[3]*Mh[3])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[3]*Mh[3]) +  (Mh[5]*Mh[5]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup23[i1]*(-s - t +  (Mh[3]*Mh[3]) + 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup22[j1])*(-(coup14[i1]*(coup23[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0] + coup22[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1])) + coup15[i1]*MN[0]*(coup22[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) + 2*coup23[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))),j1,5,i1,5)
+
+	return res.real();
+}
+double DT::N1N1h5h5(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = -0.5*s +  (Mh[4]*Mh[4]) + (cos_t*sqrt(s - 4* (Mh[4]*Mh[4]))*sqrt(s - 4* (MN[0]*MN[0])))/2. +  (MN[0]*MN[0]);
+	std::complex<double> u = -s - t + 2* (Mh[4]*Mh[4]) + 2* (MN[0]*MN[0]);
+	SUM2((std::conj(coup36[j1])*coup36[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
+
+	SUM2((2*coup36[i1]*(std::conj(coup18[j1])*std::conj(coup19[j1])*(coup2[i1] + coup3[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (std::conj(coup19[j1])*std::conj(coup19[j1]))*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1] +  (std::conj(coup18[j1])*std::conj(coup18[j1]))*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1]))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))) + (2*coup36[i1]*(std::conj(coup18[j1])*std::conj(coup19[j1])*(coup2[i1] + coup3[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (std::conj(coup19[j1])*std::conj(coup19[j1]))*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1] +  (std::conj(coup18[j1])*std::conj(coup18[j1]))*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1]))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))),i1,6,j1,5)
+
+	SUM2((std::conj(coup18[j1])*std::conj(coup19[j1])*(2*coup18[i1]*coup19[i1]*(s*(- (Mh[4]*Mh[4]) +  (MN[0]*MN[0])) + t*(u -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])) - (u -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*( (Mh[4]*Mh[4]) + 3* (MN[0]*MN[0]))) +  (coup18[i1]*coup18[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup19[i1]*coup19[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup19[j1])*std::conj(coup19[j1]))*(coup18[i1]*coup19[i1]*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (coup19[i1]*coup19[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup18[i1]*coup18[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup18[j1])*std::conj(coup18[j1]))*(coup18[i1]*coup19[i1]*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (coup18[i1]*coup18[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup19[i1]*coup19[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1])/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (2*(std::conj(coup18[j1])*std::conj(coup19[j1])*(coup18[i1]*coup19[i1]*(- (s*s) +  (t*t) +  (u*u) - 2*u* (Mh[4]*Mh[4]) + 2* (Mh[4]*Mh[4]*Mh[4]*Mh[4]) - 2*u* (MN[0]*MN[0]) + 4* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + 2*s*( (Mh[4]*Mh[4]) +  (MN[0]*MN[0])) - 2*t*( (Mh[4]*Mh[4]) +  (MN[0]*MN[0])) - 6* (MN[0]*MN[0]*MN[0]*MN[0])) +  (coup18[i1]*coup18[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup19[i1]*coup19[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup19[j1])*std::conj(coup19[j1]))*(coup18[i1]*coup19[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup19[i1]*coup19[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup18[i1]*coup18[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup18[j1])*std::conj(coup18[j1]))*(coup18[i1]*coup19[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup18[i1]*coup18[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup19[i1]*coup19[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup18[j1])*std::conj(coup19[j1])*(2*coup18[i1]*coup19[i1]*(t*(u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0])) - (s + u -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*( (Mh[4]*Mh[4]) -  (MN[0]*MN[0]))) +  (coup18[i1]*coup18[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup19[i1]*coup19[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup19[j1])*std::conj(coup19[j1]))*(coup18[i1]*coup19[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup19[i1]*coup19[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup18[i1]*coup18[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup18[j1])*std::conj(coup18[j1]))*(coup18[i1]*coup19[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup18[i1]*coup18[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup19[i1]*coup19[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1])/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))),j1,5,i1,5)
+
+	return res.real();
+}
+double DT::N1N1h5h6(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = (-s +  (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5]) + cos_t*sqrt(s +  (( (Mh[4]*Mh[4]) -  (Mh[5]*Mh[5]))*( (Mh[4]*Mh[4]) -  (Mh[5]*Mh[5])))/s - 2*( (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5])))*sqrt(s - 4* (MN[0]*MN[0])) + 2* (MN[0]*MN[0]))/2.;
+	std::complex<double> u = -s - t +  (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0]);
+	res += (coup38*std::conj(coup38)*(std::conj(coup8)*(2*coup9*(s - 2*( (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5])))* (MN[0]*MN[0]) + coup8*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[4]*Mh[4]*Mh[4]*Mh[4]) - 2* (Mh[4]*Mh[4])* (Mh[5]*Mh[5]) +  (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + 4* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + 4* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - 2*s*( (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])))) + std::conj(coup9)*(2*coup8*(s - 2*( (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5])))* (MN[0]*MN[0]) + coup9*(2*t*u +  (s*s) -  (t*t) -  (u*u) +  (Mh[4]*Mh[4]*Mh[4]*Mh[4]) - 2* (Mh[4]*Mh[4])* (Mh[5]*Mh[5]) +  (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + 4* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + 4* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - 2*s*( (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))))))/ (( (MZ*MZ) - s)*( (MZ*MZ) - s));
+
+	SUM1((-2*std::conj(coup38)*coup37[i1]*(std::conj(coup9)*(coup3[i1]*(t - u +  (Mh[4]*Mh[4]) -  (Mh[5]*Mh[5])) + coup2[i1]*(t - u -  (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5]))) + std::conj(coup8)*(coup2[i1]*(t - u +  (Mh[4]*Mh[4]) -  (Mh[5]*Mh[5])) + coup3[i1]*(t - u -  (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5]))))*MN[0])/((-s +  (MZ*MZ))*(s -  (Mh[i1]*Mh[i1]))),i1,6)
+
+	SUM1((coup38*(std::conj(coup19[j1])*(std::conj(coup22[j1])*(2*coup9*(s - t + u - 2* (Mh[4]*Mh[4]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) + u* (Mh[4]*Mh[4]) - u* (Mh[5]*Mh[5]) - 2* (Mh[4]*Mh[4])* (Mh[5]*Mh[5]) + 2* (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + t*(2*u +  (Mh[4]*Mh[4]) -  (Mh[5]*Mh[5]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + 6* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[4]*Mh[4]) + 3* (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup23[j1])*(coup9*(t - u +  (Mh[4]*Mh[4]) -  (Mh[5]*Mh[5])) + coup8*(t - u -  (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1]) + std::conj(coup18[j1])*(std::conj(coup23[j1])*(2*coup8*(s - t + u - 2* (Mh[4]*Mh[4]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) + u* (Mh[4]*Mh[4]) - u* (Mh[5]*Mh[5]) - 2* (Mh[4]*Mh[4])* (Mh[5]*Mh[5]) + 2* (Mh[5]*Mh[5]*Mh[5]*Mh[5]) + t*(2*u +  (Mh[4]*Mh[4]) -  (Mh[5]*Mh[5]) - 2* (MN[0]*MN[0])) + 2*u* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + 6* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[4]*Mh[4]) + 3* (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) - 2*std::conj(coup22[j1])*(coup8*(t - u +  (Mh[4]*Mh[4]) -  (Mh[5]*Mh[5])) + coup9*(t - u -  (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(t -  (MN[j1]*MN[j1]))) - (coup38*(std::conj(coup19[j1])*(std::conj(coup22[j1])*(2*coup8*(s + t - u - 2* (Mh[4]*Mh[4]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup9*( (s*s) -  (t*t) -  (u*u) - u* (Mh[4]*Mh[4]) + 2* (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + u* (Mh[5]*Mh[5]) - 2* (Mh[4]*Mh[4])* (Mh[5]*Mh[5]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) + t*(2*u -  (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup23[j1])*(coup9*(t - u +  (Mh[4]*Mh[4]) -  (Mh[5]*Mh[5])) + coup8*(t - u -  (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1]) + std::conj(coup18[j1])*(std::conj(coup23[j1])*(2*coup9*(s + t - u - 2* (Mh[4]*Mh[4]) - 2* (Mh[5]*Mh[5]))* (MN[0]*MN[0]) + coup8*( (s*s) -  (t*t) -  (u*u) - u* (Mh[4]*Mh[4]) + 2* (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + u* (Mh[5]*Mh[5]) - 2* (Mh[4]*Mh[4])* (Mh[5]*Mh[5]) - 2*u* (MN[0]*MN[0]) + 6* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) + t*(2*u -  (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])) - s*(3* (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0])))) + 2*std::conj(coup22[j1])*(coup8*(t - u +  (Mh[4]*Mh[4]) -  (Mh[5]*Mh[5])) + coup9*(t - u -  (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5])))*MN[0]*MN[j1])))/((-s +  (MZ*MZ))*(u -  (MN[j1]*MN[j1]))),j1,5)
+
+	SUM2((std::conj(coup37[j1])*coup37[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
+
+	SUM2((2*coup37[i1]*(std::conj(coup19[j1])*(std::conj(coup22[j1])*(coup2[i1]*(s + t -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0])) - coup3[i1]*(u -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup23[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup18[j1])*(std::conj(coup23[j1])*(coup3[i1]*(s + t -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0])) - coup2[i1]*(u -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup22[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))) - (2*coup37[i1]*(std::conj(coup19[j1])*(std::conj(coup22[j1])*(-(coup3[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))) + coup2[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup23[j1])*(-(coup3[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1]) + std::conj(coup18[j1])*(std::conj(coup23[j1])*(-(coup2[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))) + coup3[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])))*MN[0] + std::conj(coup22[j1])*(-(coup2[i1]*(s - 2* (MN[0]*MN[0]))) + 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1])))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))),i1,6,j1,5)
+
+	SUM2((std::conj(coup19[j1])*(std::conj(coup22[j1])*(coup18[i1]*MN[0]*(-2*u*coup23[i1]*MN[0] + coup22[i1]*(s + t -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup19[i1]*(coup22[i1]*(-(s* (Mh[4]*Mh[4])) - u* (Mh[4]*Mh[4]) +  (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + t*(u -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) - coup23[i1]*(u -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup23[j1])*(coup19[i1]*(-(coup22[i1]*(u -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[0]) + coup23[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup18[i1]*MN[0]*(coup23[i1]*(s + t -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0])) - 2*coup22[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup18[j1])*(std::conj(coup23[j1])*(coup19[i1]*MN[0]*(-2*u*coup22[i1]*MN[0] + coup23[i1]*(s + t -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0]))*MN[i1]) + coup18[i1]*(coup23[i1]*(-(s* (Mh[4]*Mh[4])) - u* (Mh[4]*Mh[4]) +  (Mh[4]*Mh[4]*Mh[4]*Mh[4]) + s* (MN[0]*MN[0]) - u* (MN[0]*MN[0]) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + t*(u -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0])) - 3* (MN[0]*MN[0]*MN[0]*MN[0])) - coup22[i1]*(u -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup22[j1])*(coup18[i1]*(-(coup23[i1]*(u -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[0]) + coup22[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) + coup19[i1]*MN[0]*(coup22[i1]*(s + t -  (Mh[4]*Mh[4]) - 3* (MN[0]*MN[0])) - 2*coup23[i1]*MN[0]*MN[i1]))*MN[j1]))/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup19[j1])*(std::conj(coup22[j1])*(-(coup18[i1]*MN[0]*(2*t*coup23[i1]*MN[0] + coup22[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))*MN[i1])) + coup19[i1]*(coup22[i1]*(t*(u -  (Mh[5]*Mh[5]) -  (MN[0]*MN[0])) - (s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*( (Mh[5]*Mh[5]) -  (MN[0]*MN[0]))) + coup23[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup23[j1])*(coup19[i1]*(coup22[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0] + coup23[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup18[i1]*MN[0]*(coup23[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) + 2*coup22[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup18[j1])*(std::conj(coup23[j1])*(-(coup19[i1]*MN[0]*(2*t*coup22[i1]*MN[0] + coup23[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))*MN[i1])) + coup18[i1]*(coup23[i1]*(t*(u -  (Mh[5]*Mh[5]) -  (MN[0]*MN[0])) - (s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*( (Mh[5]*Mh[5]) -  (MN[0]*MN[0]))) + coup22[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + std::conj(coup22[j1])*(coup18[i1]*(coup23[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0] + coup22[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1]) - coup19[i1]*MN[0]*(coup22[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) + 2*coup23[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))) - (std::conj(coup19[j1])*(std::conj(coup22[j1])*(2*coup19[i1]*MN[0]*(coup22[i1]*(s + t + u - 2* (Mh[4]*Mh[4]) - 2* (Mh[5]*Mh[5]))*MN[0] + coup23[i1]*(u -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[i1]) + coup18[i1]*(coup23[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[4]*Mh[4]) + u* (Mh[5]*Mh[5]) - 2* (Mh[4]*Mh[4])* (Mh[5]*Mh[5]) + t*( (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5])) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup22[i1]*(-s - t +  (Mh[4]*Mh[4]) + 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup23[j1])*(-(coup19[i1]*(coup22[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0] + coup23[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1])) + coup18[i1]*MN[0]*(coup23[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) + 2*coup22[i1]*MN[0]*MN[i1]))*MN[j1]) + std::conj(coup18[j1])*(std::conj(coup23[j1])*(2*coup18[i1]*MN[0]*(coup23[i1]*(s + t + u - 2* (Mh[4]*Mh[4]) - 2* (Mh[5]*Mh[5]))*MN[0] + coup22[i1]*(u -  (Mh[4]*Mh[4]) +  (MN[0]*MN[0]))*MN[i1]) + coup19[i1]*(coup22[i1]*( (s*s) -  (t*t) -  (u*u) + u* (Mh[4]*Mh[4]) + u* (Mh[5]*Mh[5]) - 2* (Mh[4]*Mh[4])* (Mh[5]*Mh[5]) + t*( (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5])) + 2* (Mh[4]*Mh[4])* (MN[0]*MN[0]) + 2* (Mh[5]*Mh[5])* (MN[0]*MN[0]) - s*( (Mh[4]*Mh[4]) +  (Mh[5]*Mh[5]) + 4* (MN[0]*MN[0])) + 6* (MN[0]*MN[0]*MN[0]*MN[0])) + 2*coup23[i1]*(-s - t +  (Mh[4]*Mh[4]) + 3* (MN[0]*MN[0]))*MN[0]*MN[i1])) + 2*std::conj(coup22[j1])*(-(coup18[i1]*(coup23[i1]*(s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*MN[0] + coup22[i1]*(s - 2* (MN[0]*MN[0]))*MN[i1])) + coup19[i1]*MN[0]*(coup22[i1]*(t -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) + 2*coup23[i1]*MN[0]*MN[i1]))*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))),j1,5,i1,5)
+
+	return res.real();
+}
+double DT::N1N1h6h6(const double &cos_t, const double &s){
+	using namespace PAR;
+	std::complex<double> res;
+	std::complex<double> t = -0.5*s +  (Mh[5]*Mh[5]) + (cos_t*sqrt(s - 4* (Mh[5]*Mh[5]))*sqrt(s - 4* (MN[0]*MN[0])))/2. +  (MN[0]*MN[0]);
+	std::complex<double> u = -s - t + 2* (Mh[5]*Mh[5]) + 2* (MN[0]*MN[0]);
+	SUM2((std::conj(coup39[j1])*coup39[i1]*(std::conj(coup3[j1])*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0])) + std::conj(coup2[j1])*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))))/((s -  (Mh[i1]*Mh[i1]))*(s -  (Mh[j1]*Mh[j1]))),i1,6,j1,6)
+
+	SUM2((2*coup39[i1]*(std::conj(coup22[j1])*std::conj(coup23[j1])*(coup2[i1] + coup3[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (std::conj(coup23[j1])*std::conj(coup23[j1]))*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1] +  (std::conj(coup22[j1])*std::conj(coup22[j1]))*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1]))/((s -  (Mh[i1]*Mh[i1]))*(u -  (MN[j1]*MN[j1]))) + (2*coup39[i1]*(std::conj(coup22[j1])*std::conj(coup23[j1])*(coup2[i1] + coup3[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (std::conj(coup23[j1])*std::conj(coup23[j1]))*(coup3[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup2[i1]* (MN[0]*MN[0]))*MN[j1] +  (std::conj(coup22[j1])*std::conj(coup22[j1]))*(coup2[i1]*(s - 2* (MN[0]*MN[0])) - 2*coup3[i1]* (MN[0]*MN[0]))*MN[j1]))/((s -  (Mh[i1]*Mh[i1]))*(t -  (MN[j1]*MN[j1]))),i1,6,j1,5)
+
+	SUM2((std::conj(coup22[j1])*std::conj(coup23[j1])*(2*coup22[i1]*coup23[i1]*(s*(- (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) + t*(u -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) - (u -  (Mh[5]*Mh[5]) +  (MN[0]*MN[0]))*( (Mh[5]*Mh[5]) + 3* (MN[0]*MN[0]))) +  (coup22[i1]*coup22[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup23[i1]*coup23[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup23[j1])*std::conj(coup23[j1]))*(coup22[i1]*coup23[i1]*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (coup23[i1]*coup23[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup22[i1]*coup22[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup22[j1])*std::conj(coup22[j1]))*(coup22[i1]*coup23[i1]*(s + t - u - 4* (MN[0]*MN[0]))*MN[0] +  (coup22[i1]*coup22[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup23[i1]*coup23[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1])/((u -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (2*(std::conj(coup22[j1])*std::conj(coup23[j1])*(coup22[i1]*coup23[i1]*(- (s*s) +  (t*t) +  (u*u) - 2*u* (Mh[5]*Mh[5]) + 2* (Mh[5]*Mh[5]*Mh[5]*Mh[5]) - 2*u* (MN[0]*MN[0]) + 4* (Mh[5]*Mh[5])* (MN[0]*MN[0]) + 2*s*( (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) - 2*t*( (Mh[5]*Mh[5]) +  (MN[0]*MN[0])) - 6* (MN[0]*MN[0]*MN[0]*MN[0])) +  (coup22[i1]*coup22[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup23[i1]*coup23[i1])*(s + t - u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup23[j1])*std::conj(coup23[j1]))*(coup22[i1]*coup23[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup23[i1]*coup23[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup22[i1]*coup22[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup22[j1])*std::conj(coup22[j1]))*(coup22[i1]*coup23[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup22[i1]*coup22[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup23[i1]*coup23[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1]))/((t -  (MN[i1]*MN[i1]))*(u -  (MN[j1]*MN[j1]))) + (std::conj(coup22[j1])*std::conj(coup23[j1])*(2*coup22[i1]*coup23[i1]*(t*(u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0])) - (s + u -  (Mh[5]*Mh[5]) - 3* (MN[0]*MN[0]))*( (Mh[5]*Mh[5]) -  (MN[0]*MN[0]))) +  (coup22[i1]*coup22[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1] +  (coup23[i1]*coup23[i1])*(s - t + u - 4* (MN[0]*MN[0]))*MN[0]*MN[i1]) +  (std::conj(coup23[j1])*std::conj(coup23[j1]))*(coup22[i1]*coup23[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup23[i1]*coup23[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup22[i1]*coup22[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1] +  (std::conj(coup22[j1])*std::conj(coup22[j1]))*(coup22[i1]*coup23[i1]*(s - t + u - 4* (MN[0]*MN[0]))*MN[0] +  (coup22[i1]*coup22[i1])*(s - 2* (MN[0]*MN[0]))*MN[i1] - 2* (coup23[i1]*coup23[i1])* (MN[0]*MN[0])*MN[i1])*MN[j1])/((t -  (MN[i1]*MN[i1]))*(t -  (MN[j1]*MN[j1]))),j1,5,i1,5)
+
+	return res.real();
 }

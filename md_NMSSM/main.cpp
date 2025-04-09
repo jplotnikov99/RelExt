@@ -27,7 +27,11 @@ int main(int argc, char **argv) {
 
     clock_t begin_time = clock();
     M.LoadParameters();
-    M.CalcAmp(4000. * 4000., 0.1, {"N1,N1,h2,h2","N1,N1,h2,h3"});
+    M.CalcAmp(4000. * 4000., 0.1,
+              {"N1,N1,h2,h2", "N1,N1,h2,h3", "N1,N1,h2,h4", "N1,N1,h2,h5",
+               "N1,N1,h2,h6", "N1,N1,h3,h3", "N1,N1,h3,h4", "N1,N1,h3,h5",
+               "N1,N1,h3,h6", "N1,N1,h4,h4", "N1,N1,h4,h5", "N1,N1,h4,h6",
+               "N1,N1,h5,h5", "N1,N1,h5,h6", "N1,N1,h6,h6"});
     M.SaveData(SAVEPARS);
 
     std::cout << "Computation time:\n"

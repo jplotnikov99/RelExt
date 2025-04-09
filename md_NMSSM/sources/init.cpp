@@ -28,6 +28,19 @@ void ModelInfo::init() {
 void AnnihilationAmps::init() {
     ADDCHANNEL("N1,N1,h2,h2", N1N1h2h2, N1N1h2h2fl)
     ADDCHANNEL("N1,N1,h2,h3", N1N1h2h3, N1N1h2h3fl)
+    ADDCHANNEL("N1,N1,h2,h4", N1N1h2h4, N1N1h2h4fl)
+    ADDCHANNEL("N1,N1,h2,h5", N1N1h2h5, N1N1h2h5fl)
+    ADDCHANNEL("N1,N1,h2,h6", N1N1h2h6, N1N1h2h6fl)
+    ADDCHANNEL("N1,N1,h3,h3", N1N1h3h3, N1N1h3h3fl)
+    ADDCHANNEL("N1,N1,h3,h4", N1N1h3h4, N1N1h3h4fl)
+    ADDCHANNEL("N1,N1,h3,h5", N1N1h3h5, N1N1h3h5fl)
+    ADDCHANNEL("N1,N1,h3,h6", N1N1h3h6, N1N1h3h6fl)
+    ADDCHANNEL("N1,N1,h4,h4", N1N1h4h4, N1N1h4h4fl)
+    ADDCHANNEL("N1,N1,h4,h5", N1N1h4h5, N1N1h4h5fl)
+    ADDCHANNEL("N1,N1,h4,h6", N1N1h4h6, N1N1h4h6fl)
+    ADDCHANNEL("N1,N1,h5,h5", N1N1h5h5, N1N1h5h5fl)
+    ADDCHANNEL("N1,N1,h5,h6", N1N1h5h6, N1N1h5h6fl)
+    ADDCHANNEL("N1,N1,h6,h6", N1N1h6h6, N1N1h6h6fl)
 }
 
 }  // namespace DT
