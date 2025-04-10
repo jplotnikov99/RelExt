@@ -1,28 +1,91 @@
 ///////////////////CODE GENERATED VIA MATHEMATICA///////////////////
 
-
-#include "general_model.hpp"
 #include "../model.hpp"
+#include "general_model.hpp"
 
-namespace DT{
-	void ModelInfo::load_prtcls()
-	{
-		using namespace PAR;
-		prtcls["H2"] = &Mh[2];
-		prtcls["N1"] = &MN[1];
-		prtcls["N2"] = &MN[2];
-		prtcls["N3"] = &MN[3];
-		prtcls["N4"] = &MN[4];
-		prtcls["N5"] = &MN[5];
-		prtcls["h2"] = &Mh[1];
-		prtcls["h3"] = &Mh[2];
-		prtcls["h4"] = &Mh[3];
-		prtcls["h5"] = &Mh[4];
-		prtcls["h6"] = &Mh[5];
-		prtcls["C1"] = &MC[1];
-		prtcls["C2"] = &MC[2];
+namespace DT {
+void ModelInfo::load_prtcls() {
+    using namespace PAR;
+    prtcls["N1"] = &MN[1];
+    prtcls["N2"] = &MN[2];
+    prtcls["N3"] = &MN[3];
+    prtcls["N4"] = &MN[4];
+    prtcls["N5"] = &MN[5];
+    prtcls["h2"] = &Mh[1];
+    prtcls["h3"] = &Mh[2];
+    prtcls["h4"] = &Mh[3];
+    prtcls["h5"] = &Mh[4];
+    prtcls["h6"] = &Mh[5];
+    prtcls["C1"] = &MC[1];
+    prtcls["C2"] = &MC[2];
+    prtcls["sd1"] = &Msd[0];
+    prtcls["sd2"] = &Msd[1];
+    prtcls["sd3"] = &Msd[2];
+    prtcls["sd4"] = &Msd[3];
+    prtcls["sd5"] = &Msd[4];
+    prtcls["sd6"] = &Msd[5];
+    prtcls["su1"] = &Msu[0];
+    prtcls["su2"] = &Msu[1];
+    prtcls["su3"] = &Msu[2];
+    prtcls["su4"] = &Msu[3];
+    prtcls["su5"] = &Msu[4];
+    prtcls["su6"] = &Msu[5];
+    prtcls["sv1"] = &Msv[0];
+    prtcls["sv2"] = &Msv[1];
+    prtcls["sv3"] = &Msv[2];
+    prtcls["se1"] = &Mse[0];
+    prtcls["se2"] = &Mse[1];
+    prtcls["se3"] = &Mse[2];
+    prtcls["se4"] = &Mse[3];
+    prtcls["se5"] = &Mse[4];
+    prtcls["se6"] = &Mse[5];
+    prtcls["Hpm1"] = &MHm[0];
+    prtcls["Hpm2"] = &MHm[1];
+    prtcls["Z"] = &MZ;
+    prtcls["W"] = &MWm;
+    prtcls["g"] = &Mgo;
+    prtcls["N1"] = &MN[0];
+    prtcls["N2"] = &MN[1];
+    prtcls["N3"] = &MN[2];
+    prtcls["N4"] = &MN[3];
+    prtcls["N5"] = &MN[4];
+    prtcls["C1"] = &MC[0];
+    prtcls["C2"] = &MC[1];
+    prtcls["e1"] = &Me[0];
+    prtcls["e2"] = &Me[1];
+    prtcls["e3"] = &Me[2];
+    prtcls["d1"] = &Md[0];
+    prtcls["d2"] = &Md[1];
+    prtcls["d3"] = &Md[2];
+    prtcls["u1"] = &Mu[0];
+    prtcls["u2"] = &Mu[1];
+    prtcls["u3"] = &Mu[2];
 
-		aprtcls["c1"] = &MC[1];
-		aprtcls["c2"] = &MC[2];
-	}
+    aprtcls["w"] = &MWm;
+    aprtcls["c1"] = &MC[1];
+    aprtcls["c2"] = &MC[2];
+    aprtcls["SD1"] = &Msd[0];
+    aprtcls["SD2"] = &Msd[1];
+    aprtcls["SD3"] = &Msd[2];
+    aprtcls["SD4"] = &Msd[3];
+    aprtcls["SD5"] = &Msd[4];
+    aprtcls["SD6"] = &Msd[5];
+    aprtcls["SU1"] = &Msu[0];
+    aprtcls["SU2"] = &Msu[1];
+    aprtcls["SU3"] = &Msu[2];
+    aprtcls["SU4"] = &Msu[3];
+    aprtcls["SU5"] = &Msu[4];
+    aprtcls["SU6"] = &Msu[5];
+    aprtcls["SV1"] = &Msv[0];
+    aprtcls["SV2"] = &Msv[1];
+    aprtcls["SV3"] = &Msv[2];
+    aprtcls["SE1"] = &Mse[0];
+    aprtcls["SE2"] = &Mse[1];
+    aprtcls["SE3"] = &Mse[2];
+    aprtcls["SE4"] = &Mse[3];
+    aprtcls["SE5"] = &Mse[4];
+    aprtcls["SE6"] = &Mse[5];
+    aprtcls["HPM1"] = &MHm[0];
+    aprtcls["HPM2"] = &MHm[1];
 }
+}  // namespace DT

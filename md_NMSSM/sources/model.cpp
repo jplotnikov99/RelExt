@@ -29,7 +29,7 @@ std::complex<double> Msu[6];
 std::complex<double> Msv[3];
 std::complex<double> Mse[5];
 std::complex<double> Mh[6];
-std::complex<double> MHm2;
+std::complex<double> MHm[2];
 std::complex<double> MZ = 91.187600000000003;
 std::complex<double> Mgo;
 std::complex<double> MN[5];
@@ -244,6 +244,7 @@ std::complex<double> coup146[6];
 std::complex<double> coup147[6];
 std::complex<double> coup148[6];
 std::complex<double> coup149[6];
+
 
 }  // namespace PAR
 }  // namespace DT

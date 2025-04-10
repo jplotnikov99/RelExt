@@ -51,7 +51,8 @@ void ModelInfo::load_parameter_map() {
     parmapc["Mh4"] = &Mh[3];
     parmapc["Mh5"] = &Mh[4];
     parmapc["Mh6"] = &Mh[5];
-    parmapc["MHm2"] = &MHm2;
+    parmapc["MHm1"] = &MHm[0];
+    parmapc["MHm2"] = &MHm[1];
     parmapc["MZ"] = &MZ;
     parmapc["Mgo"] = &Mgo;
     parmapc["MN1"] = &MN[0];
