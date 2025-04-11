@@ -5,8 +5,8 @@
 Mode                |3
 InputFile           |micro_cxsm.csv
 OutputFile          |cxsm_nlo.csv
-StartPoint          |37
-EndPoint            |37
+StartPoint          |31
+EndPoint            |38
 SavedParameters     |MA1, MS1, alpha, svev
 ConsideredChannels  |
 SubtractChannels    |
@@ -18,7 +18,7 @@ NLO                 |1
 ######## Operations on scan ########
 START
 
-CalcRelic           |1
+CalcRelic           |0
 SaveData            |
 
 END

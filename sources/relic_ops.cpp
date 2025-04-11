@@ -4,9 +4,6 @@ namespace DT {
 RelicOps::RelicOps(std::shared_ptr<Model> model) {
     mod = model;
     bs = std::make_unique<BeqSolver>(model);
-
-    // std::cout << "NLO (relic_ops): " << nlo << std::endl;
-
 }
 
 void RelicOps::init_montecarlo(const size_t N_pars, const dvec1 &lower,

@@ -146,16 +146,6 @@ double Tac::lipsv(const double &s, const double &x) {
 ResError Tac::sigv(const double &u, const double &x) {
     double s = lower_bound * lower_bound + (1 - u) / u;
 
-    // std::cout << "lower_bound/2: " << lower_bound/2 << std::endl;
-    // std::cout << "u: " << u << std::endl;
-    // std::cout << "s: " << s << std::endl;
-    // std::cout << "x: " << x << std::endl;
-    // std::cout << "wij: " << wij(s) << std::endl;
-    // std::cout << "lipsv: " << lipsv(s,x) << std::endl;
-    // std::cout << "sigv: " << wij(s) * lipsv(s, x) * 1 / (u * u) << std::endl;
-
-    // exit(0);
-
     return wij(s) * lipsv(s, x) * 1 / (u * u);     
 }
 
@@ -258,22 +248,12 @@ ResError Tac::simpson38_adap_peak(const double l, const double r,
 }
 
 double Tac::kronrod_61(const double l, const double r, const double &x) {
-
-    // std::cout << "----------- kronrod_61 -----------" << std::endl;
-    // std::cout << "l: " << l << std::endl;
-    // std::cout << "r: " << r << std::endl;
-    // std::cout << "x: " << x << std::endl;
-    // std::cout << "----------------------------------" << std::endl;
-
     double m = 0.5 * (r + l);
     double h = 0.5 * (r - l);
 
     double res = 0;
     for (size_t i = 0; i < 30; i++) {
         double dx = h * kronx_61[i];
-
-        // std::cout << "\tm + dx: " << m + dx << std::endl;
-        // std::cout << "\tm - dx: " << m - dx << std::endl;
 
         res += wkron_61[i] * (sigv(m + dx, x).res + sigv(m - dx, x).res);
     }
@@ -347,11 +327,8 @@ void Tac::estimate_integrate_s(const double &x, ResError &res,
                      kronrod_61(boundaries.at(0), 1, x));
     } else {
         estimate += kronrod_61(0, 1e-6, x);
-        std::cout << "test1" << std::endl;
         estimate += kronrod_61(1e-6, 1e-3, x);
-        std::cout << "test2" << std::endl;
         estimate += kronrod_61(1e-3, 1, x);
-        std::cout << "test3" << std::endl;
     }
 }
 
@@ -374,16 +351,10 @@ void Tac::integrate_s(const double &x, ResError &res, double &estimate) {
 }
 
 ResError Tac::tac(const double &x) {
-
-    // double x = 14.72442094441484;
-
-    // std::cout << "\tx: " << x << std::endl << std::endl;
-
     ResError res{0., 0.};
     double estimate = 0.;
     calc_polK2(x);
     for (auto &it : inimap) {
-        std::cout << it.second[0] << std::endl;
         mod->set_channel(m1, m2, it.second);
         lower_bound = m1 + m2;
         if (beps(x)) {
@@ -399,12 +370,6 @@ ResError Tac::tac(const double &x) {
             integrate_s(x, res, estimate);
         }
     }
-
-    
-
-    std::cout << "TAC: " << res << std::endl;
-
-    // exit(0);
 
     return res;
 }
