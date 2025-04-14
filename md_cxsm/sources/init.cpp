@@ -21,6 +21,9 @@ namespace DT{
 
 	void AnnihilationAmps::init()
 	{
+		if (DT::nlo){
+			std::cout << nlo << std::endl;
+		}
 		ADDCHANNEL("A1,A1,H,H",A1A1HH, A1A1HHfl)
 		ADDCHANNEL("A1,A1,H,S1",A1A1HS1, A1A1HS1fl)
 		ADDCHANNEL("A1,A1,S1,S1",A1A1S1S1, A1A1S1S1fl)

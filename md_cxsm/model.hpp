@@ -158,6 +158,10 @@ namespace PAR{
 	extern double G;
 	extern double FAGS;
 }
+
+	extern bool nlo;
+	extern bool qcd;
+
 	double A1A1HH(const double &cos_t, const double &s);
 	double A1A1HS1(const double &cos_t, const double &s);
 	double A1A1S1S1(const double &cos_t, const double &s);

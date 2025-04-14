@@ -23,6 +23,14 @@ static constexpr bool SAVECONTRIBS = false;
 
 int main(int argc, char **argv) {
     clock_t begin_time = clock();
+
+    // User-defined options are parsed and ready to use
+    OptionParser parser;
+    parser.parse(argc, argv);
+
+    nlo = (parser.get("nlo") == "1" ? true : false);
+    qcd = (parser.get("qcd") == "1" ? true : false);
+
     Main M(argv, MODE, BEPS, XTODAY, FAST, CALCWIDTHS, SAVECONTRIBS);
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 

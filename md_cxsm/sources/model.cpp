@@ -157,4 +157,6 @@ namespace PAR{
 	double token38;
 	double token39;
 }
+	bool nlo;
+	bool qcd;
 }

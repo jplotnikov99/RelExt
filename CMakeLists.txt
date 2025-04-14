@@ -16,6 +16,17 @@ set(include_dir ${CMAKE_CURRENT_SOURCE_DIR}/include)
 # Add the main sources directory
 add_subdirectory(sources)
 
+# -------------------------- COLLIER --------------------------
+find_package(collier 1.2.5 QUIET)
+if(NOT collier_FOUND)
+  set(INCLUDE_COLLIER_TARGET True)
+  include(FetchContent)
+  FetchContent_Declare(collier URL https://collier.hepforge.org/downloads/?f=collier-1.2.8.tar.gz)
+  FetchContent_MakeAvailable(collier)
+  target_include_directories(collier PUBLIC $<TARGET_PROPERTY:collier,Fortran_MODULE_DIRECTORY>)
+endif()
+# -------------------------------------------------------------
+
 # 1. cxsm target
 # Add executable for cxsm
 
