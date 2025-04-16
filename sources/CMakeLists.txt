@@ -1,4 +1,5 @@
 #add_subdirectory(amp2s)
+add_subdirectory(interface/CollierLTCPP)
 
 file(GLOB my_sources *.cpp)
 if(APPLE)

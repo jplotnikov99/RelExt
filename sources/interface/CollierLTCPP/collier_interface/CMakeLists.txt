@@ -1,0 +1,3 @@
+add_library(CollierInterface lt_collier_interface_complex.F90)
+target_include_directories(CollierInterface PRIVATE include/)
+target_link_libraries(CollierInterface collier)

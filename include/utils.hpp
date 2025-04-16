@@ -43,6 +43,8 @@ double polK1(const double &x);
 
 double polK2(const double &x);
 
+double Li2(const double x);
+
 void append_to_VecString(VecString &a, const VecString &b);
 
 void check_arguments_number(const bool exact, const size_t needs,
