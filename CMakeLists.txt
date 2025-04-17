@@ -40,7 +40,7 @@ target_include_directories(cxsm_amp2s PRIVATE ${include_dir})
 # Link CoreFoundation framework only for macOS systems
 
 # Link libraries for cxsm
-target_link_libraries(cxsm PRIVATE sources CollierLTCPP cxsm_src cxsm_amp2s)
+target_link_libraries(cxsm PRIVATE sources cxsm_src cxsm_amp2s CollierLTCPP)
 
 # 2. cpvdm target
 add_executable(cpvdm md_cpvdm/main.cpp)
