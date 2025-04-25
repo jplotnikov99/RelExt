@@ -5,9 +5,9 @@
 #include <cmath>
 #include <complex>
 
-#define SUM1(arg, i, ni)              \
-    for (size_t i = 0; i < ni; i++) { \
-        res += arg;                   \
+#define SUM1(arg, i, ni)                       \
+    for (size_t i = 0; i < ni; i++) {          \
+        res += arg;                            \
     }
 #define SUM2(arg, i, ni, j, nj)           \
     for (size_t i = 0; i < ni; i++)       \
@@ -74,7 +74,7 @@ extern std::complex<double> ZP[2][2];
 extern std::complex<double> ZN[5][5];
 extern std::complex<double> UM[2][2];
 extern std::complex<double> UP[2][2];
-extern std::complex<double> ZEL[3][4];
+extern std::complex<double> ZEL[3][3];
 extern std::complex<double> ZER[3][3];
 extern std::complex<double> ZDL[3][3];
 extern std::complex<double> ZDR[3][3];
@@ -254,8 +254,6 @@ extern std::complex<double> coup145[6];
 extern std::complex<double> coup146[6];
 extern std::complex<double> coup147[6];
 extern std::complex<double> coup148[6];
-
-
 
 }  // namespace PAR
 double N1N1h2h2(const double &cos_t, const double &s);

@@ -10470,7 +10470,6 @@ double DT::N1N1WW(const double &cos_t, const double &s) {
                          32 * t * (MN[0] * MN[0]) - 32 * u * (MN[0] * MN[0]) +
                          32 * (MN[0] * MN[0] * MN[0] * MN[0])))))) /
         ((MWm * MWm * MWm * MWm) * (((MZ * MZ) - s) * ((MZ * MZ) - s)));
-
     SUM1(-0.5 *
              (CTW * g2 * I * (t - u) * (std::conj(coup8) + std::conj(coup9)) *
               (coup2[i1] + coup3[i1]) * coup77[i1] *
@@ -10478,7 +10477,6 @@ double DT::N1N1WW(const double &cos_t, const double &s) {
              ((MWm * MWm * MWm * MWm) * (-s + (MZ * MZ)) *
               (s - (Mh[i1] * Mh[i1]))),
          i1, 6)
-
     SUM1(
         -0.5 *
                 (CTW * g2 * I *

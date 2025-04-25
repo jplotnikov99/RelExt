@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
                "N1,N1,h2,h6", "N1,N1,h3,h3", "N1,N1,h3,h4", "N1,N1,h3,h5",
                "N1,N1,h3,h6", "N1,N1,h4,h4", "N1,N1,h4,h5", "N1,N1,h4,h6",
                "N1,N1,h5,h5", "N1,N1,h5,h6", "N1,N1,h6,h6", "N1,N1,Hpm2,Hpm2",
-                "N1,N1,Z,Z", "N1,N1,W,W"});
+               "N1,N1,Z,Z", "N1,N1,W,W"});
     M.SaveData(SAVEPARS);
 
     std::cout << "Computation time:\n"
