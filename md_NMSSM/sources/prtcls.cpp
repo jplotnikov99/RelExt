@@ -51,6 +51,9 @@ void ModelInfo::load_prtcls() {
     prtcls["N5"] = &MN[4];
     prtcls["C1"] = &MC[0];
     prtcls["C2"] = &MC[1];
+    prtcls["v1"] = &CZERO;
+    prtcls["v2"] = &CZERO;
+    prtcls["v3"] = &CZERO;
     prtcls["e1"] = &Me[0];
     prtcls["e2"] = &Me[1];
     prtcls["e3"] = &Me[2];

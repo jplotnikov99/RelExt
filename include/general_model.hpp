@@ -38,6 +38,7 @@ struct ModelInfo {
     size_t N_widths;
     VecString bath_masses;
     const bool calc_widths;
+    std::complex<double> CZERO = 0.;
     double ZERO = 0;
     double MDM = 0.;
 
