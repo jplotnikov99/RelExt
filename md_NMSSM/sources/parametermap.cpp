@@ -7,15 +7,6 @@ namespace DT {
 void ModelInfo::load_parameter_map() {
     using namespace PAR;
     parmap["et"] = &ZERO;
-    parmapc["We1"] = &We1;
-    parmapc["We2"] = &We2;
-    parmapc["We3"] = &We3;
-    parmapc["Wd1"] = &Wd1;
-    parmapc["Wd2"] = &Wd2;
-    parmapc["Wd3"] = &Wd3;
-    parmapc["Wu1"] = &Wu1;
-    parmapc["Wu2"] = &Wu2;
-    parmapc["Wu3"] = &Wu3;
     parmapc["Maux"] = &Maux;
     parmapc["sqrt2"] = &sqrt2;
     parmapc["Pi"] = &Pi;

@@ -176,9 +176,13 @@ void Main::ChangeThermalBath(const VecString &args) {
 }
 
 void Main::CalcAmp(const double s, const double cos_t, VecString channels) {
-    for (auto &it : channels)
-        ASSERT(AA.check_channel_existence(it),
-               "Error in NEGLECTCHANNELS: " << it << " is not a valid channel.")
+    if (channels.size() == 0)
+        channels = AA.get_all_channels();
+    else
+        for (auto &it : channels)
+            ASSERT(AA.check_channel_existence(it),
+                   "Error in NEGLECTCHANNELS: " << it
+                                                << " is not a valid channel.")
     AA.set_s(s);
     for (auto it : channels) {
         AA.set_channel({it}, false);
@@ -241,6 +245,7 @@ void Main::CalcTac(double xmin, double xmax, const size_t points,
     tac.sort_inimasses(channels);
     if (xmin == xmax) {
         res = tac(xmin);
+        std::cout << xmin << " " << res << "\n";
         TAR->save_data({"x", "tac"}, {xmin, res});
     } else
         for (double i = xmin; i <= xmax; i += step) {

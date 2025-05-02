@@ -34,7 +34,7 @@ struct ModelInfo {
     std::unordered_map<std::string, double> DSdof;
     std::map<std::string, std::complex<double> *> parmapc;
     std::map<std::string, double *> parmap;
-    std::vector<double *> denstructures;
+    std::vector<std::complex<double> *> denstructures;
     size_t N_widths;
     VecString bath_masses;
     const bool calc_widths;

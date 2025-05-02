@@ -64,11 +64,12 @@ class Tac {
 
     // checks if the peak is suppressed enough by the boltzmann factor to not
     // matter for seperate integration
-    double peak_relevance(const double &peakpos);
+    double peak_relevance(const std::complex<double> &peakpos);
 
     // defines a triplet with the boundaries of a resonance peak and the width
     // in terms of the variable u
-    double *peak_bounds(const double &peakpos, const double &width);
+    double *peak_bounds(const std::complex<double> &peakpos,
+                        const std::complex<double> &width);
 
     // sorts the boundaries triplets in descending order
     void i_sort_boundaries();

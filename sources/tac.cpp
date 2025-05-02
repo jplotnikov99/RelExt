@@ -123,23 +123,26 @@ bool Tac::beps(const double &x) {
     return (x * (sigv.lower_bound - 2 * AA.MDM) / AA.MDM <= -beps_eps);
 }
 
-double Tac::peak_relevance(const double &peakpos) {
-    if (peakpos == sigv.lower_bound) return -1.;
+double Tac::peak_relevance(const std::complex<double> &peakpos) {
+    if (peakpos.real() == sigv.lower_bound) return -1.;
     return -(beps_eps /* - 4.6051701859880 */) * AA.MDM /
-           (peakpos - sigv.lower_bound);
+           (peakpos.real() - sigv.lower_bound);
 }
 
-double *Tac::peak_bounds(const double &peakpos, const double &width) {
+double *Tac::peak_bounds(const std::complex<double> &peakpos,
+                         const std::complex<double> &width) {
     static double bounds[3];
     double n = 0.1;
-    while (peakpos - 2 * width / n < sigv.lower_bound) n *= 2;
+    while (peakpos.real() - 2 * width.real() / n < sigv.lower_bound) n *= 2;
 
-    bounds[0] = 1 / ((peakpos - 2 * width / n) * (peakpos - 2 * width / n) -
+    bounds[0] = 1 / ((peakpos.real() - 2 * width.real() / n) *
+                         (peakpos.real() - 2 * width.real() / n) -
                      sigv.lower_bound * sigv.lower_bound + 1);
-    bounds[1] =
-        1 / (peakpos * peakpos - sigv.lower_bound * sigv.lower_bound + 1);
-    bounds[2] = 1 / ((peakpos + 2 * width / n) * (peakpos + 2 * width / n) -
+    bounds[1] = 1 / (peakpos.real() * peakpos.real() -
                      sigv.lower_bound * sigv.lower_bound + 1);
+    bounds[2] = 1 / ((peakpos.real() + 2 * width.real() / n) *
+                         (peakpos.real() + 2 * width.real() / n) -
+                     sigv.lower_bound * sigv.lower_bound + 1.);
 
     return bounds;
 }
@@ -279,7 +282,6 @@ double Tac::operator()(const double &x) {
         }
     }
     for (auto &it : inimap) {
-        std::cout << x << "\n";
         AA.set_channel(it.second);
         AA.assign_masses(m1, m2, it.second[0]);
         sigv.set_lower_bound(m1 + m2);
