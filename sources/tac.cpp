@@ -29,7 +29,7 @@ double SigvInt::xsec(const double &s, const std::string &channel) {
     f[3] = f_est[9];
     return 1 / (32 * M_PI * s) *
            sqrt(kaellen(s, m3 * m3, m4 * m4) / kaellen(s, m1 * m1, m2 * m2)) *
-           h_adap_simpson38(AA, -1, 1, f, est, theta_eps);
+           adap_simpson38(AA, -1, 1, f, theta_eps);
 }
 
 double SigvInt::wij(const double &s) {

@@ -41,6 +41,7 @@ void ModelInfo::load_prtcls() {
     prtcls["se6"] = &Mse[5];
     prtcls["Hpm1"] = &MHm[0];
     prtcls["Hpm2"] = &MHm[1];
+    prtcls["A"] = &CZERO;
     prtcls["Z"] = &MZ;
     prtcls["W"] = &MWm;
     prtcls["g"] = &Mgo;

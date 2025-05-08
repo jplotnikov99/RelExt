@@ -175,7 +175,7 @@ void Main::ChangeThermalBath(const VecString &args) {
     AA.load_tokens();
 }
 
-void Main::CalcAmp(const double s, const double cos_t, VecString channels) {
+double Main::CalcAmp(const double s, const double cos_t, VecString channels) {
     if (channels.size() == 0)
         channels = AA.get_all_channels();
     else
@@ -186,8 +186,8 @@ void Main::CalcAmp(const double s, const double cos_t, VecString channels) {
     AA.set_s(s);
     for (auto it : channels) {
         AA.set_channel({it}, false);
-        std::cout << std::setprecision(16) << it << ": " << AA(cos_t) << "\n";
     }
+    return AA(cos_t);
 }
 
 void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
@@ -211,16 +211,17 @@ void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
     double res;
     VecString prs;
     double dof1, dof2;
-    // for (double sqs = sqsmin; sqs <= sqsmax; sqs += step) {
+    for (double sqs = sqsmin; sqs <= sqsmax; sqs += step) {
     res = 0;
     for (auto it : channels) {
         prs = AA.get_channel_prtcls(it);
         dof1 = AA.DSdof[prs[0]];
         dof2 = AA.DSdof[prs[1]];
-        res += sigv->xsec(sqsmin * sqsmin, it) / (dof1 * dof2);
+        res += sigv->xsec(sqs * sqs, it) / (dof1 * dof2);
+        std::cout << res << "\n";
     }
-    xsr->save_data({"sqrts", "xsec"}, {sqsmin, res});
-    //}
+    xsr->save_data({"sqrts", "xsec"}, {sqs, res});
+    }
 }
 
 void Main::CalcTac(double xmin, double xmax, const size_t points,
