@@ -2598,6 +2598,14 @@ double C2c2D2d2(const double &cos_t, const double &s);
 double C2c2D2d2fl(const double &cos_t, const double &s);
 double C2c2D3d3(const double &cos_t, const double &s);
 double C2c2D3d3fl(const double &cos_t, const double &s);
+double lambda_u_o();
+double lambda_d_o();
+double lambda_d_e();
+double lambda_s_e();
+double lambda_b_e();
+double lambda_u_e();
+double lambda_c_e();
+double lambda_t_e();
 
 
 }  // namespace DT

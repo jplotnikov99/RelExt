@@ -83,6 +83,7 @@ class Main {
 
     // args are: mechanism type
     double CalcRelic(const int mechanism = 0);
+    double CalcDDT();
 
     // args are: name of parameter, mechanism, relic target, relic error,
     // variable to save into

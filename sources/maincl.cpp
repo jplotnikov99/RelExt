@@ -1,4 +1,5 @@
 #include "../include/maincl.hpp"
+#include "../md_NMSSM/model.hpp"
 
 namespace DT {
 Main::Main(char *argv[], const int modee, double beps, const double xtoday,
@@ -8,7 +9,7 @@ Main::Main(char *argv[], const int modee, double beps, const double xtoday,
       output_file(std::string(argv[2])),
       calc_widths(calcwidths),
       save_contribs(savecontribs),
-      FO(AA, fast) {
+      FO(AA, fast){
     srand((unsigned)time(NULL));
     std::string inputfile = std::string(argv[1]);
     if (beps >= 1.) beps = 0.99;
@@ -300,6 +301,45 @@ double Main::CalcRelic(const int mechanism) {
     return omega;
 }
 
+
+double Main::CalcDDT(){
+    using namespace DT;
+    using namespace PAR;
+    double m_chi = MN[0].real();
+    double Z = 1;
+    double A = 2;
+    DDetection det(m_chi, Z, A);
+    det.setLambda("lambda_u_e", lambda_u_e());
+    det.setLambda("lambda_d_e", lambda_d_e());
+    det.setLambda("lambda_s_e", lambda_s_e());
+    det.setLambda("lambda_c_e", lambda_c_e());
+    det.setLambda("lambda_b_e", lambda_b_e());
+    det.setLambda("lambda_t_e", lambda_t_e());
+    det.setLambda("lambda_u_o", lambda_u_o());
+    det.setLambda("lambda_d_o", lambda_d_o());
+
+
+    std::cout <<"lamu: " << " " <<lambda_u_e() << std::endl;
+    std::cout <<"lamd: " << " " <<lambda_d_e() << std::endl;
+    std::cout <<"lams: " << " " <<lambda_s_e() << std::endl;
+    std::cout <<"lamc: " << " " <<lambda_c_e() << std::endl;
+    std::cout <<"lamb: " << " " <<lambda_b_e() << std::endl;
+    std::cout <<"lamt: " << " " <<lambda_t_e() << std::endl;
+
+    // 7. Parton-Inhalte setzen
+    det.setNqP("u", 2.0); // Proton: 2 up
+    det.setNqP("d", 1.0); // Proton: 1 down
+    det.setNqN("u", 1.0); // Neutron: 1 up
+    det.setNqN("d", 2.0); // Neutron: 2 down
+    // 8. Cross-Section berechnen
+    // 9. Ausgabe
+   double sigmap_gev2 = det.DDxSecp();
+   double sigman_gev2 = det.DDxSecn();
+   std::cout << "Proton DD-Xsec: " << det.convertGeV2ToPicobarn(sigmap_gev2) << " pb" << std::endl;
+   std::cout << "Neutron DD-Xsec: " << det.convertGeV2ToPicobarn(sigman_gev2) << " pb" << std::endl;
+   exit(0);
+}
+
 void Main::FindParameter(const std::string &par, const double target,
                          const double eps) {
     ASSERT(mode == 1 || mode == 2, "FindParameter works only in mode 1 and 2")
@@ -383,6 +423,10 @@ void Main::SaveData(const VecString &save_pars) {
 
     outfile.close();
 }
+
+
+
+
 
 Main::~Main() {
     if (MC) {
