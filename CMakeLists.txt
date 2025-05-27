@@ -8,7 +8,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Add optimization flags and verbose output
-add_compile_options(-O3)
+add_compile_options(-O3 -ffast-math -fno-inline-functions -fno-tree-vectorize -funroll-loops 
+-march=native -fno-var-tracking-assignments)
 
 # Include directory for headers
 set(include_dir ${CMAKE_CURRENT_SOURCE_DIR}/include)

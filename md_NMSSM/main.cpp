@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 
     clock_t begin_time = clock();
     M.LoadParameters();
-    //M.CalcDDT();
+    M.CalcDDT();
     M.CalcRelic();
     /* std::unique_ptr<DataReader> xsr =
         std::make_unique<DataReader>("amps.dat", 2);

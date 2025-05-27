@@ -302,7 +302,7 @@ double Main::CalcRelic(const int mechanism) {
 }
 
 
-double Main::CalcDDT(){
+void Main::CalcDDT(){
     using namespace DT;
     using namespace PAR;
     double m_chi = MN[0].real();
@@ -337,7 +337,6 @@ double Main::CalcDDT(){
    double sigman_gev2 = det.DDxSecn();
    std::cout << "Proton DD-Xsec: " << det.convertGeV2ToPicobarn(sigmap_gev2) << " pb" << std::endl;
    std::cout << "Neutron DD-Xsec: " << det.convertGeV2ToPicobarn(sigman_gev2) << " pb" << std::endl;
-   exit(0);
 }
 
 void Main::FindParameter(const std::string &par, const double target,
