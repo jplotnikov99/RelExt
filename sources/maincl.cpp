@@ -2,12 +2,13 @@
 
 namespace DT {
 Main::Main(char *argv[], const int modee, double beps, const double xtoday,
-           const bool fast, const bool calcwidths, const bool savecontribs)
-    : AA(*new AnnihilationAmps(calc_widths)),
+           const bool fast, const bool calcwidths, const bool savecontribs, const bool p_nlo)
+    : AA(*new AnnihilationAmps(calc_widths, p_nlo)),
       mode(modee),
       output_file(std::string(argv[2])),
       calc_widths(calcwidths),
       save_contribs(savecontribs),
+      nlo(p_nlo),
       FO(AA, fast) {
     srand((unsigned)time(NULL));
     std::string inputfile = std::string(argv[1]);
@@ -177,7 +178,7 @@ void Main::ChangeThermalBath(const VecString &args) {
 
 void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
                     const std::string outfile, VecString channels) {
-    AnnihilationAmps AA(calc_widths);
+    AnnihilationAmps AA(calc_widths, nlo);
     for (auto &it : channels)
         ASSERT(AA.check_channel_existence(it),
                "Error in NEGLECTCHANNELS: " << it << " is not a valid channel.")

@@ -22,6 +22,7 @@ class Main {
     bool first_run = true;
     const bool calc_widths;
     const bool save_contribs;
+    const bool nlo;
     VecDoub channel_frac;
     VecString bath_procs;
     MatString generator_list;
@@ -32,7 +33,7 @@ class Main {
 
    public:
     Main(char *argv[], const int modee, double beps, const double xtoday,
-         const bool fast, const bool calcwidths, const bool savecontribs);
+         const bool fast, const bool calcwidths, const bool savecontribs, const bool nlo = false);
 
     void load_generation_file();
 

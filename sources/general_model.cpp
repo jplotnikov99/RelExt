@@ -1,8 +1,9 @@
 #include "../include/general_model.hpp"
+#include "../include/interface/CollierLTCPP.h"
 
 namespace DT {
 
-ModelInfo::ModelInfo(const bool calcwidths) : calc_widths(calcwidths) {
+ModelInfo::ModelInfo(const bool calcwidths, const bool p_nlo) : calc_widths(calcwidths), nlo(p_nlo) {
     ModelInfo::init();
     load_prtcls();
     load_parameter_map();
@@ -43,6 +44,12 @@ bool ModelInfo::load_everything() {
         load_parameters();
     }
     load_tokens();
+
+    if (nlo){
+        init_CollierLTCPP(0., 125.09 * 125.09, 1.);
+        load_counterterms();
+    }
+
     return check_conditions();
 }
 
@@ -83,8 +90,8 @@ void ModelInfo::assigndm() {
         if (MDM > *DSmasses[it]) MDM = *DSmasses[it];
 }
 
-AnnihilationAmps::AnnihilationAmps(const bool calc_widths)
-    : ModelInfo(calc_widths) {
+AnnihilationAmps::AnnihilationAmps(const bool calc_widths, const bool nlo)
+    : ModelInfo(calc_widths, nlo) {
     AnnihilationAmps::init();
 }
 

@@ -36,6 +36,7 @@ struct ModelInfo {
     size_t N_widths;
     VecString bath_masses;
     const bool calc_widths;
+    const bool nlo;
     double ZERO = 0;
     double MDM = 0.;
 
@@ -45,6 +46,7 @@ struct ModelInfo {
     void load_parameters();
     void load_parameter_map();
     void load_tokens();
+    void load_counterterms();
     bool check_conditions();
     void print_prtcls();
     void print_DM();
@@ -57,7 +59,7 @@ struct ModelInfo {
     void assign_bath_masses(const VecString &prtcls = {});
     void assigndm();
 
-    ModelInfo(const bool calcwidths);
+    ModelInfo(const bool calcwidths, const bool nlo);
 };
 
 class AnnihilationAmps : public ModelInfo {
@@ -68,7 +70,7 @@ class AnnihilationAmps : public ModelInfo {
     vamp2 cur_channel;
 
    public:
-    AnnihilationAmps(const bool calcwidths);
+    AnnihilationAmps(const bool calcwidths, const bool nlo);
 
     void init();
     void print_channels();
