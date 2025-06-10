@@ -11,8 +11,7 @@ static constexpr int MODE = 4;
 static const VecString SAVEPARS = {};
 static const VecString CONSIDERCHANNELS = {};
 VecString NEGLECTCHANNELS = {};
-static const VecString NEGLECTPARTICLES = {"N3", "N4", "N5",
-                                           "C1", "c1", "c2", "C2"};
+static const VecString NEGLECTPARTICLES = {"N3", "N4", "N5", "c2", "C2"};
 static constexpr double BEPS = 1e-6;
 static constexpr double XTODAY = 1e6;
 static constexpr bool FAST = true;

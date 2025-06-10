@@ -569,119 +569,108 @@ double AnnihilationAmps::operator()(const double cos_t) {
     double res = 0.;
     for (auto it : cur_channel) {
         res += it(cos_t, s);
-        //std::cout << it(0.1, 4000. * 4000.) << "\n";
-        //exit(1);
+        // std::cout << it(0.1, 4000. * 4000.) << "\n";
+        // exit(1);
     }
     return res;
 }
-
-
 DDetection::DDetection(double m_chi, double Z, double A)
-        : mu_chi(computeMu(m_chi)), Z(Z),A(A){}
+    : mu_chi(computeMu(m_chi)), Z(Z), A(A) {}
 
-    double DDetection::computeMu(double m_chi) {
-    constexpr double m_N = 0.939; // durchschnittliche Nukleonmasse in GeV (Xenon)
-    return (m_N*m_chi) / (m_chi + m_N);
+double DDetection::computeMu(double m_chi) {
+    constexpr double m_N =
+        0.939;  // durchschnittliche Nukleonmasse in GeV (Xenon)
+    return (m_N * m_chi) / (m_chi + m_N);
 }
-
-
-void DDetection::setLambda(const std::string& key, double value){
-        lambda[key] = value;
+void DDetection::setLambda(const std::string &key, double value) {
+    lambda[key] = value;
 }
+void DDetection::setNqP(const std::string &q, double value) { nq_p[q] = value; }
+void DDetection::setNqN(const std::string &q, double value) { nq_n[q] = value; }
+double DDetection::computePart(bool isProton) {
+    const auto &fq = isProton ? fq_p : fq_n;
+    double m = 0.9382720813;
+    double coeff = isProton ? Z * m : (A - Z) * m;
+    auto &nq = isProton ? nq_p : nq_n;
 
-void DDetection::setNqP(const std::string& q, double value){
-        nq_p[q] = value;
+    std::vector<std::string> lq = {"u", "d", "s"};
+    std::vector<std::string> hq = {"c", "b", "t"};
+    std::vector<std::string> hadContent = {"u", "d"};
+    double sum_lq = 0.;
+    for (const auto &q : lq) {
+        sum_lq +=
+            safeAt(fq, q, "fq") * lambda["lambda_" + q + "_e"] / getMass(q);
+    }
+    double sum_hq = 0.;
+    for (const auto &q : hq) {
+        sum_hq += lambda["lambda_" + q + "_e"] / getMass(q);
+    }
+
+    double sum_fq = 0.;
+    for (const auto &q : lq) {
+        sum_fq += safeAt(fq, q, "fq");
+    }
+    double odd_sum = 0.;
+    for (const auto &q : hadContent) {
+        odd_sum += safeAt(nq, q, isProton ? "nq_p" : "nq_n") *
+                   lambda["lambda_" + q + "_o"] / (m * getMass(q));
+    }
+
+    double sum_heavy = (2 / 27.0) * (1. - sum_fq) * sum_hq;
+    std::cout << pow(coeff * (sum_lq + sum_heavy + odd_sum), 2) << std::endl;
+    return pow(coeff * (sum_lq + sum_heavy + odd_sum), 2);
 }
-
-void DDetection::setNqN(const std::string& q, double value){
-        nq_n[q] = value;
+double DDetection::DDxSecp() {
+    double prefactor = mu_chi * mu_chi / M_PI;
+    std::cout << prefactor << std::endl;
+    double Sig_pr = computePart(true);
+    double total = Sig_pr;
+    return prefactor * total;
 }
-
-
-double DDetection::computePart(bool isProton){
-        const auto& fq = isProton ? fq_p : fq_n;
-        double m = 0.9382720813;
-        double coeff = isProton ? Z*m : (A-Z)*m;
-        auto& nq = isProton ? nq_p : nq_n;
-
-        std::vector<std::string> lq = {"u", "d", "s"};
-        std::vector<std::string> hq = {"c", "b", "t"};
-        std::vector<std::string> hadContent = {"u","d"};
-        double sum_lq = 0.;
-        for (const auto&q : lq){
-            sum_lq += safeAt(fq, q, "fq")*lambda["lambda_"+ q+ "_e"]/getMass(q);
-        }
-
-        double sum_hq = 0.;
-        for (const auto&q : hq){
-            sum_hq += lambda["lambda_"+ q+ "_e"]/getMass(q);
-        }
-
-        double sum_fq = 0.;
-        for(const auto& q: lq){
-            sum_fq += safeAt(fq, q, "fq");
-        }
-        double odd_sum = 0.;
-        for(const auto& q: hadContent){
-            odd_sum += safeAt(nq, q, isProton ? "nq_p" : "nq_n") * lambda["lambda_" + q +"_o"]/(m*getMass(q));
-        }
-    
-        double sum_heavy = (2/27.0) * (1. - sum_fq)*sum_hq;
-        return pow(coeff * (sum_lq + sum_heavy + odd_sum),2);
-
-    }
-    double DDetection::DDxSecp(){
-        double prefactor = mu_chi*mu_chi/M_PI;
-        double Sig_pr = computePart(true);
-        double total = Sig_pr;
-        return prefactor *total;
-    }
-     double DDetection::DDxSecn(){
-        double prefactor = mu_chi*mu_chi/M_PI;
-        double Sig_n = computePart(false);
-        return prefactor * Sig_n;
-    }
-    double DDetection::getMass(const std::string& q) const {
-        static std::map<std::string, double> qmass = {
-            {"u", 2.20000000e-3}, {"d", 4.70000000e-3}, {"s", 9.50000000e-2},
-            {"c", 1.274}, {"b", 4.1799999999999997}, {"t", 172.75999999999999}
-        };
-        return qmass.at(q);
-    }
-    void DDetection::checkRequiredInputs() const {
+double DDetection::DDxSecn() {
+    double prefactor = mu_chi * mu_chi / M_PI;
+    double Sig_n = computePart(false);
+    return prefactor * Sig_n;
+}
+double DDetection::getMass(const std::string &q) const {
+    static std::map<std::string, double> qmass = {
+        {"u", 2.20000000e-3},      {"d", 4.70000000e-3},
+        {"s", 9.50000000e-2},      {"c", 1.274},
+        {"b", 4.1799999999999997}, {"t", 172.75999999999999}};
+    return qmass.at(q);
+}
+void DDetection::checkRequiredInputs() const {
     // Erwartete Keys
     std::vector<std::string> required_lambdas = {
-        "lambda_u_e", "lambda_d_e", "lambda_s_e",
-        "lambda_c_e", "lambda_b_e", "lambda_t_e",
-        "lambda_u_o", "lambda_d_o"
-    };
+        "lambda_u_e", "lambda_d_e", "lambda_s_e", "lambda_c_e",
+        "lambda_b_e", "lambda_t_e", "lambda_u_o", "lambda_d_o"};
 
     std::vector<std::string> required_nq = {"u", "d"};
 
     // Lambda-Check
-    for (const auto& key : required_lambdas) {
+    for (const auto &key : required_lambdas) {
         if (lambda.find(key) == lambda.end()) {
             throw std::runtime_error("Missing lambda coupling: " + key);
         }
     }
 
     // Parton-Inhalt (Proton)
-    for (const auto& q : required_nq) {
+    for (const auto &q : required_nq) {
         if (nq_p.find(q) == nq_p.end()) {
             throw std::runtime_error("Missing nq_p entry for quark: " + q);
         }
     }
 
     // Parton-Inhalt (Neutron)
-    for (const auto& q : required_nq) {
+    for (const auto &q : required_nq) {
         if (nq_n.find(q) == nq_n.end()) {
             throw std::runtime_error("Missing nq_n entry for quark: " + q);
         }
     }
 }
-
-template<typename K, typename V>
-V DDetection::safeAt(const std::map<K, V>& m, const K& key, const std::string& context) const {
+template <typename K, typename V>
+V DDetection::safeAt(const std::map<K, V> &m, const K &key,
+                     const std::string &context) const {
     auto it = m.find(key);
     if (it == m.end()) {
         throw std::runtime_error("Missing key '" + key + "' in " + context);
