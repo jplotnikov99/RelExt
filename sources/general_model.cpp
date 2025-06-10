@@ -91,7 +91,7 @@ for(int i = 0; i < 3; ++i) {
     try { Msd[3] = slha.getValue("MASS", {2000001}); }  catch(...) {}
     try { Msd[4] = slha.getValue("MASS", {2000003}); }  catch(...) {}
     try { Msd[5] = slha.getValue("MASS", {2000005}); }  catch(...) {}
-
+    try { Wh[0] = WZ; }  catch(...) {}
     try { Wh[1] = slha.getValue("DECAY", {25}); }  catch(...) {}
     try { Wh[2] = slha.getValue("DECAY", {35}); }  catch(...) {}
     try { Wh[3] = slha.getValue("DECAY", {36}); }  catch(...) {}
@@ -124,6 +124,7 @@ for(int i = 0; i < 3; ++i) {
     try { Wsv[0] = slha.getValue("DECAY", {1000012}); }  catch(...) {}
     try { Wsv[1] = slha.getValue("DECAY", {1000014}); }  catch(...) {}
     try { Wsv[2] = slha.getValue("DECAY", {1000016}); }  catch(...) {}
+    try { WHm[0] = WWm; }  catch(...) {}
     try { WHm[1] = slha.getValue("DECAY", {37}); }  catch(...) {}
 
 
