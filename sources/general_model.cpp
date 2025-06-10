@@ -47,12 +47,13 @@ for(int i = 0; i < 3; ++i) {
 
     // Beispiel: Mehrdimensionale Arrays
     // Higgs-Massen (falls in MASS mit 25, 35, 45, ...)
-    try { Mh[0] = slha.getValue("MASS", {24}); }  catch(...) {}
+    try { Mh[0] = slha.getValue("SMINPUTS", {4}); }  catch(...) {}
     try { Mh[1] = slha.getValue("MASS", {25}); }  catch(...) {}
     try { Mh[2] = slha.getValue("MASS", {35}); }  catch(...) {}
     try { Mh[3] = slha.getValue("MASS", {36}); }  catch(...) {}
     try { Mh[4] = slha.getValue("MASS", {45}); }  catch(...) {}
     try { Mh[5] = slha.getValue("MASS", {46}); }  catch(...) {}
+    try { MHm[0] = slha.getValue("MASS", {24}); }  catch(...) {}
     try { MHm[1] = slha.getValue("MASS", {37}); }  catch(...) {}
 
     try { MC[0] = slha.getValue("MASS", {1000024}); }  catch(...) {}
@@ -64,12 +65,12 @@ for(int i = 0; i < 3; ++i) {
     try { Wh[4] = slha.getValue("DECAY", {45}); }  catch(...) {}
     try { Wh[5] = slha.getValue("DECAY", {36}); }  catch(...) {}
 
-    for(int i=0; i<3; ++i) {
-        try { MN[i] = slha.getValue("MASS",{1000022+i});} catch(...) {}
-    }
-    for(int i=0; i<=2; ++i) {
-        try { MN[i+3] = slha.getValue("MASS",{1000025+i*10});} catch(...) {}
-    }
+    try { MN[0] = slha.getValue("MASS", {1000022}); }  catch(...) {}
+    try { MN[1] = slha.getValue("MASS", {1000023}); }  catch(...) {}
+    try { MN[2] = slha.getValue("MASS", {1000025}); }  catch(...) {}
+    try { MN[3] = slha.getValue("MASS", {1000035}); }  catch(...) {}
+    try { MN[4] = slha.getValue("MASS", {1000045}); }  catch(...) {}
+
 
     try { Msv[0] = slha.getValue("MASS", {1000012}); }  catch(...) {}
     try { Msv[1] = slha.getValue("MASS", {1000014}); }  catch(...) {}

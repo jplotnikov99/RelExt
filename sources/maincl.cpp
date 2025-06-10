@@ -328,6 +328,7 @@ void Main::CalcDDT(){
     det.setLambda("lambda_d_o", lambda_d_o());
 
 
+    
  //   std::cout <<"lamu: " << " " <<lambda_u_e() << std::endl;
  //   std::cout <<"lamd: " << " " <<lambda_d_e() << std::endl;
  //   std::cout <<"lams: " << " " <<lambda_s_e() << std::endl;
