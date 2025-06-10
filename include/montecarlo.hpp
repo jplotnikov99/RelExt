@@ -10,6 +10,7 @@
 #include "data_structures.hpp"
 #include "hyper_parameters.hpp"
 #include "utils.hpp"
+#include <unordered_map>
 
 namespace DT {
 

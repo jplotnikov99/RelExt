@@ -7,7 +7,7 @@ using namespace DT;
 /* Change to desired settings starting from here
  ***********************************************
  */
-static constexpr int MODE = 1;
+static constexpr int MODE = 4;
 static const VecString SAVEPARS = {};
 static const VecString CONSIDERCHANNELS = {};
 VecString NEGLECTCHANNELS = {};
@@ -29,6 +29,8 @@ int main(int argc, char **argv) {
     clock_t begin_time = clock();
     M.LoadParameters();
     M.CalcDDT();
+
+
     /* std::unique_ptr<DataReader> xsr =
         std::make_unique<DataReader>("amps.dat", 2);
     double res, cost;

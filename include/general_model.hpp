@@ -14,6 +14,7 @@
 #include "utils.hpp"
 
 namespace DT {
+
 #define ADDCHANNEL(name, amp, ampfl) \
     amp2s[name] = amp;               \
     amp2fls[name] = ampfl;
@@ -25,7 +26,7 @@ typedef std::function<double(const double &, const double &)> f;
 typedef std::vector<f> vamp2;
 typedef std::unordered_map<std::string, f> fmap;
 typedef std::unordered_map<std::string, std::complex<double> *> sMapDp;
-
+class SLHAReader;
 struct ModelInfo {
     sMapDp DSmasses;
     sMapDp prtcls;
@@ -59,6 +60,7 @@ struct ModelInfo {
 
     void assign_bath_masses(const VecString &prtcls = {});
     void assigndm();
+    void updateFromSLHA(const SLHAReader& slha);
 
     ModelInfo(const bool calcwidths);
 };
@@ -118,5 +120,17 @@ static double convertGeV2ToPicobarn(double sigma_gev2);
         double computePart(bool isProton);
         double getMass(const std::string& q) const;
     };
+
+
+class SLHAReader{
+    public:
+        SLHAReader(const std::string& filename);
+        double getValue(const std::string& block, const std::vector<int>) const;
+        std::vector<std::vector<double>> getMatrix(const std::string& block, int dim) const; 
+    private: 
+        std::map<std::string, std::map<std::vector<int>,double>> blocks;
+        void parseFile(const std::string& filename); 
+};
+
 
 }  // namespace DT

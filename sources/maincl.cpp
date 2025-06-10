@@ -17,7 +17,8 @@ Main::Main(char *argv[], const int modee, double beps, const double xtoday,
     beps_eps = std::log(beps);
     FO.set_xtoday(xtoday);
     if (inputfile != "") {
-        rdr = std::make_unique<DataReader>(inputfile, 1);
+        //rdr = std::make_unique<DataReader>(inputfile, 1);
+        std::unique_ptr<SLHAReader> slha;
         switch (mode) {
             case 1:
                 load_generation_file();
@@ -28,8 +29,13 @@ Main::Main(char *argv[], const int modee, double beps, const double xtoday,
             case 3:
                 load_read_file();
                 break;
-
-            default:
+            case 4:{
+            SLHAReader slha(inputfile);
+            AA.updateFromSLHA(slha);
+            AA.load_parameters();
+            break;
+            }
+            default:    
                 std::cout << "The mode " << mode << " does not exist.\n";
                 exit(1);
                 break;
@@ -91,6 +97,8 @@ void Main::LoadParameters(const size_t i) {
             } break;
             case 3:
                 rdr->read_parameter(i);
+                break;
+            case 4:
                 break;
             default:
                 break;
@@ -302,13 +310,14 @@ double Main::CalcRelic(const int mechanism) {
 }
 
 
-double Main::CalcDDT(){
+void Main::CalcDDT(){
     using namespace DT;
     using namespace PAR;
     double m_chi = MN[0].real();
     double Z = 1;
     double A = 2;
     DDetection det(m_chi, Z, A);
+    
     det.setLambda("lambda_u_e", lambda_u_e());
     det.setLambda("lambda_d_e", lambda_d_e());
     det.setLambda("lambda_s_e", lambda_s_e());
@@ -319,12 +328,12 @@ double Main::CalcDDT(){
     det.setLambda("lambda_d_o", lambda_d_o());
 
 
-    std::cout <<"lamu: " << " " <<lambda_u_e() << std::endl;
-    std::cout <<"lamd: " << " " <<lambda_d_e() << std::endl;
-    std::cout <<"lams: " << " " <<lambda_s_e() << std::endl;
-    std::cout <<"lamc: " << " " <<lambda_c_e() << std::endl;
-    std::cout <<"lamb: " << " " <<lambda_b_e() << std::endl;
-    std::cout <<"lamt: " << " " <<lambda_t_e() << std::endl;
+ //   std::cout <<"lamu: " << " " <<lambda_u_e() << std::endl;
+ //   std::cout <<"lamd: " << " " <<lambda_d_e() << std::endl;
+ //   std::cout <<"lams: " << " " <<lambda_s_e() << std::endl;
+ //   std::cout <<"lamc: " << " " <<lambda_c_e() << std::endl;
+ //   std::cout <<"lamb: " << " " <<lambda_b_e() << std::endl;
+ //   std::cout <<"lamt: " << " " <<lambda_t_e() << std::endl;
 
     // 7. Parton-Inhalte setzen
     det.setNqP("u", 2.0); // Proton: 2 up
@@ -337,7 +346,6 @@ double Main::CalcDDT(){
    double sigman_gev2 = det.DDxSecn();
    std::cout << "Proton DD-Xsec: " << det.convertGeV2ToPicobarn(sigmap_gev2) << " pb" << std::endl;
    std::cout << "Neutron DD-Xsec: " << det.convertGeV2ToPicobarn(sigman_gev2) << " pb" << std::endl;
-   exit(0);
 }
 
 void Main::FindParameter(const std::string &par, const double target,

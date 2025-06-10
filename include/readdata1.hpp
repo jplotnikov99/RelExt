@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "utils.hpp"
+#include <unordered_map>
 
 namespace DT {
 class DataReader {
