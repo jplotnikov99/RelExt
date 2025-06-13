@@ -23,6 +23,7 @@ void ModelInfo::updateFromSLHA(const SLHAReader& slha){
     try { kap   = slha.getValue("EXTPAR", {62}); }            catch(...) {}
     try { mueff = slha.getValue("EXTPAR", {65}); }            catch(...) {}
     try { eta   = slha.getValue("CMPLX", {3}); }              catch(...) {}
+    try { etaS   = 0.; }              catch(...) {}
     try { Al    = std::complex<double>(slha.getValue("EXTPAR", {63}), slha.getValue("IMEXTPAR", {63})); } catch(...) {}
     try { Ak    = std::complex<double>(slha.getValue("EXTPAR", {64}), slha.getValue("IMEXTPAR", {64})); } catch(...) {}
 
@@ -78,19 +79,34 @@ for(int i = 0; i < 3; ++i) {
 
 
     try { Msu[0] = slha.getValue("MASS", {1000002}); }  catch(...) {}
-    try { Msu[1] = slha.getValue("MASS", {1000004}); }  catch(...) {}
-    try { Msu[2] = slha.getValue("MASS", {1000006}); }  catch(...) {}
-    try { Msu[3] = slha.getValue("MASS", {2000002}); }  catch(...) {}
-    try { Msu[4] = slha.getValue("MASS", {2000004}); }  catch(...) {}
+    try { Msu[1] = slha.getValue("MASS", {2000002}); }  catch(...) {}
+    try { Msu[2] = slha.getValue("MASS", {1000004}); }  catch(...) {}
+    try { Msu[3] = slha.getValue("MASS", {2000004}); }  catch(...) {}
+    try { Msu[4] = slha.getValue("MASS", {1000006}); }  catch(...) {}
     try { Msu[5] = slha.getValue("MASS", {2000006}); }  catch(...) {}
 
 
     try { Msd[0] = slha.getValue("MASS", {1000001}); }  catch(...) {}
-    try { Msd[1] = slha.getValue("MASS", {1000003}); }  catch(...) {}
-    try { Msd[2] = slha.getValue("MASS", {1000005}); }  catch(...) {}
-    try { Msd[3] = slha.getValue("MASS", {2000001}); }  catch(...) {}
-    try { Msd[4] = slha.getValue("MASS", {2000003}); }  catch(...) {}
+    try { Msd[1] = slha.getValue("MASS", {2000001}); }  catch(...) {}
+    try { Msd[2] = slha.getValue("MASS", {1000003}); }  catch(...) {}
+    try { Msd[3] = slha.getValue("MASS", {2000003}); }  catch(...) {}
+    try { Msd[4] = slha.getValue("MASS", {1000005}); }  catch(...) {}
     try { Msd[5] = slha.getValue("MASS", {2000005}); }  catch(...) {}
+
+
+    try { Mse[0] = slha.getValue("MASS", {1000011}); }  catch(...) {}
+    try { Mse[1] = slha.getValue("MASS", {2000011}); }  catch(...) {}
+    try { Mse[2] = slha.getValue("MASS", {1000013}); }  catch(...) {}
+    try { Mse[3] = slha.getValue("MASS", {2000013}); }  catch(...) {}
+    try { Mse[4] = slha.getValue("MASS", {1000015}); }  catch(...) {}
+    try { Mse[5] = slha.getValue("MASS", {2000015}); }  catch(...) {}
+
+
+
+
+
+
+
     try { Wh[0] = WZ; }  catch(...) {}
     try { Wh[1] = slha.getValue("DECAY", {25}); }  catch(...) {}
     try { Wh[2] = slha.getValue("DECAY", {35}); }  catch(...) {}
@@ -99,18 +115,25 @@ for(int i = 0; i < 3; ++i) {
     try { Wh[5] = slha.getValue("DECAY", {36}); }  catch(...) {}
 
     try { Wsd[0] = slha.getValue("DECAY", {1000001}); }  catch(...) {}
-    try { Wsd[1] = slha.getValue("DECAY", {1000003}); }  catch(...) {}
-    try { Wsd[2] = slha.getValue("DECAY", {1000005}); }  catch(...) {}
-    try { Wsd[3] = slha.getValue("DECAY", {2000001}); }  catch(...) {}
-    try { Wsd[4] = slha.getValue("DECAY", {2000003}); }  catch(...) {}
+    try { Wsd[1] = slha.getValue("DECAY", {2000001}); }  catch(...) {}
+    try { Wsd[2] = slha.getValue("DECAY", {1000003}); }  catch(...) {}
+    try { Wsd[3] = slha.getValue("DECAY", {2000003}); }  catch(...) {}
+    try { Wsd[4] = slha.getValue("DECAY", {1000005}); }  catch(...) {}
     try { Wsd[5] = slha.getValue("DECAY", {2000005}); }  catch(...) {}
 
     try { Wsu[0] = slha.getValue("DECAY", {1000002}); }  catch(...) {}
-    try { Wsu[1] = slha.getValue("DECAY", {1000004}); }  catch(...) {}
-    try { Wsu[2] = slha.getValue("DECAY", {1000006}); }  catch(...) {}
-    try { Wsu[3] = slha.getValue("DECAY", {2000002}); }  catch(...) {}
-    try { Wsu[4] = slha.getValue("DECAY", {2000004}); }  catch(...) {}
+    try { Wsu[1] = slha.getValue("DECAY", {2000002}); }  catch(...) {}
+    try { Wsu[2] = slha.getValue("DECAY", {1000004}); }  catch(...) {}
+    try { Wsu[3] = slha.getValue("DECAY", {2000004}); }  catch(...) {}
+    try { Wsu[4] = slha.getValue("DECAY", {1000006}); }  catch(...) {}
     try { Wsu[5] = slha.getValue("DECAY", {2000006}); }  catch(...) {}
+
+    try { Wse[0] = slha.getValue("DECAY", {1000011}); }  catch(...) {}
+    try { Wse[1] = slha.getValue("DECAY", {1000001, 0}); }  catch(...) {}
+    try { Wse[2] = slha.getValue("DECAY", {1000013}); }  catch(...) {}
+    try { Wse[3] = slha.getValue("DECAY", {1000003,0}); }  catch(...) {}
+    try { Wse[4] = slha.getValue("DECAY", {1000015}); }  catch(...) {}
+    try { Wse[5] = slha.getValue("DECAY", {2000015}); }  catch(...) {}
 
     try { WN[0] = slha.getValue("DECAY", {1000022}); }  catch(...) {}
     try { WN[1] = slha.getValue("DECAY", {1000023}); }  catch(...) {}
@@ -125,8 +148,8 @@ for(int i = 0; i < 3; ++i) {
     try { Wsv[1] = slha.getValue("DECAY", {1000014}); }  catch(...) {}
     try { Wsv[2] = slha.getValue("DECAY", {1000016}); }  catch(...) {}
     try { WHm[0] = WWm; }  catch(...) {}
-    try { WHm[1] = slha.getValue("DECAY", {37}); }  catch(...) {}
 
+    try { WHm[1] = slha.getValue("DECAY", {37}); }  catch(...) {}
 
     // Beispiel: Matrizen wie ZH (6x6)
     try {
@@ -148,12 +171,12 @@ for(int i = 0; i < 3; ++i) {
     
         // Die restlichen 5 Zeilen explizit füllen aus der SLHA-Matrix
         for (int i = 0; i < 5; ++i) {
-            ZH_tmp[i+1][0] = ZH_slha[i][2];
-            ZH_tmp[i+1][1] = ZH_slha[i][3];
-            ZH_tmp[i+1][2] = ZH_slha[i][4];
-            ZH_tmp[i+1][3] = ZH_slha[i][0]*sB;
-            ZH_tmp[i+1][4] = ZH_slha[i][0]*cB;
-            ZH_tmp[i+1][5] = ZH_slha[i][1];
+            ZH_tmp[i+1][0] = ZH_slha[i][0];
+            ZH_tmp[i+1][1] = ZH_slha[i][1];
+            ZH_tmp[i+1][2] = ZH_slha[i][2];
+            ZH_tmp[i+1][3] = ZH_slha[i][3]*sB;
+            ZH_tmp[i+1][4] = ZH_slha[i][3]*cB;
+            ZH_tmp[i+1][5] = ZH_slha[i][4];
         }
     
         // Schreibe zurück in die originale ZH-Matrix
@@ -174,6 +197,53 @@ for(int i = 0; i < 3; ++i) {
         }
     }
     catch(...) {}
+    try {
+        auto ReSU = slha.getMatrix("SUPMIX", 2);
+        auto ImSU = slha.getMatrix("IMSUPMIX", 2);
+        auto ReSC = slha.getMatrix("SCHARMMIX", 2);
+        auto ImSC = slha.getMatrix("IMSCHARMMIX", 2);
+        auto ReSTo = slha.getMatrix("STOPMIX", 2);
+        auto ImSTo = slha.getMatrix("IMSTOPMIX", 2);
+        // SELECTRON entries
+        ZU[0][0] = ReSU[0][0]+I* ImSU[0][0];
+        ZU[0][1] = 0.;
+        ZU[0][2] = 0.;
+        ZU[0][3] = ReSU[0][1] +I*ImSU[0][1];
+        ZU[0][4] = 0.;
+        ZU[0][5] = 0.;
+        ZU[1][0] = ReSU[1][0]+I*ImSU[1][0];
+        ZU[1][1] = 0.;
+        ZU[1][2] = 0.;
+        ZU[1][3] = ReSU[1][1]+I*ImSU[1][1];
+        ZU[1][4] = 0.;
+        ZU[1][5] = 0.;
+        ZU[2][0] = 0.;
+        ZU[2][1] = ReSC[0][0]+I*ImSC[0][0];
+        ZU[2][2] = 0.;
+        ZU[2][3] = 0.;
+        ZU[2][4] = ReSC[0][1]+I*ImSC[0][1];
+        ZU[2][5] = 0.;
+        ZU[3][0] = 0.;
+        ZU[3][1] = ReSC[1][0]+I*ImSC[1][0];
+        ZU[3][2] = 0.;
+        ZU[3][3] = 0;
+        ZU[3][4] = ReSC[1][1]+I*ImSC[1][1];
+        ZU[3][5] = 0.;
+        ZU[4][0] = 0.;
+        ZU[4][1] = 0.;
+        ZU[4][2] = ReSTo[0][0]+I*ImSTo[0][0];
+        ZU[4][3] = 0.;
+        ZU[4][4] = 0.;
+        ZU[4][5] = ReSTo[0][1]+I*ImSTo[0][1];
+        ZU[5][0] = 0.;
+        ZU[5][1] = 0.;
+        ZU[5][2] = ReSTo[1][0]+I*ImSTo[1][0];
+        ZU[5][3] = 0.;
+        ZU[5][4] = 0.;
+        ZU[5][5] = ReSTo[1][1]+I*ImSTo[1][1];
+    }
+    catch(...) {}
+    
 try {
     auto ReSE = slha.getMatrix("SELECTRONMIX", 2);
     auto ImSE = slha.getMatrix("IMSELECTRONMIX", 2);
@@ -232,7 +302,7 @@ try {
     auto ReSS = slha.getMatrix("SSTRANGEMIX", 2);
     auto ImSS = slha.getMatrix("IMSSTRANGEMIX", 2);
     auto ReSB = slha.getMatrix("SBOTMIX", 2);
-    auto ImSB = slha.getMatrix("IMBOTMIX", 2);
+    auto ImSB = slha.getMatrix("IMSBOTMIX", 2);
 
     // SELECTRON entries
     ZD[0][0] = ReSD[0][0]+I* ImSD[0][0];
@@ -274,53 +344,7 @@ try {
 }
 catch(...) {}
 
-try {
-    auto ReSU = slha.getMatrix("SUPMIX", 2);
-    auto ImSU = slha.getMatrix("IMSUPMIX", 2);
-    auto ReSC = slha.getMatrix("SCHARMEMIX", 2);
-    auto ImSC = slha.getMatrix("IMSCHARMEMIX", 2);
-    auto ReSTo = slha.getMatrix("STOPMIX", 2);
-    auto ImSTo = slha.getMatrix("IMSTOPMIX", 2);
 
-    // SELECTRON entries
-    ZU[0][0] = ReSU[0][0]+I* ImSU[0][0];
-    ZU[0][1] = 0.;
-    ZU[0][2] = 0.;
-    ZU[0][3] = ReSU[0][1] +I*ImSU[0][1];
-    ZU[0][4] = 0.;
-    ZU[0][5] = 0.;
-    ZU[1][0] = ReSU[1][0]+I*ImSU[1][0];
-    ZU[1][1] = 0.;
-    ZU[1][2] = 0.;
-    ZU[1][3] = ReSU[1][1]+I*ImSU[1][1];
-    ZU[1][4] = 0.;
-    ZU[1][5] = 0.;
-    ZU[2][0] = 0.;
-    ZU[2][1] = ReSC[0][0]+I*ImSC[0][0];
-    ZU[2][2] = 0.;
-    ZU[2][3] = 0.;
-    ZU[2][4] = ReSC[0][1]+I*ImSC[0][1];
-    ZU[2][5] = 0.;
-    ZU[3][0] = 0.;
-    ZU[3][1] = ReSC[1][0]+I*ImSC[1][0];
-    ZU[3][2] = 0.;
-    ZU[3][3] = 0;
-    ZU[3][4] = ReSC[1][1]+I*ImSC[1][1];
-    ZU[3][5] = 0.;
-    ZU[4][0] = 0.;
-    ZU[4][1] = 0.;
-    ZU[4][2] = ReSTo[0][0]+I*ImSTo[0][0];
-    ZU[4][3] = 0.;
-    ZU[4][4] = 0.;
-    ZU[4][5] = ReSTo[0][1]+I*ImSTo[0][1];
-    ZU[5][0] = 0.;
-    ZU[5][1] = 0.;
-    ZU[5][2] = ReSTo[1][0]+I*ImSTo[1][0];
-    ZU[5][3] = 0.;
-    ZU[5][4] = 0.;
-    ZU[5][5] = ReSTo[1][1]+I*ImSTo[1][1];
-}
-catch(...) {}
 
 try {
     auto ReUM = slha.getMatrix("UMIX", 2);
@@ -619,12 +643,10 @@ double DDetection::computePart(bool isProton) {
     }
 
     double sum_heavy = (2 / 27.0) * (1. - sum_fq) * sum_hq;
-    std::cout << pow(coeff * (sum_lq + sum_heavy + odd_sum), 2) << std::endl;
     return pow(coeff * (sum_lq + sum_heavy + odd_sum), 2);
 }
 double DDetection::DDxSecp() {
     double prefactor = mu_chi * mu_chi / M_PI;
-    std::cout << prefactor << std::endl;
     double Sig_pr = computePart(true);
     double total = Sig_pr;
     return prefactor * total;
@@ -635,10 +657,11 @@ double DDetection::DDxSecn() {
     return prefactor * Sig_n;
 }
 double DDetection::getMass(const std::string &q) const {
+    using namespace PAR;
     static std::map<std::string, double> qmass = {
-        {"u", 2.20000000e-3},      {"d", 4.70000000e-3},
-        {"s", 9.50000000e-2},      {"c", 1.274},
-        {"b", 4.1799999999999997}, {"t", 172.75999999999999}};
+        {"u", Mu[0].real()},      {"d", Md[0].real()},
+        {"s", Md[1].real()},      {"c", Mu[1].real()},
+        {"b", Md[2].real()}, {"t", Mu[2].real()}};
     return qmass.at(q);
 }
 void DDetection::checkRequiredInputs() const {
@@ -692,16 +715,13 @@ SLHAReader::SLHAReader(const std::string& filename) {
 // Correctly scoped method definitions
 double SLHAReader::getValue(const std::string& block, const std::vector<int> indices) const {
     auto blockIt = blocks.find(block);
-    if (blockIt == blocks.end())
-        throw std::runtime_error("Block not found: " + block);
+    if (blockIt == blocks.end()) throw std::runtime_error("Block not found");
 
-    auto entryIt = blockIt->second.find(indices);
-    if (entryIt == blockIt->second.end())
-        throw std::runtime_error("Indices not found in block: " + block);
+    auto valueIt = blockIt->second.find(indices);
+    if (valueIt == blockIt->second.end()) throw std::runtime_error("Key not found in block");
 
-    return entryIt->second;
+    return valueIt->second;
 }
-
 std::vector<std::vector<double>> SLHAReader::getMatrix(const std::string& block, int dim) const {
     std::vector<std::vector<double>> matrix(dim, std::vector<double>(dim, 0.0));
     auto blockIt = blocks.find(block);
@@ -757,6 +777,15 @@ void SLHAReader::parseFile(const std::string& filename) {
         }
         if (tokens[0] == "DECAY" || tokens[0] == "Decay") {
             currentBlock = "DECAY";
+            if (tokens.size() >= 3) {
+                int pdg = std::stoi(tokens[1]);
+                double width = std::stod(tokens[2]);
+                int idx = pdg_counter[pdg]++;
+        
+                // Immer speichern: einmal ohne Index, einmal mit Index
+                blocks["DECAY"][{pdg}] = width;
+                blocks["DECAY"][{pdg, idx}] = width;
+            }
             continue;
         }
 

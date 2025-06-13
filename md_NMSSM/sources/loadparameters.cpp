@@ -14,7 +14,6 @@ void ModelInfo::load_parameters() {
     TTW = tan(TW);
     Tlam = lam*Al;
     Tk = kap*Ak;
-    mueff = 0.1;
     vS = mueff*sqrt(2)/lam;
     g1 = 0.35561563905519322;
     g2 = 0.66301513441420956;

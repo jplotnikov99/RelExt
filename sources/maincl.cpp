@@ -328,18 +328,10 @@ void Main::CalcDDT(){
     det.setLambda("lambda_d_o", lambda_d_o());
 
 
-    
- //   std::cout <<"lamu: " << " " <<lambda_u_e() << std::endl;
- //   std::cout <<"lamd: " << " " <<lambda_d_e() << std::endl;
- //   std::cout <<"lams: " << " " <<lambda_s_e() << std::endl;
- //   std::cout <<"lamc: " << " " <<lambda_c_e() << std::endl;
- //   std::cout <<"lamb: " << " " <<lambda_b_e() << std::endl;
- //   std::cout <<"lamt: " << " " <<lambda_t_e() << std::endl;
-
     // 7. Parton-Inhalte setzen
     det.setNqP("u", 2.0); // Proton: 2 up
     det.setNqP("d", 1.0); // Proton: 1 down
-    det.setNqN("u", 1.0); // Neutron: 1 up
+    det.setNqN("u", 1.0); // Neutron: 1 upMsdMsd
     det.setNqN("d", 2.0); // Neutron: 2 down
     // 8. Cross-Section berechnen
     // 9. Ausgabe

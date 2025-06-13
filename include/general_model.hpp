@@ -121,14 +121,21 @@ class DDetection {
     double getMass(const std::string &q) const;
 };
 
-
+struct DecayBlock {
+    double width;
+    std::string comment;
+};
 class SLHAReader{
     public:
         SLHAReader(const std::string& filename);
         double getValue(const std::string& block, const std::vector<int>) const;
         std::vector<std::vector<double>> getMatrix(const std::string& block, int dim) const; 
+        std::map<int, std::vector<std::pair<double, std::vector<int>>>> decays;
     private: 
         std::map<std::string, std::map<std::vector<int>,double>> blocks;
+        std::map<int, std::vector<DecayBlock>> decayWidths;
+        std::map<std::string, double> decayWidthsStringKey;
+        std::map<int, int> pdg_counter;
         void parseFile(const std::string& filename); 
 };
 
