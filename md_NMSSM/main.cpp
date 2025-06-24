@@ -28,7 +28,6 @@ int main(int argc, char **argv) {
     clock_t begin_time = clock();
     M.LoadParameters();
     M.CalcDDT();
-    M.CalcRelic();
 
 
     /* std::unique_ptr<DataReader> xsr =

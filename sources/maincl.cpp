@@ -328,8 +328,7 @@ double Main::CalcDDT(){
     det.setLambda("lambda_t_e", lambda_t_e());
     det.setLambda("lambda_u_o", lambda_u_o());
     det.setLambda("lambda_d_o", lambda_d_o());
-
-
+    
     // 7. Parton-Inhalte setzen
     det.setNqP("u", 2.0); // Proton: 2 up
     det.setNqP("d", 1.0); // Proton: 1 down
@@ -339,6 +338,9 @@ double Main::CalcDDT(){
     // 9. Ausgabe
    double sigmap_gev2 = det.DDxSecp();
    double sigman_gev2 = det.DDxSecn();
+   std::cout << "     " <<std::endl;
+   std::cout << "#################### Direct Detection Calculation ################### " << std::endl;
+   std::cout << "     " <<std::endl;
    std::cout << "Proton DD-Xsec: " << det.convertGeV2ToPicobarn(sigmap_gev2) << " pb" << std::endl;
    std::cout << "Neutron DD-Xsec: " << det.convertGeV2ToPicobarn(sigman_gev2) << " pb" << std::endl;
 
@@ -348,9 +350,12 @@ double Main::CalcDDT(){
   - 1.4553819156655382e-11*pow(m,-1) - 2.8632591558665826e-08*pow(m,-2) 
   + 1.7523267009182477e-06*pow(m,-3) - 4.641770571545371e-05*pow(m,-4) +
    0.0006659519102635656*pow(m,-5) - 0.0048936430687621804*pow(m,-6) + 0.01597648095150464*pow(m,-7);
-
+    std::cout << "     " <<std::endl;
     std::cout << "Xenon DD-Xsec: " << xenon << " pb" << std::endl;
     std::cout << "LZ exclusion line: " << exponent << " pb" << std::endl; 
+    
+    std::cout << "     " <<std::endl;
+    std::cout << "####################################################################" << std::endl;
     return xenon;
 
 }

@@ -20,12 +20,10 @@ void ModelInfo::load_parameters() {
     PhiUL = std::exp(I / 2. * eta);
     PhiUR = std::exp(-I / 2. * eta);
     v = 2. * MWm / g2;
-    TBeta = 4.442242;
     vd = v / sqrt(1. + TBeta * TBeta);
     vu = (TBeta * v) / sqrt(1. + TBeta * TBeta);
 
-    
-
+ 
     ZP[0][0] = -0.21961578041644098;
     ZP[0][1] = 0.97558644362869129;
     ZP[1][0] = 0.97558644362869129;

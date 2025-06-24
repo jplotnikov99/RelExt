@@ -12,7 +12,7 @@ ModelInfo::ModelInfo(const bool calcwidths) : calc_widths(calcwidths) {
 
 void ModelInfo::updateFromSLHA(const SLHAReader& slha){
     using namespace PAR;
-    try { el  = slha.getValue("SMINPUTS", {1}); }              catch(...) {}
+    try { el  = sqrt(4*Pi*1/slha.getValue("SMINPUTS", {1})); }              catch(...) {}
     try { MWm = slha.getValue("MASS", {24}); }                catch(...) {}
     try { MZ  = slha.getValue("SMINPUTS", {4}); }             catch(...) {}
     try { g1  = slha.getValue("GAUGE", {1}); }                catch(...) {}
@@ -54,6 +54,10 @@ for(int i = 0; i < 3; ++i) {
     try { Mh[3] = slha.getValue("MASS", {36}); }  catch(...) {}
     try { Mh[4] = slha.getValue("MASS", {45}); }  catch(...) {}
     try { Mh[5] = slha.getValue("MASS", {46}); }  catch(...) {}
+
+    try { mh[0] = slha.getValue("MASS", {25}); }  catch(...) {}
+    try { mh[1] = slha.getValue("MASS", {35}); }  catch(...) {}
+    try { mh[2] = slha.getValue("MASS", {45}); }  catch(...) {}
     try { MHm[0] = slha.getValue("MASS", {24}); }  catch(...) {}
     try { MHm[1] = slha.getValue("MASS", {37}); }  catch(...) {}
 
@@ -197,13 +201,45 @@ for(int i = 0; i < 3; ++i) {
         }
     }
     catch(...) {}
+
+     try {
+        auto ReZN = slha.getMatrix("NMNMIX", 5);
+        
+        for(int i = 0; i < 1; ++i) {
+            for(int j = 0; j < 5; ++j) {
+                Nh[i][j] = std::complex<double>(ReZN[i][j], 0);
+            }
+        }
+    }
+    catch(...) {}
+
+
+     try {
+        auto ReZN = slha.getMatrix("NMHMIX", 3);
+        
+        for(int i = 0; i < 3; ++i) {
+            for(int j = 0; j < 3; ++j) {
+                Sh[i][j] = std::complex<double>(ReZN[i][j], 0);
+            }
+        }
+    }
+
+    catch(...) {}
     try {
         auto ReSU = slha.getMatrix("SUPMIX", 2);
-        auto ImSU = slha.getMatrix("IMSUPMIX", 2);
-        auto ReSC = slha.getMatrix("SCHARMMIX", 2);
-        auto ImSC = slha.getMatrix("IMSCHARMMIX", 2);
         auto ReSTo = slha.getMatrix("STOPMIX", 2);
+        auto ReSC = slha.getMatrix("SCHARMMIX", 2);
+        ZDU[0][0] = ReSU[0][0] + I*0;
+        ZDU[0][1] = ReSU[0][1] + I*0;
+        ZDT[0][0] = ReSTo[0][0] + I*0;
+        ZDT[0][1] = ReSTo[0][1] + I*0;
+        ZDC[0][0] = ReSC[0][0] + I*0;
+        ZDC[0][1] = ReSC[0][1] + I*0;
+
+        auto ImSU = slha.getMatrix("IMSUPMIX", 2);
+        auto ImSC = slha.getMatrix("IMSCHARMMIX", 2);
         auto ImSTo = slha.getMatrix("IMSTOPMIX", 2);
+
         // SELECTRON entries
         ZU[0][0] = ReSU[0][0]+I* ImSU[0][0];
         ZU[0][1] = 0.;
@@ -248,6 +284,8 @@ try {
     auto ReSE = slha.getMatrix("SELECTRONMIX", 2);
     auto ImSE = slha.getMatrix("IMSELECTRONMIX", 2);
     auto ReSM = slha.getMatrix("SMUONMIX", 2);
+    
+    
     auto ImSM = slha.getMatrix("IMSMUONMIX", 2);
     auto ReST = slha.getMatrix("STAUMIX", 2);
     auto ImST = slha.getMatrix("IMSTAUMIX", 2);
@@ -298,10 +336,18 @@ catch(...) {}
 
 try {
     auto ReSD = slha.getMatrix("SDOWNMIX", 2);
-    auto ImSD = slha.getMatrix("IMSDOWNMIX", 2);
-    auto ReSS = slha.getMatrix("SSTRANGEMIX", 2);
-    auto ImSS = slha.getMatrix("IMSSTRANGEMIX", 2);
     auto ReSB = slha.getMatrix("SBOTMIX", 2);
+    auto ReSS = slha.getMatrix("SSTRANGEMIX", 2);
+
+
+    ZDD[0][0] = ReSD[0][0] + I*0;
+    ZDD[0][1] = ReSD[0][1] + I*0;
+    ZDB[0][0] = ReSB[0][0] + I*0;
+    ZDB[0][1] = ReSB[0][1] + I*0;
+    ZDS[0][0] = ReSS[0][0] + I*0;
+    ZDS[0][1] = ReSS[0][1] + I*0;
+    auto ImSD = slha.getMatrix("IMSDOWNMIX", 2);
+    auto ImSS = slha.getMatrix("IMSSTRANGEMIX", 2);
     auto ImSB = slha.getMatrix("IMSBOTMIX", 2);
 
     // SELECTRON entries
@@ -606,7 +652,7 @@ DDetection::DDetection(double m_chi, double Z, double A)
 double DDetection::computeMu(double m_chi) {
     constexpr double m_N =
         0.939;  // durchschnittliche Nukleonmasse in GeV (Xenon)
-    return (m_N * m_chi) / (m_chi + m_N);
+    return (m_N*m_chi) / (m_chi + m_N);
 }
 void DDetection::setLambda(const std::string &key, double value) {
     lambda[key] = value;
@@ -636,23 +682,19 @@ double DDetection::computePart(bool isProton) {
     for (const auto &q : lq) {
         sum_fq += safeAt(fq, q, "fq");
     }
-    double odd_sum = 0.;
-    for (const auto &q : hadContent) {
-        odd_sum += safeAt(nq, q, isProton ? "nq_p" : "nq_n") *
-                   lambda["lambda_" + q + "_o"] / (m * getMass(q));
-    }
-
+  
     double sum_heavy = (2 / 27.0) * (1. - sum_fq) * sum_hq;
-    return pow(coeff * (sum_lq + sum_heavy + odd_sum), 2);
+
+    return pow(coeff * (sum_lq + sum_heavy), 2);
 }
 double DDetection::DDxSecp() {
-    double prefactor = mu_chi * mu_chi / M_PI;
+    double prefactor = 4*mu_chi * mu_chi / M_PI;
     double Sig_pr = computePart(true);
     double total = Sig_pr;
     return prefactor * total;
 }
 double DDetection::DDxSecn() {
-    double prefactor = mu_chi * mu_chi / M_PI;
+    double prefactor = 4*mu_chi * mu_chi / M_PI;
     double Sig_n = computePart(false);
     return prefactor * Sig_n;
 }
