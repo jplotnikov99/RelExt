@@ -27,7 +27,8 @@ double DT::lambda_d_e(){
 	t1[2] = -g2 * (std::conj(N2) - TTW * std::conj(N1)) * (Sh[2][0] * std::conj(N3) - Sh[2][1] *std::conj(N4));
     t2[2] = std::sqrt(2.0) * lam * (Sh[2][2] * std::conj(N3)*std::conj(N4) + std::conj(N5)*(Sh[2][1]*std::conj(N3)+ Sh[2][0]*std::conj(N4)));
     t3[2] = -sqrt(2)*kap*Sh[2][2]*std::conj(N5*N5);
-		std::complex<double>C_HL[3];
+	
+	std::complex<double>C_HL[3];
 	C_HL[0] = (t1[0] + t2[0]) +t3[0] ;
 	C_HL[1] = (t1[1] + t2[1]) +t3[1] ;
 	C_HL[2] = (t1[2] + t2[2]) +t3[2] ;
@@ -36,13 +37,14 @@ double DT::lambda_d_e(){
 	for(int a=0; a<3; a++){
 		res_higgs -= 1./(2*mh[a]*mh[a]) * Md[gen]/vd * Sh[a][0]* std::real(C_HL[a]);
 	}
+
 	complex<double>CR_d[2];
 	complex<double>CL_d[2];
 	complex<double>CL_u[2];
 	complex<double>CR_u[2];
 	complex<double>cth = ZDD[0][0];
 	complex<double>sth = ZDD[0][1];
-complex<double>msd2[2];
+	complex<double>msd2[2];
 	complex<double>msu2[2];
 
 		double Yd = -2/3; // Singlett Hypercharge

@@ -37,12 +37,9 @@ complex<double>N1 = Nh[0][0];
  
 	for(int a=0; a<3; a++){
 
-		std::complex<double> t1 = -g2 * (std::conj(N2) - TTW * std::conj(N1)) * (Sh[a][0] * std::conj(N3) - Sh[a][1] *std::conj(N4));
-    	std::complex<double> t2 = std::sqrt(2.0) * lam * (Sh[a][2] * std::conj(N3)*std::conj(N4) + std::conj(N5)*(Sh[a][1]*std::conj(N3)+ Sh[a][0]*std::conj(N4)));
-    	std::complex<double> t3 = -2*sqrt(2)*kap*Sh[a][2]*std::conj(N5*N5);
-		std::complex<double> C_HL = 2.0 * (t1 + t2) +t3 ;
+		
 
-		res_higgs -= 1./(2*mh[a]*mh[a]) * (Mu[gen]/vu) * Sh[a][1]* std::real(C_HL);
+		res_higgs -= 1./(mh[a]*mh[a]) * (Mu[gen]/vu) * Sh[a][1]* std::real(C_HL[a]);
 	}
 
 	complex<double>CR_d[2];

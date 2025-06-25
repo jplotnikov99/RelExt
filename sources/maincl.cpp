@@ -310,16 +310,24 @@ double Main::CalcRelic(const int mechanism) {
 }
 
 
-double Main::CalcDDT(){
+double Main::CalcDDT(const std::string& slhaFilePath) {
     using namespace DT;
     using std::pow;
     using namespace PAR;
+
+    std::ofstream slhaOut(slhaFilePath, std::ios::app);
+    if (!slhaOut.is_open()) {
+        return -1;
+    }
+
+    TeeStream out(std::cout, slhaOut); 
+
     double m_chi = MN[0].real();
     double m = m_chi;
     double Z = 1;
     double A = 2;
     DDetection det(m_chi, Z, A);
-    
+
     det.setLambda("lambda_u_e", lambda_u_e());
     det.setLambda("lambda_d_e", lambda_d_e());
     det.setLambda("lambda_s_e", lambda_s_e());
@@ -328,36 +336,40 @@ double Main::CalcDDT(){
     det.setLambda("lambda_t_e", lambda_t_e());
     det.setLambda("lambda_u_o", lambda_u_o());
     det.setLambda("lambda_d_o", lambda_d_o());
-    
-    // 7. Parton-Inhalte setzen
+
     det.setNqP("u", 2.0); // Proton: 2 up
     det.setNqP("d", 1.0); // Proton: 1 down
-    det.setNqN("u", 1.0); // Neutron: 1 upMsdMsd
+    det.setNqN("u", 1.0); // Neutron: 1 up
     det.setNqN("d", 2.0); // Neutron: 2 down
-    // 8. Cross-Section berechnen
-    // 9. Ausgabe
-   double sigmap_gev2 = det.DDxSecp();
-   double sigman_gev2 = det.DDxSecn();
-   std::cout << "     " <<std::endl;
-   std::cout << "#################### Direct Detection Calculation ################### " << std::endl;
-   std::cout << "     " <<std::endl;
-   std::cout << "Proton DD-Xsec: " << det.convertGeV2ToPicobarn(sigmap_gev2) << " pb" << std::endl;
-   std::cout << "Neutron DD-Xsec: " << det.convertGeV2ToPicobarn(sigman_gev2) << " pb" << std::endl;
 
-    double xenon = (det.convertGeV2ToPicobarn(sigmap_gev2)*54. + det.convertGeV2ToPicobarn(sigman_gev2)*77.)/131;
+    double sigmap_gev2 = det.DDxSecp();
+    double sigman_gev2 = det.DDxSecn();
 
-    double exponent = -4.0099684594337164e-22*pow(m,3) + 3.958452397636735e-18*pow(m,2)+ 2.8021895408758407e-13*m + 1.7844992633049125e-12 
-  - 1.4553819156655382e-11*pow(m,-1) - 2.8632591558665826e-08*pow(m,-2) 
-  + 1.7523267009182477e-06*pow(m,-3) - 4.641770571545371e-05*pow(m,-4) +
-   0.0006659519102635656*pow(m,-5) - 0.0048936430687621804*pow(m,-6) + 0.01597648095150464*pow(m,-7);
-    std::cout << "     " <<std::endl;
-    std::cout << "Xenon DD-Xsec: " << xenon << " pb" << std::endl;
-    std::cout << "LZ exclusion line: " << exponent << " pb" << std::endl; 
     
-    std::cout << "     " <<std::endl;
-    std::cout << "####################################################################" << std::endl;
-    return xenon;
+    double xenon = (det.convertGeV2ToPicobarn(sigmap_gev2) * 54. + det.convertGeV2ToPicobarn(sigman_gev2) * 77.) / 131.;
 
+    double exponent = -4.0099684594337164e-22 * pow(m, 3) +
+                      3.958452397636735e-18 * pow(m, 2) +
+                      2.8021895408758407e-13 * m +
+                      1.7844992633049125e-12 -
+                      1.4553819156655382e-11 * pow(m, -1) -
+                      2.8632591558665826e-08 * pow(m, -2) +
+                      1.7523267009182477e-06 * pow(m, -3) -
+                      4.641770571545371e-05 * pow(m, -4) +
+                      0.0006659519102635656 * pow(m, -5) -
+                      0.0048936430687621804 * pow(m, -6) +
+                      0.01597648095150464 * pow(m, -7);
+    out << "BLOCK DDETECTION # Direct Detection Crosssection of Proton, Neutron and Xenon \n";
+    out << "  1     " << std::scientific << std::uppercase << std::setprecision(8)
+        << det.convertGeV2ToPicobarn(sigmap_gev2) << "   # Proton DD-Crossection\n";
+    out << "  2     " << std::scientific << std::uppercase << std::setprecision(8)
+        << det.convertGeV2ToPicobarn(sigman_gev2)  << "   # Neutron DD-Crossection\n";
+    out << "  3     " << std::scientific << std::uppercase << std::setprecision(8)
+        << xenon << "   # Xenon DD-Crossection\n";
+    out << "  4     " << std::scientific << std::uppercase << std::setprecision(8)
+        <<  exponent << "   # LZ Exclusions DD-Crossection\n";
+    out << "#\n";
+    return xenon;
 }
 
 void Main::FindParameter(const std::string &par, const double target,

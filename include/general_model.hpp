@@ -139,5 +139,25 @@ class SLHAReader{
         void parseFile(const std::string& filename); 
 };
 
+class TeeStream {
+public:
+    TeeStream(std::ostream& o1, std::ostream& o2) : out1(o1), out2(o2) {}
 
+    template<typename T>
+    TeeStream& operator<<(const T& val) {
+        out1 << val;
+        out2 << val;
+        return *this;
+    }
+
+    TeeStream& operator<<(std::ostream& (*manip)(std::ostream&)) {
+        out1 << manip;
+        out2 << manip;
+        return *this;
+    }
+
+private:
+    std::ostream& out1;
+    std::ostream& out2;
+};
 }  // namespace DT
