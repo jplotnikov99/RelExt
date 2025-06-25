@@ -348,18 +348,24 @@ double Main::CalcDDT(const std::string& slhaFilePath) {
     
     double xenon = (det.convertGeV2ToPicobarn(sigmap_gev2) * 54. + det.convertGeV2ToPicobarn(sigman_gev2) * 77.) / 131.;
 
-    double exponent = -4.0099684594337164e-22 * pow(m, 3) +
-                      3.958452397636735e-18 * pow(m, 2) +
-                      2.8021895408758407e-13 * m +
-                      1.7844992633049125e-12 -
-                      1.4553819156655382e-11 * pow(m, -1) -
-                      2.8632591558665826e-08 * pow(m, -2) +
-                      1.7523267009182477e-06 * pow(m, -3) -
-                      4.641770571545371e-05 * pow(m, -4) +
-                      0.0006659519102635656 * pow(m, -5) -
-                      0.0048936430687621804 * pow(m, -6) +
-                      0.01597648095150464 * pow(m, -7);
+    double LZat2sigma = (-7.2643062308e-59 * pow(m, 3) +
+        1.1063959013e-54 * pow(m, 2) +
+        1.1757730897e-49 * pow(m, 1) +
+        2.1808914726e-48 +
+        -3.2722198205e-47 / pow(m, 1) +
+        6.6024095892e-45 / pow(m, 2) +
+        -1.9703951065e-44 / pow(m, 3) +
+        -5.6669223075e-42 / pow(m, 4) +
+        2.0478854928e-40 / pow(m, 5) +
+        -2.5804287699e-39 / pow(m, 6) +
+        1.2514802934e-38 / pow(m, 7))*1e36;
+
+    double likHood = exp(-(LZat2sigma-xenon)/xenon);
+
     out << "BLOCK DDETECTION # Direct Detection Crosssection of Proton, Neutron and Xenon \n";
+    
+    out << "  0     " << std::scientific << std::uppercase << std::setprecision(8)
+        << m << "   # DM Mass\n";
     out << "  1     " << std::scientific << std::uppercase << std::setprecision(8)
         << det.convertGeV2ToPicobarn(sigmap_gev2) << "   # Proton DD-Crossection\n";
     out << "  2     " << std::scientific << std::uppercase << std::setprecision(8)
@@ -367,7 +373,14 @@ double Main::CalcDDT(const std::string& slhaFilePath) {
     out << "  3     " << std::scientific << std::uppercase << std::setprecision(8)
         << xenon << "   # Xenon DD-Crossection\n";
     out << "  4     " << std::scientific << std::uppercase << std::setprecision(8)
-        <<  exponent << "   # LZ Exclusions DD-Crossection\n";
+        <<  LZat2sigma << "   # 2Sigma upper bound from LZ\n";
+    out << "  5     " << std::scientific << std::uppercase << std::setprecision(8)
+        <<  likHood << "   # Likelyhood\n";
+    if (xenon < LZat2sigma) {
+    out << "  6     1   # ALLOWED\n";
+    } else {
+    out << "  6     0   # NOT ALLOWED \n";
+    }
     out << "#\n";
     return xenon;
 }
