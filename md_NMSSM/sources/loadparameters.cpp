@@ -22,7 +22,6 @@ void ModelInfo::load_parameters() {
     v = 2. * MWm / g2;
     vd = v / sqrt(1. + TBeta * TBeta);
     vu = (TBeta * v) / sqrt(1. + TBeta * TBeta);
-
  
     ZP[0][0] = -0.21961578041644098;
     ZP[0][1] = 0.97558644362869129;

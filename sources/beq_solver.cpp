@@ -17,24 +17,36 @@ double FO1DM::operator()(const VecString &channels) {
         BI.tac.clear_state(true);
         return 0.;
     }
-    double xfo = bisec_to_x(foc, 4.9, 50.1, secant_eps);
-    xf = xfo;
-    if (xfo < 5. || xfo > 50.) {
+    // double xfo = bisec_to_x(foc, 4.9, 50.1, secant_eps);
+    double x1 = 50., x2 = 50.;
+    double y1, y2 = foc(x2);
+    for (x1 = 48.; x1 > 5.; x1 -= 2) {
+        y1 = foc(x1);
+        if (y1 * y2 < 0) {
+            x1 = bisec_to_x(foc, x1, x2, secant_eps);
+            break;
+        }
+        x2 = x1;
+        y2 = y1;
+    }
+
+    xf = x1;
+    if (x1 < 5. || x1 > 50.) {
         if (!suppress)
             std::cout << "Freeze-out temperature could not be found.\n";
         BI.tac.clear_state(true);
         return 0.;
     }
-    double yfo = (1. + foc.del) * BI.yeq(xfo);
+    double yfo = (1. + foc.del) * BI.yeq(x1);
     if (appr) {
         FOAppr foa(BI);
-        res = adap_gauss_kronrod_15(foa, xfo, xtoday, 1e-3);
+        res = adap_gauss_kronrod_15(foa, x1, xtoday, 1e-3);
         res = 1. / yfo - res;
         res = 1. / res;
     } else {
         FOFull fof(BI);
         Output out;
-        Odeint<StepperDopr853<FOFull>> ode(yfo, xfo, xtoday, 0., 1e-6, 0.1, 0.,
+        Odeint<StepperDopr853<FOFull>> ode(yfo, x1, xtoday, 0., 1e-6, 0.1, 0.,
                                            out, fof);
         ode.integrate();
         res = yfo;

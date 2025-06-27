@@ -11,7 +11,7 @@ static constexpr int MODE = 4;
 static const VecString SAVEPARS = {};
 static const VecString CONSIDERCHANNELS = {};
 VecString NEGLECTCHANNELS = {};
-static const VecString NEGLECTPARTICLES = { "N4", "N5", "c2", "C2"};
+static const VecString NEGLECTPARTICLES = {};
 static constexpr double BEPS = 1e-6;
 static constexpr double XTODAY = 1e6;
 static constexpr bool FAST = true;
@@ -27,8 +27,8 @@ int main(int argc, char **argv) {
 
     clock_t begin_time = clock();
     M.LoadParameters();
-    M.CalcDDT(std::string(argv[1]));
-
+    M.CalcRelic();
+    // M.CalcDDT(std::string(argv[1]));
 
     /* std::unique_ptr<DataReader> xsr =
         std::make_unique<DataReader>("amps.dat", 2);

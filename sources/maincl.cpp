@@ -195,6 +195,7 @@ double Main::CalcAmp(const double s, const double cos_t, VecString channels) {
     AA.set_s(s);
     for (auto it : channels) {
         AA.set_channel({it}, false);
+        std::cout << it << ": " << AA(cos_t) << "\n";
     }
     return AA(cos_t);
 }
