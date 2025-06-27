@@ -27,7 +27,7 @@ double bisec_to_x(FUNC &f, double x1, double x2, const double eps) {
     for (size_t i = 0; i < 100; i++) {
         fmid = f(xmid = rtb + (dx *= 0.5));
         if (fmid <= 0.) rtb = xmid;
-        if (std::abs(xmid) < eps) return rtb;
+        if (std::abs(dx) < eps) return rtb;
     }
     return rtb;
 }
