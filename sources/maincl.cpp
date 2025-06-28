@@ -9,7 +9,7 @@ Main::Main(char *argv[], const int modee, double beps, const double xtoday,
       calc_widths(calcwidths),
       save_contribs(savecontribs),
       FO(AA, fast) {
-    //srand((unsigned)time(NULL));
+    srand((unsigned)time(NULL));
     std::string inputfile = std::string(argv[1]);
     if (beps >= 1.) beps = 0.99;
     if (beps == 0.) beps = 1e-100;

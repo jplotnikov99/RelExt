@@ -36,11 +36,10 @@ double SigvInt::xsec(const double &s, const std::string &channel) {
 double SigvInt::wij(const double &s) {
     if (sig_s.count(s) == 0) {
         AA.set_s(s);
-        double f_est[10];
+        double f_est[10], f[4];
         for (size_t i = 0; i < 10; i++)
             f_est[i] = AA(-1 + 0.2222222222222222 * i);
         double est = simpson_est(-1, 1, f_est);
-        double f[4];
         f[0] = f_est[0];
         f[1] = f_est[3];
         f[2] = f_est[6];
