@@ -1,4 +1,5 @@
 #include "../include/maincl.hpp"
+
 #include "../md_NMSSM/model.hpp"
 
 namespace DT {
@@ -9,7 +10,7 @@ Main::Main(char *argv[], const int modee, double beps, const double xtoday,
       output_file(std::string(argv[2])),
       calc_widths(calcwidths),
       save_contribs(savecontribs),
-      FO(AA, fast){
+      FO(AA, fast) {
     srand((unsigned)time(NULL));
     std::string inputfile = std::string(argv[1]);
     if (beps >= 1.) beps = 0.99;
@@ -17,7 +18,7 @@ Main::Main(char *argv[], const int modee, double beps, const double xtoday,
     beps_eps = std::log(beps);
     FO.set_xtoday(xtoday);
     if (inputfile != "") {
-        //rdr = std::make_unique<DataReader>(inputfile, 1);
+        // rdr = std::make_unique<DataReader>(inputfile, 1);
         std::unique_ptr<SLHAReader> slha;
         switch (mode) {
             case 1:
@@ -29,13 +30,13 @@ Main::Main(char *argv[], const int modee, double beps, const double xtoday,
             case 3:
                 load_read_file();
                 break;
-            case 4:{
-            SLHAReader slha(inputfile);
-            AA.updateFromSLHA(slha);
-            AA.load_parameters();
-            break;
+            case 4: {
+                // SLHAReader slha(inputfile);
+                // AA.updateFromSLHA(slha);
+                // AA.load_parameters();
+                break;
             }
-            default:    
+            default:
                 std::cout << "The mode " << mode << " does not exist.\n";
                 exit(1);
                 break;
@@ -72,7 +73,7 @@ void Main::PrintChannels() { AA.print_channels(); }
 
 void Main::PrintDM() { AA.print_DM(); }
 
-void Main::LoadParameters(const size_t i) {
+void Main::LoadParameters(std::string file, const size_t i) {
     do {
         switch (mode) {
             case 1:
@@ -98,8 +99,11 @@ void Main::LoadParameters(const size_t i) {
             case 3:
                 rdr->read_parameter(i);
                 break;
-            case 4:
-                break;
+            case 4: {
+                SLHAReader slha(file);
+                AA.updateFromSLHA(slha);
+                AA.load_parameters();
+            } break;
             default:
                 break;
         }
@@ -222,15 +226,15 @@ void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
     VecString prs;
     double dof1, dof2;
     for (double sqs = sqsmin; sqs <= sqsmax; sqs += step) {
-    res = 0;
-    for (auto it : channels) {
-        prs = AA.get_channel_prtcls(it);
-        dof1 = AA.DSdof[prs[0]];
-        dof2 = AA.DSdof[prs[1]];
-        res += sigv->xsec(sqs * sqs, it) / (dof1 * dof2);
-        std::cout << res << "\n";
-    }
-    xsr->save_data({"sqrts", "xsec"}, {sqs, res});
+        res = 0;
+        for (auto it : channels) {
+            prs = AA.get_channel_prtcls(it);
+            dof1 = AA.DSdof[prs[0]];
+            dof2 = AA.DSdof[prs[1]];
+            res += sigv->xsec(sqs * sqs, it) / (dof1 * dof2);
+            std::cout << res << "\n";
+        }
+        xsr->save_data({"sqrts", "xsec"}, {sqs, res});
     }
 }
 
@@ -310,8 +314,7 @@ double Main::CalcRelic(const int mechanism) {
     return omega;
 }
 
-
-double Main::CalcDDT(const std::string& slhaFilePath) {
+double Main::CalcDDT(const std::string &slhaFilePath, const double &relic) {
     using namespace DT;
     using std::pow;
     using namespace PAR;
@@ -321,7 +324,7 @@ double Main::CalcDDT(const std::string& slhaFilePath) {
         return -1;
     }
 
-    TeeStream out(std::cout, slhaOut); 
+    TeeStream out(std::cout, slhaOut);
 
     double m_chi = MN[0].real();
     double m = m_chi;
@@ -338,49 +341,68 @@ double Main::CalcDDT(const std::string& slhaFilePath) {
     det.setLambda("lambda_u_o", lambda_u_o());
     det.setLambda("lambda_d_o", lambda_d_o());
 
-    det.setNqP("u", 2.0); // Proton: 2 up
-    det.setNqP("d", 1.0); // Proton: 1 down
-    det.setNqN("u", 1.0); // Neutron: 1 up
-    det.setNqN("d", 2.0); // Neutron: 2 down
+    det.setNqP("u", 2.0);  // Proton: 2 up
+    det.setNqP("d", 1.0);  // Proton: 1 down
+    det.setNqN("u", 1.0);  // Neutron: 1 up
+    det.setNqN("d", 2.0);  // Neutron: 2 down
 
     double sigmap_gev2 = det.DDxSecp();
     double sigman_gev2 = det.DDxSecn();
 
-    
-    double xenon = (det.convertGeV2ToPicobarn(sigmap_gev2) * 54. + det.convertGeV2ToPicobarn(sigman_gev2) * 77.) / 131.;
+    double xenon = relic / 0.12 *
+                   (det.convertGeV2ToPicobarn(sigmap_gev2) * 54. +
+                    det.convertGeV2ToPicobarn(sigman_gev2) * 77.) /
+                   131.;
 
-    double LZat2sigma = (-7.2643062308e-59 * pow(m, 3) +
-        1.1063959013e-54 * pow(m, 2) +
-        1.1757730897e-49 * pow(m, 1) +
-        2.1808914726e-48 +
-        -3.2722198205e-47 / pow(m, 1) +
-        6.6024095892e-45 / pow(m, 2) +
-        -1.9703951065e-44 / pow(m, 3) +
-        -5.6669223075e-42 / pow(m, 4) +
-        2.0478854928e-40 / pow(m, 5) +
-        -2.5804287699e-39 / pow(m, 6) +
-        1.2514802934e-38 / pow(m, 7))*1e36;
+    double LZat2sigma =
+        (-7.2643062308e-59 * pow(m, 3) + 1.1063959013e-54 * pow(m, 2) +
+         1.1757730897e-49 * pow(m, 1) + 2.1808914726e-48 +
+         -3.2722198205e-47 / pow(m, 1) + 6.6024095892e-45 / pow(m, 2) +
+         -1.9703951065e-44 / pow(m, 3) + -5.6669223075e-42 / pow(m, 4) +
+         2.0478854928e-40 / pow(m, 5) + -2.5804287699e-39 / pow(m, 6) +
+         1.2514802934e-38 / pow(m, 7)) *
+        1e36;
 
-    double likHood = exp(-(LZat2sigma-xenon)/xenon);
+    double likHood = exp(-(0.122 - relic) / relic);
+    out << "BLOCK RELICDENSITY # Relic density generated via freeze-out\n";
 
-    out << "BLOCK DDETECTION # Direct Detection Crosssection of Proton, Neutron and Xenon \n";
-    
-    out << "  0     " << std::scientific << std::uppercase << std::setprecision(8)
-        << m << "   # DM Mass\n";
-    out << "  1     " << std::scientific << std::uppercase << std::setprecision(8)
-        << det.convertGeV2ToPicobarn(sigmap_gev2) << "   # Proton DD-Crossection\n";
-    out << "  2     " << std::scientific << std::uppercase << std::setprecision(8)
-        << det.convertGeV2ToPicobarn(sigman_gev2)  << "   # Neutron DD-Crossection\n";
-    out << "  3     " << std::scientific << std::uppercase << std::setprecision(8)
-        << xenon << "   # Xenon DD-Crossection\n";
-    out << "  4     " << std::scientific << std::uppercase << std::setprecision(8)
-        <<  LZat2sigma << "   # 2Sigma upper bound from LZ\n";
-    out << "  5     " << std::scientific << std::uppercase << std::setprecision(8)
-        <<  likHood << "   # Likelyhood\n";
-    if (xenon < LZat2sigma) {
-    out << "  6     1   # ALLOWED\n";
+    out << "  0     " << std::scientific << std::uppercase
+        << std::setprecision(8) << m << "   # DM Mass\n";
+    out << "  1     " << std::scientific << std::uppercase
+        << std::setprecision(8) << relic << "   # Relic density\n";
+    out << "  2     " << std::scientific << std::uppercase
+        << std::setprecision(8) << likHood << "   # Likelyhood\n";
+    if (relic < 0.122) {
+        out << "  3     1   # ALLOWED\n";
     } else {
-    out << "  6     0   # NOT ALLOWED \n";
+        out << "  3     0   # NOT ALLOWED \n";
+    }
+    out << "#\n";
+
+    likHood = exp(-(LZat2sigma - xenon) / xenon);
+
+    out << "BLOCK DDETECTION # Direct Detection Crosssection of Proton, "
+           "Neutron and Xenon \n";
+
+    out << "  0     " << std::scientific << std::uppercase
+        << std::setprecision(8) << m << "   # DM Mass\n";
+    out << "  1     " << std::scientific << std::uppercase
+        << std::setprecision(8) << det.convertGeV2ToPicobarn(sigmap_gev2)
+        << "   # Proton DD-Crossection\n";
+    out << "  2     " << std::scientific << std::uppercase
+        << std::setprecision(8) << det.convertGeV2ToPicobarn(sigman_gev2)
+        << "   # Neutron DD-Crossection\n";
+    out << "  3     " << std::scientific << std::uppercase
+        << std::setprecision(8) << xenon << "   # Xenon DD-Crossection\n";
+    out << "  4     " << std::scientific << std::uppercase
+        << std::setprecision(8) << LZat2sigma
+        << "   # 2Sigma upper bound from LZ\n";
+    out << "  5     " << std::scientific << std::uppercase
+        << std::setprecision(8) << likHood << "   # Likelyhood\n";
+    if (xenon < LZat2sigma) {
+        out << "  6     1   # ALLOWED\n";
+    } else {
+        out << "  6     0   # NOT ALLOWED \n";
     }
     out << "#\n";
     return xenon;
@@ -469,10 +491,6 @@ void Main::SaveData(const VecString &save_pars) {
 
     outfile.close();
 }
-
-
-
-
 
 Main::~Main() {
     if (MC) {
