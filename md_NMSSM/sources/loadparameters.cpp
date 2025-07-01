@@ -22,15 +22,6 @@ void ModelInfo::load_parameters() {
     v = 2. * MWm / g2;
     vd = v / sqrt(1. + TBeta * TBeta);
     vu = (TBeta * v) / sqrt(1. + TBeta * TBeta);
-<<<<<<< HEAD
-
-=======
- 
-    ZP[0][0] = -0.21961578041644098;
-    ZP[0][1] = 0.97558644362869129;
-    ZP[1][0] = 0.97558644362869129;
-    ZP[1][1] = 0.21961578041644098;
->>>>>>> refs/remotes/origin/NMSSM
 
     ZV[0][0] = 1.;
     ZV[0][1] = 0.;
