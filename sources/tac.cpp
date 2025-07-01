@@ -46,6 +46,8 @@ double SigvInt::wij(const double &s) {
         f[3] = f_est[9];
         double crs = 1 / (256 * M_PI * s * sqrt(s)) *
                      h_adap_simpson38(AA, -1, 1, f, est, theta_eps);
+        /* double crs = 1 / (256 * M_PI * s * sqrt(s)) *
+                     adap_simpson38(AA, -1, 1, f, theta_eps); */
         sig_s[s] = crs;
         return crs;
     } else {

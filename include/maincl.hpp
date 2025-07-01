@@ -47,7 +47,7 @@ class Main {
     void PrintDM();
 
     // loads parameter point and assigns DM mass
-    void LoadParameters(const size_t i = 0);
+    void LoadParameters(std::string file, const size_t i = 0);
 
     // returns the value of the parameter
     double GetParameter(const std::string &par);
@@ -83,7 +83,7 @@ class Main {
 
     // args are: mechanism type
     double CalcRelic(const int mechanism = 0);
-    double CalcDDT(const std::string& slhaFilePath);
+    double CalcDDT(const std::string &slhaFilePath, double relic);
 
     // args are: name of parameter, mechanism, relic target, relic error,
     // variable to save into
