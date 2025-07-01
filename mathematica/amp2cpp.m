@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/rodrigo/Downloads/RelExt/md_cxsm/FR_modfiles"<>"/FA_modfiles";*)
+(*directory = "/home/rodrigo/Downloads/RelExt/md_Singlet_EFT/FR_modfiles"<>"/FA_modfiles";*)
 Print[directory]
 
 (*start FA and FC*)
@@ -211,13 +211,19 @@ Block[{numerator,denominator,coefficient={},mandels={},temp1,temp2},
 		temp2 = 1;
 		Do[
 			If[And[Length[placeholder*numerator[[it]]]===2,Length[numerator[[it]]]>=2],
-				AppendTo[tokens,numerator[[it]]];
-				temp1*=(numerator[[it]]/.tokensubs);
+				If[FreeQ[numerator[[it]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__],SUNDelta[__,__]
+				   , SUNTF[__,__,__], SUNFIndex[__], SUNIndex[__], List[__], SUNF[__,__,__], s}], 
+				   AppendTo[tokens,numerator[[it]]];
+					temp1*=(numerator[[it]]/.tokensubs),
+					temp2*=numerator[[it]];
+				];
+				(*AppendTo[tokens,numerator[[it]]];
+				temp1*=(numerator[[it]]/.tokensubs);*);
 				Break[],
 				
 				If[FreeQ[numerator[[it,jt]],Alternatives@@{Spinor[__],Pair[__],Momentum[__],Complex[__,__],SUNFDelta[__,__],SUNDelta[__,__]
-				   , SUNTF[__,__,__], SUNFIndex[__], SUNIndex[__], List[__], SUNF[__,__,__]}], 
-					AppendTo[tokens,numerator[[it,jt]]];
+				   , SUNTF[__,__,__], SUNFIndex[__], SUNIndex[__], List[__], SUNF[__,__,__], s}], 
+				  AppendTo[tokens,numerator[[it,jt]]];
 					temp1*=(numerator[[it,jt]]/.tokensubs),
 					temp2*=numerator[[it,jt]];
 				];
@@ -317,7 +323,7 @@ SMP -> False, Contract -> True, DropSumOver -> True]/.gcsub/.subrule//Collect[#,
 ];
 
 breakdownAmp[listofprocs[[i]],amp];		
-AppendTo[ampslist, amp];
+AppendTo[ampslist, amp/.{Pair[Momentum[-p3-p4],Momentum[-p3-p4]]->s, Pair[Momentum[p3+p4],Momentum[p3+p4]]->s}];
 AppendTo[mi, TheMass[listofprocs[[i,1]]]];
 AppendTo[mj, TheMass[listofprocs[[i,2]]]];
 AppendTo[mk, TheMass[listofprocs[[i,3]]]];
@@ -493,7 +499,7 @@ Do[
 		];
 	,{i1,Length[tamp2]}];
 	
-AppendTo[final, Plus @@ subdiagrams];
+AppendTo[final, Plus @@ subdiagrams/.{Pair[Momentum[-p3-p4],Momentum[-p3-p4]]->s, Pair[Momentum[p3+p4],Momentum[p3+p4]]->s}];
 , {i,1,Length[ampslist]}]
 ]
 
@@ -1121,7 +1127,7 @@ Close[sfile];
 (*absolute value for center of mass 4-momentum of particle i*)
 picm[mi_,mj_] := Sqrt[(s+mi^2-mj^2)^2/(4s)-mi^2]; 
 (*t to cos\[Theta]*)
-ttoct[mi_,mj_,mk_,ml_]:=(mi^2-mj^2+mk^2-ml^2)^2/(4s)- (picm[mi,mj] - picm[mk,ml])^2-2*picm[mi,mj]*picm[mk,ml](1-cost)//Simplify;
+ttoct[mi_,mj_,mk_,ml_]:=(mi^2-mj^2-mk^2+ml^2)^2/(4s)- (picm[mi,mj] - picm[mk,ml])^2-2*picm[mi,mj]*picm[mk,ml](1-cost)//Simplify;
 
 (*amps file*)
 Do[
