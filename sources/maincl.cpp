@@ -314,7 +314,7 @@ double Main::CalcRelic(const int mechanism) {
     return omega;
 }
 
-double Main::CalcDDT(const std::string &slhaFilePath, const double &relic) {
+double Main::CalcDDT(const std::string &slhaFilePath, double relic) {
     using namespace DT;
     using std::pow;
     using namespace PAR;
@@ -363,7 +363,12 @@ double Main::CalcDDT(const std::string &slhaFilePath, const double &relic) {
          1.2514802934e-38 / pow(m, 7)) *
         1e36;
 
-    double likHood = exp(-(0.122 - relic) / relic);
+    double likHood = 0.;
+    if (relic == 0) {
+        likHood = 1e10;
+        relic = 1e10;
+    } else
+        likHood = exp(-(0.122 - relic) / relic);
     out << "BLOCK RELICDENSITY # Relic density generated via freeze-out\n";
 
     out << "  0     " << std::scientific << std::uppercase
@@ -378,8 +383,11 @@ double Main::CalcDDT(const std::string &slhaFilePath, const double &relic) {
         out << "  3     0   # NOT ALLOWED \n";
     }
     out << "#\n";
-
-    likHood = exp(-(LZat2sigma - xenon) / xenon);
+    if (xenon == 0) {
+        likHood = 1e10;
+        xenon = 1e10;
+    } else
+        likHood = exp(-(LZat2sigma - xenon) / xenon);
 
     out << "BLOCK DDETECTION # Direct Detection Crosssection of Proton, "
            "Neutron and Xenon \n";
