@@ -154,6 +154,16 @@ for(int i = 0; i < 3; ++i) {
     try { WHm[0] = WWm; }  catch(...) {}
 
     try { WHm[1] = slha.getValue("DECAY", {37}); }  catch(...) {}
+     try {
+        double beta =atan(TBeta.real());
+        double sB = sin(beta);
+        double cB = cos(beta);
+        ZP[0][0] = -cB;
+        ZP[0][1] = sB;
+        ZP[1][0] = sB;
+        ZP[1][1] = cB;
+        }
+    catch(...) {}
 
     // Beispiel: Matrizen wie ZH (6x6)
     try {
