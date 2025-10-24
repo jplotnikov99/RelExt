@@ -7,7 +7,7 @@
 namespace DT {
 
 template <class FUNC>
-void simpson38_vals(FUNC &f, const double l, const double r, double *f0) {
+void simpson38_vals(FUNC& f, const double l, const double r, double* f0) {
     const double h = (r - l) / 3.;
     for (int i = 0; i < 4; i++) {
         f0[i] = f(l + h * (double)i);
@@ -15,7 +15,7 @@ void simpson38_vals(FUNC &f, const double l, const double r, double *f0) {
 }
 
 template <class FUNC>
-double adap_simpson38(FUNC &f, const double l, const double r, double *f0,
+double adap_simpson38(FUNC& f, const double l, const double r, double* f0,
                       const double err, const size_t depth = 0) {
     double I1, I2, f1[4];
     double m = (r + l) / 2.;
@@ -40,13 +40,14 @@ double adap_simpson38(FUNC &f, const double l, const double r, double *f0,
 }
 
 template <class FUNC>
-double h_adap_simpson38(FUNC &f, const double l, const double r, double *f0,
-                        const double &est, const double err,
+double h_adap_simpson38(FUNC& f, const double l, const double r, double* f0,
+                        const double& est, const double err,
                         const size_t depth = 0) {
     double I1, I2, f1[4];
     double m = (r + l) / 2.;
     double h = (r - l) / 8.;
     double Ia = h * (f0[0] + 3 * f0[1] + 3 * f0[2] + f0[3]);
+    if (Ia == 0.) return 0.;
     f1[0] = f(m);
     f1[1] = f0[2];
     f1[2] = f((l + 5 * r) / 6);
@@ -66,7 +67,7 @@ double h_adap_simpson38(FUNC &f, const double l, const double r, double *f0,
 }
 
 template <class FUNC>
-double kronrod_61(FUNC &f, const double l, const double r, double &err) {
+double kronrod_61(FUNC& f, const double l, const double r, double& err) {
     double I1 = 0., I2 = 0.;
     double y[61];
     double m = 0.5 * (r + l);
@@ -86,7 +87,7 @@ double kronrod_61(FUNC &f, const double l, const double r, double &err) {
 }
 
 template <class FUNC>
-double adap_gauss_kronrod_15(FUNC &f, const double l, const double r,
+double adap_gauss_kronrod_15(FUNC& f, const double l, const double r,
                              const double err, const size_t depth = 0) {
     double I1, I2, y[15];
     double h = (r - l) / 2;
@@ -118,7 +119,7 @@ double adap_gauss_kronrod_15(FUNC &f, const double l, const double r,
 }
 
 template <class FUNC>
-double h_adap_gauss_kronrod_15(FUNC &f, const double l, const double r,
+double h_adap_gauss_kronrod_15(FUNC& f, const double l, const double r,
                                const double est, const double err,
                                const size_t depth = 0) {
     double I1, I2, y[15];
