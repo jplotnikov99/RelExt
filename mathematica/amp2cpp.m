@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 directory = ToString[$CommandLine[[4]]] <> "/FA_modfiles";
-(*directory = "/home/rodrigo/Downloads/RelExt/md_cxsm/FR_modfiles"<>"/FA_modfiles";*)
+(*directory = "/users/tp/jplotnikov/Documents/RelExt/md_cpvdm/FR_modfiles"<>"/FA_modfiles";*)
 Print[directory]
 
 (*start FA and FC*)
@@ -349,7 +349,7 @@ calcAmps[];
 
 
 widthlist=widths;
-widthsub={pat : HoldPattern[Spinor[___,___]]:> pat};
+widthsub={pat : HoldPattern[Spinor[___,___]]:> pat,t-m_^2:>t-m^2/1000,u-m_^2:>u-m^2/1000};
 
 
 (*functions to check for s-channels, change denominator by including the width and save it*)
