@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <unordered_map>
 
 #include "data_structures.hpp"
 #include "hyper_parameters.hpp"

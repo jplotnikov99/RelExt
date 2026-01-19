@@ -6,6 +6,7 @@
 #include <map>
 #include <sstream>
 #include <vector>
+#include <unordered_map>
 
 #include "utils.hpp"
 
@@ -32,7 +33,6 @@ class DataReader {
     std::string get_name_of(const std::string name);
     VecString get_slist_of(const std::string name);
     VecString get_full_line(const std::string line);
-    MatString get_operation_slist();
     std::unordered_map<std::string, double> get_best_bins();
     std::vector<double *> assignHeaders(std::map<std::string, double *> pars);
     void read_parameter(const size_t row);

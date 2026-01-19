@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 # Project name and version
-project(DarkTree VERSION 0.1 LANGUAGES C CXX Fortran)
+project(DarkTree VERSION 0.1 LANGUAGES C CXX)
 
 # Set C++ standard to C++17
 set(CMAKE_CXX_STANDARD 17)

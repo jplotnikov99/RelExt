@@ -117,24 +117,6 @@ VecString DataReader::get_full_line(const std::string line) {
     return res;
 }
 
-MatString DataReader::get_operation_slist() {
-    std::vector<VecString> res = {};
-    VecString temp;
-    std::string line;
-    line = get_line_at("START");
-    while (getline(datafile, line)) {
-        if (line == "END") {
-            break;
-        }
-        rmv_spaces(line);
-        if (line != "") {
-            temp = get_full_line(line);
-            res.push_back(temp);
-        }
-    }
-    return res;
-}
-
 double DataReader::datalines() {
     std::string line;
     while (getline(datafile, line)) {

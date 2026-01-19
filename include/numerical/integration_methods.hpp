@@ -46,20 +46,20 @@ double h_adap_simpson38(FUNC& f, const double l, const double r, double* f0,
     double I1, I2, f1[4];
     double m = (r + l) / 2.;
     double h = (r - l) / 8.;
-    double Ia = h * (f0[0] + 3 * f0[1] + 3 * f0[2] + f0[3]);
+    double Ia = h * (f0[0] + 3. * f0[1] + 3. * f0[2] + f0[3]);
     if (Ia == 0.) return 0.;
     f1[0] = f(m);
     f1[1] = f0[2];
-    f1[2] = f((l + 5 * r) / 6);
+    f1[2] = f((l + 5. * r) / 6.);
     f1[3] = f0[3];
     f0[3] = f1[0];
     f0[2] = f0[1];
-    f0[1] = f((5 * l + r) / 6);
-    I1 = h / 2 * (f0[0] + 3 * f0[1] + 3 * f0[2] + f0[3]);
-    I2 = h / 2 * (f1[0] + 3 * f1[1] + 3 * f1[2] + f1[3]);
+    f0[1] = f((5. * l + r) / 6.);
+    I1 = h / 2. * (f0[0] + 3. * f0[1] + 3. * f0[2] + f0[3]);
+    I2 = h / 2. * (f1[0] + 3. * f1[1] + 3. * f1[2] + f1[3]);
     double Ib = I1 + I2;
 
-    if ((std::abs(Ia - Ib) < err * fabs(est)) || (depth > 16)) {
+    if ((std::abs(Ia - Ib) < err * std::abs(est)) || (depth > 16)) {
         return Ib;
     }
     return h_adap_simpson38(f, l, m, f0, est, err, depth + 1) +

@@ -60,29 +60,4 @@ class FOFull {
     ~FOFull() {};
 };
 
-class Beqs : public BeqInfo {
-   private:
-    size_t mech = 0;
-
-   public:
-    Beqs(AnnihilationAmps &AnAmps) : BeqInfo(AnAmps) {};
-    // set the DM generatio mechanism
-    void set_mechanism(const size_t &m);
-
-    // prefactor + tac of the boltzmann equation
-    double pre_tac(const double &x);
-
-    double fout_condition(const double x, const double del);
-
-    // function to help find the starting point to be used in the runge Kutta
-    // routine
-    double fstart(double x);
-
-    // Boltzmann equation that needs to be solved for freeze-out and simple
-    // freeze-in
-    double operator()(const double &x, const double &y);
-
-    ~Beqs() { delete &dof; }
-};
-
 }  // namespace DT
