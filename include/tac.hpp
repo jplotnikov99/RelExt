@@ -19,7 +19,8 @@ class SigvInt {
     double x;
 
    public:
-    VecDoub polK2s;
+    bool separate_num_den;
+    VecDoub polK2s, besselK2s;
     std::vector<double> dsmasses;
     std::unordered_map<double, double> sig_s;
     double lower_bound;
