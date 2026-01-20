@@ -10,7 +10,6 @@ void SigvInt::set_lower_bound(const double new_lower) {
 
 void SigvInt::set_dsmasses(const std::vector<double> &masses) {
     polK2s.resize(masses.size());
-    besselK2s.resize(masses.size());
 }
 
 double SigvInt::xsec(const double &s, const std::string &channel) {
@@ -59,16 +58,15 @@ void SigvInt::calc_polK2() {
     double mtemp, cur;
     size_t i = 0;
     separate_num_den = true;
+    den_save = 0.;
     for (auto it : AA.bath_masses) {
         mtemp = *AA.DSmasses[it];
         cur = AA.DSdof[it] * mtemp * mtemp * polK2(Tinv * mtemp);
         polK2s[i] = cur;
-        if(Tinv * mtemp < 700 && separate_num_den) {
-            besselK2s[i] = cur * exp(-Tinv * mtemp);
-        }
-        else {
+        if(Tinv * mtemp < 700. && separate_num_den)
+            den_save += cur * exp(-Tinv * mtemp);
+        else
             separate_num_den = false;
-        }
         i++;
     }
 }
@@ -82,10 +80,9 @@ double SigvInt::lipsv(const double &s) {
     double Tinv = x / AA.MDM;
 
     if (x > 5) {
-        if(sqs * Tinv < 700 && separate_num_den) {
+        if(sqs * Tinv < 700. && separate_num_den) {
             num += Tinv * exp(-sqs * Tinv) * polK1(sqs * Tinv);
-            for(size_t i = 0; i < AA.bath_masses.size(); i++)
-                den += besselK2s[i];
+            den += den_save;
         }
         else {
             num += Tinv * polK1(sqs * Tinv);
@@ -123,7 +120,6 @@ Tac::Tac(AnnihilationAmps &AnAmps)
 bool Tac::sort_inimasses(const VecString &ch_str) {
     double temp;
     sigv.polK2s.resize(AA.bath_masses.size());
-    sigv.besselK2s.resize(AA.bath_masses.size());
     for (auto it : ch_str) {
         AA.set_channel({it});
         AA.assign_masses(m1, m2, it);

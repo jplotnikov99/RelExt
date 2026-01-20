@@ -16,11 +16,11 @@ static const double G = 6.7e-39;
 class SigvInt {
    private:
     AnnihilationAmps &AA;
-    double x;
+    double x, den_save;
+    bool separate_num_den;
 
    public:
-    bool separate_num_den;
-    VecDoub polK2s, besselK2s;
+    VecDoub polK2s;
     std::vector<double> dsmasses;
     std::unordered_map<double, double> sig_s;
     double lower_bound;
