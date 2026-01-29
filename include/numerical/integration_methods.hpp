@@ -143,7 +143,7 @@ double h_adap_gauss_kronrod_15(FUNC& f, const double l, const double r,
               0.381830050505118944950369775488975 * (y[5] + y[9]) +
               0.417959183673469387755102040816327 * y[7]);
 
-    if (std::abs((I1 - I2)) < err * std::abs(est)) {
+    if ((std::abs((I1 - I2)) < err * std::abs(est)) && depth > 2) {
         return I1;
     }
     double m = (2 * l + r) / 3;

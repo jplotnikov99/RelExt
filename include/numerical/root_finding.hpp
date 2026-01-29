@@ -73,8 +73,14 @@ class FindRoot {
 template <class FUNC>
 double FindRoot::next_x(FUNC &f, double x) {
     double xsave = x;
-    if (x < xlo) x = xlo;
-    if (x > xhi) x = xhi;
+    if (x < xlo) {
+        x = xlo;
+        std::cout << "The lower boundary was reached.\n";
+    }
+    if (x > xhi){
+        x = xhi;
+        std::cout << "The upper boundary was reached.\n";
+    } 
     VecDoub xv(1);
     xv[0] = x;
     if (!f.valid(xv)) x = xsave;

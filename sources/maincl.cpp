@@ -224,6 +224,7 @@ void Main::CalcTac(double xmin, double xmax, const size_t points,
     }
     if (channels.size() == 0) channels = AA.get_all_channels();
     double step = (xmax - xmin) / ((double)points);
+    if(xmin == xmax) step = 1.;
     double res;
     double beps_save = beps_eps;
     beps_eps = log(1e-100);

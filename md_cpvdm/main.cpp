@@ -8,9 +8,9 @@ using namespace DT;
  ***********************************************
  */
 static constexpr int MODE = 2;
-static const VecString SAVEPARS = {"mH1",   "mH2",   "mHc",   "alph1",
+static const VecString SAVEPARS = {"mH1", "mH2", "mHc", "alph1",
                                    "alph2", "alph3", "m22sq", "mssq",
-                                   "L2",    "L6",    "L8"};
+                                   "L2", "L6", "L8"};
 static const VecString CONSIDERCHANNELS = {};
 VecString NEGLECTCHANNELS = {};
 static const VecString NEGLECTPARTICLES = {"u", "d", "e", "mu"};
@@ -23,18 +23,20 @@ static constexpr bool SAVECONTRIBS = false;
  ***********************************************
  Until here */
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
+    clock_t begin_time = clock();
     Main M(argv, MODE, BEPS, XTODAY, FAST, CALCWIDTHS, SAVECONTRIBS);
     M.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
 
-    clock_t begin_time = clock();
     M.InitMonteCarlo(100, 500, 1, 0.12);
-    for (size_t i = 1; i <= 1e5; i++) {
+    for (size_t i = 1; i <= 1e5; i++)
+    {
         M.LoadParameters();
         M.CalcRelic();
         M.SetWeight();
         M.SaveData(SAVEPARS);
     }
     std::cout << "Computation time:\n"
-              << float(clock() - begin_time) / CLOCKS_PER_SEC << std::endl;
+              << float(clock() - begin_time) / CLOCKS_PER_SEC << "\n";
 }

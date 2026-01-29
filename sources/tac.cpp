@@ -94,11 +94,7 @@ double SigvInt::lipsv(const double &s) {
         }
         den *= den;
     } else {
-        // if (sqs * Tinv > 5) {
         num += Tinv * polK1(sqs * Tinv) * exp(-sqs * Tinv);
-        // } else {
-        //     num += Tinv * bessel::cyl_k(1, sqs * Tinv);
-        // }
         for (auto it : AA.bath_masses) {
             mtemp = *AA.DSmasses[it];
             den += mtemp * mtemp * besselK2(Tinv * mtemp);
