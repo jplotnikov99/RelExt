@@ -349,7 +349,7 @@ calcAmps[];
 
 
 widthlist=widths;
-widthsub={pat : HoldPattern[Spinor[___,___]]:> pat,t-m_^2:>t-m^2/1000,u-m_^2:>u-m^2/1000};
+widthsub={pat : HoldPattern[Spinor[___,___]]:> pat,t-m_^2:>t-m^2-I*m^2/1000,u-m_^2:>u-m^2-I*m^2/1000};
 
 
 (*functions to check for s-channels, change denominator by including the width and save it*)
