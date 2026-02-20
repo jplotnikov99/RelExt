@@ -92,22 +92,20 @@ double SigvInt::lipsv(const double &s) {
                 i++;
             }
         }
-        den *= den;
     } else {
         num += Tinv * polK1(sqs * Tinv) * exp(-sqs * Tinv);
         for (auto it : AA.bath_masses) {
             mtemp = *AA.DSmasses[it];
             den += mtemp * mtemp * besselK2(Tinv * mtemp);
         }
-        den *= den;
     }
 
-    return num / den;
+    return num / (den * den);
 }
 
 double SigvInt::operator()(const double &u) {
     double s = lower_bound * lower_bound + (1 - u) / u;
-    return wij(s) * lipsv(s) * 1 / (u * u);
+    return wij(s) * lipsv(s) / (u * u);
 }
 
 Tac::Tac(AnnihilationAmps &AnAmps)
@@ -121,7 +119,10 @@ bool Tac::sort_inimasses(const VecString &ch_str) {
         AA.assign_masses(m1, m2, it);
         AA.set_s((m1 + m2) * (m1 + m2) * 100);
         temp = AA(0.5);
-        if (std::isnan(temp)) return false;
+        if (std::isnan(temp) || std::isinf(temp)) {
+            std::cout << "The channel: " << it << " evaluates to non numerical values.\n";
+            return false;
+        }
         inimap[m1 + m2].push_back(it);
     }
     return true;
@@ -133,20 +134,19 @@ bool Tac::beps(const double &x) {
 
 double Tac::peak_relevance(const double &peakpos) {
     if (peakpos == sigv.lower_bound) return -1.;
-    return -(beps_eps /* - 4.6051701859880 */) * AA.MDM /
-           (peakpos - sigv.lower_bound);
+    return -beps_eps * AA.MDM / (peakpos - sigv.lower_bound);
 }
 
 double *Tac::peak_bounds(const double &peakpos, const double &width) {
     static double bounds[3];
-    double n = 0.1;
-    while (peakpos - 2 * width / n < sigv.lower_bound) n *= 2;
+    double bound_size = 20. * width;
+    while (peakpos - bound_size < sigv.lower_bound) bound_size /= 2.;
 
-    bounds[0] = 1 / ((peakpos - 2 * width / n) * (peakpos - 2 * width / n) -
+    bounds[0] = 1 / ((peakpos - bound_size) * (peakpos - bound_size) -
                      sigv.lower_bound * sigv.lower_bound + 1);
     bounds[1] =
         1 / (peakpos * peakpos - sigv.lower_bound * sigv.lower_bound + 1);
-    bounds[2] = 1 / ((peakpos + 2 * width / n) * (peakpos + 2 * width / n) -
+    bounds[2] = 1 / ((peakpos + bound_size) * (peakpos + bound_size) -
                      sigv.lower_bound * sigv.lower_bound + 1);
 
     return bounds;

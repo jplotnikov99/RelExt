@@ -16,7 +16,7 @@ class FO1DM {
    private:
     BeqInfo BI;
     FOCondition foc;
-    double xtoday, xf;
+    double xtoday;
     bool appr, suppress = false;
 
    public:

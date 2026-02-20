@@ -111,7 +111,6 @@ double FindRoot::find(FUNC &f, double xstart) {
                 stepold = step;
                 if (std::abs(y) < eps) return xstart;
             } break;
-
             case descent: {
                 double grad = descent_rate * absgradient(f, xstart, y);
                 xstart = next_x(f, xstart - grad);
@@ -120,11 +119,12 @@ double FindRoot::find(FUNC &f, double xstart) {
                 stepold = grad;
                 if (std::abs(y - yold) < eps * std::abs(yold)) return xstart;
             } break;
-
+            case bisect: 
+                return bisec_to_y(f, xold, xstart, eps);
+                break;
             default:
                 break;
         }
-        if (searchmode == bisect) return bisec_to_y(f, xold, xstart, eps);
     }
     return xstart;
 }
@@ -167,11 +167,10 @@ VecDoub RandomWalk::walk(FUNC &f) {
     ynew = f(xnew);
     do {
         yold = ynew;
+        xold = xnew;
         if (is_good) {
-            xold = xnew;
             same_step(xnew);
         } else {
-            xold = xnew;
             random_step(xnew);
         }
         ynew = f(xnew);
@@ -187,7 +186,7 @@ VecDoub RandomWalk::walk(FUNC &f) {
         }
         cur_step++;
     } while (std::abs(ynew) > eps && (cur_step < maxit));
-    std::cout << "Steps taken: " << cur_step << std::endl;
+    std::cout << "Steps taken: " << cur_step << "\n";
     return xnew;
 }
 

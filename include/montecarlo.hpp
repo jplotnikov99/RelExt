@@ -14,7 +14,6 @@
 
 namespace DT {
 
-typedef std::vector<int> ivec1;
 typedef std::vector<double> dvec1;
 typedef std::vector<dvec1> dvec2;
 
@@ -25,12 +24,11 @@ class MonteCarlo {
     size_t N_bins;
     const double p_random;
     const double target;
-    double worst_bin = 2.;
-    std::string worst_bin_ID = "";
-    size_t points = 1;
+    double worst_cell = 2.;
+    std::string worst_cell_ID = "";
     VecDoub lbounds;
     VecDoub ubounds;
-    std::unordered_map<std::string, double> best_bins;
+    std::unordered_map<std::string, double> best_cells;
 
    public:
     MonteCarlo(const size_t Np, VecDoub &lower, VecDoub &upper,
@@ -42,26 +40,26 @@ class MonteCarlo {
           N_best(Nbest),
           p_random(prandom),
           target(targett) {
-        best_bins = best;
+        best_cells = best;
         lbounds = lower;
         ubounds = upper;
     };
 
-    ivec1 get_bins(const VecDoub &pars);
+    std::vector<int> get_bins(const VecDoub &pars);
 
-    std::string bins_to_ID(const ivec1 &bins);
+    std::string bins_to_ID(const std::vector<int> &bins);
 
-    ivec1 ID_to_bins(const std::string &ID);
+    std::vector<int> ID_to_bins(const std::string &ID);
 
-    void set_weight(const VecDoub &pars, const double x);
+    void set_weight(const VecDoub &pars, const double &relic);
 
-    std::string get_random_bin_ID();
+    std::string select_random_cell_ID();
 
     VecDoub generate_new_pars();
 
-    void print_best_bins();
+    void print_best_cells();
 
-    void save_best_bins(const VecString &par_names,
+    void save_best_cells(const VecString &par_names,
                         const std::string &filename);
 
     ~MonteCarlo() {};

@@ -5,10 +5,18 @@ Main::Main(char *argv[], const int modee, double beps, const double xtoday,
            const bool fast, const bool calcwidths, const bool savecontribs)
     : AA(*new AnnihilationAmps(calc_widths)),
       mode(modee),
-      output_file(std::string(argv[2])),
       calc_widths(calcwidths),
       save_contribs(savecontribs),
       FO(AA, fast) {
+    if(argv[1] == nullptr){
+        std::cout << "Please provide an input and output file.\n";
+        exit(1);
+    }
+    if(argv[2] == nullptr){
+        std::cout << "Please provide an input and output file.\n";
+        exit(1);
+    }
+    output_file =std::string(argv[2]);
     srand((unsigned)time(NULL));
     std::string inputfile = std::string(argv[1]);
     if (beps >= 1.) beps = 0.99;
@@ -370,7 +378,7 @@ Main::~Main() {
         for (size_t i = 0; i < generator_list.size(); i++) {
             par_names[i] = generator_list[i][0];
         }
-        MC->save_best_bins(par_names, output_file);
+        MC->save_best_cells(par_names, output_file);
     }
     delete &AA;
 }
