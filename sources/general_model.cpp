@@ -46,8 +46,7 @@ for(int i = 0; i < 3; ++i) {
 }
 
 
-    // Beispiel: Mehrdimensionale Arrays
-    // Higgs-Massen (falls in MASS mit 25, 35, 45, ...)
+
     try { Mh[0] = slha.getValue("SMINPUTS", {4}); }  catch(...) {}
     try { Mh[1] = slha.getValue("MASS", {25}); }  catch(...) {}
     try { Mh[2] = slha.getValue("MASS", {35}); }  catch(...) {}
@@ -165,7 +164,7 @@ for(int i = 0; i < 3; ++i) {
         }
     catch(...) {}
 
-    // Beispiel: Matrizen wie ZH (6x6)
+
     try {
         double beta =atan(TBeta.real());
         double sB = sin(beta);
@@ -174,8 +173,7 @@ for(int i = 0; i < 3; ++i) {
         auto ZH_slha = slha.getMatrix("NMHMIXC", 5); // 5x5 Matrix aus SLHA
     
         double ZH_tmp[6][6];
-    
-        // Explizite erste Zeile wie im Bild:
+
         ZH_tmp[0][0] = 0.;
         ZH_tmp[0][1] = 0.;
         ZH_tmp[0][2] = 0.;
@@ -183,7 +181,7 @@ for(int i = 0; i < 3; ++i) {
         ZH_tmp[0][4] = -sB;
         ZH_tmp[0][5] = 0.;
     
-        // Die restlichen 5 Zeilen explizit füllen aus der SLHA-Matrix
+
         for (int i = 0; i < 5; ++i) {
             ZH_tmp[i+1][0] = ZH_slha[i][0];
             ZH_tmp[i+1][1] = ZH_slha[i][1];
@@ -193,7 +191,7 @@ for(int i = 0; i < 3; ++i) {
             ZH_tmp[i+1][5] = ZH_slha[i][4];
         }
     
-        // Schreibe zurück in die originale ZH-Matrix
+
         for(int i = 0; i < 6; ++i)
             for(int j = 0; j < 6; ++j)
                 ZH[i][j] = ZH_tmp[i][j];
