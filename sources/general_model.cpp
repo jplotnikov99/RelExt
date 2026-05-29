@@ -649,8 +649,7 @@ double AnnihilationAmps::operator()(const double cos_t) {
     double res = 0.;
     for (auto it : cur_channel) {
         res += it(cos_t, s);
-        // std::cout << it(0.1, 4000. * 4000.) << "\n";
-        // exit(1);
+
     }
     return res;
 }
@@ -659,7 +658,7 @@ DDetection::DDetection(double m_chi, double Z, double A)
 
 double DDetection::computeMu(double m_chi) {
     constexpr double m_N =
-        0.939;  // durchschnittliche Nukleonmasse in GeV (Xenon)
+        0.939; 
     return (m_N*m_chi) / (m_chi + m_N);
 }
 void DDetection::setLambda(const std::string &key, double value) {
@@ -715,28 +714,28 @@ double DDetection::getMass(const std::string &q) const {
     return qmass.at(q);
 }
 void DDetection::checkRequiredInputs() const {
-    // Erwartete Keys
+
     std::vector<std::string> required_lambdas = {
         "lambda_u_e", "lambda_d_e", "lambda_s_e", "lambda_c_e",
         "lambda_b_e", "lambda_t_e", "lambda_u_o", "lambda_d_o"};
 
     std::vector<std::string> required_nq = {"u", "d"};
 
-    // Lambda-Check
+
     for (const auto &key : required_lambdas) {
         if (lambda.find(key) == lambda.end()) {
             throw std::runtime_error("Missing lambda coupling: " + key);
         }
     }
 
-    // Parton-Inhalt (Proton)
+
     for (const auto &q : required_nq) {
         if (nq_p.find(q) == nq_p.end()) {
             throw std::runtime_error("Missing nq_p entry for quark: " + q);
         }
     }
 
-    // Parton-Inhalt (Neutron)
+
     for (const auto &q : required_nq) {
         if (nq_n.find(q) == nq_n.end()) {
             throw std::runtime_error("Missing nq_n entry for quark: " + q);
@@ -757,12 +756,12 @@ double DDetection::convertGeV2ToPicobarn(double sigma_gev2) {
     constexpr double gev2_to_pb = 3.89379e8;
     return sigma_gev2 * gev2_to_pb;
 }
-// Constructor definition (fix typo: parsefile → parseFile)
+
 SLHAReader::SLHAReader(const std::string& filename) {
     parseFile(filename);
 }
 
-// Correctly scoped method definitions
+
 double SLHAReader::getValue(const std::string& block, const std::vector<int> indices) const {
     auto blockIt = blocks.find(block);
     if (blockIt == blocks.end()) throw std::runtime_error("Block not found");
@@ -792,18 +791,18 @@ std::vector<std::vector<double>> SLHAReader::getMatrix(const std::string& block,
     return matrix;
 }
 
-// Parsing function defined correctly as a member of SLHAReader
+
 void SLHAReader::parseFile(const std::string& filename) {
     std::ifstream infile(filename);
     if (!infile) throw std::runtime_error("SLHA file not found!");
 
     std::string line, currentBlock;
     while (std::getline(infile, line)) {
-        // Entferne Kommentar
+
         auto commentPos = line.find('#');
         if (commentPos != std::string::npos) line = line.substr(0, commentPos);
 
-        // Trim Whitespace
+
         line.erase(0, line.find_first_not_of(" \t\r\n"));
         line.erase(line.find_last_not_of(" \t\r\n") + 1);
 
@@ -815,7 +814,7 @@ void SLHAReader::parseFile(const std::string& filename) {
         while (iss >> token) tokens.push_back(token);
         if (tokens.empty()) continue;
 
-        // BLOCK/DECAY Detection
+    
         if (tokens[0] == "BLOCK" || tokens[0] == "Block") {
             if (tokens.size() > 1) {
                 currentBlock = tokens[1];
@@ -832,7 +831,7 @@ void SLHAReader::parseFile(const std::string& filename) {
                 double width = std::stod(tokens[2]);
                 int idx = pdg_counter[pdg]++;
         
-                // Immer speichern: einmal ohne Index, einmal mit Index
+               
                 blocks["DECAY"][{pdg}] = width;
                 blocks["DECAY"][{pdg, idx}] = width;
             }
@@ -840,13 +839,13 @@ void SLHAReader::parseFile(const std::string& filename) {
         }
 
         if (!currentBlock.empty()) {
-            // Die meisten Einträge sind: [idx1] [idx2] ... [value]
+          
             std::vector<int> indices;
             double value = 0.0;
             bool parseOK = true;
 
             if (tokens.size() >= 2) {
-                // Prüfe, dass alle außer dem letzten Token int sind
+           
                 for (size_t i = 0; i < tokens.size() - 1; ++i) {
                     try {
                         indices.push_back(std::stoi(tokens[i]));
@@ -855,7 +854,7 @@ void SLHAReader::parseFile(const std::string& filename) {
                         break;
                     }
                 }
-                // Value konvertieren (nur wenn indices ok sind)
+            
                 if (parseOK) {
                     try {
                         value = std::stod(tokens.back());
@@ -865,14 +864,14 @@ void SLHAReader::parseFile(const std::string& filename) {
                 }
                 if (parseOK)
                     blocks[currentBlock][indices] = value;
-                // Falls es z.B. ein Textwert ist, ignoriere die Zeile
+             
             } else if (tokens.size() == 1) {
-                // Einzelwert im Block (selten)
+          
                 try {
                     value = std::stod(tokens[0]);
                     blocks[currentBlock][{}] = value;
                 } catch (...) {
-                    // Ignorieren, falls keine Zahl
+        
                 }
             }
         }
