@@ -719,7 +719,7 @@ void DDetection::checkRequiredInputs() const {
         "lambda_u_e", "lambda_d_e", "lambda_s_e", "lambda_c_e",
         "lambda_b_e", "lambda_t_e", "lambda_u_o", "lambda_d_o"};
 
-    std::vector<std::string> required_nq = {"u", "d"};
+   // std::vector<std::string> required_nq = {"u", "d"};
 
 
     for (const auto &key : required_lambdas) {
