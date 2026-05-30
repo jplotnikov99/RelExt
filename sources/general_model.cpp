@@ -729,18 +729,18 @@ void DDetection::checkRequiredInputs() const {
     }
 
 
-    for (const auto &q : required_nq) {
-        if (nq_p.find(q) == nq_p.end()) {
-            throw std::runtime_error("Missing nq_p entry for quark: " + q);
-        }
-    }
+//    for (const auto &q : required_nq) {
+//        if (nq_p.find(q) == nq_p.end()) {
+//            throw std::runtime_error("Missing nq_p entry for quark: " + q);
+//        }
+//    }
 
 
-    for (const auto &q : required_nq) {
-        if (nq_n.find(q) == nq_n.end()) {
-            throw std::runtime_error("Missing nq_n entry for quark: " + q);
-        }
-    }
+ //   for (const auto &q : required_nq) {
+ //       if (nq_n.find(q) == nq_n.end()) {
+ //           throw std::runtime_error("Missing nq_n entry for quark: " + q);
+ //       }
+ //   }
 }
 template <typename K, typename V>
 V DDetection::safeAt(const std::map<K, V> &m, const K &key,
