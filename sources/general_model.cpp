@@ -664,13 +664,13 @@ double DDetection::computeMu(double m_chi) {
 void DDetection::setLambda(const std::string &key, double value) {
     lambda[key] = value;
 }
-void DDetection::setNqP(const std::string &q, double value) { nq_p[q] = value; }
-void DDetection::setNqN(const std::string &q, double value) { nq_n[q] = value; }
+//void DDetection::setNqP(const std::string &q, double value) { nq_p[q] = value; }
+//void DDetection::setNqN(const std::string &q, double value) { nq_n[q] = value; }
 double DDetection::computePart(bool isProton) {
     const auto &fq = isProton ? fq_p : fq_n;
     double m = 0.9382720813;
     double coeff = isProton ? Z * m : (A - Z) * m;
-    auto &nq = isProton ? nq_p : nq_n;
+    //auto &nq = isProton ? nq_p : nq_n;
 
     std::vector<std::string> lq = {"u", "d", "s"};
     std::vector<std::string> hq = {"c", "b", "t"};
