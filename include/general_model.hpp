@@ -96,8 +96,8 @@ class DDetection {
    public:
     DDetection(double m_chi, double Z, double A);
     void setLambda(const std::string &key, double value);
-    void setNqP(const std::string &q, double value);
-    void setNqN(const std::string &q, double value);
+   // void setNqP(const std::string &q, double value);
+    //void setNqN(const std::string &q, double value);
     double DDxSecp();
     double DDxSecn();
     static double computeMu(double m_chi);
@@ -111,8 +111,8 @@ class DDetection {
    private:
     double mu_chi, Z, A;
     std::map<std::string, double> lambda;
-    std::map<std::string, double> nq_p;
-    std::map<std::string, double> nq_n;
+    //std::map<std::string, double> nq_p;
+    //std::map<std::string, double> nq_n;
     std::map<std::string, double> fq_p = {
         {"u", 0.01513}, {"d", 0.0191}, {"s", 0.0447}};
     std::map<std::string, double> fq_n = {
