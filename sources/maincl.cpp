@@ -2,14 +2,17 @@
 
 namespace DT {
 Main::Main(char *argv[], const int modee, double beps, const double xtoday,
-           const bool fast, const bool calcwidths, const bool savecontribs, const bool p_nlo)
-    : AA(*new AnnihilationAmps(calc_widths, p_nlo)),
+           const bool fast, const bool calcwidths, const bool savecontribs, const bool p_nlo, const bool qcd, const int renormvs, const int renormalpha)
+    : AA(*new AnnihilationAmps(calc_widths, p_nlo,qcd,renormvs,renormalpha)),
       mode(modee),
       output_file(std::string(argv[2])),
       calc_widths(calcwidths),
       save_contribs(savecontribs),
       nlo(p_nlo),
-      FO(AA, fast) {
+      FO(AA, fast),
+      renormalpha(renormalpha),
+      renormvs(renormvs),
+      qcd(qcd) {
     srand((unsigned)time(NULL));
     std::string inputfile = std::string(argv[1]);
     if (beps >= 1.) beps = 0.99;
@@ -178,7 +181,7 @@ void Main::ChangeThermalBath(const VecString &args) {
 
 void Main::CalcXsec(double sqsmin, double sqsmax, const size_t points,
                     const std::string outfile, VecString channels) {
-    AnnihilationAmps AA(calc_widths, nlo);
+    AnnihilationAmps AA(calc_widths, nlo, qcd, renormvs,renormalpha);
     for (auto &it : channels)
         ASSERT(AA.check_channel_existence(it),
                "Error in NEGLECTCHANNELS: " << it << " is not a valid channel.")
@@ -225,11 +228,12 @@ void Main::CalcTac(double xmin, double xmax, const size_t points,
     }
     if (channels.size() == 0) channels = AA.get_all_channels();
     double step = (xmax - xmin) / ((double)points);
+    if(xmin==xmax) step = 1.;
     double res;
     double beps_save = beps_eps;
     beps_eps = log(1e-100);
     tac.sort_inimasses(channels);
-    for (double i = xmin; i <= xmax; i += step) {
+    for (double i = xmin; i <= xmax; i +=step) {
         res = tac(i);
         TAR->save_data({"x", "tac"}, {i, res});
     }
@@ -272,11 +276,15 @@ double Main::CalcRelic(const int mechanism) {
                          "mechanism to 0 or 1.\n ";
             break;
     }
-    std::cout << "Omega full:\n" << omega << "\n\n";
-    if (save_contribs) {
-        VecDoub temp(FO.calc_contributions(bath_procs));
-        channel_frac = temp;
-    }
+if (save_contribs && omega > 0) { 
+    VecDoub temp(FO.calc_contributions(bath_procs)); 
+    channel_frac = temp; 
+    std::cout << "Channel contributions:\n"; 
+    for (size_t i = 0; i < channel_frac.size(); ++i) { 
+   std::cout << bath_procs[i] << ": " << channel_frac[i] * 100 << "%\n";
+    } 
+    std::cout << "-----------------------------------------------------" << std::endl;
+}
     return omega;
 }
 
@@ -324,7 +332,8 @@ void Main::RWalk(const double target, const double eps, const double gam,
     }
 }
 
-void Main::SaveData(const VecString &save_pars) {
+void Main::SaveData(const VecString &save_pars,
+                    double lo_val, double nlo_val) {
     std::string filesave = "../dataOutput/" + output_file;
 
     if (first_run) {
@@ -335,12 +344,11 @@ void Main::SaveData(const VecString &save_pars) {
     }
 
     std::ofstream outfile(filesave, std::ios::out | std::ios::app);
-
     outfile.seekp(0, std::ios::end);
 
+    // Header nur schreiben, wenn Datei leer ist
     if (outfile.tellp() == 0) {
-        outfile << "Omega";
-
+        outfile << "Omega_LO\tOmega_NLO\tDelta[%]";
         for (auto it : save_pars) {
             AA.check_par_existence(it);
             outfile << "\t" << it;
@@ -352,7 +360,11 @@ void Main::SaveData(const VecString &save_pars) {
         }
         outfile << "\n";
     }
-    outfile << omega;
+
+    // Datenzeile
+    double rel_corr = (nlo_val / lo_val - 1.0) * 100.0;
+    outfile << lo_val << "\t" << nlo_val << "\t" << rel_corr;
+
     for (auto it : save_pars) {
         outfile << "\t" << *AA.parmap[it];
     }
@@ -363,7 +375,33 @@ void Main::SaveData(const VecString &save_pars) {
 
     outfile.close();
 }
+void Main::SaveToCSV(const std::string &csvname, Main &M_nlo,
+               double lo_val, double nlo_val, double rel_corr) {
+    // Header nur schreiben, wenn Datei noch nicht existiert / leer ist
+    bool need_header = false;
+    {
+        std::ifstream check(csvname);
+        need_header = (!check.good() || check.peek() == std::ifstream::traits_type::eof());
+    }
 
+    std::ofstream csv(csvname, std::ios::out | std::ios::app);
+    csv << std::setprecision(16);
+
+    if (need_header) {
+        csv << "MH,MS1,MA1,svev,alpha,Omega_LO,Omega_NLO,Delta[%]\n";
+    }
+
+    csv << M_nlo.GetParameter("MH")    << ","
+        << M_nlo.GetParameter("MS1")   << ","
+        << M_nlo.GetParameter("MA1")   << ","
+        << M_nlo.GetParameter("svev")  << ","
+        << M_nlo.GetParameter("alpha") << ","
+        << lo_val   << ","
+        << nlo_val  << ","
+        << rel_corr << "\n";
+
+    csv.close();
+}
 Main::~Main() {
     if (MC) {
         VecString par_names(generator_list.size());

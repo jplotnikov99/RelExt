@@ -3,7 +3,7 @@
 
 namespace DT {
 
-ModelInfo::ModelInfo(const bool calcwidths, const bool p_nlo) : calc_widths(calcwidths), nlo(p_nlo) {
+ModelInfo::ModelInfo(const bool calcwidths, const bool p_nlo,const bool qcd, const int renormvs, const int renormalpha) : calc_widths(calcwidths), nlo(p_nlo),qcd(qcd) ,renormalpha(renormalpha),renormvs(renormvs) {
     ModelInfo::init();
     load_prtcls();
     load_parameter_map();
@@ -44,10 +44,11 @@ bool ModelInfo::load_everything() {
         load_parameters();
     }
     load_tokens();
+     init_CollierLTCPP(0.,1., 0);
+     load_counterterms();
 
     if (nlo){
-        init_CollierLTCPP(0., 125.09 * 125.09, 1.);
-        load_counterterms();
+        init_CollierLTCPP(0., 1., 0);
     }
 
     return check_conditions();
@@ -90,8 +91,13 @@ void ModelInfo::assigndm() {
         if (MDM > *DSmasses[it]) MDM = *DSmasses[it];
 }
 
-AnnihilationAmps::AnnihilationAmps(const bool calc_widths, const bool nlo)
-    : ModelInfo(calc_widths, nlo) {
+std::vector<std::string> AnnihilationAmps::get_channel() const {
+    return cur_channel_name;
+}
+
+
+AnnihilationAmps::AnnihilationAmps(const bool calc_widths, const bool nlo, const bool qcd ,const int renormvs ,const int renormalpha)
+    : ModelInfo(calc_widths, nlo, qcd, renormvs,renormalpha) {
     AnnihilationAmps::init();
 }
 
@@ -234,11 +240,24 @@ void AnnihilationAmps::set_s(const double new_s) { s = new_s; }
 
 void AnnihilationAmps::set_channel(const VecString &ch_str, const bool flux) {
     cur_channel.clear();
+    cur_channel_name.clear();
     if (flux)
         for (auto it : ch_str) cur_channel.push_back(amp2fls[it]);
-    else
-        for (auto it : ch_str) cur_channel.push_back(amp2s[it]);
+    else{
+        for (auto it : ch_str){ 
+            cur_channel.push_back(amp2s[it]);
+        }
+    }
+    cur_channel_name = ch_str;  
 }
+bool DT::AnnihilationAmps::is_nlo() const {
+    return nlo;
+}
+
+bool DT::AnnihilationAmps::is_qcd() const {
+    return qcd;
+}
+
 
 double AnnihilationAmps::operator()(const double cos_t) {
     double res = 0.;

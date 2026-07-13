@@ -26,6 +26,7 @@ double FO1DM::operator()(const VecString &channels) {
         return 0.;
     }
     double yfo = (1. + foc.del) * BI.yeq(xfo);
+
     if (appr) {
         FOAppr foa(BI);
         res = adap_gauss_kronrod_15(foa, xfo, xtoday, 1e-3);

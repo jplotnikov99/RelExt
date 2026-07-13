@@ -23,6 +23,9 @@ class Main {
     const bool calc_widths;
     const bool save_contribs;
     const bool nlo;
+    const int renormvs;
+    const int renormalpha;
+    const bool qcd;
     VecDoub channel_frac;
     VecString bath_procs;
     MatString generator_list;
@@ -33,7 +36,7 @@ class Main {
 
    public:
     Main(char *argv[], const int modee, double beps, const double xtoday,
-         const bool fast, const bool calcwidths, const bool savecontribs, const bool nlo = false);
+         const bool fast, const bool calcwidths, const bool savecontribs, const bool nlo = false, const bool qcd = false, const int renormvs=2, const int renormalpha=1);
 
     void load_generation_file();
 
@@ -93,9 +96,71 @@ class Main {
                const size_t maxit);
 
     // saves the scanned data
-    void SaveData(const VecString &args);
-
+    void SaveData(const VecString &save_pars,
+                    const double lo_val, const double nlo_val);
+    void SaveToCSV(const std::string &csvname, Main &M_nlo,
+               const double lo_val, const double nlo_val, const double rel_corr);
     ~Main();
 };
 
 }  // namespace DT
+#include <iostream>
+
+
+void printRelExtInfo(bool isNLO) {
+
+    std::cout << "+--------------------------------------------------------------------------+\n";
+    std::cout << "|                     ____      _ _____      _                             |\n";
+    std::cout << "|                    |  _ \\ ___| | ____|_  _| |_                           |\n";
+    std::cout << "|                    | |_) / _ \\ |  _| \\ \\/ / __|                          |\n";
+    std::cout << "|                    |  _ <  __/ | |___ >  <| |_                           |\n";
+    std::cout << "|                    |_| \\_\\___|_|_____/_/\\_\\\\__|                          |\n";
+
+    if (isNLO) {
+        std::cout << "|                                                                          |\n";
+        std::cout << "|                              @@@@@@@                                     |\n";
+        std::cout << "|                           @@@       @@@                                  |\n";
+        std::cout << "|                          @@   @@@@    @@                                 |\n";
+        std::cout << "|                         @@   @@  @@    @@                                |\n";
+        std::cout << "|                         @@   @@  @@    @@                                |\n";
+        std::cout << "|                          @@   @@@@    @@                                 |\n";
+        std::cout << "|                           @@@       @@@                                  |\n";
+        std::cout << "|                              @@@@@@@                                     |\n";
+        std::cout << "|                                                                          |\n";
+        std::cout << "|                        _   _ _      ____                                 |\n";
+        std::cout << "|                       | \\ | | |    / __ \\                                |\n";
+        std::cout << "|                       |  \\| | |   | |  | |                               |\n";
+        std::cout << "|                       | . ` | |   | |  | |                               |\n";
+        std::cout << "|                       | |\\  | |___| |__| |                               |\n";
+        std::cout << "|                       |_| \\_|______\\____/                                |\n";
+    }
+
+    std::cout << "|                                                                          |\n";
+
+    // Dein Bild
+    std::cout << "|               MWXKKKXXKOo:ccldxkkkdodxxol:;,;cd0NMWo.',:                 |\n";
+    std::cout << "|               MMMWNXKx;;cdO0Okxxdd:;coolodddo:..:ONd'c::                 |\n";
+    std::cout << "|               MMMMW0:,oOOo:;;;;:coxxxdoc;;,,;::,..lOd:'.                 |\n";
+    std::cout << "|               MMMWx,lOd;;:ldxxdoc,,;,,;codxdoc;'...;0Xd'                 |\n";
+    std::cout << "|               MMNo;xk;,oKWMMMMMMWKdllkNMMMMMMWNOl'..;KX:                 |\n";
+    std::cout << "|               MXc.ox':KMWKOxxOXWMMMMMMMMWKkxxOXWW0;..oNo                 |\n";
+    std::cout << "|               O,.cx':KKo;..;;.'kWMMMMMMWx..:;..:dKK; :Xd                 |\n";
+    std::cout << "|               K;'kl.ll.   .::..x0occccoOx..:;.   .ol.:0c                 |\n";
+    std::cout << "|               X;:0:...   ..,:o0x.;:..;'.k0o:,.    ...co.                 |\n";
+    std::cout << "|               O'l0:.   .:xKNXXW0:'.. .';0WNNN0d;.   .c,'                 |\n";
+    std::cout << "|               d'xKo' .;OWMMWx;lOOxddxxkOkl:kWMMNx'  ',.o                 |\n";
+    std::cout << "|               l.lkxl..oXWMMMW0occclllllcco0WMMWNKl..'.lX                 |\n";
+    std::cout << "|               ...;dxl..cOXNWMMMMWNXXXXNWMMMMWNKkc'';':dl                 |\n";
+    std::cout << "|               c'okdloo:.':dOKXNNWWWWWWWWNNXKOd:.'::..',c                 |\n";
+    std::cout << "|               0,lKx,.lxd:'.';coxkO0000Okdoc;..'::'.:dONW                 |\n";
+    std::cout << "|               Nc;OOo;:dd:cl:'...'''''''... .'::'. .ckNMM                 |\n";
+    std::cout << "|               Mk'l0xxdxd;.,od;..,;,,,,'...;cc,.,cc:..oNM                 |\n";
+    std::cout << "|               MNc'xOo;,lxl,.;cc:::,....;clc'..;xkxxo'.xW                 |\n";
+    std::cout << "|               MMK:,dkl,.;odl:::,.',:cldo;......ckxdd:.lW                 |\n";
+    std::cout << "|               MMMXl,oxo:..,,'';coxxol:'..,;,...'::','.xM                 |\n";
+
+    std::cout << "|                                                                          |\n";
+    std::cout << "|      R.Capucha, K.Elyaouti, J.Plotnikov, M.M. Mühlleitner, R. Santos     |\n";
+    std::cout << "|                                                                          |\n";
+    std::cout << "+--------------------------------------------------------------------------+\n";
+}

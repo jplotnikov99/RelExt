@@ -1,5 +1,7 @@
 #include <iostream>
-
+#include <fstream>
+#include <iomanip>
+#include <string>
 #include "maincl.hpp"
 #include "model.hpp"
 #include "interface/CollierLTCPP.h"
@@ -12,49 +14,78 @@ static constexpr int MODE = 3;
 static const VecString SAVEPARS = {"MA1", "MS1", "alpha", "svev"};
 static const VecString CONSIDERCHANNELS = {};
 VecString NEGLECTCHANNELS = {};
+VecString NEGLECTCHANNELS1= {};
 static const VecString NEGLECTPARTICLES = {"u", "d", "c", "s", "e", "mu"};
+static const VecString NEGLECTPARTICLESNLO = {};
 static constexpr double BEPS = 1e-6;
 static constexpr double XTODAY = 1e6;
-static constexpr bool FAST = true;
+static constexpr bool FAST = false;
 static constexpr bool CALCWIDTHS = false;
-static constexpr bool SAVECONTRIBS = false;
+static constexpr bool SAVECONTRIBS = true;
 static constexpr bool NLO = true;
+static constexpr bool QCD = false;
+static constexpr int renormvs = 2;
+static constexpr int renormalpha = 1;
 /*
  ***********************************************
  Until here */
 
 int main(int argc, char **argv) {
-    clock_t begin_time = clock();
-
-    std::cout << std::setprecision(16);
-
-    // User-defined options are parsed and ready to use
-    OptionParser parser;
-    parser.parse(argc, argv);
-
-    int parampoint = std::stoi(parser.get("line"));
-
-    // nlo = (parser.get("nlo") == "1" ? true : false);
-    // qcd = (parser.get("qcd") == "1" ? true : false);
-
-    std::cout << "Parameter point: " << parampoint << std::endl;
-
-    Main M_nlo(argv, MODE, BEPS, XTODAY, FAST, CALCWIDTHS, SAVECONTRIBS, 1);
-    M_nlo.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
-    M_nlo.LoadParameters(parampoint);
-    // M_nlo.CalcRelic();
-    M_nlo.CalcTac(5, 200, 20, "cxsm_out_tac_nlo_" + parser.get("line") + "_HH.dat");
-    // M_nlo.CalcXsec(1600, 16000, 10, "cxsm_out_xsec_nlo_" + parser.get("line") + ".dat", {});
-    M_nlo.SaveData(SAVEPARS);
     
-    Main M_lo(argv, MODE, BEPS, XTODAY, FAST, CALCWIDTHS, SAVECONTRIBS, 1);
-    M_lo.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
+    clock_t begin_time = clock();
+    std::cout << std::setprecision(16);
+    printRelExtInfo(NLO);
+    OptionParser parser;
+    
+    parser.parse(argc, argv);
+    int parampoint = std::stoi(parser.get("line"));
+    
+    //LO 
+    Main M_lo(argv, MODE, BEPS, XTODAY, FAST, CALCWIDTHS, SAVECONTRIBS, 0);
     M_lo.LoadParameters(parampoint);
-    // M_lo.CalcRelic();
-    M_lo.CalcTac(5, 200, 20, "cxsm_out_tac_lo_" + parser.get("line") + "_HH.dat", {"A1,A1,H,H"});
-    // M_lo.CalcXsec(1600, 16000, 20, "cxsm_out_xsec_lo_" + parser.get("line") + "_WW_20pts_testCT.dat", {"A1,A1,w,W"});
-    M_lo.SaveData(SAVEPARS);   
+    M_lo.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS, NEGLECTPARTICLES);
+    
+    //NLO 
+    Main M_nlo(argv, MODE, BEPS, XTODAY, FAST, CALCWIDTHS, SAVECONTRIBS, NLO,QCD,renormvs,renormalpha);
+    M_nlo.set_channels(CONSIDERCHANNELS, NEGLECTCHANNELS1, NEGLECTPARTICLESNLO);
+    M_nlo.LoadParameters(parampoint);
 
-    std::cout << "Computation time:\n"
-              << float(clock() - begin_time) / CLOCKS_PER_SEC << "\n";
+
+    // Model Information   
+    std::cout << "Model used: Complex Singlet Extension of the SM (CxSM)" << std::endl;
+    std::cout << "-----------------------------------------------------" << std::endl;
+    std::cout << "Initial variables" << std::endl;
+    std::cout << "-----------------------------------------------------" << std::endl;
+    std::cout << "MH = \t" << M_nlo.GetParameter("MH")<< std::endl;
+    std::cout << "MS1 = \t" << M_nlo.GetParameter("MS1") << std::endl;
+    std::cout << "MA1 = \t" << M_nlo.GetParameter("MA1") << std::endl;
+    std::cout << "svev = \t" << M_nlo.GetParameter("svev") << std::endl;
+    std::cout << "alpha = " << M_nlo.GetParameter("alpha") << std::endl;
+    std::cout << "-----------------------------------------------------" << std::endl;
+    std::cout << "Relic Density Results Leading Order" << std::endl;
+    std::cout << "-----------------------------------------------------" << std::endl;
+    double lo_val = M_lo.CalcRelic();
+    std::cout << "Omega h^2 (LO)  = " << lo_val  << std::endl;
+    double nlo_val = M_nlo.CalcRelic();
+    std::cout << "-----------------------------------------------------" << std::endl;
+    std::cout << "Relic Density Results Next-To-Leading Order" << std::endl;
+    std::cout << " " << std::endl;
+    std::cout << "Omega h^2 (NLO) = " << nlo_val << std::endl;
+    double rel_corr = (nlo_val / lo_val - 1.0) * 100.0;
+    std::cout << "Delta[%]  = \t" << rel_corr << std::endl;
+    std::cout << "-----------------------------------------------------" << std::endl;
+      /* ---------- CSV-Output ---------- */
+    
+    std::string csvname = "../dataOutput/" + std::string(argv[2]);
+    M_nlo.SaveToCSV(csvname, M_nlo, lo_val, nlo_val, rel_corr);
+
+
+    float seconds = float(clock() - begin_time) / CLOCKS_PER_SEC;
+    int minutes = int(seconds) / 60;
+    float remaining_seconds = seconds - minutes * 60;
+
+    std::cout << "Time: " << minutes << " min "
+          << remaining_seconds << " s\n";
+
+    return 0;
 }

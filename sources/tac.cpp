@@ -1,8 +1,46 @@
 #include "../include/tac.hpp"
+#include "../include/numerical/vegas.hpp"
 
 namespace DT {
 
 void SigvInt::set_x(const double new_x) { x = new_x; }
+
+
+double SigvInt::run_vegas_from_channel(const std::vector<std::string>& channels, double s_value) {
+
+    static const std::unordered_map<std::string, CubaIntegrand> integrand_map = {
+        {"A1,A1,w,W",   integrand_AAwW},
+        {"A1,A1,TA,ta", integrand_AAtaTA},
+        {"A1,A1,B,b",   integrand_AAbB},
+        {"A1,A1,T,t",   integrand_AAtT}
+    };
+
+    static const std::unordered_map<std::string, CubaIntegrand> integrand_map_qcd = {
+        {"A1,A1,B,b",   integrand_AAbBQCD},
+        {"A1,A1,T,t",   integrand_AAtTQCD}
+    };
+
+    double total = 0.0;
+
+    for (const auto& ch : channels) {
+
+        if (AA.is_qcd()) {
+
+            auto it = integrand_map_qcd.find(ch);
+            if (it != integrand_map_qcd.end()) {
+                total += vegas_real(it->second, s_value);
+            }
+
+        } else {
+            auto it = integrand_map.find(ch);
+            if (it != integrand_map.end()) {
+                total += vegas_real(it->second, s_value);
+            }
+        }
+    }
+
+    return total;
+}
 
 void SigvInt::set_lower_bound(const double new_lower) {
     lower_bound = new_lower;
@@ -28,32 +66,73 @@ double SigvInt::xsec(const double &s, const std::string &channel) {
     f[1] = f_est[3];
     f[2] = f_est[6];
     f[3] = f_est[9];
+    VecString test1 = {channel};
     return 1 / (32 * M_PI * s) *
-           sqrt(kaellen(s, m3 * m3, m4 * m4) / kaellen(s, m1 * m1, m2 * m2)) *
-           h_adap_simpson38(AA, -1, 1, f, est, theta_eps);
+           sqrt(kaellen(s, m3 * m3, m4 * m4) / kaellen(s, m1 * m1, m2 * m2)) * adap_simpson38(AA, -1, 1, f, theta_eps)
+           +1/(sqrt((s*s/4. -  s*m1*m1)))*run_vegas_from_channel(test1, s);
 }
+
 
 double SigvInt::wij(const double &s) {
     if (sig_s.count(s) == 0) {
+
         AA.set_s(s);
         double f_est[10];
         for (size_t i = 0; i < 10; i++)
             f_est[i] = AA(-1 + 0.2222222222222222 * i);
+
         double est = simpson_est(-1, 1, f_est);
+
         double f[4];
         f[0] = f_est[0];
         f[1] = f_est[3];
         f[2] = f_est[6];
         f[3] = f_est[9];
-        double crs = 1 / (256 * M_PI * s * sqrt(s)) *
-                     h_adap_simpson38(AA, -1, 1, f, est, theta_eps);
+
+        double crs;
+
+if (AA.is_nlo()) {
+    VecString test = AA.get_channel();
+    std::vector<std::string> matches;
+
+    if (AA.is_qcd()) {
+        VecString qcd_channels = {"A1,A1,B,b", "A1,A1,T,t"};
+        for (const auto& el : qcd_channels) {
+            if (std::find(test.begin(), test.end(), el) != test.end()) {
+                matches.push_back(el);
+            }
+        }
+
+    } else {
+        VecString all_channels = {"A1,A1,B,b","A1,A1,T,t","A1,A1,TA,ta","A1,A1,w,W"};
+        for (const auto& el : all_channels) {
+            if (std::find(test.begin(), test.end(), el) != test.end()) {
+                matches.push_back(el);
+            }
+        }
+    }
+
+   crs = 1 / (256 * M_PI * s * sqrt(s)) *
+                 h_adap_simpson38(AA, -1, 1, f,est, theta_eps);
+
+    if (!matches.empty()) {
+        crs += sqrt(s)*(s-4*AA.MDM*AA.MDM) *
+               1/(s/2*sqrt(1-4*AA.MDM*AA.MDM/s)) *
+               run_vegas_from_channel(matches, s) / 8;
+    }
+
+
+} else {
+    crs = 1 / (256 * M_PI * s * sqrt(s)) *
+          h_adap_simpson38(AA, -1, 1, f, est, theta_eps);
+}
         sig_s[s] = crs;
         return crs;
+
     } else {
         return sig_s.at(s);
     }
 }
-
 void SigvInt::calc_polK2() {
     double Tinv = x / AA.MDM;
     double mtemp, cur;
@@ -114,7 +193,12 @@ bool Tac::sort_inimasses(const VecString &ch_str) {
         AA.assign_masses(m1, m2, it);
         AA.set_s((m1 + m2) * (m1 + m2) * 100);
         temp = AA(0.5);
-        if (std::isnan(temp)) return false;
+        if (std::isnan(temp) || sigv.xsec((m1+m2)*(m1+m2)+1,it) < 0){
+        
+        std::cout << "Error: Negative Cross-section in the channel " << " " << it << std::endl;
+        std::cout << "sigma = " << sigv.xsec((m1+m2)*(m1+m2)+1,it)  << " " <<"for s = " << (m1+m2)*(m1+m2)+1  << std::endl;
+        return false;
+    }
         inimap[m1 + m2].push_back(it);
     }
     return true;

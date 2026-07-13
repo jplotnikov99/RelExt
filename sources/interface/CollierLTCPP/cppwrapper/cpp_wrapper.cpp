@@ -1,7 +1,8 @@
 #include <cmath>
 #include <complex>
 #include <iostream>
-
+#include <cstdio>
+#include <unistd.h>
 #include "types.h"
 
 const double GammaEuler = 0.577215664901532;
@@ -261,9 +262,19 @@ complex<double> D0i(const int &i,
 
 void init_collier(int Nmax, int ncache)
 {
-  clearcache_();
-  init_collier_(&Nmax, &ncache);
-  return;
+    clearcache_();
+
+    fflush(stdout);
+    int saved_stdout = dup(fileno(stdout));
+    if (!freopen("/dev/null", "w", stdout)) {}
+
+    init_collier_(&Nmax, &ncache);  
+    fflush(stdout);
+    dup2(saved_stdout, fileno(stdout));
+    close(saved_stdout);
+
+
+    return;
 }
 
 void setparam_collier(double uvdiv, double delta_uv, double mu2, double lambda)

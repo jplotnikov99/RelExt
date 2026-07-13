@@ -1,5 +1,5 @@
 ! Collier-LT interface to cope with the Nput subroutines used by FormCalc.
-! INTERFACE LIBRARY PROVIDED: CHRISTOPH BORSCHENSKY
+!
 !
 ! 1. In Collier there are two different scales, mu_ir and mu_uv,
 ! while in LT there is only a single mu scale => do not forget
@@ -840,16 +840,9 @@ end subroutine setlambda
 ! ----------------------------------------------------------------------
 
 RealType function getlambda()
-  use COLLIER
   implicit none
 #include "lt_ff.h"
-
-! DA: IR Divergencies: mass regularization
-
-  double complex minf2(1)
-
-  call GetMinf2_cll(minf2)
-  getlambda = real(minf2(1))
+  getlambda = lambda
 end function getlambda
 
 ! ----------------------------------------------------------------------
@@ -948,18 +941,14 @@ subroutine setparam_collier(uvdiv,delta_uv,mu2,lambda)
   implicit none
   double precision, intent(in) :: uvdiv,delta_uv,mu2,lambda
 
-  double complex minf2(1)
-
 ! CB: for UV divergences
   call setuvdiv(uvdiv)  ! set UV divergence control parameter
-
+  call SetDeltaIR_cll(0d0,0d0)
   call SetDeltaUV_cll(delta_uv)  ! set UV divergence control parameter
   call SetMuUV2_cll(mu2) ! renormalization scale squared
-
-! DA: IR Divergencies: mass regularization
-  
-  minf2(1) = (1.,0.)*lambda
-  call SetMinf2_cll(1,minf2)  
+  call SetMuIR2_cll(mu2) ! renormalization scale squared
+  call setlambda(lambda) ! set IR divergence control parameter in DimReg
+  ! lambda=0: finite part; lambda=-1.d0: 1/eps part; lambda=-2.d0: 1/eps^2 part
   
 end subroutine setparam_collier
 

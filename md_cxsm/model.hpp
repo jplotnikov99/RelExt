@@ -495,6 +495,36 @@ namespace DT
 		extern std::complex<double> token377;
 		extern std::complex<double> token378;
 		extern std::complex<double> token379;
+		extern std::complex<double> token380;
+		extern std::complex<double> token381;
+		extern std::complex<double> token382;
+		extern std::complex<double> token383;
+		extern std::complex<double> token384;
+		extern std::complex<double> token385;
+		extern std::complex<double> token386;
+		extern std::complex<double> token387;
+		extern std::complex<double> token388;
+		extern std::complex<double> token389;
+		extern std::complex<double> token390;
+		extern std::complex<double> token391;
+		extern std::complex<double> token392;
+		extern std::complex<double> token393;
+		extern std::complex<double> token394;
+		extern std::complex<double> token395;
+		extern std::complex<double> token396;
+		extern std::complex<double> token397;
+		extern std::complex<double> token398;
+		extern std::complex<double> token399;
+		extern std::complex<double> token400;
+		extern std::complex<double> token401;
+		extern std::complex<double> token402;
+		extern std::complex<double> token403;
+		extern std::complex<double> token404;
+		extern std::complex<double> token405;
+		extern std::complex<double> token406;
+		extern std::complex<double> token407;
+		extern std::complex<double> token408;
+		extern std::complex<double> token409;
 
 		extern double EL;
 		extern double ee;
@@ -505,41 +535,50 @@ namespace DT
 
 	extern bool qcd;
 
-	extern std::complex<double> CT_vev;
+	extern std::complex<double> CT_v;
 	extern std::complex<double> CT_Ze;
-	extern std::complex<double> CT_Ze0;
+	//extern std::complex<double> CT_Ze0;
+	extern std::complex<double> CT_alpha_OS;
+	extern std::complex<double> CT_alpha_pstr;
+	extern std::complex<double> CT_vs;
 	extern std::complex<double> CT_alpha;
-	extern std::complex<double> CT_M_A1;
+	extern std::complex<double> CT_M_AD;
 	extern std::complex<double> CT_M_b;
 	extern std::complex<double> CT_M_t;
 	extern std::complex<double> CT_M_W;
 	extern std::complex<double> CT_M_Z;
-	extern std::complex<double> CT_M_TAU;
-	extern std::complex<double> CT_M_H;
-	extern std::complex<double> CT_M_S1;
+	extern std::complex<double> CT_M_ta;
+	extern std::complex<double> CT_M_H1;
+	extern std::complex<double> CT_M_H2;
 	extern std::complex<double> CT_svev;
-	extern std::complex<double> CT_svev_OS_H;
-	extern std::complex<double> CT_svev_OS_S1;
-	extern std::complex<double> CT_svev_ZEM_H;
-	extern std::complex<double> CT_svev_ZEM_S1;
-	extern std::complex<double> CT_svev_ZEMPT_H;
-	extern std::complex<double> CT_svev_ZEMPT_S1;
-	extern std::complex<double> CT_WF_A1;
-	extern std::complex<double> CT_WF_b_L;
-	extern std::complex<double> CT_WF_b_R;
-	extern std::complex<double> CT_WF_t_L;
-	extern std::complex<double> CT_WF_t_R;
-	extern std::complex<double> CT_WF_W;
-	extern std::complex<double> CT_WF_ZZ;
-	extern std::complex<double> CT_WF_ZA;
-	extern std::complex<double> CT_WF_AZ;
-	extern std::complex<double> CT_WF_AA;
-	extern std::complex<double> CT_WF_TAU_L;
-	extern std::complex<double> CT_WF_TAU_R;
-	extern std::complex<double> CT_WF_HH;
-	extern std::complex<double> CT_WF_HS1;
-	extern std::complex<double> CT_WF_S1H;
-	extern std::complex<double> CT_WF_S1S1;
+	extern std::complex<double> CT_Z_Z_A;
+	extern std::complex<double> CT_svev_OS_H1_OS;
+	extern std::complex<double> CT_svev_OS_H2_OS;
+	extern std::complex<double> CT_svev_OS_H1_pstr;
+	extern std::complex<double> CT_svev_OS_H2_pstr;
+	extern std::complex<double> CT_svev_ZEM_H1_OS;
+	extern std::complex<double> CT_svev_ZEM_H2_OS;
+	extern std::complex<double> CT_svev_ZEM_H1_pstr;
+	extern std::complex<double> CT_svev_ZEM_H2_pstr;
+	extern std::complex<double> CT_Z_A_A;
+	extern std::complex<double> CT_Z_A_Z;
+	extern std::complex<double> CT_Z_AD_AD;
+	extern std::complex<double> CT_Z_H1_H1;
+	extern std::complex<double> CT_Z_H2_H1;
+	extern std::complex<double> CT_Z_H1_H2;
+	extern std::complex<double> CT_Z_H2_H2;
+	extern std::complex<double> CT_Z_H2_H2_PT;
+	extern std::complex<double> CT_Z_H1_H2_PT;
+	extern std::complex<double> CT_Z_H1_H1_PT;
+	extern std::complex<double> CT_Z_t_t_L;
+	extern std::complex<double> CT_Z_t_t_R;
+	extern std::complex<double> CT_Z_b_b_L;
+	extern std::complex<double> CT_Z_b_b_R;
+	extern std::complex<double> CT_Z_Z_Z;
+	extern std::complex<double> CT_Z_W_W;
+	extern std::complex<double> CT_Z_ta_ta_L;
+	extern std::complex<double> CT_Z_ta_ta_R;
+
 
 	double A1A1HH(const double &cos_t, const double &s);
 	double A1A1HS1(const double &cos_t, const double &s);
@@ -603,60 +642,289 @@ namespace DT
 	double wwS1(const double QCDaS);
 
 	std::complex<double> A1A1HHTree(const double &cos_t, const double &s);
+	std::complex<double> A1A1HHTreeConj(const double &cos_t, const double &s);
 	std::complex<double> A1A1HH1Loop(const double &cos_t, const double &s);
-	std::complex<double> A1A1HHCT(const double &cos_t, const double &s);
-	double A1A1HHNLO(const double &cos_t, const double &s);
+
 
 	std::complex<double> A1A1S1S1Tree(const double &cos_t, const double &s);
+	std::complex<double> A1A1S1S1TreeConj(const double &cos_t, const double &s);
 	std::complex<double> A1A1S1S11Loop(const double &cos_t, const double &s);
-	std::complex<double> A1A1S1S1CT(const double &cos_t, const double &s);
-	double A1A1S1S1NLO(const double &cos_t, const double &s);
 
 	std::complex<double> A1A1HS1Tree(const double &cos_t, const double &s);
+	std::complex<double> A1A1HS1TreeConj(const double &cos_t, const double &s);
 	std::complex<double> A1A1HS11Loop(const double &cos_t, const double &s);
-	std::complex<double> A1A1HS1CT(const double &cos_t, const double &s);
-	double A1A1HS1NLO(const double &cos_t, const double &s);
+
 
 	std::complex<double> A1A1wWTree(const double &cos_t, const double &s);
 	std::complex<double> A1A1wWTreeConj(const double &cos_t, const double &s);
 	std::complex<double> A1A1wW1Loop(const double &cos_t, const double &s);
-	std::complex<double> A1A1wWSoft(const double &cos_t, const double &s);
-	std::complex<double> A1A1wWCT(const double &cos_t, const double &s);
-	double A1A1wWNLO(const double &cos_t, const double &s);
+
 
 	std::complex<double> A1A1ZZTree(const double &cos_t, const double &s);
 	std::complex<double> A1A1ZZTreeConj(const double &cos_t, const double &s);
 	std::complex<double> A1A1ZZ1Loop(const double &cos_t, const double &s);
-	std::complex<double> A1A1ZZCT(const double &cos_t, const double &s);
-	double A1A1ZZNLO(const double &cos_t, const double &s);
+
 
 	std::complex<double> A1A1TAtaTree(const double &cos_t, const double &s);
 	std::complex<double> A1A1TAtaTreeConj(const double &cos_t, const double &s);
 	std::complex<double> A1A1TAta1Loop(const double &cos_t, const double &s);
-	std::complex<double> A1A1TAtaCT(const double &cos_t, const double &s);
-	std::complex<double> A1A1TAtaSoft(const double &cos_t, const double &s);
-	double A1A1TAtaNLO(const double &cos_t, const double &s);
 
 	std::complex<double> A1A1TtTree(const double &cos_t, const double &s);
 	std::complex<double> A1A1TtTreeConj(const double &cos_t, const double &s);
 	std::complex<double> A1A1Tt1Loop(const double &cos_t, const double &s);
-	std::complex<double> A1A1TtCT(const double &cos_t, const double &s);
-	std::complex<double> A1A1TtSoft(const double &cos_t, const double &s);
-	double A1A1TtNLO(const double &cos_t, const double &s);
+
 
 	std::complex<double> A1A1BbTree(const double &cos_t, const double &s);
 	std::complex<double> A1A1BbTreeConj(const double &cos_t, const double &s);
 	std::complex<double> A1A1Bb1Loop(const double &cos_t, const double &s);
-	std::complex<double> A1A1BbCT(const double &cos_t, const double &s);
-	std::complex<double> A1A1BbSoft(const double &cos_t, const double &s);
-	double A1A1BbNLO(const double &cos_t, const double &s);
+	
+// ─── A1A1HH ───────────────────────────────────────────────────────────────────
+std::complex<double> A1A1HHCTZ1  (const double &cos_t, const double &s);
+std::complex<double> A1A1HHCTZ2  (const double &cos_t, const double &s);
+std::complex<double> A1A1HHCTOS1 (const double &cos_t, const double &s);
+std::complex<double> A1A1HHCTOS2 (const double &cos_t, const double &s);
+std::complex<double> A1A1HHCTZ12 (const double &cos_t, const double &s);
+std::complex<double> A1A1HHCTZ22 (const double &cos_t, const double &s);
+std::complex<double> A1A1HHCTOS12(const double &cos_t, const double &s);
+std::complex<double> A1A1HHCTOS22(const double &cos_t, const double &s);
 
-	double A1A1HHNLOfl(const double &cos_t, const double &s);
-	double A1A1HS1NLOfl(const double &cos_t, const double &s);
-	double A1A1S1S1NLOfl(const double &cos_t, const double &s);
-	double A1A1ZZNLOfl(const double &cos_t, const double &s);
-	double A1A1wWNLOfl(const double &cos_t, const double &s);
-	double A1A1TAtaNLOfl(const double &cos_t, const double &s);
-	double A1A1TtNLOfl(const double &cos_t, const double &s);
-	double A1A1BbNLOfl(const double &cos_t, const double &s);
+double A1A1HHNLOZ1  (const double &cos_t, const double &s);
+double A1A1HHNLOZ2  (const double &cos_t, const double &s);
+double A1A1HHNLOOS1 (const double &cos_t, const double &s);
+double A1A1HHNLOOS2 (const double &cos_t, const double &s);
+double A1A1HHNLOZ12 (const double &cos_t, const double &s);
+double A1A1HHNLOZ22 (const double &cos_t, const double &s);
+double A1A1HHNLOOS12(const double &cos_t, const double &s);
+double A1A1HHNLOOS22(const double &cos_t, const double &s);
+double A1A1HHNLOflZ1  (const double &cos_t, const double &s);
+double A1A1HHNLOflZ2 (const double &cos_t, const double &s);
+double A1A1HHNLOflOS1 (const double &cos_t, const double &s);
+double A1A1HHNLOflOS2 (const double &cos_t, const double &s);
+double A1A1HHNLOflZ12 (const double &cos_t, const double &s);
+double A1A1HHNLOflZ22 (const double &cos_t, const double &s);
+double A1A1HHNLOflOS12(const double &cos_t, const double &s);
+double A1A1HHNLOflOS22(const double &cos_t, const double &s);
+
+
+
+
+// ─── A1A1S1S1 ─────────────────────────────────────────────────────────────────
+std::complex<double> A1A1S1S1CTZ1  (const double &cos_t, const double &s);
+std::complex<double> A1A1S1S1CTZ2  (const double &cos_t, const double &s);
+std::complex<double> A1A1S1S1CTOS1 (const double &cos_t, const double &s);
+std::complex<double> A1A1S1S1CTOS2 (const double &cos_t, const double &s);
+std::complex<double> A1A1S1S1CTZ12 (const double &cos_t, const double &s);
+std::complex<double> A1A1S1S1CTZ22 (const double &cos_t, const double &s);
+std::complex<double> A1A1S1S1CTOS12(const double &cos_t, const double &s);
+std::complex<double> A1A1S1S1CTOS22(const double &cos_t, const double &s);
+
+double A1A1S1S1NLOZ1  (const double &cos_t, const double &s);
+double A1A1S1S1NLOZ2  (const double &cos_t, const double &s);
+double A1A1S1S1NLOOS1 (const double &cos_t, const double &s);
+double A1A1S1S1NLOOS2 (const double &cos_t, const double &s);
+double A1A1S1S1NLOZ12 (const double &cos_t, const double &s);
+double A1A1S1S1NLOZ22 (const double &cos_t, const double &s);
+double A1A1S1S1NLOOS12(const double &cos_t, const double &s);
+double A1A1S1S1NLOOS22(const double &cos_t, const double &s);
+double A1A1S1S1NLOflZ1  (const double &cos_t, const double &s);
+double A1A1S1S1NLOflZ2  (const double &cos_t, const double &s);
+double A1A1S1S1NLOflOS1 (const double &cos_t, const double &s);
+double A1A1S1S1NLOflOS2 (const double &cos_t, const double &s);
+double A1A1S1S1NLOflZ12 (const double &cos_t, const double &s);
+double A1A1S1S1NLOflZ22 (const double &cos_t, const double &s);
+double A1A1S1S1NLOflOS12(const double &cos_t, const double &s);
+double A1A1S1S1NLOflOS22(const double &cos_t, const double &s);
+
+
+// ─── A1A1HS1 ──────────────────────────────────────────────────────────────────
+std::complex<double> A1A1HS1CTZ1  (const double &cos_t, const double &s);
+std::complex<double> A1A1HS1CTZ2  (const double &cos_t, const double &s);
+std::complex<double> A1A1HS1CTOS1 (const double &cos_t, const double &s);
+std::complex<double> A1A1HS1CTOS2 (const double &cos_t, const double &s);
+std::complex<double> A1A1HS1CTZ12 (const double &cos_t, const double &s);
+std::complex<double> A1A1HS1CTZ22 (const double &cos_t, const double &s);
+std::complex<double> A1A1HS1CTOS12(const double &cos_t, const double &s);
+std::complex<double> A1A1HS1CTOS22(const double &cos_t, const double &s);
+
+double A1A1HS1NLOZ1  (const double &cos_t, const double &s);
+double A1A1HS1NLOZ2  (const double &cos_t, const double &s);
+double A1A1HS1NLOOS1 (const double &cos_t, const double &s);
+double A1A1HS1NLOOS2 (const double &cos_t, const double &s);
+double A1A1HS1NLOZ12 (const double &cos_t, const double &s);
+double A1A1HS1NLOZ22 (const double &cos_t, const double &s);
+double A1A1HS1NLOOS12(const double &cos_t, const double &s);
+double A1A1HS1NLOOS22(const double &cos_t, const double &s);
+
+
+double A1A1HS1NLOflZ1(const double &cos_t, const double &s);
+double A1A1HS1NLOflZ2(const double &cos_t, const double &s);
+double A1A1HS1NLOflOS1(const double &cos_t, const double &s);
+double A1A1HS1NLOflOS2(const double &cos_t, const double &s);
+double A1A1HS1NLOflZ12(const double &cos_t, const double &s);
+double A1A1HS1NLOflZ22(const double &cos_t, const double &s);
+double A1A1HS1NLOflOS12(const double &cos_t, const double &s);
+double A1A1HS1NLOflOS22(const double &cos_t, const double &s);
+
+// ─── A1A1wW ───────────────────────────────────────────────────────────────────
+std::complex<double> A1A1wWCTZ1  (const double &cos_t, const double &s);
+std::complex<double> A1A1wWCTZ2  (const double &cos_t, const double &s);
+std::complex<double> A1A1wWCTOS1 (const double &cos_t, const double &s);
+std::complex<double> A1A1wWCTOS2 (const double &cos_t, const double &s);
+std::complex<double> A1A1wWCTZ12 (const double &cos_t, const double &s);
+std::complex<double> A1A1wWCTZ22 (const double &cos_t, const double &s);
+std::complex<double> A1A1wWCTOS12(const double &cos_t, const double &s);
+std::complex<double> A1A1wWCTOS22(const double &cos_t, const double &s);
+
+double A1A1wWNLOZ1  (const double &cos_t, const double &s);
+double A1A1wWNLOZ2  (const double &cos_t, const double &s);
+double A1A1wWNLOOS1 (const double &cos_t, const double &s);
+double A1A1wWNLOOS2 (const double &cos_t, const double &s);
+double A1A1wWNLOZ12 (const double &cos_t, const double &s);
+double A1A1wWNLOZ22 (const double &cos_t, const double &s);
+double A1A1wWNLOOS12(const double &cos_t, const double &s);
+double A1A1wWNLOOS22(const double &cos_t, const double &s);
+
+double A1A1wWNLOflZ1  (const double &cos_t, const double &s);
+double A1A1wWNLOflZ2  (const double &cos_t, const double &s);
+double A1A1wWNLOflOS1 (const double &cos_t, const double &s);
+double A1A1wWNLOflOS2 (const double &cos_t, const double &s);
+double A1A1wWNLOflZ12 (const double &cos_t, const double &s);
+double A1A1wWNLOflZ22 (const double &cos_t, const double &s);
+double A1A1wWNLOflOS12 (const double &cos_t, const double &s);
+double A1A1wWNLOflOS22 (const double &cos_t, const double &s);
+
+// ─── A1A1ZZ ───────────────────────────────────────────────────────────────────
+std::complex<double> A1A1ZZCTZ1  (const double &cos_t, const double &s);
+std::complex<double> A1A1ZZCTZ2  (const double &cos_t, const double &s);
+std::complex<double> A1A1ZZCTOS1 (const double &cos_t, const double &s);
+std::complex<double> A1A1ZZCTOS2 (const double &cos_t, const double &s);
+std::complex<double> A1A1ZZCTZ12 (const double &cos_t, const double &s);
+std::complex<double> A1A1ZZCTZ22 (const double &cos_t, const double &s);
+std::complex<double> A1A1ZZCTOS12(const double &cos_t, const double &s);
+std::complex<double> A1A1ZZCTOS22(const double &cos_t, const double &s);
+
+double A1A1ZZNLOZ1  (const double &cos_t, const double &s);
+double A1A1ZZNLOZ2  (const double &cos_t, const double &s);
+double A1A1ZZNLOOS1 (const double &cos_t, const double &s);
+double A1A1ZZNLOOS2 (const double &cos_t, const double &s);
+double A1A1ZZNLOZ12 (const double &cos_t, const double &s);
+double A1A1ZZNLOZ22 (const double &cos_t, const double &s);
+double A1A1ZZNLOOS12(const double &cos_t, const double &s);
+double A1A1ZZNLOOS22(const double &cos_t, const double &s);
+
+double A1A1ZZNLOflZ1  (const double &cos_t, const double &s);
+double A1A1ZZNLOflZ2  (const double &cos_t, const double &s);
+double A1A1ZZNLOflOS1 (const double &cos_t, const double &s);
+double A1A1ZZNLOflOS2 (const double &cos_t, const double &s);
+double A1A1ZZNLOflZ12 (const double &cos_t, const double &s);
+double A1A1ZZNLOflZ22 (const double &cos_t, const double &s);
+double A1A1ZZNLOflOS12(const double &cos_t, const double &s);
+double A1A1ZZNLOflOS22(const double &cos_t, const double &s);
+
+// ─── A1A1TAta ─────────────────────────────────────────────────────────────────
+std::complex<double> A1A1TAtaCTZ1  (const double &cos_t, const double &s);
+std::complex<double> A1A1TAtaCTZ2  (const double &cos_t, const double &s);
+std::complex<double> A1A1TAtaCTOS1 (const double &cos_t, const double &s);
+std::complex<double> A1A1TAtaCTOS2 (const double &cos_t, const double &s);
+std::complex<double> A1A1TAtaCTZ12 (const double &cos_t, const double &s);
+std::complex<double> A1A1TAtaCTZ22 (const double &cos_t, const double &s);
+std::complex<double> A1A1TAtaCTOS12(const double &cos_t, const double &s);
+std::complex<double> A1A1TAtaCTOS22(const double &cos_t, const double &s);
+
+double A1A1TAtaNLOZ1  (const double &cos_t, const double &s);
+double A1A1TAtaNLOZ2  (const double &cos_t, const double &s);
+double A1A1TAtaNLOOS1 (const double &cos_t, const double &s);
+double A1A1TAtaNLOOS2 (const double &cos_t, const double &s);
+double A1A1TAtaNLOZ12 (const double &cos_t, const double &s);
+double A1A1TAtaNLOZ22 (const double &cos_t, const double &s);
+double A1A1TAtaNLOOS12(const double &cos_t, const double &s);
+double A1A1TAtaNLOOS22(const double &cos_t, const double &s);
+double A1A1TAtaNLOflZ1  (const double &cos_t, const double &s);
+double A1A1TAtaNLOflZ2  (const double &cos_t, const double &s);
+double A1A1TAtaNLOflOS1 (const double &cos_t, const double &s);
+double A1A1TAtaNLOflOS2 (const double &cos_t, const double &s);
+double A1A1TAtaNLOflZ12 (const double &cos_t, const double &s);
+double A1A1TAtaNLOflZ22 (const double &cos_t, const double &s);
+double A1A1TAtaNLOflOS12(const double &cos_t, const double &s);
+double A1A1TAtaNLOflOS22(const double &cos_t, const double &s);
+
+// ─── A1A1Tt ───────────────────────────────────────────────────────────────────
+std::complex<double> A1A1TtCTZ1  (const double &cos_t, const double &s);
+std::complex<double> A1A1TtCTZ2  (const double &cos_t, const double &s);
+std::complex<double> A1A1TtCTOS1 (const double &cos_t, const double &s);
+std::complex<double> A1A1TtCTOS2 (const double &cos_t, const double &s);
+std::complex<double> A1A1TtCTZ12 (const double &cos_t, const double &s);
+std::complex<double> A1A1TtCTZ22 (const double &cos_t, const double &s);
+std::complex<double> A1A1TtCTOS12(const double &cos_t, const double &s);
+std::complex<double> A1A1TtCTOS22(const double &cos_t, const double &s);
+
+double A1A1TtNLOZ1  (const double &cos_t, const double &s);
+double A1A1TtNLOZ2  (const double &cos_t, const double &s);
+double A1A1TtNLOOS1 (const double &cos_t, const double &s);
+double A1A1TtNLOOS2 (const double &cos_t, const double &s);
+double A1A1TtNLOZ12 (const double &cos_t, const double &s);
+double A1A1TtNLOZ22 (const double &cos_t, const double &s);
+double A1A1TtNLOOS12(const double &cos_t, const double &s);
+double A1A1TtNLOOS22(const double &cos_t, const double &s);
+
+double A1A1TtNLOflZ1  (const double &cos_t, const double &s);
+double A1A1TtNLOflZ2  (const double &cos_t, const double &s);
+double A1A1TtNLOflOS1 (const double &cos_t, const double &s);
+double A1A1TtNLOflOS2 (const double &cos_t, const double &s);
+double A1A1TtNLOflZ12 (const double &cos_t, const double &s);
+double A1A1TtNLOflZ22 (const double &cos_t, const double &s);
+double A1A1TtNLOflOS12(const double &cos_t, const double &s);
+double A1A1TtNLOflOS22(const double &cos_t, const double &s);
+
+// ─── A1A1Bb ───────────────────────────────────────────────────────────────────
+std::complex<double> A1A1BbCTZ1  (const double &cos_t, const double &s);
+std::complex<double> A1A1BbCTZ2  (const double &cos_t, const double &s);
+std::complex<double> A1A1BbCTOS1 (const double &cos_t, const double &s);
+std::complex<double> A1A1BbCTOS2 (const double &cos_t, const double &s);
+std::complex<double> A1A1BbCTZ12 (const double &cos_t, const double &s);
+std::complex<double> A1A1BbCTZ22 (const double &cos_t, const double &s);
+std::complex<double> A1A1BbCTOS12(const double &cos_t, const double &s);
+std::complex<double> A1A1BbCTOS22(const double &cos_t, const double &s);
+std::complex<double> A1A1Bb1CTQCD(const double &cos_t, const double &s);
+std::complex<double> A1A1Bb1LoopQCD(const double &cos_t, const double &s);
+std::complex<double> A1A1TtCTQCD(const double &cos_t, const double &s);
+std::complex<double> A1A1TtLoopQCD(const double &cos_t, const double &s);
+
+
+double A1A1BbNLOZ1  (const double &cos_t, const double &s);
+double A1A1BbNLOZ2  (const double &cos_t, const double &s);
+double A1A1BbNLOOS1 (const double &cos_t, const double &s);
+double A1A1BbNLOOS2 (const double &cos_t, const double &s);
+double A1A1BbNLOZ12 (const double &cos_t, const double &s);
+double A1A1BbNLOZ22 (const double &cos_t, const double &s);
+double A1A1BbNLOOS12(const double &cos_t, const double &s);
+double A1A1BbNLOOS22(const double &cos_t, const double &s);
+double A1A1BbNLOQCD(const double &cos_t, const double &s);
+double A1A1TtNLOQCD(const double &cos_t, const double &s);
+
+double A1A1BbNLOflZ1  (const double &cos_t, const double &s);
+double A1A1BbNLOflZ2  (const double &cos_t, const double &s);
+double A1A1BbNLOflOS1 (const double &cos_t, const double &s);
+double A1A1BbNLOflOS2 (const double &cos_t, const double &s);
+double A1A1BbNLOflZ12 (const double &cos_t, const double &s);
+double A1A1BbNLOflZ22 (const double &cos_t, const double &s);
+double A1A1BbNLOflOS12(const double &cos_t, const double &s);
+double A1A1BbNLOflOS22(const double &cos_t, const double &s);
+double A1A1BbflQCD(const double &cos_t, const double &s);
+double A1A1TtflQCD(const double &cos_t, const double &s);
+
+
+	double A1A1BbIntDipol(const double&cos_t, const double &s);
+	double A1A1TtIntDipol(const double&cos_t, const double &s);
+	double A1A1BbIntDipolQCD(const double&cos_t, const double &s);
+	double A1A1TtIntDipolQCD(const double&cos_t, const double &s);
+	double A1A1WwIntDipol(const double&cos_t, const double &s);
+	double A1A1TAtaIntDipol(const double&cos_t, const double &s);
+	double A1A1BbReal(const double&E3, const double&theta2, const double&theta1, const double&phi, const double&s);
+	double A1A1TtReal(const double&E3, const double&theta2, const double&theta1, const double&phi, const double&s);
+	double A1A1BbRealQCD(const double&E3, const double&theta2, const double&theta1, const double&phi, const double&s);
+	double A1A1TtRealQCD(const double&E3, const double&theta2, const double&theta1, const double&phi, const double&s);
+	double A1A1WwReal(const double&E3, const double&theta2, const double&theta1, const double&phi, const double&s);
+	double A1A1TataReal(const double&E3, const double&theta2, const double&theta1, const double&phi, const double&s);
+
 }

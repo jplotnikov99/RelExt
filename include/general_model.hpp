@@ -37,6 +37,9 @@ struct ModelInfo {
     VecString bath_masses;
     const bool calc_widths;
     const bool nlo;
+    const int renormalpha;
+    const int renormvs;
+    const bool qcd;
     double ZERO = 0;
     double MDM = 0.;
 
@@ -59,7 +62,7 @@ struct ModelInfo {
     void assign_bath_masses(const VecString &prtcls = {});
     void assigndm();
 
-    ModelInfo(const bool calcwidths, const bool nlo);
+    ModelInfo(const bool calcwidths, const bool nlo, const bool qcd,const int renormvs, const int renormalpha);
 };
 
 class AnnihilationAmps : public ModelInfo {
@@ -68,13 +71,16 @@ class AnnihilationAmps : public ModelInfo {
     fmap amp2s;
     fmap amp2fls;
     vamp2 cur_channel;
+    std::vector<std::string> cur_channel_name;
 
    public:
-    AnnihilationAmps(const bool calcwidths, const bool nlo);
-
+    AnnihilationAmps(const bool calcwidths, const bool nlo, const bool qcd,const int renormvs, const int renormalpha);
+    bool is_nlo() const;
+    bool is_qcd() const;
     void init();
     void print_channels();
     VecString get_all_channels();
+    std::vector<std::string> get_channel() const;
     void channel_parity(int &p1, int &p2, const std::string &channel);
     bool check_channel_existence(std::string &channel);
     VecString get_channel_prtcls(const std::string &channel);

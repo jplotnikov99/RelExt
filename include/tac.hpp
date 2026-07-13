@@ -38,9 +38,10 @@ class SigvInt {
     void calc_polK2();
 
     double lipsv(const double &s);
+    double wij_realCorrections(double s);
 
     double operator()(const double &u);
-
+   double run_vegas_from_channel(const std::vector<std::string>& channels, double s_value);
     ~SigvInt() {};
 };
 

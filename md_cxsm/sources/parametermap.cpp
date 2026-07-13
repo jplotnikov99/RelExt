@@ -45,5 +45,21 @@ namespace DT{
 		parmap["WA1"] = &WA1;
 		parmap["E"] = &E;
 		parmap["Pi"] = &Pi;
+		double* val1 = new double(CT_svev_ZEM_H1_OS.real());
+		parmap["vsZEM1os"] = val1;
+		double* val2 = new double(CT_svev_ZEM_H2_OS.real());
+	 	parmap["vsZEM2os"] = val2;
+		double* val3 = new double(CT_svev_ZEM_H1_pstr.real());
+	 	parmap["vsZEM1pstar"] = val3;
+		double* val4 = new double(CT_svev_ZEM_H2_pstr.real());
+	 	parmap["vsZEM2pstar"] = val4;
+		double* val5 = new double(CT_svev_OS_H1_OS.real());
+		parmap["vsOS1os"] = val1;
+		double* val6 = new double(CT_svev_OS_H2_OS.real());
+	 	parmap["vsOS2os"] = val2;
+		double* val7 = new double(CT_svev_OS_H1_pstr.real());
+		parmap["vsOS1os"] = val1;
+		double* val8 = new double(CT_svev_OS_H2_pstr.real());
+	 	parmap["vsOS2os"] = val2;
 	}
 }
