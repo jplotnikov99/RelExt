@@ -49,7 +49,7 @@ struct ModelInfo {
     void load_parameters();
     void load_parameter_map();
     void load_tokens();
-    void load_counterterms();
+    virtual void load_counterterms();
     bool check_conditions();
     void print_prtcls();
     void print_DM();

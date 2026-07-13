@@ -332,8 +332,7 @@ void Main::RWalk(const double target, const double eps, const double gam,
     }
 }
 
-void Main::SaveData(const VecString &save_pars,
-                    double lo_val, double nlo_val) {
+void Main::SaveData(const VecString &save_pars) {
     std::string filesave = "../dataOutput/" + output_file;
 
     if (first_run) {
@@ -344,11 +343,12 @@ void Main::SaveData(const VecString &save_pars,
     }
 
     std::ofstream outfile(filesave, std::ios::out | std::ios::app);
+
     outfile.seekp(0, std::ios::end);
 
-    // Header nur schreiben, wenn Datei leer ist
     if (outfile.tellp() == 0) {
-        outfile << "Omega_LO\tOmega_NLO\tDelta[%]";
+        outfile << "Omega";
+
         for (auto it : save_pars) {
             AA.check_par_existence(it);
             outfile << "\t" << it;
@@ -360,11 +360,7 @@ void Main::SaveData(const VecString &save_pars,
         }
         outfile << "\n";
     }
-
-    // Datenzeile
-    double rel_corr = (nlo_val / lo_val - 1.0) * 100.0;
-    outfile << lo_val << "\t" << nlo_val << "\t" << rel_corr;
-
+    outfile << omega;
     for (auto it : save_pars) {
         outfile << "\t" << *AA.parmap[it];
     }

@@ -96,8 +96,7 @@ class Main {
                const size_t maxit);
 
     // saves the scanned data
-    void SaveData(const VecString &save_pars,
-                    const double lo_val, const double nlo_val);
+    void SaveData(const VecString &save_pars);
     void SaveToCSV(const std::string &csvname, Main &M_nlo,
                const double lo_val, const double nlo_val, const double rel_corr);
     ~Main();

@@ -1,5 +1,5 @@
-#include "../include/tac.hpp"
-#include "../include/numerical/vegas.hpp"
+#include "tac.hpp"
+#include "numerical/vegas.hpp"
 
 namespace DT {
 
@@ -194,7 +194,6 @@ bool Tac::sort_inimasses(const VecString &ch_str) {
         AA.set_s((m1 + m2) * (m1 + m2) * 100);
         temp = AA(0.5);
         if (std::isnan(temp) || sigv.xsec((m1+m2)*(m1+m2)+1,it) < 0){
-        
         std::cout << "Error: Negative Cross-section in the channel " << " " << it << std::endl;
         std::cout << "sigma = " << sigv.xsec((m1+m2)*(m1+m2)+1,it)  << " " <<"for s = " << (m1+m2)*(m1+m2)+1  << std::endl;
         return false;
