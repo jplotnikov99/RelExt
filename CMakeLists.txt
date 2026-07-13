@@ -81,6 +81,7 @@ endif()
 find_package(collier 1.2.5 QUIET)
 if(NOT collier_FOUND)
   set(INCLUDE_COLLIER_TARGET True)
+    set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
   FetchContent_Declare(collier
     URL              https://collier.hepforge.org/downloads/?f=collier-1.2.8.tar.gz
     DOWNLOAD_NAME    collier-1.2.8.tar.gz
