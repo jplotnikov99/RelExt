@@ -44,7 +44,7 @@ To implement new models in RelExt, it is required to have `Mathematica v12` or h
 
 ### Build
 
-You can build the program with 
+You can build the program and run tests with 
 
         cd path/to/RelExt
         mkdir build && cd build  
