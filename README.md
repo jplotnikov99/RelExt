@@ -1,4 +1,4 @@
-Program: RelExt version 1.0
+Program: RelExt version 1.1
 
 Released by: Rodrigo Capucha, Karim Elyaouti, Margarete Mühlleitner, Johann Plotnikov, Rui Santos
 
@@ -50,6 +50,7 @@ You can build the program with
         mkdir build && cd build  
         cmake ..  
         make 
+        make test
 
 
 ## How to add a new model (for further details, also see the manual):
