@@ -449,53 +449,75 @@ Select[particlelist, #[[1]]== templist2[[i, 4]]&][[1,3]],
 {i, Length[templist2]}];
 
 
-(*computation of the amplitudes^2 for all the 2to2 processes in foutlist*)
-calcAmp2s:=
-Block[{subdiagrams={},prefac,tamp2},
-final = {};
+(* Helper: perform the polarization sum only if polarization vectors
+   for momentum p are present *)
+polSum[expr_, p_, gauge_: None] :=
+  Module[{r = FCI[expr]},
+    If[FreeQ[r, Polarization[p, __]],
+      r,
+      If[gauge === None,
+        DoPolarizationSums[r, p],
+        DoPolarizationSums[r, p, gauge]
+      ]
+    ]
+  ];
+(* Spin, color, and polarization sums for an individual contribution *)
+spinPolSum[amp_, g3_ : None, g4_ : None] :=
+  Module[{r},
+    r = FeynAmpDenominatorExplicit[amp];
+    r = SUNSimplify[r, Explicit -> True, SUNNToCACF -> False];
+    r = FermionSpinSum[r];
+    r = polSum[r, p1];
+    r = polSum[r, p2];
+    r = polSum[r, p3, g3];
+    r = polSum[r, p4, g4];
+    r = DiracSimplify[r];
+    r = Re[r];
+    r = ComplexExpand[r];
+    Simplify[r]
+  ];
+(* Compute the squared amplitudes for all 2->2 processes in foutlist *)
+calcAmp2s :=
+  Block[{subdiagrams = {}, prefac, tamp2, sub, g3, g4, m3, m4},
+    final = {};
 
-(*AbsoluteTiming[*)
-Do[
-	subdiagrams = {};
-	Print[ToString[processname[[i]]]];
-	FCClearScalarProducts[];
-	SetMandelstam[s, t, u, p1, p2, -p3, -p4, TheMass[foutlist[[i,1]]], TheMass[foutlist[[i,2]]], TheMass[foutlist[[i,3]]], TheMass[foutlist[[i,4]]]];
-	tamp2 = fastamp2[coefficientlist[[i]],mandellist[[i]]/.widthsub];
-	prefac= determinefac[foutlist[[i]], 2];
-	Do[
-		Which[
-			TheMass[foutlist[[i,3]]] === 0 && !PossibleZeroQ[TheMass[foutlist[[i,4]]]],
-			sub=tamp2[[i1]]/prefac// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
-			// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2] &// DoPolarizationSums[#, p3, 0] & // DoPolarizationSums[#, p4] & 
-			// DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify,
-			
-			!PossibleZeroQ[TheMass[foutlist[[i,3]]]] && TheMass[foutlist[[i,4]]] === 0, 
-			sub=tamp2[[i1]]/prefac// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
-			// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2] &// DoPolarizationSums[#, p3] & // DoPolarizationSums[#, p4,0] & 
-			// DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify,
-			
-			TheMass[foutlist[[i,3]]] === 0 && TheMass[foutlist[[i,4]]] === 0,
-			sub=tamp2[[i1]]/prefac// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
-			// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2] &// DoPolarizationSums[#, p3, p4] & // DoPolarizationSums[#, p4, p3] & 
-			// DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify,
-			
-			True,
-			sub=tamp2[[i1]]/prefac// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
-			// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2] &// DoPolarizationSums[#, p3] & // DoPolarizationSums[#, p4] & 
-			// DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify
-			];
-			
-		If[FreeQ[sub,I],
-			AppendTo[subdiagrams,sub/.SUNN->3/.subrule/.Eps[___]->0//Simplify],
-			Print["imaginary"];
-			sub=sub/.SUNN->3/.subrule//Expand//FullSimplify;
-			AppendTo[subdiagrams,sub]
-		];
-	,{i1,Length[tamp2]}];
-	
-AppendTo[final, Plus @@ subdiagrams];
-, {i,1,Length[ampslist]}]
-]
+    Do[
+      subdiagrams = {};
+      Print[ToString[processname[[i]]]];
+      FCClearScalarProducts[];
+      SetMandelstam[s, t, u, p1, p2, -p3, -p4,
+        TheMass[foutlist[[i, 1]]], TheMass[foutlist[[i, 2]]],
+        TheMass[foutlist[[i, 3]]], TheMass[foutlist[[i, 4]]]];
+
+      tamp2 = fastamp2[coefficientlist[[i]], mandellist[[i]] /. widthsub];
+      prefac = 1;
+
+      m3 = TheMass[foutlist[[i, 3]]];
+      m4 = TheMass[foutlist[[i, 4]]];
+
+      (* Choose gauge vectors according to the masses,
+         following the original implementation *)
+      Which[
+        m3 === 0 && ! PossibleZeroQ[m4], {g3, g4} = {0, None},
+        ! PossibleZeroQ[m3] && m4 === 0, {g3, g4} = {None, 0},
+        m3 === 0 && m4 === 0,            {g3, g4} = {p4, p3},
+        True,                            {g3, g4} = {None, None}
+      ];
+
+      Do[
+        sub = spinPolSum[tamp2[[i1]]/prefac, g3, g4];
+
+        If[FreeQ[sub, I],
+          AppendTo[subdiagrams, sub /. SUNN -> 3 /. subrule /. Eps[___] -> 0 // Simplify],
+          Print["imaginary"];
+          sub = sub /. SUNN -> 3 /. subrule // Expand // FullSimplify;
+          AppendTo[subdiagrams, sub]
+        ];
+      , {i1, Length[tamp2]}];
+
+      AppendTo[final, Plus @@ subdiagrams];
+    , {i, 1, Length[ampslist]}]
+  ]
 
 
 calcAmp2s[];
