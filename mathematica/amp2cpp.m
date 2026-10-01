@@ -730,54 +730,112 @@ AppendTo[couplings, coefficientlist[[i]]*ComplexConjugate[coefficientlist[[i]]]]
 calcAmpsDecays[];
 
 
-(*computation of the amplitudes^2 for all the 1to2 processes in foutlistDecays*)
-finalDecays = {};
-tamp2 = {};
+ClearAll[polSum];
 
-Do[
-	(*if decaying particle is a scalar/pseudoscalar, set amplitude^2 to zero*)
-	If[ 
-	    (determineType[foutlistDecays[[i]], 1]=="scalar") || (determineType[foutlistDecays[[i]], 1]=="pseudoscalar"), 
-		AppendTo[finalDecays, 0];
-		Continue[];
-	];
-	
-	FCClearScalarProducts[];
-	SP[p1, p1] = TheMass[foutlistDecays[[i,1]]]^2; 
-	SP[p2, p2] = TheMass[foutlistDecays[[i,2]]]^2; 
-	SP[p3, p3] = TheMass[foutlistDecays[[i,3]]]^2;
-	SP[p1, p2] = (TheMass[foutlistDecays[[i,1]]]^2 + TheMass[foutlistDecays[[i,2]]]^2 -TheMass[foutlistDecays[[i,3]]]^2)/2;
-	SP[p1, p3] = (TheMass[foutlistDecays[[i,1]]]^2 + TheMass[foutlistDecays[[i,3]]]^2 -TheMass[foutlistDecays[[i,2]]]^2)/2;
-	SP[p2, p3] = (TheMass[foutlistDecays[[i,1]]]^2 - TheMass[foutlistDecays[[i,2]]]^2 -TheMass[foutlistDecays[[i,3]]]^2)/2; 
-	tamp2 = fastamp2[{1,1},decayslist[[i]]]; 
-	prefac=determinefac[foutlistDecays[[i]],1];
-	dof=determineDof[foutlistDecays[[i,1]]];
-	Which[
-		TheMass[foutlistDecays[[i,2]]] === 0 && !PossibleZeroQ[TheMass[foutlistDecays[[i,3]]]],
-		sub=tamp2[[1]]/prefac/dof// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
-		// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2,0] &// DoPolarizationSums[#, p3] & //DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify,
-		
-		!PossibleZeroQ[TheMass[foutlistDecays[[i,2]]]] && TheMass[foutlistDecays[[i,3]]] === 0, 
-		sub=tamp2[[1]]/prefac/dof// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
-		// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2] &// DoPolarizationSums[#, p3,0] & //DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify,
-		
-		TheMass[foutlistDecays[[i,2]]] === 0 && TheMass[foutlistDecays[[i,3]]] === 0,
-		sub=tamp2[[1]]/prefac/dof// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
-		// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2,p3] &// DoPolarizationSums[#, p3,p2] & //DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify,
-			
-		True,
-		sub=tamp2[[1]]/prefac/dof// FeynAmpDenominatorExplicit // SUNSimplify[#, Explicit -> True, SUNNToCACF -> False] & // FermionSpinSum[#] & 
-		// DoPolarizationSums[#, p1]& // DoPolarizationSums[#, p2] &// DoPolarizationSums[#, p3] & //DiracSimplify// Re[#]&// ComplexExpand[#]&// Simplify
-		];
-			
-	If[FreeQ[sub,I],
-		sub = sub/.SUNN->3/.subrule/.Eps[___]->0//Simplify,
-		Print["imaginary"];
-		sub=sub/.SUNN->3/.subrule//Expand//FullSimplify;
-	];	
-	
-	AppendTo[finalDecays, sub];
-, {i, 1, Length[decayslist]}]
+(* Perform the polarization sum only if polarization vectors
+   for momentum p are present *)
+polSum[expr_, p_, gauge_: None] :=
+  Module[{r = FCI[expr]},
+    If[FreeQ[r, Polarization[p, __]],
+      r,
+      If[gauge === None,
+        DoPolarizationSums[r, p],
+        DoPolarizationSums[r, p, gauge]
+      ]
+    ]
+  ];
+
+
+(* Compute the squared amplitudes for all 1->2 processes
+   in foutlistDecays *)
+finalDecays = {};
+
+Module[{i, m1, m2, m3, tamp2, dof, g2, g3, sub},
+
+  Do[
+    (* Preserve the original exclusion of scalar/pseudoscalar parents *)
+    If[
+      MemberQ[
+        {"scalar", "pseudoscalar"},
+        determineType[foutlistDecays[[i]], 1]
+      ],
+      AppendTo[finalDecays, 0];
+      Continue[];
+    ];
+
+    FCClearScalarProducts[];
+
+    m1 = TheMass[foutlistDecays[[i, 1]]];
+    m2 = TheMass[foutlistDecays[[i, 2]]];
+    m3 = TheMass[foutlistDecays[[i, 3]]];
+
+    (* Two-body decay kinematics: p1 = p2 + p3 *)
+    SP[p1, p1] = m1^2;
+    SP[p2, p2] = m2^2;
+    SP[p3, p3] = m3^2;
+
+    SP[p1, p2] = (m1^2 + m2^2 - m3^2)/2;
+    SP[p1, p3] = (m1^2 + m3^2 - m2^2)/2;
+    SP[p2, p3] = (m1^2 - m2^2 - m3^2)/2;
+
+    tamp2 = fastamp2[{1, 1}, decayslist[[i]]];
+
+    (* Average over the degrees of freedom of the decaying particle *)
+    dof = determineDof[foutlistDecays[[i, 1]]];
+
+    (* Choose gauge vectors as in the original implementation *)
+    Which[
+      m2 === 0 && ! PossibleZeroQ[m3],
+        {g2, g3} = {0, None},
+
+      ! PossibleZeroQ[m2] && m3 === 0,
+        {g2, g3} = {None, 0},
+
+      m2 === 0 && m3 === 0,
+        {g2, g3} = {p3, p2},
+
+      True,
+        {g2, g3} = {None, None}
+    ];
+
+    (* No determinefac compensation is needed:
+       polarization sums for non-vector particles are skipped *)
+    sub = FeynAmpDenominatorExplicit[tamp2[[1]]/dof];
+
+    sub = SUNSimplify[
+      sub,
+      Explicit -> True,
+      SUNNToCACF -> False
+    ];
+
+    sub = FermionSpinSum[sub];
+
+    sub = polSum[sub, p1];
+    sub = polSum[sub, p2, g2];
+    sub = polSum[sub, p3, g3];
+
+    sub = DiracSimplify[sub];
+    sub = Re[sub];
+    sub = ComplexExpand[sub];
+    sub = Simplify[sub];
+
+    (* Apply the original final substitutions *)
+    If[FreeQ[sub, I],
+      sub = Simplify[
+        sub /. SUNN -> 3 /. subrule /. Eps[___] -> 0
+      ],
+
+      Print["imaginary"];
+      sub = FullSimplify[
+        Expand[sub /. SUNN -> 3 /. subrule]
+      ];
+    ];
+
+    AppendTo[finalDecays, sub],
+
+    {i, 1, Length[decayslist]}
+  ]
+];
 
 
 (*list of all partial widths*)
